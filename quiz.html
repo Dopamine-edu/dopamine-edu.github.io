@@ -4,10 +4,7 @@
   <meta charset="UTF-8">
   <title>Biology MCQ Quiz</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
+    body { font-family: Arial, sans-serif; margin: 20px; }
     /* Sticky Timer at Top Left */
     #timer {
       position: fixed;
@@ -23,7 +20,7 @@
     /* Chapter Name Centered */
     #chapterName {
       text-align: center;
-      margin-top: 40px; /* extra space from timer */
+      margin-top: 40px;
       font-size: 1.8em;
       font-weight: bold;
     }
@@ -34,41 +31,26 @@
       border: 1px solid #ddd;
       border-radius: 5px;
     }
-    .question p {
-      margin: 0 0 10px;
-    }
+    .question p { margin: 0 0 10px; }
     label {
       display: block;
       margin-bottom: 5px;
       padding: 5px;
       border-radius: 3px;
     }
-    .correct {
-      background-color: #c8e6c9; /* light green */
-    }
-    .incorrect {
-      background-color: #ffcdd2; /* light red */
-    }
+    .correct { background-color: #c8e6c9; }
+    .incorrect { background-color: #ffcdd2; }
     /* Submit Button Centered */
-    #submitContainer {
-      text-align: center;
-      margin: 20px 0;
-    }
-    #submitBtn {
-      padding: 10px 20px;
-      font-size: 1em;
-    }
+    #submitContainer { text-align: center; margin: 20px 0; }
+    #submitBtn { padding: 10px 20px; font-size: 1em; }
     /* Result Containers */
-    #scoreContainer {
-      font-size: 1.4em;
-      font-weight: bold;
-      text-align: center;
-      margin: 20px 0;
-    }
-    #solutionsContainer {
-      margin-top: 20px;
-    }
+    #scoreContainer { font-size: 1.4em; font-weight: bold; text-align: center; margin: 20px 0; }
+    #solutionsContainer { margin-top: 20px; }
   </style>
+  <!-- Firebase App (the core Firebase SDK) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <!-- Add Firestore -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
   <!-- Sticky Timer -->
@@ -90,13 +72,21 @@
   <div id="solutionsContainer"></div>
   
   <script>
-    // Load question bank from localStorage
-    let questionBank = JSON.parse(localStorage.getItem('questionBank')) || [];
-    if (questionBank.length === 0) {
-      alert("No questions found in the question bank. Please add questions using the admin page.");
-    }
-    
-    // Utility function: Shuffle an array using Fisher–Yates algorithm
+    // Replace with your Firebase project's config
+    const firebaseConfig = {
+      apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
+      authDomain: "dopamine-quiz.firebaseapp.com",
+      projectId: "dopamine-quiz",
+      storageBucket: "dopamine-quiz.firebasestorage.app",
+      messagingSenderId: "822531459966",
+      appId: "1:822531459966:web:8e7d2385090e997eb1c12f"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Utility function: Shuffle an array
     function shuffleArray(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -105,55 +95,74 @@
       return array;
     }
     
-    // If more than 50 questions, randomly select 50; otherwise use all available questions.
-    let selectedQuestions = questionBank.length > 50 
-      ? shuffleArray(questionBank.slice()).slice(0, 50)
-      : questionBank;
-    
-    const examForm = document.getElementById('examForm');
-    selectedQuestions.forEach((q, index) => {
-      const questionDiv = document.createElement('div');
-      questionDiv.className = 'question';
-      // Save the correct answer in a data attribute for later checking
-      questionDiv.dataset.answer = q.answer;
-  
-      const questionText = document.createElement('p');
-      questionText.textContent = (index + 1) + ". " + q.question;
-      questionDiv.appendChild(questionText);
-  
-      // Randomize options order
-      let optionKeys = Object.keys(q.options);
-      optionKeys = shuffleArray(optionKeys);
-      optionKeys.forEach(key => {
-        const label = document.createElement('label');
-        const radioInput = document.createElement('input');
-        radioInput.type = 'radio';
-        radioInput.name = 'q' + index;
-        radioInput.value = key;
-        label.appendChild(radioInput);
-        label.appendChild(document.createTextNode(" " + q.options[key]));
-        questionDiv.appendChild(label);
+    // Fetch questions from Firestore
+    db.collection("questions").orderBy("timestamp").get()
+      .then((querySnapshot) => {
+        let allQuestions = [];
+        querySnapshot.forEach((doc) => {
+          allQuestions.push(doc.data());
+        });
+        // If more than 50 questions, randomly select 50
+        let selectedQuestions = allQuestions.length > 50 
+          ? shuffleArray(allQuestions.slice()).slice(0, 50)
+          : allQuestions;
+        
+        renderQuiz(selectedQuestions);
+      })
+      .catch((error) => {
+        console.error("Error getting questions: ", error);
       });
-  
-      examForm.appendChild(questionDiv);
-    });
+    
+    function renderQuiz(questions) {
+      const examForm = document.getElementById('examForm');
+      questions.forEach((q, index) => {
+        const questionDiv = document.createElement('div');
+        questionDiv.className = 'question';
+        // Save correct answer in a data attribute
+        questionDiv.dataset.answer = q.answer;
+    
+        const questionText = document.createElement('p');
+        questionText.textContent = (index + 1) + ". " + q.question;
+        questionDiv.appendChild(questionText);
+    
+        // Randomize options
+        let optionKeys = Object.keys(q.options);
+        optionKeys = shuffleArray(optionKeys);
+        optionKeys.forEach(key => {
+          const label = document.createElement('label');
+          const radioInput = document.createElement('input');
+          radioInput.type = 'radio';
+          radioInput.name = 'q' + index;
+          radioInput.value = key;
+          label.appendChild(radioInput);
+          label.appendChild(document.createTextNode(" " + q.options[key]));
+          questionDiv.appendChild(label);
+        });
+    
+        examForm.appendChild(questionDiv);
+      });
+      
+      // Start timer
+      startTimer();
+    }
     
     // Timer functionality
-    let timeLeft = 60; // seconds
-    const timerElement = document.getElementById('timer');
-    const timer = setInterval(() => {
-      if (timeLeft <= 0) {
-        clearInterval(timer);
-        submitExam();
-      } else {
-        timerElement.textContent = "Time left: " + timeLeft + " seconds";
-      }
-      timeLeft--;
-    }, 1000);
+    function startTimer() {
+      let timeLeft = 60; // seconds
+      const timerElement = document.getElementById('timer');
+      const timer = setInterval(() => {
+        if (timeLeft <= 0) {
+          clearInterval(timer);
+          submitExam();
+        } else {
+          timerElement.textContent = "Time left: " + timeLeft + " seconds";
+        }
+        timeLeft--;
+      }, 1000);
+    }
     
     // Submission and scoring
     document.getElementById('submitBtn').addEventListener('click', () => {
-      clearInterval(timer);
       submitExam();
     });
     
@@ -171,7 +180,7 @@
           } else {
             score -= 1;
             selectedOption.parentElement.classList.add('incorrect');
-            // Highlight the correct answer
+            // Highlight correct answer
             q.querySelectorAll('label').forEach(label => {
               if (label.querySelector('input').value === correctAnswer) {
                 label.classList.add('correct');
@@ -179,7 +188,7 @@
             });
           }
         } else {
-          // Highlight correct answer if no answer was selected
+          // If no answer is selected, highlight correct answer
           q.querySelectorAll('label').forEach(label => {
             if (label.querySelector('input').value === correctAnswer) {
               label.classList.add('correct');
@@ -188,12 +197,12 @@
         }
       });
       
-      // Display score first
+      // Display score and then detailed solutions
       document.getElementById('scoreContainer').textContent = "Your Score: " + score;
-      // Then show detailed solutions below
-      document.getElementById('solutionsContainer').innerHTML = "<h3>Solutions:</h3>" + examForm.innerHTML;
-      // Hide the exam form and submit button
-      examForm.style.display = 'none';
+      document.getElementById('solutionsContainer').innerHTML = "<h3>Solutions:</h3>" + document.getElementById('examForm').innerHTML;
+      
+      // Hide exam form and submit button
+      document.getElementById('examForm').style.display = 'none';
       document.getElementById('submitContainer').style.display = 'none';
     }
   </script>
