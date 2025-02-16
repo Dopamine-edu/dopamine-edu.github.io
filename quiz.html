@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Biology MCQ Quiz</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    /* Sticky Timer at Top Left */
+    #timer {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      z-index: 1000;
+      background-color: #fff;
+      padding: 5px 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+    /* Chapter Name Centered */
+    #chapterName {
+      text-align: center;
+      margin-top: 40px; /* extra space from timer */
+      font-size: 1.8em;
+      font-weight: bold;
+    }
+    /* Question styling */
+    .question {
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+    }
+    .question p {
+      margin: 0 0 10px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      padding: 5px;
+      border-radius: 3px;
+    }
+    .correct {
+      background-color: #c8e6c9; /* light green */
+    }
+    .incorrect {
+      background-color: #ffcdd2; /* light red */
+    }
+    /* Submit Button Centered */
+    #submitContainer {
+      text-align: center;
+      margin: 20px 0;
+    }
+    #submitBtn {
+      padding: 10px 20px;
+      font-size: 1em;
+    }
+    /* Result Containers */
+    #scoreContainer {
+      font-size: 1.4em;
+      font-weight: bold;
+      text-align: center;
+      margin: 20px 0;
+    }
+    #solutionsContainer {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Sticky Timer -->
+  <div id="timer">Time left: 60 seconds</div>
+  
+  <!-- Chapter Name -->
+  <div id="chapterName">Biology 1st Paper (Cell Division)</div>
+  
+  <!-- Exam Form Container -->
+  <form id="examForm"></form>
+  
+  <!-- Submit Button Centered -->
+  <div id="submitContainer">
+    <button type="button" id="submitBtn">Submit</button>
+  </div>
+  
+  <!-- Score and Solutions -->
+  <div id="scoreContainer"></div>
+  <div id="solutionsContainer"></div>
+  
+  <script>
+    // Load question bank from localStorage
+    let questionBank = JSON.parse(localStorage.getItem('questionBank')) || [];
+    if (questionBank.length === 0) {
+      alert("No questions found in the question bank. Please add questions using the admin page.");
+    }
+    
+    // Utility function: Shuffle an array using Fisher–Yates algorithm
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+    
+    // If more than 50 questions, randomly select 50; otherwise use all available questions.
+    let selectedQuestions = questionBank.length > 50 
+      ? shuffleArray(questionBank.slice()).slice(0, 50)
+      : questionBank;
+    
+    const examForm = document.getElementById('examForm');
+    selectedQuestions.forEach((q, index) => {
+      const questionDiv = document.createElement('div');
+      questionDiv.className = 'question';
+      // Save the correct answer in a data attribute for later checking
+      questionDiv.dataset.answer = q.answer;
+  
+      const questionText = document.createElement('p');
+      questionText.textContent = (index + 1) + ". " + q.question;
+      questionDiv.appendChild(questionText);
+  
+      // Randomize options order
+      let optionKeys = Object.keys(q.options);
+      optionKeys = shuffleArray(optionKeys);
+      optionKeys.forEach(key => {
+        const label = document.createElement('label');
+        const radioInput = document.createElement('input');
+        radioInput.type = 'radio';
+        radioInput.name = 'q' + index;
+        radioInput.value = key;
+        label.appendChild(radioInput);
+        label.appendChild(document.createTextNode(" " + q.options[key]));
+        questionDiv.appendChild(label);
+      });
+  
+      examForm.appendChild(questionDiv);
+    });
+    
+    // Timer functionality
+    let timeLeft = 60; // seconds
+    const timerElement = document.getElementById('timer');
+    const timer = setInterval(() => {
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        submitExam();
+      } else {
+        timerElement.textContent = "Time left: " + timeLeft + " seconds";
+      }
+      timeLeft--;
+    }, 1000);
+    
+    // Submission and scoring
+    document.getElementById('submitBtn').addEventListener('click', () => {
+      clearInterval(timer);
+      submitExam();
+    });
+    
+    function submitExam() {
+      let score = 0;
+      const questionDivs = document.querySelectorAll('.question');
+      
+      questionDivs.forEach(q => {
+        const correctAnswer = q.dataset.answer;
+        const selectedOption = q.querySelector('input[type="radio"]:checked');
+        if (selectedOption) {
+          if (selectedOption.value === correctAnswer) {
+            score += 1;
+            selectedOption.parentElement.classList.add('correct');
+          } else {
+            score -= 1;
+            selectedOption.parentElement.classList.add('incorrect');
+            // Highlight the correct answer
+            q.querySelectorAll('label').forEach(label => {
+              if (label.querySelector('input').value === correctAnswer) {
+                label.classList.add('correct');
+              }
+            });
+          }
+        } else {
+          // Highlight correct answer if no answer was selected
+          q.querySelectorAll('label').forEach(label => {
+            if (label.querySelector('input').value === correctAnswer) {
+              label.classList.add('correct');
+            }
+          });
+        }
+      });
+      
+      // Display score first
+      document.getElementById('scoreContainer').textContent = "Your Score: " + score;
+      // Then show detailed solutions below
+      document.getElementById('solutionsContainer').innerHTML = "<h3>Solutions:</h3>" + examForm.innerHTML;
+      // Hide the exam form and submit button
+      examForm.style.display = 'none';
+      document.getElementById('submitContainer').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
