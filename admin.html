@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>MCQ Admin - Add Question</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+    }
+    h2 {
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input[type="text"], textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+    }
+    .option-container {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+    }
+    .option-container input[type="radio"] {
+      margin-right: 10px;
+    }
+    .option-container input[type="text"] {
+      flex: 1;
+    }
+    #saveBtn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1em;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .link {
+      text-align: center;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Add MCQ Question</h2>
+    <label for="questionText">Question:</label>
+    <textarea id="questionText" rows="3" placeholder="Enter your question here"></textarea>
+    
+    <div class="option-container">
+      <input type="radio" name="correctOption" value="a" id="optionARadio">
+      <input type="text" id="optionA" placeholder="Option A">
+    </div>
+    <div class="option-container">
+      <input type="radio" name="correctOption" value="b" id="optionBRadio">
+      <input type="text" id="optionB" placeholder="Option B">
+    </div>
+    <div class="option-container">
+      <input type="radio" name="correctOption" value="c" id="optionCRadio">
+      <input type="text" id="optionC" placeholder="Option C">
+    </div>
+    <div class="option-container">
+      <input type="radio" name="correctOption" value="d" id="optionDRadio">
+      <input type="text" id="optionD" placeholder="Option D">
+    </div>
+    
+    <button id="saveBtn">Save Question</button>
+    <div class="link">
+      <a href="quiz.html">Go to Quiz Page</a>
+    </div>
+  </div>
+  
+  <script>
+    document.getElementById('saveBtn').addEventListener('click', function() {
+      // Get input values
+      const questionText = document.getElementById('questionText').value.trim();
+      const optionA = document.getElementById('optionA').value.trim();
+      const optionB = document.getElementById('optionB').value.trim();
+      const optionC = document.getElementById('optionC').value.trim();
+      const optionD = document.getElementById('optionD').value.trim();
+      const correctOption = document.querySelector('input[name="correctOption"]:checked')?.value;
+      
+      if (!questionText || !optionA || !optionB || !optionC || !optionD || !correctOption) {
+        alert("Please fill in all fields and select the correct answer.");
+        return;
+      }
+      
+      // Create question object
+      const newQuestion = {
+        question: questionText,
+        options: {
+          a: optionA,
+          b: optionB,
+          c: optionC,
+          d: optionD
+        },
+        answer: correctOption
+      };
+      
+      // Get existing questions from localStorage (or initialize as empty array)
+      let questionBank = JSON.parse(localStorage.getItem('questionBank')) || [];
+      
+      // Add new question to the question bank
+      questionBank.push(newQuestion);
+      
+      // Save updated question bank to localStorage
+      localStorage.setItem('questionBank', JSON.stringify(questionBank));
+      
+      // Clear the fields for next entry
+      document.getElementById('questionText').value = "";
+      document.getElementById('optionA').value = "";
+      document.getElementById('optionB').value = "";
+      document.getElementById('optionC').value = "";
+      document.getElementById('optionD').value = "";
+      document.querySelectorAll('input[name="correctOption"]').forEach(radio => radio.checked = false);
+      
+      alert("Question saved successfully!");
+    });
+  </script>
+</body>
+</html>
