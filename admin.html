@@ -4,50 +4,21 @@
   <meta charset="UTF-8">
   <title>MCQ Admin - Add Question</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
-    .container {
-      max-width: 600px;
-      margin: auto;
-    }
-    h2 {
-      text-align: center;
-    }
-    label {
-      display: block;
-      margin-top: 10px;
-    }
-    input[type="text"], textarea {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-    }
-    .option-container {
-      display: flex;
-      align-items: center;
-      margin-top: 10px;
-    }
-    .option-container input[type="radio"] {
-      margin-right: 10px;
-    }
-    .option-container input[type="text"] {
-      flex: 1;
-    }
-    #saveBtn {
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 1em;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .link {
-      text-align: center;
-      margin-top: 20px;
-    }
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .container { max-width: 600px; margin: auto; }
+    h2 { text-align: center; }
+    label { display: block; margin-top: 10px; }
+    input[type="text"], textarea { width: 100%; padding: 8px; margin-top: 5px; }
+    .option-container { display: flex; align-items: center; margin-top: 10px; }
+    .option-container input[type="radio"] { margin-right: 10px; }
+    .option-container input[type="text"] { flex: 1; }
+    #saveBtn { margin-top: 20px; padding: 10px 20px; font-size: 1em; display: block; margin-left: auto; margin-right: auto; }
+    .link { text-align: center; margin-top: 20px; }
   </style>
+  <!-- Firebase App (the core Firebase SDK) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <!-- Add Firestore -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
   <div class="container">
@@ -79,6 +50,20 @@
   </div>
   
   <script>
+    // Replace the config below with your Firebase project's config details
+    const firebaseConfig = {
+      apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
+      authDomain: "dopamine-quiz.firebaseapp.com",
+      projectId: "dopamine-quiz",
+      storageBucket: "dopamine-quiz.firebasestorage.app",
+      messagingSenderId: "822531459966",
+      appId: "1:822531459966:web:8e7d2385090e997eb1c12f"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
     document.getElementById('saveBtn').addEventListener('click', function() {
       // Get input values
       const questionText = document.getElementById('questionText').value.trim();
@@ -102,27 +87,25 @@
           c: optionC,
           d: optionD
         },
-        answer: correctOption
+        answer: correctOption,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
       };
       
-      // Get existing questions from localStorage (or initialize as empty array)
-      let questionBank = JSON.parse(localStorage.getItem('questionBank')) || [];
-      
-      // Add new question to the question bank
-      questionBank.push(newQuestion);
-      
-      // Save updated question bank to localStorage
-      localStorage.setItem('questionBank', JSON.stringify(questionBank));
-      
-      // Clear the fields for next entry
-      document.getElementById('questionText').value = "";
-      document.getElementById('optionA').value = "";
-      document.getElementById('optionB').value = "";
-      document.getElementById('optionC').value = "";
-      document.getElementById('optionD').value = "";
-      document.querySelectorAll('input[name="correctOption"]').forEach(radio => radio.checked = false);
-      
-      alert("Question saved successfully!");
+      // Add the new question to the Firestore collection "questions"
+      db.collection("questions").add(newQuestion)
+      .then(() => {
+        alert("Question saved successfully!");
+        // Clear the fields for next entry
+        document.getElementById('questionText').value = "";
+        document.getElementById('optionA').value = "";
+        document.getElementById('optionB').value = "";
+        document.getElementById('optionC').value = "";
+        document.getElementById('optionD').value = "";
+        document.querySelectorAll('input[name="correctOption"]').forEach(radio => radio.checked = false);
+      })
+      .catch((error) => {
+        console.error("Error adding question: ", error);
+      });
     });
   </script>
 </body>
