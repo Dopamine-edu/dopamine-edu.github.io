@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8" />
-  <title>Sign Up / Login</title>
+  <meta charset="UTF-8">
+  <title>Sign Up / Log In</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; }
     .container { max-width: 400px; margin: auto; }
@@ -16,8 +16,12 @@
     #message { color: red; margin-top: 10px; }
   </style>
   <!-- Firebase SDKs -->
+  <!-- Firebase App (Core SDK) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <!-- Firebase Auth -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <!-- We will also initialize Cloud Messaging here, if you want to request notifications upon login -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js"></script>
 </head>
 <body>
   <div class="container">
@@ -38,7 +42,9 @@
   </div>
 
   <script>
-    // Replace with your Firebase config
+    /*******************************
+     * 1. Firebase Config & Init   *
+     *******************************/
     const firebaseConfig = {
       apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
       authDomain: "dopamine-quiz.firebaseapp.com",
@@ -48,8 +54,13 @@
       appId: "1:822531459966:web:8e7d2385090e997eb1c12f"
     };
     firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
 
+    const auth = firebase.auth();
+    const messaging = firebase.messaging();
+
+    /*************************************************
+     * 2. UI Logic for Switching Between Sign Up/Login
+     *************************************************/
     const formTitle = document.getElementById('formTitle');
     const submitBtn = document.getElementById('submitBtn');
     const toggleText = document.getElementById('toggleText');
@@ -57,34 +68,37 @@
     const message = document.getElementById('message');
     let isSignUp = true;
 
-    // Switch between Sign Up and Login forms
-    loginLink.addEventListener('click', () => {
-      isSignUp = !isSignUp;
-      if (!isSignUp) {
-        formTitle.textContent = "Log In";
-        submitBtn.textContent = "Log In";
-        toggleText.innerHTML = `Don't have an account? <span id="signupLink">Sign up</span>`;
-      } else {
-        formTitle.textContent = "Sign Up";
-        submitBtn.textContent = "Sign Up";
-        toggleText.innerHTML = `Already have an account? <span id="loginLink">Log in</span>`;
-      }
-      // Re-attach event to the new span
-      document.getElementById('loginLink')?.addEventListener('click', () => {
-        isSignUp = !isSignUp;
-        loginLink.click(); // Trigger the same event
-      });
-      document.getElementById('signupLink')?.addEventListener('click', () => {
-        isSignUp = !isSignUp;
-        loginLink.click();
-      });
-    });
+    function switchToLogin() {
+      isSignUp = false;
+      formTitle.textContent = "Log In";
+      submitBtn.textContent = "Log In";
+      toggleText.innerHTML = `Don't have an account? <span id="signupLink">Sign up</span>`;
+      attachLinkListener(); // reattach link events
+    }
 
-    // Handle Sign Up / Login
+    function switchToSignUp() {
+      isSignUp = true;
+      formTitle.textContent = "Sign Up";
+      submitBtn.textContent = "Sign Up";
+      toggleText.innerHTML = `Already have an account? <span id="loginLink">Log in</span>`;
+      attachLinkListener();
+    }
+
+    function attachLinkListener() {
+      document.getElementById('loginLink')?.addEventListener('click', switchToLogin);
+      document.getElementById('signupLink')?.addEventListener('click', switchToSignUp);
+    }
+
+    attachLinkListener();
+
+    /********************************************
+     * 3. Sign Up / Login with Firebase Auth
+     ********************************************/
     submitBtn.addEventListener('click', async () => {
       const email = document.getElementById('email').value;
       const password = document.getElementById('password').value;
       message.textContent = "";
+      message.style.color = "red";
 
       try {
         if (isSignUp) {
@@ -92,16 +106,27 @@
           await auth.createUserWithEmailAndPassword(email, password);
           message.style.color = "green";
           message.textContent = "Sign Up successful! You can now log in.";
+          switchToLogin();
         } else {
           // Log In
           await auth.signInWithEmailAndPassword(email, password);
           message.style.color = "green";
           message.textContent = "Login successful! Redirecting...";
+          
+          // Request permission for notifications (optional, you can do this later)
+          try {
+            await messaging.requestPermission();
+            const token = await messaging.getToken();
+            console.log("FCM Token:", token);
+            // You could store this token in Firestore if you want to send user-specific notifications
+          } catch (notifErr) {
+            console.warn("Notification permission not granted:", notifErr);
+          }
+
           // Redirect to quiz or admin page
           window.location.href = "quiz.html";
         }
       } catch (error) {
-        message.style.color = "red";
         message.textContent = error.message;
       }
     });
