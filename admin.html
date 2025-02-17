@@ -5,22 +5,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="styles.css">
-    <script defer src="admin.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
 </head>
 <body>
+
+    <!-- Navigation Bar -->
     <nav class="navbar">
-        <h1>Admin Dashboard</h1>
+        <h1>Dopamine Quiz - Admin Panel</h1>
+        <button id="menuBtn">☰ Menu</button>
     </nav>
-    <div class="sidebar">
+
+    <!-- Sidebar Menu -->
+    <aside class="sidebar">
+        <div class="admin-info">
+            <h2>Admin Info</h2>
+            <p><strong>Name:</strong> <span id="adminName">Loading...</span></p>
+            <p><strong>Points:</strong> <span id="adminPoints">0</span></p>
+        </div>
         <ul>
-            <li id="admin-info">👤 Admin Info</li>
-            <li id="add-question">➕ Add Questions</li>
-            <li id="refer-students">📢 Refer Students</li>
-            <li id="logout">🚪 Logout</li>
+            <li><a href="#">🏠 Dashboard</a></li>
+            <li><a href="#">➕ Add Questions</a></li>
+            <li><a href="#">📢 Refer Students</a></li>
+            <li><button id="logoutBtn">🚪 Logout</button></li>
         </ul>
-    </div>
-    <div class="main-content">
-        <button id="add-question-btn">➕ Add Questions</button>
-    </div>
+    </aside>
+
+    <!-- Page Content -->
+    <main class="content">
+        <h2>Welcome, Admin!</h2>
+        <button id="showAddQuestionForm">➕ Add Question</button>
+
+        <!-- Add Question Form -->
+        <div id="questionForm" class="hidden">
+            <h3>Add a New Question</h3>
+            <form id="addQuestionForm">
+                <label for="questionInput">Question:</label>
+                <input type="text" id="questionInput" required>
+
+                <label>Options:</label>
+                <input type="text" id="option1" placeholder="Option 1" required>
+                <input type="text" id="option2" placeholder="Option 2" required>
+                <input type="text" id="option3" placeholder="Option 3" required>
+                <input type="text" id="option4" placeholder="Option 4" required>
+
+                <label>Correct Answer:</label>
+                <div class="radio-group">
+                    <input type="radio" name="correctOption" value="1" required> Option 1
+                    <input type="radio" name="correctOption" value="2"> Option 2
+                    <input type="radio" name="correctOption" value="3"> Option 3
+                    <input type="radio" name="correctOption" value="4"> Option 4
+                </div>
+
+                <button type="submit">Submit Question</button>
+            </form>
+        </div>
+    </main>
+
+    <script src="admin.js"></script>
+
 </body>
 </html>
