@@ -8,8 +8,7 @@
     /* Sticky Timer at Top Left */
     #timer {
       position: fixed;
-      top: 10px;
-      left: 10px;
+      top: 10px; left: 10px;
       z-index: 1000;
       background-color: #fff;
       padding: 5px 10px;
@@ -20,23 +19,17 @@
     /* Chapter Name Centered */
     #chapterName {
       text-align: center;
-      margin-top: 40px;
-      font-size: 1.8em;
-      font-weight: bold;
+      margin-top: 40px; 
+      font-size: 1.8em; font-weight: bold;
     }
     /* Question styling */
     .question {
-      margin-bottom: 20px;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
+      margin-bottom: 20px; padding: 10px;
+      border: 1px solid #ddd; border-radius: 5px;
     }
     .question p { margin: 0 0 10px; }
     label {
-      display: block;
-      margin-bottom: 5px;
-      padding: 5px;
-      border-radius: 3px;
+      display: block; margin-bottom: 5px; padding: 5px; border-radius: 3px;
     }
     .correct { background-color: #c8e6c9; }
     .incorrect { background-color: #ffcdd2; }
@@ -44,12 +37,16 @@
     #submitContainer { text-align: center; margin: 20px 0; }
     #submitBtn { padding: 10px 20px; font-size: 1em; }
     /* Result Containers */
-    #scoreContainer { font-size: 1.4em; font-weight: bold; text-align: center; margin: 20px 0; }
+    #scoreContainer {
+      font-size: 1.4em; font-weight: bold;
+      text-align: center; margin: 20px 0;
+    }
     #solutionsContainer { margin-top: 20px; }
   </style>
-  <!-- Firebase App (the core Firebase SDK) -->
+  <!-- Firebase App (Core SDK) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <!-- Add Firestore -->
+  <!-- Firebase Auth & Firestore -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
@@ -72,7 +69,9 @@
   <div id="solutionsContainer"></div>
   
   <script>
-    // Replace with your Firebase project's config
+    /*******************************
+     * 1. Firebase Config & Init   *
+     *******************************/
     const firebaseConfig = {
       apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
       authDomain: "dopamine-quiz.firebaseapp.com",
@@ -81,12 +80,23 @@
       messagingSenderId: "822531459966",
       appId: "1:822531459966:web:8e7d2385090e997eb1c12f"
     };
-
-    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
     const db = firebase.firestore();
 
-    // Utility function: Shuffle an array
+    /****************************************
+     * 2. Ensure User is Logged In
+     ****************************************/
+    auth.onAuthStateChanged((user) => {
+      if (!user) {
+        // If not logged in, redirect to login page
+        window.location.href = "auth.html";
+      }
+    });
+
+    /****************************************
+     * 3. Fetch Questions and Render Quiz
+     ****************************************/
     function shuffleArray(array) {
       for (let i = array.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -94,8 +104,7 @@
       }
       return array;
     }
-    
-    // Fetch questions from Firestore
+
     db.collection("questions").orderBy("timestamp").get()
       .then((querySnapshot) => {
         let allQuestions = [];
@@ -112,22 +121,20 @@
       .catch((error) => {
         console.error("Error getting questions: ", error);
       });
-    
+
     function renderQuiz(questions) {
       const examForm = document.getElementById('examForm');
       questions.forEach((q, index) => {
         const questionDiv = document.createElement('div');
         questionDiv.className = 'question';
-        // Save correct answer in a data attribute
         questionDiv.dataset.answer = q.answer;
     
         const questionText = document.createElement('p');
         questionText.textContent = (index + 1) + ". " + q.question;
         questionDiv.appendChild(questionText);
     
-        // Randomize options
         let optionKeys = Object.keys(q.options);
-        optionKeys = shuffleArray(optionKeys);
+        shuffleArray(optionKeys);
         optionKeys.forEach(key => {
           const label = document.createElement('label');
           const radioInput = document.createElement('input');
@@ -142,17 +149,19 @@
         examForm.appendChild(questionDiv);
       });
       
-      // Start timer
       startTimer();
     }
-    
-    // Timer functionality
+
+    /****************************************
+     * 4. Timer Functionality
+     ****************************************/
+    let timeLeft = 60; 
+    let timerRef;
     function startTimer() {
-      let timeLeft = 60; // seconds
       const timerElement = document.getElementById('timer');
-      const timer = setInterval(() => {
+      timerRef = setInterval(() => {
         if (timeLeft <= 0) {
-          clearInterval(timer);
+          clearInterval(timerRef);
           submitExam();
         } else {
           timerElement.textContent = "Time left: " + timeLeft + " seconds";
@@ -160,13 +169,16 @@
         timeLeft--;
       }, 1000);
     }
-    
-    // Submission and scoring
+
+    /****************************************
+     * 5. Submit and Score
+     ****************************************/
     document.getElementById('submitBtn').addEventListener('click', () => {
       submitExam();
     });
-    
+
     function submitExam() {
+      clearInterval(timerRef);
       let score = 0;
       const questionDivs = document.querySelectorAll('.question');
       
@@ -180,7 +192,7 @@
           } else {
             score -= 1;
             selectedOption.parentElement.classList.add('incorrect');
-            // Highlight correct answer
+            // Highlight the correct answer
             q.querySelectorAll('label').forEach(label => {
               if (label.querySelector('input').value === correctAnswer) {
                 label.classList.add('correct');
@@ -188,7 +200,7 @@
             });
           }
         } else {
-          // If no answer is selected, highlight correct answer
+          // If no answer is selected, highlight the correct answer
           q.querySelectorAll('label').forEach(label => {
             if (label.querySelector('input').value === correctAnswer) {
               label.classList.add('correct');
@@ -196,14 +208,27 @@
           });
         }
       });
-      
-      // Display score and then detailed solutions
+
+      // Display score
       document.getElementById('scoreContainer').textContent = "Your Score: " + score;
+      // Show solutions
       document.getElementById('solutionsContainer').innerHTML = "<h3>Solutions:</h3>" + document.getElementById('examForm').innerHTML;
-      
-      // Hide exam form and submit button
       document.getElementById('examForm').style.display = 'none';
       document.getElementById('submitContainer').style.display = 'none';
+
+      // Save result to Firestore
+      const user = auth.currentUser;
+      if (user) {
+        db.collection("scores").add({
+          userId: user.uid,
+          score: score,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        })
+        .then(() => {
+          console.log("Score saved!");
+        })
+        .catch((err) => console.error("Error saving score: ", err));
+      }
     }
   </script>
 </body>
