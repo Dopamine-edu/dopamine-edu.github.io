@@ -1,17 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Set Exam Parameters - Dopamine Quiz</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Set Exam Parameters</title>
   <style>
     body { font-family: Arial, sans-serif; background: #f7f7f7; padding: 20px; }
-    .container { max-width: 500px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .container {
+      max-width: 500px; margin: auto; background: #fff;
+      padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
     h2 { text-align: center; margin-bottom: 20px; }
     label { display: block; margin-top: 10px; }
-    input[type="number"] { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; }
-    button { margin-top: 20px; padding: 10px 20px; background: #667eea; color: #fff; border: none; border-radius: 4px; cursor: pointer; width: 100%; }
-    .share-link { margin-top: 20px; word-break: break-all; background: #e0e0e0; padding: 10px; border-radius: 4px; }
+    input[type="number"],
+    input[type="text"],
+    input[type="date"] {
+      width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;
+    }
+    button {
+      margin-top: 20px; padding: 10px 20px; background: #667eea; color: #fff;
+      border: none; border-radius: 4px; cursor: pointer; width: 100%;
+    }
+    .share-link {
+      margin-top: 20px; word-break: break-all; background: #e0e0e0; padding: 10px; border-radius: 4px;
+    }
     .hidden { display: none; }
   </style>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -22,14 +34,20 @@
   <div class="container">
     <h2>Set Exam Parameters</h2>
     <form id="examParamsForm">
+      <label for="examNameInput">Exam Name:</label>
+      <input type="text" id="examNameInput" placeholder="Enter Exam Name" required />
+      
       <label for="timerInput">Exam Timer (minutes):</label>
-      <input type="number" id="timerInput" min="1" required>
+      <input type="number" id="timerInput" min="1" required />
       
       <label for="markInput">Marks per Question:</label>
-      <input type="number" id="markInput" min="0" required>
+      <input type="number" id="markInput" min="0" step="0.1" required />
       
       <label for="negativeMarkInput">Negative Mark per Wrong Answer:</label>
-      <input type="number" id="negativeMarkInput" min="0" required>
+      <input type="number" id="negativeMarkInput" min="0" step="0.01" required />
+      
+      <label for="lastDateInput">Last Date (Deadline):</label>
+      <input type="date" id="lastDateInput" required />
       
       <button type="submit">Create Exam Link</button>
     </form>
@@ -37,7 +55,6 @@
   </div>
   
   <script>
-    // Firebase configuration using your provided details
     const firebaseConfig = {
       apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
       authDomain: "dopamine-quiz.firebaseapp.com",
@@ -50,28 +67,48 @@
     const auth = firebase.auth();
     const db = firebase.firestore();
     
-    // Get examId from query string
+    // Get examId from query string if provided (optional)
     const urlParams = new URLSearchParams(window.location.search);
     const examId = urlParams.get("examId");
-    if (!examId) {
-      alert("Exam ID not provided.");
-      window.location.href = "createexam.html";
-    }
     
     document.getElementById("examParamsForm").addEventListener("submit", async (e) => {
       e.preventDefault();
+      const examName = document.getElementById("examNameInput").value.trim();
       const timer = parseInt(document.getElementById("timerInput").value);
       const marksPerQuestion = parseFloat(document.getElementById("markInput").value);
       const negativeMark = parseFloat(document.getElementById("negativeMarkInput").value);
+      const lastDate = document.getElementById("lastDateInput").value; // ISO string
+      
+      if (!examName || !timer || isNaN(marksPerQuestion) || isNaN(negativeMark) || !lastDate) {
+        alert("Please fill in all fields.");
+        return;
+      }
       
       try {
-        await db.collection("exams").doc(examId).update({
-          timer: timer,
-          marksPerQuestion: marksPerQuestion,
-          negativeMark: negativeMark
-        });
-        // Create shareable link – adjust URL as needed
-        const link = window.location.origin + "/quiz.html?examId=" + examId;
+        // If examId exists, update existing exam; otherwise, create a new exam document with empty question list.
+        let examDocRef;
+        if (examId) {
+          examDocRef = db.collection("exams").doc(examId);
+          await examDocRef.update({
+            examName: examName,
+            timer: timer,
+            marksPerQuestion: marksPerQuestion,
+            negativeMark: negativeMark,
+            lastDate: lastDate
+          });
+        } else {
+          examDocRef = await db.collection("exams").add({
+            examName: examName,
+            timer: timer,
+            marksPerQuestion: marksPerQuestion,
+            negativeMark: negativeMark,
+            lastDate: lastDate,
+            questions: [],
+            createdBy: auth.currentUser ? auth.currentUser.uid : null,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        }
+        const link = window.location.origin + "/quiz.html?examId=" + examDocRef.id;
         const examLinkDiv = document.getElementById("examLink");
         examLinkDiv.classList.remove("hidden");
         examLinkDiv.innerText = "Share this exam link: " + link;
