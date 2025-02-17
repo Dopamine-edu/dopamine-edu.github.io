@@ -101,7 +101,9 @@
       margin-top: 10px;
       font-weight: bold;
     }
-    #questionForm input[type="text"] {
+    #questionForm input[type="text"],
+    #questionForm select,
+    #questionForm textarea {
       width: 100%;
       padding: 8px;
       margin-top: 5px;
@@ -182,15 +184,31 @@
     <div id="questionForm" class="hidden">
       <h3>Add a New Question</h3>
       <form id="addQuestionForm">
+        <!-- Subject Selection -->
+        <label for="subjectSelect">Subject:</label>
+        <select id="subjectSelect" required>
+          <option value="">Select Subject</option>
+          <option value="Biology 1st">Biology 1st</option>
+          <option value="Biology 2nd">Biology 2nd</option>
+          <option value="Physics 1st">Physics 1st</option>
+          <option value="Physics 2nd">Physics 2nd</option>
+          <option value="Chemistry 1st">Chemistry 1st</option>
+          <option value="Chemistry 2nd">Chemistry 2nd</option>
+          <option value="Bangla">Bangla</option>
+          <option value="English">English</option>
+        </select>
+        <!-- Question Text -->
         <label for="questionInput">Question:</label>
-        <input type="text" id="questionInput" required>
+        <input type="text" id="questionInput" placeholder="Enter your question" required>
         
+        <!-- Options -->
         <label>Options:</label>
         <input type="text" id="option1" placeholder="Option 1" required>
         <input type="text" id="option2" placeholder="Option 2" required>
         <input type="text" id="option3" placeholder="Option 3" required>
         <input type="text" id="option4" placeholder="Option 4" required>
         
+        <!-- Correct Answer Selection -->
         <label>Correct Answer:</label>
         <div class="radio-group">
           <label><input type="radio" name="correctOption" value="1" required> Option 1</label>
@@ -198,6 +216,11 @@
           <label><input type="radio" name="correctOption" value="3"> Option 3</label>
           <label><input type="radio" name="correctOption" value="4"> Option 4</label>
         </div>
+        
+        <!-- Explanation (Optional) -->
+        <label for="explanationInput">Explanation (Optional):</label>
+        <textarea id="explanationInput" rows="3" placeholder="Enter explanation (if any)"></textarea>
+        
         <button type="submit">Submit Question</button>
       </form>
     </div>
@@ -255,34 +278,46 @@
     // Handle Add Question Form submission
     document.getElementById("addQuestionForm").addEventListener("submit", async (e) => {
       e.preventDefault();
+      
+      // Retrieve fields
+      const subject = document.getElementById("subjectSelect").value;
       const questionText = document.getElementById("questionInput").value.trim();
       const option1 = document.getElementById("option1").value.trim();
       const option2 = document.getElementById("option2").value.trim();
       const option3 = document.getElementById("option3").value.trim();
       const option4 = document.getElementById("option4").value.trim();
       const correctOption = document.querySelector('input[name="correctOption"]:checked').value;
+      const explanation = document.getElementById("explanationInput").value.trim();
 
-      if (!questionText || !option1 || !option2 || !option3 || !option4 || !correctOption) {
-        alert("Please fill in all fields and select the correct option.");
+      if (!subject) {
+        alert("Please select a subject.");
         return;
       }
-
+      if (!questionText || !option1 || !option2 || !option3 || !option4 || !correctOption) {
+        alert("Please fill in all required fields.");
+        return;
+      }
+      
       try {
         const user = auth.currentUser;
-        // Add the question to Firestore
+        // Add the question with subject and explanation fields to Firestore
         await db.collection("questions").add({
+          subject: subject,
           question: questionText,
           options: [option1, option2, option3, option4],
           correctOption: correctOption,
+          explanation: explanation || "",
           addedBy: user.uid,
           timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
-        // Increment admin's points by 1
+        // Calculate point increment: 1.5 if explanation provided, otherwise 1
+        const pointIncrement = explanation ? 1.5 : 1;
+        // Update admin's points
         await db.collection("users").doc(user.uid).update({
-          points: firebase.firestore.FieldValue.increment(1)
+          points: firebase.firestore.FieldValue.increment(pointIncrement)
         });
-        alert("Question added successfully! +1 Point awarded.");
-        // Reset form
+        alert(`Question added successfully! ${pointIncrement} point(s) awarded.`);
+        // Reset form fields
         document.getElementById("addQuestionForm").reset();
         // Update displayed points
         const userDoc = await db.collection("users").doc(user.uid).get();
