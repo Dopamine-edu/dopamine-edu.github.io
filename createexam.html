@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Create Exam - Dopamine Quiz Admin</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f7f7f7; }
+    .navbar { background: #667eea; color: #fff; padding: 15px 20px; }
+    .navbar h1 { margin: 0; font-size: 1.5rem; }
+    .container { padding: 20px; }
+    label { display: block; margin: 10px 0 5px; }
+    select, button { padding: 8px; font-size: 1rem; }
+    .question-list { margin-top: 20px; }
+    .question-item { background: #fff; padding: 10px; margin: 5px 0; border-radius: 4px; display: flex; align-items: center; }
+    .question-item input { margin-right: 10px; }
+    #selectedCount { margin-top: 10px; }
+    .next-btn { margin-top: 20px; background: #667eea; color: #fff; border: none; padding: 10px 20px; cursor: pointer; border-radius: 4px; }
+  </style>
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <h1>Create Exam</h1>
+  </nav>
+  <div class="container">
+    <label for="subjectSelect">Select Subject:</label>
+    <select id="subjectSelect">
+      <option value="">-- Select Subject --</option>
+      <option value="Biology 1st">Biology 1st</option>
+      <option value="Biology 2nd">Biology 2nd</option>
+      <option value="Physics 1st">Physics 1st</option>
+      <option value="Physics 2nd">Physics 2nd</option>
+      <option value="Chemistry 1st">Chemistry 1st</option>
+      <option value="Chemistry 2nd">Chemistry 2nd</option>
+      <option value="Bangla">Bangla</option>
+      <option value="English">English</option>
+    </select>
+    
+    <div id="questionList" class="question-list"></div>
+    <div id="selectedCount">Selected Questions: 0</div>
+    <button id="nextBtn" class="next-btn" disabled>Next</button>
+  </div>
+  
+  <script>
+    // Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
+      authDomain: "dopamine-quiz.firebaseapp.com",
+      projectId: "dopamine-quiz",
+      storageBucket: "dopamine-quiz.firebasestorage.app",
+      messagingSenderId: "822531459966",
+      appId: "1:822531459966:web:8e7d2385090e997eb1c12f"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+    
+    // Check if admin is logged in
+    auth.onAuthStateChanged(user => {
+      if (!user) window.location.href = "auth.html";
+    });
+    
+    const subjectSelect = document.getElementById("subjectSelect");
+    const questionListDiv = document.getElementById("questionList");
+    const selectedCountDiv = document.getElementById("selectedCount");
+    const nextBtn = document.getElementById("nextBtn");
+    
+    let selectedQuestions = []; // holds selected question document IDs
+    
+    subjectSelect.addEventListener("change", () => {
+      const subject = subjectSelect.value;
+      questionListDiv.innerHTML = "";
+      selectedQuestions = [];
+      updateSelectedCount();
+      nextBtn.disabled = true;
+      if (subject) {
+        db.collection("questions").where("subject", "==", subject)
+          .orderBy("timestamp", "desc")
+          .get()
+          .then(querySnapshot => {
+            if (querySnapshot.empty) {
+              questionListDiv.innerHTML = "<p>No questions found for this subject.</p>";
+            } else {
+              querySnapshot.forEach(doc => {
+                const data = doc.data();
+                const div = document.createElement("div");
+                div.classList.add("question-item");
+                div.innerHTML = `<input type="checkbox" data-id="${doc.id}"> <span>${data.question}</span>`;
+                questionListDiv.appendChild(div);
+              });
+              const checkboxes = questionListDiv.querySelectorAll("input[type='checkbox']");
+              checkboxes.forEach(checkbox => {
+                checkbox.addEventListener("change", () => {
+                  const qid = checkbox.getAttribute("data-id");
+                  if (checkbox.checked) {
+                    selectedQuestions.push(qid);
+                  } else {
+                    selectedQuestions = selectedQuestions.filter(id => id !== qid);
+                  }
+                  updateSelectedCount();
+                });
+              });
+            }
+          })
+          .catch(error => {
+            console.error("Error retrieving questions:", error);
+            questionListDiv.innerHTML = "<p>Error retrieving questions.</p>";
+          });
+      }
+    });
+    
+    function updateSelectedCount() {
+      selectedCountDiv.innerText = "Selected Questions: " + selectedQuestions.length;
+      nextBtn.disabled = selectedQuestions.length === 0;
+    }
+    
+    // Next button: Create exam document and redirect to parameter page
+    nextBtn.addEventListener("click", async () => {
+      const subject = subjectSelect.value;
+      const user = auth.currentUser;
+      if (!subject || selectedQuestions.length === 0 || !user) return;
+      try {
+        const examDocRef = await db.collection("exams").add({
+          subject: subject,
+          questions: selectedQuestions,
+          createdBy: user.uid,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        window.location.href = "setexamparams.html?examId=" + examDocRef.id;
+      } catch (error) {
+        console.error("Error creating exam:", error);
+        alert("Error creating exam. Please try again.");
+      }
+    });
+  </script>
+</body>
+</html>
