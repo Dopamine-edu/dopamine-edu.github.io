@@ -1,78 +1,40 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Biology MCQ Quiz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dopamine Quiz - Exam</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; }
-    /* Sticky Timer at Top Left */
-    #timer {
-      position: fixed;
-      top: 10px;
-      left: 10px;
-      z-index: 1000;
-      background-color: #fff;
-      padding: 5px 10px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-      font-weight: bold;
-    }
-    /* Chapter Name Centered */
-    #chapterName {
-      text-align: center;
-      margin-top: 40px;
-      font-size: 1.8em;
-      font-weight: bold;
-    }
-    /* Question styling */
-    .question {
-      margin-bottom: 20px;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 5px;
-    }
+    #timer { position: fixed; top: 10px; left: 10px; background: #fff; padding: 5px 10px; border: 1px solid #ddd; border-radius: 5px; font-weight: bold; }
+    h2 { text-align: center; }
+    .question { margin-bottom: 20px; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
     .question p { margin: 0 0 10px; }
-    label {
-      display: block;
-      margin-bottom: 5px;
-      padding: 5px;
-      border-radius: 3px;
-    }
+    label { display: block; margin-bottom: 5px; padding: 5px; border-radius: 3px; }
     .correct { background-color: #c8e6c9; }
     .incorrect { background-color: #ffcdd2; }
-    /* Submit Button Centered */
     #submitContainer { text-align: center; margin: 20px 0; }
     #submitBtn { padding: 10px 20px; font-size: 1em; }
-    /* Result Containers */
     #scoreContainer { font-size: 1.4em; font-weight: bold; text-align: center; margin: 20px 0; }
     #solutionsContainer { margin-top: 20px; }
   </style>
-  <!-- Firebase App (the core Firebase SDK) -->
+  <!-- Firebase SDKs (compat versions) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <!-- Add Firestore -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
-  <!-- Sticky Timer -->
   <div id="timer">Time left: 60 seconds</div>
-  
-  <!-- Chapter Name -->
-  <div id="chapterName">Biology 1st Paper (Cell Division)</div>
-  
-  <!-- Exam Form Container -->
+  <h2>Dopamine Quiz</h2>
   <form id="examForm"></form>
-  
-  <!-- Submit Button Centered -->
   <div id="submitContainer">
     <button type="button" id="submitBtn">Submit</button>
   </div>
-  
-  <!-- Score and Solutions -->
   <div id="scoreContainer"></div>
   <div id="solutionsContainer"></div>
   
   <script>
-    // Replace with your Firebase project's config
+    // Firebase configuration using your provided details
     const firebaseConfig = {
       apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
       authDomain: "dopamine-quiz.firebaseapp.com",
@@ -81,78 +43,52 @@
       messagingSenderId: "822531459966",
       appId: "1:822531459966:web:8e7d2385090e997eb1c12f"
     };
-
-    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
     const db = firebase.firestore();
-
-    // Utility function: Shuffle an array
-    function shuffleArray(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-      return array;
-    }
     
-    // Fetch questions from Firestore
-    db.collection("questions").orderBy("timestamp").get()
-      .then((querySnapshot) => {
-        let allQuestions = [];
-        querySnapshot.forEach((doc) => {
-          allQuestions.push(doc.data());
-        });
-        // If more than 50 questions, randomly select 50
-        let selectedQuestions = allQuestions.length > 50 
-          ? shuffleArray(allQuestions.slice()).slice(0, 50)
-          : allQuestions;
-        
-        renderQuiz(selectedQuestions);
-      })
-      .catch((error) => {
-        console.error("Error getting questions: ", error);
-      });
+    // Utility: Get query parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const examId = urlParams.get("examId");
     
+    // Function to render quiz questions on the page
     function renderQuiz(questions) {
-      const examForm = document.getElementById('examForm');
+      const examForm = document.getElementById("examForm");
+      examForm.innerHTML = ""; // clear existing content
       questions.forEach((q, index) => {
-        const questionDiv = document.createElement('div');
-        questionDiv.className = 'question';
-        // Save correct answer in a data attribute
-        questionDiv.dataset.answer = q.answer;
-    
-        const questionText = document.createElement('p');
+        const questionDiv = document.createElement("div");
+        questionDiv.className = "question";
+        questionDiv.dataset.answer = q.correctOption;
+        // Question text
+        const questionText = document.createElement("p");
         questionText.textContent = (index + 1) + ". " + q.question;
         questionDiv.appendChild(questionText);
-    
-        // Randomize options
-        let optionKeys = Object.keys(q.options);
-        optionKeys = shuffleArray(optionKeys);
+        // Randomize options (if desired) or use order as stored
+        const optionKeys = [0, 1, 2, 3];
         optionKeys.forEach(key => {
-          const label = document.createElement('label');
-          const radioInput = document.createElement('input');
-          radioInput.type = 'radio';
-          radioInput.name = 'q' + index;
-          radioInput.value = key;
+          const label = document.createElement("label");
+          const radioInput = document.createElement("input");
+          radioInput.type = "radio";
+          radioInput.name = "q" + index;
+          radioInput.value = String(key + 1); // options numbered 1-4
           label.appendChild(radioInput);
           label.appendChild(document.createTextNode(" " + q.options[key]));
           questionDiv.appendChild(label);
         });
-    
         examForm.appendChild(questionDiv);
       });
-      
-      // Start timer
+      // Start the timer
       startTimer();
     }
     
-    // Timer functionality
+    // Timer functionality (60 seconds)
+    let timeLeft = 60;
+    let timerRef;
     function startTimer() {
-      let timeLeft = 60; // seconds
-      const timerElement = document.getElementById('timer');
-      const timer = setInterval(() => {
+      const timerElement = document.getElementById("timer");
+      timerRef = setInterval(() => {
         if (timeLeft <= 0) {
-          clearInterval(timer);
+          clearInterval(timerRef);
           submitExam();
         } else {
           timerElement.textContent = "Time left: " + timeLeft + " seconds";
@@ -161,50 +97,124 @@
       }, 1000);
     }
     
-    // Submission and scoring
-    document.getElementById('submitBtn').addEventListener('click', () => {
-      submitExam();
-    });
+    // Function to load default questions if no examId provided (fallback)
+    function loadDefaultQuestions() {
+      db.collection("questions").orderBy("timestamp", "desc").limit(50).get()
+        .then(querySnapshot => {
+          let questions = [];
+          querySnapshot.forEach(doc => {
+            let data = doc.data();
+            data.id = doc.id;
+            questions.push(data);
+          });
+          renderQuiz(questions);
+        })
+        .catch(error => {
+          console.error("Error retrieving questions: ", error);
+          document.getElementById("examForm").innerHTML = "<p>Error retrieving questions.</p>";
+        });
+    }
     
-    function submitExam() {
+    // If examId exists, load only the selected questions from that exam document
+    if (examId) {
+      db.collection("exams").doc(examId).get()
+        .then(doc => {
+          if (doc.exists) {
+            const examData = doc.data();
+            const selectedQuestionIds = examData.questions; // assumed to be an array of document IDs
+            if (selectedQuestionIds.length === 0) {
+              document.getElementById("examForm").innerHTML = "<p>No questions selected for this exam.</p>";
+              return;
+            }
+            // If there are 10 or fewer questions, use the "in" operator
+            if (selectedQuestionIds.length <= 10) {
+              db.collection("questions")
+                .where(firebase.firestore.FieldPath.documentId(), "in", selectedQuestionIds)
+                .get()
+                .then(querySnapshot => {
+                  let questions = [];
+                  querySnapshot.forEach(qdoc => {
+                    let data = qdoc.data();
+                    data.id = qdoc.id;
+                    questions.push(data);
+                  });
+                  renderQuiz(questions);
+                })
+                .catch(error => {
+                  console.error("Error loading exam questions: ", error);
+                  document.getElementById("examForm").innerHTML = "<p>Error loading exam questions.</p>";
+                });
+            } else {
+              // For more than 10 questions, fetch individually using Promise.all
+              Promise.all(selectedQuestionIds.map(qid => db.collection("questions").doc(qid).get()))
+                .then(docs => {
+                  let questions = [];
+                  docs.forEach(doc => {
+                    if (doc.exists) {
+                      let data = doc.data();
+                      data.id = doc.id;
+                      questions.push(data);
+                    }
+                  });
+                  renderQuiz(questions);
+                })
+                .catch(error => {
+                  console.error("Error loading exam questions: ", error);
+                  document.getElementById("examForm").innerHTML = "<p>Error loading exam questions.</p>";
+                });
+            }
+          } else {
+            console.error("Exam not found.");
+            loadDefaultQuestions();
+          }
+        })
+        .catch(error => {
+          console.error("Error retrieving exam: ", error);
+          loadDefaultQuestions();
+        });
+    } else {
+      // If no examId, load default questions
+      loadDefaultQuestions();
+    }
+    
+    // Submit exam and calculate score
+    document.getElementById("submitBtn").addEventListener("click", () => {
+      clearInterval(timerRef);
       let score = 0;
-      const questionDivs = document.querySelectorAll('.question');
+      const questionDivs = document.querySelectorAll(".question");
       
       questionDivs.forEach(q => {
         const correctAnswer = q.dataset.answer;
-        const selectedOption = q.querySelector('input[type="radio"]:checked');
+        const selectedOption = q.querySelector("input[type='radio']:checked");
         if (selectedOption) {
           if (selectedOption.value === correctAnswer) {
             score += 1;
-            selectedOption.parentElement.classList.add('correct');
+            selectedOption.parentElement.classList.add("correct");
           } else {
             score -= 1;
-            selectedOption.parentElement.classList.add('incorrect');
-            // Highlight correct answer
-            q.querySelectorAll('label').forEach(label => {
-              if (label.querySelector('input').value === correctAnswer) {
-                label.classList.add('correct');
+            selectedOption.parentElement.classList.add("incorrect");
+            // Also highlight the correct answer
+            q.querySelectorAll("label").forEach(label => {
+              if (label.querySelector("input").value === correctAnswer) {
+                label.classList.add("correct");
               }
             });
           }
         } else {
-          // If no answer is selected, highlight correct answer
-          q.querySelectorAll('label').forEach(label => {
-            if (label.querySelector('input').value === correctAnswer) {
-              label.classList.add('correct');
+          // No answer selected, highlight the correct answer
+          q.querySelectorAll("label").forEach(label => {
+            if (label.querySelector("input").value === correctAnswer) {
+              label.classList.add("correct");
             }
           });
         }
       });
       
-      // Display score and then detailed solutions
-      document.getElementById('scoreContainer').textContent = "Your Score: " + score;
-      document.getElementById('solutionsContainer').innerHTML = "<h3>Solutions:</h3>" + document.getElementById('examForm').innerHTML;
-      
-      // Hide exam form and submit button
-      document.getElementById('examForm').style.display = 'none';
-      document.getElementById('submitContainer').style.display = 'none';
-    }
+      document.getElementById("scoreContainer").textContent = "Your Score: " + score;
+      document.getElementById("solutionsContainer").innerHTML = "<h3>Solutions:</h3>" + document.getElementById("examForm").innerHTML;
+      document.getElementById("examForm").style.display = "none";
+      document.getElementById("submitContainer").style.display = "none";
+    });
   </script>
 </body>
 </html>
