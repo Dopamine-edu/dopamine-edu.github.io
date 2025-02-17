@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Quiz Homepage</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    /* Base styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f9f9f9;
+      color: #333;
+      line-height: 1.6;
+    }
+    /* Navbar styles */
+    .navbar {
+      background: #667eea;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .navbar .logo {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .navbar .menu {
+      display: flex;
+      align-items: center;
+    }
+    .navbar .menu a {
+      color: #fff;
+      text-decoration: none;
+      margin-left: 20px;
+      font-size: 1rem;
+    }
+    .navbar .menu .user-info {
+      margin-right: 20px;
+      font-size: 0.95rem;
+    }
+    /* Hamburger menu for smaller screens */
+    .navbar .hamburger {
+      display: none;
+      cursor: pointer;
+    }
+    .navbar .hamburger div {
+      width: 25px;
+      height: 3px;
+      background: #fff;
+      margin: 4px 0;
+    }
+    /* Mobile menu styling */
+    .mobile-menu {
+      display: none;
+      background: #667eea;
+      padding: 10px 20px;
+    }
+    .mobile-menu a {
+      display: block;
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.3);
+    }
+    .mobile-menu .user-info {
+      padding: 10px 0;
+      font-size: 0.95rem;
+    }
+    /* Main content styling */
+    .container {
+      padding: 20px;
+      text-align: center;
+      margin-top: 40px;
+    }
+    .container h1 {
+      margin-bottom: 20px;
+      font-size: 2rem;
+    }
+    .take-quiz-btn {
+      padding: 15px 30px;
+      background: #667eea;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .take-quiz-btn:hover {
+      background: #556cd6;
+    }
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .navbar .menu {
+        display: none;
+      }
+      .navbar .hamburger {
+        display: block;
+      }
+      .mobile-menu.active {
+        display: block;
+      }
+    }
+  </style>
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="logo">Quiz App</div>
+    <div class="menu">
+      <div class="user-info" id="userInfo">Loading...</div>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="#" id="logoutLink">Logout</a>
+    </div>
+    <div class="hamburger" id="hamburger">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </nav>
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <div class="user-info" id="mobileUserInfo">Loading...</div>
+    <a href="leaderboard.html">Leaderboard</a>
+    <a href="#" id="mobileLogoutLink">Logout</a>
+  </div>
+  
+  <!-- Main Content -->
+  <div class="container">
+    <h1>Welcome to Quiz App!</h1>
+    <button class="take-quiz-btn" id="takeQuizBtn">Take Quiz</button>
+  </div>
+  
+  <script>
+    // Firebase configuration – replace these with your own Firebase project details.
+    const firebaseConfig = {
+      apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
+      authDomain: "dopamine-quiz.firebaseapp.com",
+      projectId: "dopamine-quiz",
+      storageBucket: "dopamine-quiz.firebasestorage.app",
+      messagingSenderId: "822531459966",
+      appId: "1:822531459966:web:8e7d2385090e997eb1c12f"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+    
+    // Ensure user is logged in
+    auth.onAuthStateChanged(async (user) => {
+      if (!user) {
+        // If not logged in, redirect to auth page
+        window.location.href = "auth.html";
+      } else {
+        // Fetch user details from Firestore "users" collection
+        const uid = user.uid;
+        try {
+          const doc = await db.collection("users").doc(uid).get();
+          let userName = user.displayName || "User";
+          let college = "Unknown College";
+          if (doc.exists) {
+            const data = doc.data();
+            userName = data.name || userName;
+            college = data.college || college;
+          }
+          const infoText = `${userName} (${college})`;
+          document.getElementById("userInfo").textContent = infoText;
+          document.getElementById("mobileUserInfo").textContent = infoText;
+        } catch (error) {
+          console.error("Error fetching user info:", error);
+          document.getElementById("userInfo").textContent = "User Info";
+          document.getElementById("mobileUserInfo").textContent = "User Info";
+        }
+      }
+    });
+    
+    // Hamburger menu toggle for mobile
+    const hamburger = document.getElementById("hamburger");
+    const mobileMenu = document.getElementById("mobileMenu");
+    hamburger.addEventListener("click", () => {
+      mobileMenu.classList.toggle("active");
+    });
+    
+    // Logout functionality
+    function logout() {
+      auth.signOut().then(() => {
+        window.location.href = "auth.html";
+      });
+    }
+    document.getElementById("logoutLink").addEventListener("click", (e) => {
+      e.preventDefault();
+      logout();
+    });
+    document.getElementById("mobileLogoutLink").addEventListener("click", (e) => {
+      e.preventDefault();
+      logout();
+    });
+    
+    // Take Quiz button redirect
+    document.getElementById("takeQuizBtn").addEventListener("click", () => {
+      window.location.href = "quiz.html";
+    });
+  </script>
+</body>
+</html>
