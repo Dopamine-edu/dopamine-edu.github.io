@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Set Exam Parameters - Dopamine Quiz</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f7f7f7; padding: 20px; }
+    .container { max-width: 500px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    h2 { text-align: center; margin-bottom: 20px; }
+    label { display: block; margin-top: 10px; }
+    input[type="number"] { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; }
+    button { margin-top: 20px; padding: 10px 20px; background: #667eea; color: #fff; border: none; border-radius: 4px; cursor: pointer; width: 100%; }
+    .share-link { margin-top: 20px; word-break: break-all; background: #e0e0e0; padding: 10px; border-radius: 4px; }
+    .hidden { display: none; }
+  </style>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h2>Set Exam Parameters</h2>
+    <form id="examParamsForm">
+      <label for="timerInput">Exam Timer (minutes):</label>
+      <input type="number" id="timerInput" min="1" required>
+      
+      <label for="markInput">Marks per Question:</label>
+      <input type="number" id="markInput" min="0" required>
+      
+      <label for="negativeMarkInput">Negative Mark per Wrong Answer:</label>
+      <input type="number" id="negativeMarkInput" min="0" required>
+      
+      <button type="submit">Create Exam Link</button>
+    </form>
+    <div id="examLink" class="share-link hidden"></div>
+  </div>
+  
+  <script>
+    // Firebase configuration using your provided details
+    const firebaseConfig = {
+      apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
+      authDomain: "dopamine-quiz.firebaseapp.com",
+      projectId: "dopamine-quiz",
+      storageBucket: "dopamine-quiz.firebasestorage.app",
+      messagingSenderId: "822531459966",
+      appId: "1:822531459966:web:8e7d2385090e997eb1c12f"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+    
+    // Get examId from query string
+    const urlParams = new URLSearchParams(window.location.search);
+    const examId = urlParams.get("examId");
+    if (!examId) {
+      alert("Exam ID not provided.");
+      window.location.href = "createexam.html";
+    }
+    
+    document.getElementById("examParamsForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const timer = parseInt(document.getElementById("timerInput").value);
+      const marksPerQuestion = parseFloat(document.getElementById("markInput").value);
+      const negativeMark = parseFloat(document.getElementById("negativeMarkInput").value);
+      
+      try {
+        await db.collection("exams").doc(examId).update({
+          timer: timer,
+          marksPerQuestion: marksPerQuestion,
+          negativeMark: negativeMark
+        });
+        // Create shareable link – adjust URL as needed
+        const link = window.location.origin + "/quiz.html?examId=" + examId;
+        const examLinkDiv = document.getElementById("examLink");
+        examLinkDiv.classList.remove("hidden");
+        examLinkDiv.innerText = "Share this exam link: " + link;
+      } catch (error) {
+        console.error("Error updating exam parameters:", error);
+        alert("Error setting exam parameters. Please try again.");
+      }
+    });
+  </script>
+</body>
+</html>
