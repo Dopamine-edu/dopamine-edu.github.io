@@ -1,13 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dopamine Quiz - Exam</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Exam</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; }
-    #timer { position: fixed; top: 10px; left: 10px; background: #fff; padding: 5px 10px; border: 1px solid #ddd; border-radius: 5px; font-weight: bold; }
-    #examNameDisplay { text-align: center; font-size: 1.8rem; margin-bottom: 20px; }
+    /* Header with exam name and timer */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    #examNameDisplay {
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+    #timer {
+      background: #fff;
+      padding: 5px 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-weight: bold;
+    }
     h2 { text-align: center; }
     .question { margin-bottom: 20px; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
     .question p { margin: 0 0 10px; }
@@ -21,6 +37,7 @@
     .result { font-size: 1.2rem; font-weight: bold; }
     .result.correct { color: green; }
     .result.wrong { color: red; }
+    .expired { text-align: center; color: red; font-size: 1.5rem; }
   </style>
   <!-- Firebase SDKs (compat versions) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -28,19 +45,16 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
-  <!-- Timer Display -->
-  <div id="timer">Time left: -- seconds</div>
-  <!-- Exam Name Display -->
-  <div id="examNameDisplay">Exam: Loading...</div>
-  <!-- Quiz Heading -->
-  <h2>Dopamine Quiz</h2>
-  <!-- Quiz Form -->
+  <!-- Header: Exam name on left, timer on right -->
+  <div class="header">
+    <div id="examNameDisplay">Loading...</div>
+    <div id="timer">--:--</div>
+  </div>
+  <h2>Exam</h2>
   <form id="examForm"></form>
-  <!-- Submit Button -->
   <div id="submitContainer">
     <button type="button" id="submitBtn">Submit</button>
   </div>
-  <!-- Score and Results -->
   <div id="scoreContainer"></div>
   <div id="solutionsContainer"></div>
   
@@ -57,56 +71,56 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
-
-    // Global exam parameters (default values; will be updated if examId exists)
+    
+    // Global exam parameters (default values; will be updated from exam document)
     let examParams = {
       examName: "Untitled Exam",
       timer: 1, // in minutes
       marksPerQuestion: 1,
-      negativeMark: 1
+      negativeMark: 1,
+      lastDate: null  // expected to be stored as a Firestore Timestamp or ISO string
     };
-
-    // Utility: Get query parameters
+    
+    // Unique keys for persisting exam start time and answers in localStorage
     const urlParams = new URLSearchParams(window.location.search);
     const examId = urlParams.get("examId");
-
-    // Use localStorage keys unique to this exam (or default)
     const startTimeKey = "examStartTime_" + (examId || "default");
     const answersKey = "examAnswers_" + (examId || "default");
-
-    // Retrieve previously saved answers (if any)
+    
     let savedAnswers = {};
     try {
       savedAnswers = JSON.parse(localStorage.getItem(answersKey)) || {};
     } catch (e) {
       savedAnswers = {};
     }
-
+    
+    // Check if exam is expired (if lastDate is provided)
+    function checkExamExpiry(lastDate) {
+      if (!lastDate) return false;
+      const examDeadline = new Date(lastDate);
+      return new Date() > examDeadline;
+    }
+    
     // Function to render quiz questions on the page
     function renderQuiz(questions) {
       const examForm = document.getElementById("examForm");
-      examForm.innerHTML = ""; // clear previous content
+      examForm.innerHTML = "";
       questions.forEach((q, index) => {
         const questionDiv = document.createElement("div");
         questionDiv.className = "question";
-        // Store correct answer in data attribute (as string: "1", "2", etc.)
         questionDiv.dataset.answer = q.correctOption;
-        // Create question text element
         const questionText = document.createElement("p");
         questionText.textContent = (index + 1) + ". " + q.question;
         questionDiv.appendChild(questionText);
-        // Create answer options (assumes options is an array of 4 strings)
         q.options.forEach((opt, idx) => {
           const label = document.createElement("label");
           const radioInput = document.createElement("input");
           radioInput.type = "radio";
           radioInput.name = "q" + index;
-          radioInput.value = String(idx + 1); // Options numbered as "1", "2", etc.
-          // Restore saved answer if exists
+          radioInput.value = String(idx + 1);
           if (savedAnswers["q" + index] === radioInput.value) {
             radioInput.checked = true;
           }
-          // When an answer is selected, update localStorage
           radioInput.addEventListener("change", () => {
             savedAnswers["q" + index] = radioInput.value;
             localStorage.setItem(answersKey, JSON.stringify(savedAnswers));
@@ -117,16 +131,14 @@
         });
         examForm.appendChild(questionDiv);
       });
-      // Start timer using examParams.timer (if not already started)
       startTimer();
     }
     
-    // Timer functionality: use examParams.timer (in minutes) and persist start time
-    let timeLeft; // in seconds
+    // Timer functionality: display in mm:ss format and persist start time
+    let timeLeft;
     let timerRef;
     function startTimer() {
       const timerElement = document.getElementById("timer");
-      // Check if start time exists in localStorage
       let storedStart = localStorage.getItem(startTimeKey);
       if (!storedStart) {
         storedStart = Date.now();
@@ -134,13 +146,10 @@
       } else {
         storedStart = parseInt(storedStart, 10);
       }
-      // Calculate exam duration in ms
       const examDurationMs = examParams.timer * 60 * 1000;
-      // Calculate remaining time (ms)
       const elapsed = Date.now() - storedStart;
       let remainingMs = examDurationMs - elapsed;
       if (remainingMs < 0) { remainingMs = 0; }
-      // Convert to seconds
       timeLeft = Math.floor(remainingMs / 1000);
       
       timerRef = setInterval(() => {
@@ -148,13 +157,15 @@
           clearInterval(timerRef);
           submitExam();
         } else {
-          timerElement.textContent = "Time left: " + timeLeft + " seconds";
+          const minutes = Math.floor(timeLeft / 60);
+          const seconds = timeLeft % 60;
+          timerElement.textContent = minutes.toString().padStart(2, "0") + ":" + seconds.toString().padStart(2, "0");
         }
         timeLeft--;
       }, 1000);
     }
     
-    // Function to load default questions (if no examId is provided)
+    // Load questions: if examId exists, load exam-specific questions; else load default questions
     function loadDefaultQuestions() {
       db.collection("questions").orderBy("timestamp", "desc").limit(50).get()
         .then(querySnapshot => {
@@ -167,30 +178,33 @@
           renderQuiz(questions);
         })
         .catch(error => {
-          console.error("Error retrieving questions: ", error);
+          console.error("Error retrieving questions:", error);
           document.getElementById("examForm").innerHTML = "<p>Error retrieving questions.</p>";
         });
     }
     
-    // Load exam questions if examId exists, else fallback to default
     if (examId) {
       db.collection("exams").doc(examId).get()
         .then(doc => {
           if (doc.exists) {
             const examData = doc.data();
-            // Update global exam parameters if available
             examParams.examName = examData.examName || examParams.examName;
             examParams.timer = examData.timer || examParams.timer;
             examParams.marksPerQuestion = examData.marksPerQuestion || examParams.marksPerQuestion;
             examParams.negativeMark = examData.negativeMark || examParams.negativeMark;
-            // Display exam name at the top
-            document.getElementById("examNameDisplay").innerText = "Exam: " + examParams.examName;
+            examParams.lastDate = examData.lastDate || null;
+            // Display only the exam name (no extra text)
+            document.getElementById("examNameDisplay").innerText = examParams.examName;
+            // Check if exam has expired
+            if (checkExamExpiry(examParams.lastDate)) {
+              document.body.innerHTML = "<div class='expired'>This exam is expired. You cannot participate.</div>";
+              return;
+            }
             const selectedQuestionIds = examData.questions || [];
             if (selectedQuestionIds.length === 0) {
               document.getElementById("examForm").innerHTML = "<p>No questions selected for this exam.</p>";
               return;
             }
-            // For 10 or fewer questions, use "in" query; else fetch individually
             if (selectedQuestionIds.length <= 10) {
               db.collection("questions")
                 .where(firebase.firestore.FieldPath.documentId(), "in", selectedQuestionIds)
@@ -205,7 +219,7 @@
                   renderQuiz(questions);
                 })
                 .catch(error => {
-                  console.error("Error loading exam questions: ", error);
+                  console.error("Error loading exam questions:", error);
                   document.getElementById("examForm").innerHTML = "<p>Error loading exam questions.</p>";
                 });
             } else {
@@ -222,7 +236,7 @@
                   renderQuiz(questions);
                 })
                 .catch(error => {
-                  console.error("Error loading exam questions: ", error);
+                  console.error("Error loading exam questions:", error);
                   document.getElementById("examForm").innerHTML = "<p>Error loading exam questions.</p>";
                 });
             }
@@ -232,14 +246,14 @@
           }
         })
         .catch(error => {
-          console.error("Error retrieving exam: ", error);
+          console.error("Error retrieving exam:", error);
           loadDefaultQuestions();
         });
     } else {
       loadDefaultQuestions();
     }
     
-    // Submit exam: calculate score, count correct and wrong answers, and display results
+    // Submit exam: calculate score and display results at top of solutions
     document.getElementById("submitBtn").addEventListener("click", () => {
       clearInterval(timerRef);
       let score = 0;
@@ -259,7 +273,6 @@
             score -= examParams.negativeMark;
             wrongCount++;
             selectedOption.parentElement.classList.add("incorrect");
-            // Highlight the correct answer
             q.querySelectorAll("label").forEach(label => {
               if (label.querySelector("input").value === correctAnswer) {
                 label.classList.add("correct");
@@ -278,17 +291,17 @@
       
       const scoreContainer = document.getElementById("scoreContainer");
       scoreContainer.innerHTML = "Your Score: " + score.toFixed(2);
-      
+      // Display result summary at the top of the solutions
       const resultsHTML = `
         <p class="result correct">Correct Answers: ${correctCount}</p>
         <p class="result wrong">Wrong Answers: ${wrongCount}</p>
       `;
       const solutionsContainer = document.getElementById("solutionsContainer");
-      solutionsContainer.innerHTML = "<h3>Solutions:</h3>" + document.getElementById("examForm").innerHTML + resultsHTML;
+      solutionsContainer.innerHTML = resultsHTML + "<h3>Solutions:</h3>" + document.getElementById("examForm").innerHTML;
       document.getElementById("examForm").style.display = "none";
       document.getElementById("submitContainer").style.display = "none";
       
-      // Optionally, clear stored exam state after submission
+      // Clear stored exam state
       localStorage.removeItem(startTimeKey);
       localStorage.removeItem(answersKey);
     });
