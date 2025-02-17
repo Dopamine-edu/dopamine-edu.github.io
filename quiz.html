@@ -7,7 +7,7 @@
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; }
     #timer { position: fixed; top: 10px; left: 10px; background: #fff; padding: 5px 10px; border: 1px solid #ddd; border-radius: 5px; font-weight: bold; }
-    h2 { text-align: center; }
+    #examNameDisplay { text-align: center; font-size: 1.8rem; margin-bottom: 20px; }
     .question { margin-bottom: 20px; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
     .question p { margin: 0 0 10px; }
     label { display: block; margin-bottom: 5px; padding: 5px; border-radius: 3px; }
@@ -17,6 +17,9 @@
     #submitBtn { padding: 10px 20px; font-size: 1em; }
     #scoreContainer { font-size: 1.4em; font-weight: bold; text-align: center; margin: 20px 0; }
     #solutionsContainer { margin-top: 20px; }
+    .result { font-size: 1.2rem; font-weight: bold; }
+    .result.correct { color: green; }
+    .result.wrong { color: red; }
   </style>
   <!-- Firebase SDKs (compat versions) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -24,12 +27,19 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
-  <div id="timer">Time left: 60 seconds</div>
+  <!-- Timer Display -->
+  <div id="timer">Time left: -- seconds</div>
+  <!-- Exam Name Display -->
+  <div id="examNameDisplay">Exam Name: Loading...</div>
+  <!-- Quiz Heading -->
   <h2>Dopamine Quiz</h2>
+  <!-- Quiz Form -->
   <form id="examForm"></form>
+  <!-- Submit Button -->
   <div id="submitContainer">
     <button type="button" id="submitBtn">Submit</button>
   </div>
+  <!-- Score and Results -->
   <div id="scoreContainer"></div>
   <div id="solutionsContainer"></div>
   
@@ -47,6 +57,14 @@
     const auth = firebase.auth();
     const db = firebase.firestore();
     
+    // Global exam parameters (with defaults)
+    let examParams = {
+      examName: "Untitled Exam",
+      timer: 1, // in minutes
+      marksPerQuestion: 1,
+      negativeMark: 1
+    };
+    
     // Utility: Get query parameters
     const urlParams = new URLSearchParams(window.location.search);
     const examId = urlParams.get("examId");
@@ -54,38 +72,39 @@
     // Function to render quiz questions on the page
     function renderQuiz(questions) {
       const examForm = document.getElementById("examForm");
-      examForm.innerHTML = ""; // clear existing content
+      examForm.innerHTML = ""; // clear previous content
       questions.forEach((q, index) => {
         const questionDiv = document.createElement("div");
         questionDiv.className = "question";
+        // Store correct answer in data attribute (as string: "1", "2", etc.)
         questionDiv.dataset.answer = q.correctOption;
-        // Question text
+        // Create question text element
         const questionText = document.createElement("p");
         questionText.textContent = (index + 1) + ". " + q.question;
         questionDiv.appendChild(questionText);
-        // Randomize options (if desired) or use order as stored
-        const optionKeys = [0, 1, 2, 3];
-        optionKeys.forEach(key => {
+        // Create answer options (assumes options is an array of 4 strings)
+        q.options.forEach((opt, idx) => {
           const label = document.createElement("label");
           const radioInput = document.createElement("input");
           radioInput.type = "radio";
           radioInput.name = "q" + index;
-          radioInput.value = String(key + 1); // options numbered 1-4
+          radioInput.value = String(idx + 1); // Options numbered as "1", "2", etc.
           label.appendChild(radioInput);
-          label.appendChild(document.createTextNode(" " + q.options[key]));
+          label.appendChild(document.createTextNode(" " + opt));
           questionDiv.appendChild(label);
         });
         examForm.appendChild(questionDiv);
       });
-      // Start the timer
+      // Start the exam timer based on examParams.timer (minutes)
       startTimer();
     }
     
-    // Timer functionality (60 seconds)
-    let timeLeft = 60;
+    // Timer functionality: use examParams.timer (in minutes)
+    let timeLeft; // in seconds
     let timerRef;
     function startTimer() {
       const timerElement = document.getElementById("timer");
+      timeLeft = examParams.timer * 60; // convert minutes to seconds
       timerRef = setInterval(() => {
         if (timeLeft <= 0) {
           clearInterval(timerRef);
@@ -97,7 +116,7 @@
       }, 1000);
     }
     
-    // Function to load default questions if no examId provided (fallback)
+    // Function to load default questions (if no examId is provided)
     function loadDefaultQuestions() {
       db.collection("questions").orderBy("timestamp", "desc").limit(50).get()
         .then(querySnapshot => {
@@ -115,18 +134,25 @@
         });
     }
     
-    // If examId exists, load only the selected questions from that exam document
+    // Load exam questions if examId exists, else fallback to default
     if (examId) {
       db.collection("exams").doc(examId).get()
         .then(doc => {
           if (doc.exists) {
             const examData = doc.data();
-            const selectedQuestionIds = examData.questions; // assumed to be an array of document IDs
+            // Update global exam parameters if available
+            examParams.examName = examData.examName || examParams.examName;
+            examParams.timer = examData.timer || examParams.timer;
+            examParams.marksPerQuestion = examData.marksPerQuestion || examParams.marksPerQuestion;
+            examParams.negativeMark = examData.negativeMark || examParams.negativeMark;
+            // Display exam name at the top
+            document.getElementById("examNameDisplay").innerText = "Exam: " + examParams.examName;
+            const selectedQuestionIds = examData.questions || [];
             if (selectedQuestionIds.length === 0) {
               document.getElementById("examForm").innerHTML = "<p>No questions selected for this exam.</p>";
               return;
             }
-            // If there are 10 or fewer questions, use the "in" operator
+            // For 10 or fewer questions, use "in" query; else fetch individually
             if (selectedQuestionIds.length <= 10) {
               db.collection("questions")
                 .where(firebase.firestore.FieldPath.documentId(), "in", selectedQuestionIds)
@@ -145,7 +171,6 @@
                   document.getElementById("examForm").innerHTML = "<p>Error loading exam questions.</p>";
                 });
             } else {
-              // For more than 10 questions, fetch individually using Promise.all
               Promise.all(selectedQuestionIds.map(qid => db.collection("questions").doc(qid).get()))
                 .then(docs => {
                   let questions = [];
@@ -173,14 +198,15 @@
           loadDefaultQuestions();
         });
     } else {
-      // If no examId, load default questions
       loadDefaultQuestions();
     }
     
-    // Submit exam and calculate score
+    // Submit exam: calculate score, count correct and wrong answers, and display results
     document.getElementById("submitBtn").addEventListener("click", () => {
       clearInterval(timerRef);
       let score = 0;
+      let correctCount = 0;
+      let wrongCount = 0;
       const questionDivs = document.querySelectorAll(".question");
       
       questionDivs.forEach(q => {
@@ -188,12 +214,14 @@
         const selectedOption = q.querySelector("input[type='radio']:checked");
         if (selectedOption) {
           if (selectedOption.value === correctAnswer) {
-            score += 1;
+            score += examParams.marksPerQuestion;
+            correctCount++;
             selectedOption.parentElement.classList.add("correct");
           } else {
-            score -= 1;
+            score -= examParams.negativeMark;
+            wrongCount++;
             selectedOption.parentElement.classList.add("incorrect");
-            // Also highlight the correct answer
+            // Highlight the correct answer
             q.querySelectorAll("label").forEach(label => {
               if (label.querySelector("input").value === correctAnswer) {
                 label.classList.add("correct");
@@ -201,7 +229,8 @@
             });
           }
         } else {
-          // No answer selected, highlight the correct answer
+          // If no answer selected, count as wrong and highlight correct answer
+          wrongCount++;
           q.querySelectorAll("label").forEach(label => {
             if (label.querySelector("input").value === correctAnswer) {
               label.classList.add("correct");
@@ -210,8 +239,15 @@
         }
       });
       
-      document.getElementById("scoreContainer").textContent = "Your Score: " + score;
-      document.getElementById("solutionsContainer").innerHTML = "<h3>Solutions:</h3>" + document.getElementById("examForm").innerHTML;
+      const scoreContainer = document.getElementById("scoreContainer");
+      scoreContainer.innerHTML = "Your Score: " + score.toFixed(2);
+      
+      const resultsHTML = `
+        <p class="result correct">Correct Answers: ${correctCount}</p>
+        <p class="result wrong">Wrong Answers: ${wrongCount}</p>
+      `;
+      const solutionsContainer = document.getElementById("solutionsContainer");
+      solutionsContainer.innerHTML = "<h3>Solutions:</h3>" + document.getElementById("examForm").innerHTML + resultsHTML;
       document.getElementById("examForm").style.display = "none";
       document.getElementById("submitContainer").style.display = "none";
     });
