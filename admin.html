@@ -77,7 +77,32 @@
         alert("Please fill in all fields and select the correct answer.");
         return;
       }
-      
+      firebase.auth().onAuthStateChanged(async (user) => {
+  if (!user) {
+    // Not logged in—redirect to auth page
+    window.location.href = "auth.html";
+  } else {
+    try {
+      // Fetch the user's data from Firestore
+      const userDoc = await db.collection("users").doc(user.uid).get();
+      if (userDoc.exists) {
+        const userData = userDoc.data();
+        if (userData.role !== "admin") {
+          // User is not an admin; redirect them or show an error
+          window.location.href = "homepage.html"; // or display an "Access Denied" message
+        }
+      } else {
+        // If no user document exists, deny access as a precaution
+        window.location.href = "homepage.html";
+      }
+    } catch (error) {
+      console.error("Error fetching user role:", error);
+      // In case of error, redirect or display an error message
+      window.location.href = "homepage.html";
+    }
+  }
+});
+        
       // Create question object
       const newQuestion = {
         question: questionText,
