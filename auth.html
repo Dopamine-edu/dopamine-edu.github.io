@@ -2,49 +2,110 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Sign Up / Log In</title>
+  <title>Quiz Auth</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    .container { max-width: 400px; margin: auto; }
-    .form-group { margin-bottom: 15px; }
-    label { display: block; margin-bottom: 5px; }
-    input[type="email"], input[type="password"] {
-      width: 100%; padding: 8px; box-sizing: border-box;
+    /* Reset & Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
-    button { padding: 10px 20px; }
-    #loginLink, #signupLink { cursor: pointer; color: blue; text-decoration: underline; }
-    #message { color: red; margin-top: 10px; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .auth-card {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      width: 100%;
+      max-width: 400px;
+    }
+    .auth-card h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #333;
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: #555;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .auth-btn {
+      width: 100%;
+      padding: 0.75rem;
+      background: #667eea;
+      border: none;
+      color: #fff;
+      font-size: 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+    .toggle-link {
+      text-align: center;
+      margin-top: 1rem;
+      color: #667eea;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .message {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: red;
+    }
   </style>
   <!-- Firebase SDKs -->
-  <!-- Firebase App (Core SDK) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <!-- Firebase Auth -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-  <!-- We will also initialize Cloud Messaging here, if you want to request notifications upon login -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
-  <div class="container">
+  <div class="auth-card">
     <h2 id="formTitle">Sign Up</h2>
+    <!-- Sign Up fields -->
+    <div id="signupFields">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" placeholder="Your Name">
+      </div>
+      <div class="form-group">
+        <label for="college">College Name</label>
+        <input type="text" id="college" placeholder="Your College Name">
+      </div>
+    </div>
+    <!-- Common fields -->
     <div class="form-group">
       <label for="email">Email</label>
-      <input type="email" id="email" placeholder="Enter your email" />
+      <input type="email" id="email" placeholder="Your Email">
     </div>
     <div class="form-group">
       <label for="password">Password</label>
-      <input type="password" id="password" placeholder="Enter your password" />
+      <input type="password" id="password" placeholder="Your Password">
     </div>
-    <button id="submitBtn">Sign Up</button>
-    <p id="toggleText">
-      Already have an account? <span id="loginLink">Log in</span>
-    </p>
-    <div id="message"></div>
+    <button class="auth-btn" id="submitBtn">Sign Up</button>
+    <div class="toggle-link" id="toggleLink">Already have an account? Log in</div>
+    <div class="message" id="message"></div>
   </div>
 
   <script>
-    /*******************************
-     * 1. Firebase Config & Init   *
-     *******************************/
+    // Firebase configuration (replace with your own)
     const firebaseConfig = {
       apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
       authDomain: "dopamine-quiz.firebaseapp.com",
@@ -54,80 +115,88 @@
       appId: "1:822531459966:web:8e7d2385090e997eb1c12f"
     };
     firebase.initializeApp(firebaseConfig);
-
     const auth = firebase.auth();
-    const messaging = firebase.messaging();
+    const db = firebase.firestore();
 
-    /*************************************************
-     * 2. UI Logic for Switching Between Sign Up/Login
-     *************************************************/
-    const formTitle = document.getElementById('formTitle');
-    const submitBtn = document.getElementById('submitBtn');
-    const toggleText = document.getElementById('toggleText');
-    const loginLink = document.getElementById('loginLink');
-    const message = document.getElementById('message');
+    // Elements
+    const formTitle = document.getElementById("formTitle");
+    const submitBtn = document.getElementById("submitBtn");
+    const toggleLink = document.getElementById("toggleLink");
+    const messageDiv = document.getElementById("message");
+    const signupFields = document.getElementById("signupFields");
+
+    // Mode: sign-up or login
     let isSignUp = true;
 
-    function switchToLogin() {
-      isSignUp = false;
-      formTitle.textContent = "Log In";
-      submitBtn.textContent = "Log In";
-      toggleText.innerHTML = `Don't have an account? <span id="signupLink">Sign up</span>`;
-      attachLinkListener(); // reattach link events
-    }
+    // Toggle mode
+    toggleLink.addEventListener("click", () => {
+      isSignUp = !isSignUp;
+      if (isSignUp) {
+        formTitle.textContent = "Sign Up";
+        submitBtn.textContent = "Sign Up";
+        toggleLink.textContent = "Already have an account? Log in";
+        signupFields.style.display = "block";
+      } else {
+        formTitle.textContent = "Log In";
+        submitBtn.textContent = "Log In";
+        toggleLink.textContent = "Don't have an account? Sign up";
+        signupFields.style.display = "none";
+      }
+      messageDiv.textContent = "";
+    });
 
-    function switchToSignUp() {
-      isSignUp = true;
-      formTitle.textContent = "Sign Up";
-      submitBtn.textContent = "Sign Up";
-      toggleText.innerHTML = `Already have an account? <span id="loginLink">Log in</span>`;
-      attachLinkListener();
-    }
-
-    function attachLinkListener() {
-      document.getElementById('loginLink')?.addEventListener('click', switchToLogin);
-      document.getElementById('signupLink')?.addEventListener('click', switchToSignUp);
-    }
-
-    attachLinkListener();
-
-    /********************************************
-     * 3. Sign Up / Login with Firebase Auth
-     ********************************************/
-    submitBtn.addEventListener('click', async () => {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      message.textContent = "";
-      message.style.color = "red";
-
-      try {
-        if (isSignUp) {
-          // Sign Up
-          await auth.createUserWithEmailAndPassword(email, password);
-          message.style.color = "green";
-          message.textContent = "Sign Up successful! You can now log in.";
-          switchToLogin();
-        } else {
-          // Log In
-          await auth.signInWithEmailAndPassword(email, password);
-          message.style.color = "green";
-          message.textContent = "Login successful! Redirecting...";
-          
-          // Request permission for notifications (optional, you can do this later)
-          try {
-            await messaging.requestPermission();
-            const token = await messaging.getToken();
-            console.log("FCM Token:", token);
-            // You could store this token in Firestore if you want to send user-specific notifications
-          } catch (notifErr) {
-            console.warn("Notification permission not granted:", notifErr);
-          }
-
-          // Redirect to quiz or admin page
-          window.location.href = "quiz.html";
+    // Handle auth action
+    submitBtn.addEventListener("click", async () => {
+      messageDiv.textContent = "";
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      
+      if (!email || !password) {
+        messageDiv.textContent = "Email and password are required.";
+        return;
+      }
+      
+      if (isSignUp) {
+        const name = document.getElementById("name").value.trim();
+        const college = document.getElementById("college").value.trim();
+        if (!name || !college) {
+          messageDiv.textContent = "Please enter your name and college.";
+          return;
         }
-      } catch (error) {
-        message.textContent = error.message;
+        try {
+          // Create user
+          const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+          // Update display name
+          await userCredential.user.updateProfile({ displayName: name });
+          // Optionally store extra details in Firestore
+          await db.collection("users").doc(userCredential.user.uid).set({
+            name: name,
+            college: college,
+            email: email,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+          });
+          messageDiv.style.color = "green";
+          messageDiv.textContent = "Sign up successful! Redirecting to homepage...";
+          setTimeout(() => {
+            window.location.href = "homepage.html";
+          }, 1500);
+        } catch (error) {
+          messageDiv.style.color = "red";
+          messageDiv.textContent = error.message;
+        }
+      } else {
+        // Login flow
+        try {
+          await auth.signInWithEmailAndPassword(email, password);
+          messageDiv.style.color = "green";
+          messageDiv.textContent = "Login successful! Redirecting to homepage...";
+          setTimeout(() => {
+            window.location.href = "homepage.html";
+          }, 1500);
+        } catch (error) {
+          messageDiv.style.color = "red";
+          messageDiv.textContent = error.message;
+        }
       }
     });
   </script>
