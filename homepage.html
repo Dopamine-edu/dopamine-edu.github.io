@@ -2,50 +2,238 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Quiz Homepage</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: #fff;
+    /* Basic Reset */
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background: #1c1c1c;
+      color: #fff;
+      overflow-x: hidden; /* prevent horizontal scroll from menu */
+    }
+    /* Navbar */
+    .navbar {
+      background: #2d2d2d;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    .navbar .title {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .navbar .menu-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    /* Sliding Menu */
+    .side-menu {
+      position: fixed;
+      top: 0;
+      left: -250px; /* hidden by default */
+      width: 250px;
+      height: 100%;
+      background: #2d2d2d;
+      padding: 20px;
+      transition: left 0.3s ease;
+      z-index: 2000;
+    }
+    .side-menu.active {
+      left: 0;
+    }
+    .side-menu h2 {
+      margin-bottom: 20px;
+    }
+    .side-menu ul {
+      list-style: none;
+      padding: 0;
+    }
+    .side-menu ul li {
+      margin: 15px 0;
+    }
+    .side-menu ul li a,
+    .side-menu ul li button {
+      background: none;
+      border: none;
+      color: #fff;
+      text-decoration: none;
+      font-size: 1rem;
+      cursor: pointer;
+      width: 100%;
+      text-align: left;
+    }
+    .side-menu ul li a:hover,
+    .side-menu ul li button:hover {
+      color: #aaa;
+    }
+    /* Main Content */
+    .container {
+      padding: 20px;
+    }
+    .tiles {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .tile {
+      background: #2d2d2d;
+      width: 120px;
+      height: 120px;
+      border-radius: 10px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
+      text-align: center;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .tile:hover {
+      background: #3a3a3a;
+    }
+    .tile i {
+      font-size: 2rem;
+      margin-bottom: 8px;
+    }
+    .tile span {
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    /* Accuracy Chart Container */
+    .chart-container {
+      background: #2d2d2d;
+      border-radius: 10px;
+      margin: 20px auto;
+      width: 250px;
+      height: 250px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    .chart-container .chart {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: conic-gradient(#00e676 0deg, #00e676 60deg, #fbc02d 60deg, #fbc02d 75deg, #e53935 75deg, #e53935 360deg);
+      /* green, yellow, red in conic style for demonstration */
+    }
+    .chart-legend {
+      margin-top: 10px;
+      font-size: 0.9rem;
       text-align: center;
     }
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
+    .chart-legend p {
+      margin: 4px 0;
     }
-    p {
-      font-size: 1.2rem;
-      margin-bottom: 20px;
-    }
-    .notification-prompt {
-      background: rgba(0,0,0,0.5);
-      padding: 10px 20px;
-      border-radius: 5px;
-      margin-top: 20px;
+    /* Responsive */
+    @media (max-width: 600px) {
+      .tiles {
+        flex-direction: column;
+        align-items: center;
+      }
+      .tile {
+        width: 200px;
+        height: 60px;
+        flex-direction: row;
+        justify-content: flex-start;
+        padding-left: 10px;
+      }
+      .tile i {
+        font-size: 1.5rem;
+        margin-right: 10px;
+        margin-bottom: 0;
+      }
     }
   </style>
-  <!-- Firebase App and Messaging SDKs -->
+  <!-- Firebase App and Auth -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-messaging-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <!-- Optionally, you can use a free icon library like Font Awesome -->
+  <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <h1>Welcome to Quiz App!</h1>
-  <p>Your personalized quiz experience awaits.</p>
-  
-  <!-- Optionally, you might include a button for users to manually subscribe; 
-       but here we auto-prompt on load. -->
-  
+  <!-- Sliding Menu -->
+  <nav class="side-menu" id="sideMenu">
+    <h2 id="userName">User</h2>
+    <ul>
+      <li><button id="profileBtn">User Profile</button></li>
+      <li><button id="attemptedBtn">Attempted Exams</button></li>
+      <li><button id="leaderboardBtn">Leaderboard</button></li>
+      <li><button id="referBtn">Refer a Friend</button></li>
+      <li><button id="adminBtn">Admin Access</button></li>
+      <li><button id="logoutBtn">Logout</button></li>
+    </ul>
+  </nav>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <div class="title">Dopamine Quiz</div>
+    <button class="menu-btn" id="menuBtn">&#9776;</button>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container">
+    <h1>Welcome to Dopamine Quiz!</h1>
+    <div class="tiles">
+      <!-- Example tiles similar to your screenshot: Quick Practice, Mock Exam, etc. -->
+      <div class="tile">
+        <i class="fas fa-bolt"></i>
+        <span>Quick Practice</span>
+      </div>
+      <div class="tile">
+        <i class="fas fa-pencil-alt"></i>
+        <span>Mock Exam</span>
+      </div>
+      <div class="tile">
+        <i class="fas fa-database"></i>
+        <span>Question Bank</span>
+      </div>
+      <div class="tile">
+        <i class="fas fa-calendar"></i>
+        <span>Routine</span>
+      </div>
+      <div class="tile">
+        <i class="fas fa-question-circle"></i>
+        <span>Doubt</span>
+      </div>
+      <div class="tile">
+        <i class="fas fa-trophy"></i>
+        <span>Leaderboard</span>
+      </div>
+    </div>
+
+    <!-- Accuracy Chart Example -->
+    <div class="chart-container">
+      <div class="chart"></div>
+      <div class="chart-legend">
+        <p><strong>3.7k Correct</strong></p>
+        <p>397 Skipped</p>
+        <p>514 Incorrect</p>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // Firebase configuration (replace with your own details)
+    /*******************************
+     * 1. Firebase Configuration
+     *******************************/
     const firebaseConfig = {
       apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
       authDomain: "dopamine-quiz.firebaseapp.com",
@@ -55,41 +243,65 @@
       appId: "1:822531459966:web:8e7d2385090e997eb1c12f"
     };
     firebase.initializeApp(firebaseConfig);
-    const messaging = firebase.messaging();
+    const auth = firebase.auth();
+    const db = firebase.firestore();
 
-    // Function to request push notification permission
-    function requestNotificationPermission() {
-      if (Notification.permission === "default") {
-        Notification.requestPermission().then(permission => {
-          if (permission === "granted") {
-            console.log("Notification permission granted.");
-            // Get FCM registration token (replace with your public VAPID key)
-            messaging.getToken({ vapidKey: "BA_eO1nS1GlGu41-4Aw2lOwv1K3k1062NUsjpf153YgK1nbWZnK_K4MOsPzK6jAVPOR07mVymegydu_Nfv5Us4A" })
-              .then((currentToken) => {
-                if (currentToken) {
-                  console.log("FCM Token:", currentToken);
-                  // Optionally, send the token to your server here for subscription purposes.
-                } else {
-                  console.log("No registration token available. Request permission to generate one.");
-                }
-              })
-              .catch((err) => {
-                console.log("An error occurred while retrieving token. ", err);
-              });
-          } else {
-            console.log("Notification permission denied.");
-          }
-        });
-      } else if (Notification.permission === "granted") {
-        console.log("Notification permission already granted.");
+    /***********************************
+     * 2. Check if User is Logged In
+     ***********************************/
+    auth.onAuthStateChanged(user => {
+      if (!user) {
+        // If not logged in, redirect to auth page
+        window.location.href = "auth.html";
       } else {
-        console.log("Notification permission previously denied.");
+        // Optionally fetch user's name from Firestore
+        db.collection("users").doc(user.uid).get()
+          .then(doc => {
+            if (doc.exists) {
+              const data = doc.data();
+              document.getElementById("userName").textContent = data.name || "User";
+            }
+          })
+          .catch(err => console.error("Error fetching user data:", err));
       }
-    }
+    });
 
-    // Prompt for notification permission on page load
-    document.addEventListener("DOMContentLoaded", () => {
-      requestNotificationPermission();
+    /***********************************
+     * 3. Sliding Menu Functionality
+     ***********************************/
+    const sideMenu = document.getElementById("sideMenu");
+    const menuBtn = document.getElementById("menuBtn");
+    menuBtn.addEventListener("click", () => {
+      sideMenu.classList.toggle("active");
+    });
+
+    // Close menu on clicking outside (optional)
+    document.addEventListener("click", (e) => {
+      if (!sideMenu.contains(e.target) && e.target !== menuBtn) {
+        sideMenu.classList.remove("active");
+      }
+    });
+
+    /***********************************
+     * 4. Menu Buttons
+     ***********************************/
+    document.getElementById("adminBtn").addEventListener("click", () => {
+      window.location.href = "admin.html"; // Admin Access
+    });
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      auth.signOut().then(() => {
+        window.location.href = "auth.html";
+      });
+    });
+    // The other buttons (profileBtn, attemptedBtn, etc.) can redirect or do other tasks
+    // For now, they just close the menu
+    const menuButtons = ["profileBtn", "attemptedBtn", "leaderboardBtn", "referBtn"];
+    menuButtons.forEach(btnId => {
+      document.getElementById(btnId).addEventListener("click", () => {
+        sideMenu.classList.remove("active");
+        // Add your custom navigation logic here
+        alert(btnId + " clicked");
+      });
     });
   </script>
 </body>
