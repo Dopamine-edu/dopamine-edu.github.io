@@ -1,69 +1,309 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dopamine Quiz - Admin Panel</title>
+  <style>
+    /* Base Styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f7f7f7;
+    }
+    /* Navigation Bar */
+    .navbar {
+      background: #667eea;
+      color: #fff;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .navbar h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+    .navbar button {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    /* Sidebar */
+    .sidebar {
+      background: #fff;
+      width: 250px;
+      position: fixed;
+      top: 50px; /* below navbar */
+      bottom: 0;
+      left: 0;
+      padding: 20px;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    }
+    .sidebar .admin-info {
+      margin-bottom: 20px;
+    }
+    .sidebar .admin-info h2 {
+      font-size: 1.2rem;
+      margin-bottom: 5px;
+    }
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+    .sidebar ul li {
+      margin: 15px 0;
+    }
+    .sidebar ul li a, .sidebar ul li button {
+      text-decoration: none;
+      color: #667eea;
+      font-size: 1rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+    /* Main Content */
+    .content {
+      margin-left: 270px;
+      padding: 20px;
+    }
+    .content h2 {
+      margin-top: 0;
+    }
+    .content button {
+      background: #667eea;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .hidden {
+      display: none;
+    }
+    /* Form Styling */
+    #questionForm {
+      margin-top: 20px;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    #questionForm h3 {
+      margin-top: 0;
+    }
+    #questionForm label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    #questionForm input[type="text"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    #questionForm .radio-group {
+      margin-top: 10px;
+    }
+    #questionForm .radio-group label {
+      display: block;
+      margin-top: 5px;
+    }
+    #questionForm button[type="submit"] {
+      margin-top: 15px;
+      background: #667eea;
+      color: #fff;
+      border: none;
+      padding: 10px;
+      border-radius: 4px;
+      width: 100%;
+      cursor: pointer;
+    }
+    /* Responsive Adjustments */
+    @media screen and (max-width: 768px) {
+      .sidebar {
+        width: 200px;
+      }
+      .content {
+        margin-left: 220px;
+      }
+    }
+    @media screen and (max-width: 576px) {
+      .navbar, .sidebar, .content {
+        width: 100%;
+        margin: 0;
+        padding: 10px;
+      }
+      .sidebar {
+        position: static;
+        box-shadow: none;
+      }
+      .content {
+        margin-left: 0;
+      }
+    }
+  </style>
+  <!-- Firebase SDKs (using compat libraries) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
-
-    <!-- Navigation Bar -->
-    <nav class="navbar">
-        <h1>Dopamine Quiz - Admin Panel</h1>
-        <button id="menuBtn">☰ Menu</button>
-    </nav>
-
-    <!-- Sidebar Menu -->
-    <aside class="sidebar">
-        <div class="admin-info">
-            <h2>Admin Info</h2>
-            <p><strong>Name:</strong> <span id="adminName">Loading...</span></p>
-            <p><strong>Points:</strong> <span id="adminPoints">0</span></p>
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <h1>Dopamine Quiz - Admin Panel</h1>
+    <button id="menuBtn">☰</button>
+  </nav>
+  <!-- Sidebar Menu -->
+  <aside class="sidebar" id="sidebar">
+    <div class="admin-info">
+      <h2>Admin Info</h2>
+      <p><strong>Name:</strong> <span id="adminName">Loading...</span></p>
+      <p><strong>Points:</strong> <span id="adminPoints">0</span></p>
+    </div>
+    <ul>
+      <li><a href="#" id="dashboardLink">Dashboard</a></li>
+      <li><a href="#" id="addQuestionsLink">Add Questions</a></li>
+      <li><a href="#" id="referStudentsLink">Refer Students</a></li>
+      <li><button id="logoutBtn">Logout</button></li>
+    </ul>
+  </aside>
+  <!-- Main Content -->
+  <main class="content">
+    <h2>Welcome, Admin!</h2>
+    <button id="showQuestionFormBtn">➕ Add Question</button>
+    <!-- Add Question Form -->
+    <div id="questionForm" class="hidden">
+      <h3>Add a New Question</h3>
+      <form id="addQuestionForm">
+        <label for="questionInput">Question:</label>
+        <input type="text" id="questionInput" required>
+        
+        <label>Options:</label>
+        <input type="text" id="option1" placeholder="Option 1" required>
+        <input type="text" id="option2" placeholder="Option 2" required>
+        <input type="text" id="option3" placeholder="Option 3" required>
+        <input type="text" id="option4" placeholder="Option 4" required>
+        
+        <label>Correct Answer:</label>
+        <div class="radio-group">
+          <label><input type="radio" name="correctOption" value="1" required> Option 1</label>
+          <label><input type="radio" name="correctOption" value="2"> Option 2</label>
+          <label><input type="radio" name="correctOption" value="3"> Option 3</label>
+          <label><input type="radio" name="correctOption" value="4"> Option 4</label>
         </div>
-        <ul>
-            <li><a href="#">🏠 Dashboard</a></li>
-            <li><a href="#">➕ Add Questions</a></li>
-            <li><a href="#">📢 Refer Students</a></li>
-            <li><button id="logoutBtn">🚪 Logout</button></li>
-        </ul>
-    </aside>
+        <button type="submit">Submit Question</button>
+      </form>
+    </div>
+  </main>
+  <script>
+    // Firebase configuration using your provided details
+    const firebaseConfig = {
+      apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
+      authDomain: "dopamine-quiz.firebaseapp.com",
+      projectId: "dopamine-quiz",
+      storageBucket: "dopamine-quiz.firebasestorage.app",
+      messagingSenderId: "822531459966",
+      appId: "1:822531459966:web:8e7d2385090e997eb1c12f"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
 
-    <!-- Page Content -->
-    <main class="content">
-        <h2>Welcome, Admin!</h2>
-        <button id="showAddQuestionForm">➕ Add Question</button>
+    // Check if admin is logged in and load admin info
+    auth.onAuthStateChanged(async (user) => {
+      if (!user) {
+        window.location.href = "auth.html";
+      } else {
+        try {
+          const userDoc = await db.collection("users").doc(user.uid).get();
+          if (userDoc.exists && userDoc.data().role === "admin") {
+            const data = userDoc.data();
+            document.getElementById("adminName").innerText = data.name || "Admin";
+            document.getElementById("adminPoints").innerText = data.points || 0;
+          } else {
+            alert("Access Denied: You are not an admin.");
+            window.location.href = "homepage.html";
+          }
+        } catch (error) {
+          console.error("Error fetching admin data:", error);
+          window.location.href = "homepage.html";
+        }
+      }
+    });
 
-        <!-- Add Question Form -->
-        <div id="questionForm" class="hidden">
-            <h3>Add a New Question</h3>
-            <form id="addQuestionForm">
-                <label for="questionInput">Question:</label>
-                <input type="text" id="questionInput" required>
+    // Toggle sidebar for mobile (optional)
+    const menuBtn = document.getElementById("menuBtn");
+    const sidebar = document.getElementById("sidebar");
+    menuBtn.addEventListener("click", () => {
+      sidebar.classList.toggle("hidden");
+    });
 
-                <label>Options:</label>
-                <input type="text" id="option1" placeholder="Option 1" required>
-                <input type="text" id="option2" placeholder="Option 2" required>
-                <input type="text" id="option3" placeholder="Option 3" required>
-                <input type="text" id="option4" placeholder="Option 4" required>
+    // Toggle Add Question Form visibility
+    const showQuestionFormBtn = document.getElementById("showQuestionFormBtn");
+    const questionForm = document.getElementById("questionForm");
+    showQuestionFormBtn.addEventListener("click", () => {
+      questionForm.classList.toggle("hidden");
+    });
 
-                <label>Correct Answer:</label>
-                <div class="radio-group">
-                    <input type="radio" name="correctOption" value="1" required> Option 1
-                    <input type="radio" name="correctOption" value="2"> Option 2
-                    <input type="radio" name="correctOption" value="3"> Option 3
-                    <input type="radio" name="correctOption" value="4"> Option 4
-                </div>
+    // Handle Add Question Form submission
+    document.getElementById("addQuestionForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const questionText = document.getElementById("questionInput").value.trim();
+      const option1 = document.getElementById("option1").value.trim();
+      const option2 = document.getElementById("option2").value.trim();
+      const option3 = document.getElementById("option3").value.trim();
+      const option4 = document.getElementById("option4").value.trim();
+      const correctOption = document.querySelector('input[name="correctOption"]:checked').value;
 
-                <button type="submit">Submit Question</button>
-            </form>
-        </div>
-    </main>
+      if (!questionText || !option1 || !option2 || !option3 || !option4 || !correctOption) {
+        alert("Please fill in all fields and select the correct option.");
+        return;
+      }
 
-    <script src="admin.js"></script>
+      try {
+        const user = auth.currentUser;
+        // Add the question to Firestore
+        await db.collection("questions").add({
+          question: questionText,
+          options: [option1, option2, option3, option4],
+          correctOption: correctOption,
+          addedBy: user.uid,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        // Increment admin's points by 1
+        await db.collection("users").doc(user.uid).update({
+          points: firebase.firestore.FieldValue.increment(1)
+        });
+        alert("Question added successfully! +1 Point awarded.");
+        // Reset form
+        document.getElementById("addQuestionForm").reset();
+        // Update displayed points
+        const userDoc = await db.collection("users").doc(user.uid).get();
+        if (userDoc.exists) {
+          document.getElementById("adminPoints").innerText = userDoc.data().points || 0;
+        }
+      } catch (error) {
+        console.error("Error adding question:", error);
+        alert("Error adding question. Please try again.");
+      }
+    });
 
+    // Logout functionality
+    document.getElementById("logoutBtn").addEventListener("click", async () => {
+      try {
+        await auth.signOut();
+        window.location.href = "auth.html";
+      } catch (error) {
+        console.error("Error signing out:", error);
+      }
+    });
+  </script>
 </body>
 </html>
