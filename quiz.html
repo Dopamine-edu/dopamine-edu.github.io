@@ -8,6 +8,7 @@
     body { font-family: Arial, sans-serif; margin: 20px; }
     #timer { position: fixed; top: 10px; left: 10px; background: #fff; padding: 5px 10px; border: 1px solid #ddd; border-radius: 5px; font-weight: bold; }
     #examNameDisplay { text-align: center; font-size: 1.8rem; margin-bottom: 20px; }
+    h2 { text-align: center; }
     .question { margin-bottom: 20px; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
     .question p { margin: 0 0 10px; }
     label { display: block; margin-bottom: 5px; padding: 5px; border-radius: 3px; }
@@ -30,7 +31,7 @@
   <!-- Timer Display -->
   <div id="timer">Time left: -- seconds</div>
   <!-- Exam Name Display -->
-  <div id="examNameDisplay">Exam Name: Loading...</div>
+  <div id="examNameDisplay">Exam: Loading...</div>
   <!-- Quiz Heading -->
   <h2>Dopamine Quiz</h2>
   <!-- Quiz Form -->
@@ -56,19 +57,31 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
-    
-    // Global exam parameters (with defaults)
+
+    // Global exam parameters (default values; will be updated if examId exists)
     let examParams = {
       examName: "Untitled Exam",
       timer: 1, // in minutes
       marksPerQuestion: 1,
       negativeMark: 1
     };
-    
+
     // Utility: Get query parameters
     const urlParams = new URLSearchParams(window.location.search);
     const examId = urlParams.get("examId");
-    
+
+    // Use localStorage keys unique to this exam (or default)
+    const startTimeKey = "examStartTime_" + (examId || "default");
+    const answersKey = "examAnswers_" + (examId || "default");
+
+    // Retrieve previously saved answers (if any)
+    let savedAnswers = {};
+    try {
+      savedAnswers = JSON.parse(localStorage.getItem(answersKey)) || {};
+    } catch (e) {
+      savedAnswers = {};
+    }
+
     // Function to render quiz questions on the page
     function renderQuiz(questions) {
       const examForm = document.getElementById("examForm");
@@ -89,22 +102,47 @@
           radioInput.type = "radio";
           radioInput.name = "q" + index;
           radioInput.value = String(idx + 1); // Options numbered as "1", "2", etc.
+          // Restore saved answer if exists
+          if (savedAnswers["q" + index] === radioInput.value) {
+            radioInput.checked = true;
+          }
+          // When an answer is selected, update localStorage
+          radioInput.addEventListener("change", () => {
+            savedAnswers["q" + index] = radioInput.value;
+            localStorage.setItem(answersKey, JSON.stringify(savedAnswers));
+          });
           label.appendChild(radioInput);
           label.appendChild(document.createTextNode(" " + opt));
           questionDiv.appendChild(label);
         });
         examForm.appendChild(questionDiv);
       });
-      // Start the exam timer based on examParams.timer (minutes)
+      // Start timer using examParams.timer (if not already started)
       startTimer();
     }
     
-    // Timer functionality: use examParams.timer (in minutes)
+    // Timer functionality: use examParams.timer (in minutes) and persist start time
     let timeLeft; // in seconds
     let timerRef;
     function startTimer() {
       const timerElement = document.getElementById("timer");
-      timeLeft = examParams.timer * 60; // convert minutes to seconds
+      // Check if start time exists in localStorage
+      let storedStart = localStorage.getItem(startTimeKey);
+      if (!storedStart) {
+        storedStart = Date.now();
+        localStorage.setItem(startTimeKey, storedStart);
+      } else {
+        storedStart = parseInt(storedStart, 10);
+      }
+      // Calculate exam duration in ms
+      const examDurationMs = examParams.timer * 60 * 1000;
+      // Calculate remaining time (ms)
+      const elapsed = Date.now() - storedStart;
+      let remainingMs = examDurationMs - elapsed;
+      if (remainingMs < 0) { remainingMs = 0; }
+      // Convert to seconds
+      timeLeft = Math.floor(remainingMs / 1000);
+      
       timerRef = setInterval(() => {
         if (timeLeft <= 0) {
           clearInterval(timerRef);
@@ -229,7 +267,6 @@
             });
           }
         } else {
-          // If no answer selected, count as wrong and highlight correct answer
           wrongCount++;
           q.querySelectorAll("label").forEach(label => {
             if (label.querySelector("input").value === correctAnswer) {
@@ -250,6 +287,10 @@
       solutionsContainer.innerHTML = "<h3>Solutions:</h3>" + document.getElementById("examForm").innerHTML + resultsHTML;
       document.getElementById("examForm").style.display = "none";
       document.getElementById("submitContainer").style.display = "none";
+      
+      // Optionally, clear stored exam state after submission
+      localStorage.removeItem(startTimeKey);
+      localStorage.removeItem(answersKey);
     });
   </script>
 </body>
