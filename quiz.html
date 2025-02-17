@@ -6,7 +6,7 @@
   <title>Exam</title>
   <style>
     body { font-family: Arial, sans-serif; margin: 20px; }
-    /* Header: Exam Name left, Timer right */
+    /* Header: Exam Name (left) and Timer (right) */
     .header {
       display: flex;
       justify-content: space-between;
@@ -38,7 +38,6 @@
     .result.correct { color: green; }
     .result.wrong { color: red; }
     .expired { text-align: center; color: red; font-size: 1.5rem; }
-    .retake-btn { background: #667eea; color: #fff; border: none; padding: 10px 20px; font-size: 1rem; border-radius: 5px; cursor: pointer; margin-bottom: 20px; }
   </style>
   <!-- Firebase SDKs (compat versions) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -46,15 +45,12 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
-  <!-- Header: Exam Name on left, Timer on right -->
+  <!-- Header: Exam Name and Timer -->
   <div class="header">
     <div id="examNameDisplay">Loading...</div>
     <div id="timer">--:--</div>
   </div>
   <h2>Exam</h2>
-  <!-- (Optional) Retake button will appear here if allowed -->
-  <div id="retakeContainer" style="text-align:center; margin-bottom:20px;"></div>
-  <!-- Quiz Form -->
   <form id="examForm"></form>
   <div id="submitContainer">
     <button type="button" id="submitBtn">Submit</button>
@@ -75,38 +71,41 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
-    
-    // Global exam parameters (defaults; updated from exam document if examId provided)
+
+    // Global exam parameters (defaults; updated from exam document)
     let examParams = {
       examName: "Untitled Exam",
       timer: 1, // in minutes
       marksPerQuestion: 1,
       negativeMark: 1,
-      attemptsAllowed: 1,  // new parameter
-      lastDate: null       // exam deadline; expected as ISO string or Firestore Timestamp
+      attemptsAllowed: 1,
+      lastDate: null
     };
-    
-    // LocalStorage keys (unique for this exam)
+
+    // Unique localStorage keys for this exam
     const urlParams = new URLSearchParams(window.location.search);
     const examId = urlParams.get("examId");
     const startTimeKey = "examStartTime_" + (examId || "default");
     const answersKey = "examAnswers_" + (examId || "default");
-    
+
     let savedAnswers = {};
     try {
       savedAnswers = JSON.parse(localStorage.getItem(answersKey)) || {};
     } catch (e) {
       savedAnswers = {};
     }
-    
+
+    // Flag to ensure exam submission happens only once
+    let submitted = false;
+
     // Utility: Check if exam is expired
     function isExamExpired(lastDate) {
       if (!lastDate) return false;
       const examDeadline = new Date(lastDate);
       return new Date() > examDeadline;
     }
-    
-    // Function to render quiz questions
+
+    // Render quiz questions on the page
     function renderQuiz(questions) {
       const examForm = document.getElementById("examForm");
       examForm.innerHTML = "";
@@ -136,11 +135,11 @@
         });
         examForm.appendChild(questionDiv);
       });
-      // Start the timer (if not already started)
+      // Start timer (if not already started)
       startTimer();
     }
-    
-    // Timer functionality in mm:ss, persisted via localStorage
+
+    // Timer functionality: show in mm:ss format, persist start time via localStorage
     let timeLeft;
     let timerRef;
     function startTimer() {
@@ -160,7 +159,7 @@
       timerRef = setInterval(() => {
         if (timeLeft <= 0) {
           clearInterval(timerRef);
-          submitExam();
+          submitExam(); // automatic submission when time is over
         } else {
           const minutes = Math.floor(timeLeft / 60);
           const seconds = timeLeft % 60;
@@ -169,8 +168,8 @@
         timeLeft--;
       }, 1000);
     }
-    
-    // Load questions: if examId exists, load selected questions; otherwise, load default set.
+
+    // Functions to load questions
     function loadDefaultQuestions() {
       db.collection("questions").orderBy("timestamp", "desc").limit(50).get()
         .then(querySnapshot => {
@@ -187,8 +186,7 @@
           document.getElementById("examForm").innerHTML = "<p>Error retrieving questions.</p>";
         });
     }
-    
-    // Function to load exam-specific questions
+
     function loadExamQuestions(selectedQuestionIds) {
       if (selectedQuestionIds.length <= 10) {
         db.collection("questions")
@@ -226,8 +224,20 @@
           });
       }
     }
-    
-    // After authentication, load exam document and check exam attempts
+
+    // Display previous result if user already attempted the exam (for attemptsAllowed == 1)
+    function displayPreviousResult(resultData) {
+      document.getElementById("examForm").innerHTML = "";
+      document.getElementById("submitContainer").style.display = "none";
+      document.getElementById("scoreContainer").innerHTML = "Your Score: " + resultData.score.toFixed(2);
+      const resultsHTML = `
+        <p class="result correct">Correct Answers: ${resultData.correctCount}</p>
+        <p class="result wrong">Wrong Answers: ${resultData.wrongCount}</p>
+      `;
+      document.getElementById("solutionsContainer").innerHTML = resultsHTML + "<h3>Solutions:</h3>" + (resultData.solutionsHTML || "");
+    }
+
+    // After authentication, load exam details and questions
     auth.onAuthStateChanged(user => {
       if (!user) { window.location.href = "auth.html"; return; }
       if (examId) {
@@ -241,37 +251,22 @@
               examParams.negativeMark = examData.negativeMark || examParams.negativeMark;
               examParams.attemptsAllowed = examData.attemptsAllowed || 1;
               examParams.lastDate = examData.lastDate || null;
-              // Display exam name exactly as set
               document.getElementById("examNameDisplay").innerText = examParams.examName;
-              // Check if exam is expired
               if (isExamExpired(examParams.lastDate)) {
                 document.body.innerHTML = "<div class='expired'>This exam is expired. You cannot participate.</div>";
                 return;
               }
-              // Check previous attempts for this user
+              // Check if user already attempted the exam
               db.collection("examResults")
                 .where("examId", "==", examId)
                 .where("userId", "==", user.uid)
                 .get()
                 .then(querySnapshot => {
-                  const attemptCount = querySnapshot.size;
-                  if (attemptCount > 0 && examParams.attemptsAllowed == 1) {
-                    // If only one attempt allowed and user has already taken the exam, show previous result.
+                  if (querySnapshot.size > 0) {
+                    // If user already attempted, display previous result (in both allowed cases, no retake button)
                     const resultData = querySnapshot.docs[0].data();
                     displayPreviousResult(resultData);
                   } else {
-                    if (attemptCount > 0 && examParams.attemptsAllowed > 1) {
-                      // Allow retake: show a "Retake Test" button.
-                      const retakeContainer = document.getElementById("retakeContainer");
-                      retakeContainer.innerHTML = `<button class="retake-btn" id="retakeBtn">Retake Test</button>`;
-                      document.getElementById("retakeBtn").addEventListener("click", () => {
-                        localStorage.removeItem(startTimeKey);
-                        localStorage.removeItem(answersKey);
-                        // Reload the exam page (new attempt)
-                        window.location.reload();
-                      });
-                    }
-                    // Load the exam questions (for new attempt or if multiple attempts allowed)
                     const selectedQuestionIds = examData.questions || [];
                     if (selectedQuestionIds.length === 0) {
                       document.getElementById("examForm").innerHTML = "<p>No questions selected for this exam.</p>";
@@ -293,21 +288,11 @@
         loadDefaultQuestions();
       }
     });
-    
-    // Function to display previous exam result
-    function displayPreviousResult(resultData) {
-      document.getElementById("examForm").innerHTML = "";
-      document.getElementById("submitContainer").style.display = "none";
-      document.getElementById("scoreContainer").innerHTML = "Your Score: " + resultData.score.toFixed(2);
-      const resultsHTML = `
-        <p class="result correct">Correct Answers: ${resultData.correctCount}</p>
-        <p class="result wrong">Wrong Answers: ${resultData.wrongCount}</p>
-      `;
-      document.getElementById("solutionsContainer").innerHTML = resultsHTML + "<h3>Solutions:</h3>" + (resultData.solutionsHTML || "");
-    }
-    
-    // Submit exam: calculate score, record exam result, and display result summary
+
+    // Submit exam: calculate score and display results, and record exam result
     document.getElementById("submitBtn").addEventListener("click", () => {
+      if (submitted) return; // Prevent duplicate submission
+      submitted = true;
       clearInterval(timerRef);
       let score = 0;
       let correctCount = 0;
@@ -351,7 +336,7 @@
       document.getElementById("examForm").style.display = "none";
       document.getElementById("submitContainer").style.display = "none";
       
-      // Save exam result to examResults collection
+      // Save exam result
       const user = auth.currentUser;
       db.collection("examResults").add({
         examId: examId,
@@ -363,7 +348,6 @@
         timestamp: firebase.firestore.FieldValue.serverTimestamp()
       });
       
-      // Clear stored exam state
       localStorage.removeItem(startTimeKey);
       localStorage.removeItem(answersKey);
     });
