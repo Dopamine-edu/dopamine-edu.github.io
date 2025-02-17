@@ -3,155 +3,81 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dopamine Quiz - Admin Panel</title>
+  <title>Dopamine Quiz - Admin Dashboard</title>
   <style>
-    /* Base Styles */
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f7f7f7;
-    }
-    /* Navigation Bar */
+    /* Basic Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #f7f7f7; }
+    /* Navbar */
     .navbar {
       background: #667eea;
       color: #fff;
-      padding: 10px 20px;
+      padding: 15px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      position: relative;
     }
-    .navbar h1 {
-      margin: 0;
-      font-size: 1.5rem;
-    }
-    .navbar button {
-      background: none;
-      border: none;
-      color: #fff;
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-    /* Sidebar */
-    .sidebar {
-      background: #fff;
-      width: 250px;
+    .navbar h1 { font-size: 1.5rem; }
+    .navbar button { background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
+    /* Menu Overlay */
+    .menu-overlay {
       position: fixed;
-      top: 50px; /* below navbar */
-      bottom: 0;
-      left: 0;
-      padding: 20px;
-      box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
     }
-    .sidebar .admin-info {
-      margin-bottom: 20px;
-    }
-    .sidebar .admin-info h2 {
-      font-size: 1.2rem;
-      margin-bottom: 5px;
-    }
-    .sidebar ul {
-      list-style: none;
-      padding: 0;
-    }
-    .sidebar ul li {
-      margin: 15px 0;
-    }
-    .sidebar ul li a, .sidebar ul li button {
-      text-decoration: none;
-      color: #667eea;
-      font-size: 1rem;
-      background: none;
-      border: none;
-      cursor: pointer;
+    .menu-overlay ul { list-style: none; text-align: center; }
+    .menu-overlay ul li { margin: 15px 0; }
+    .menu-overlay ul li button {
+      background: #fff; border: none; padding: 10px 20px;
+      font-size: 1.2rem; border-radius: 5px; cursor: pointer;
     }
     /* Main Content */
-    .content {
-      margin-left: 270px;
-      padding: 20px;
+    .content { padding: 20px; }
+    .content h2 { margin-bottom: 20px; }
+    .add-question-btn {
+      background: #667eea; color: #fff; border: none;
+      padding: 10px 20px; font-size: 1rem; border-radius: 5px;
+      cursor: pointer; margin-bottom: 20px;
     }
-    .content h2 {
-      margin-top: 0;
+    /* Admin Info Display */
+    #adminInfoDisplay {
+      background: #fff; padding: 20px; border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px;
     }
-    .content button {
-      background: #667eea;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      font-size: 1rem;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .hidden {
-      display: none;
-    }
-    /* Form Styling */
+    /* Add Question Form */
     #questionForm {
-      margin-top: 20px;
-      background: #fff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      background: #fff; padding: 20px; border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px;
     }
-    #questionForm h3 {
-      margin-top: 0;
-    }
-    #questionForm label {
-      display: block;
-      margin-top: 10px;
-      font-weight: bold;
-    }
+    #questionForm h3 { margin-bottom: 10px; }
+    #questionForm label { display: block; margin-top: 10px; font-weight: bold; }
     #questionForm input[type="text"],
     #questionForm select,
     #questionForm textarea {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      width: 100%; padding: 8px; margin-top: 5px;
+      border: 1px solid #ccc; border-radius: 4px;
     }
-    #questionForm .radio-group {
-      margin-top: 10px;
-    }
-    #questionForm .radio-group label {
-      display: block;
-      margin-top: 5px;
-    }
-    #questionForm button[type="submit"] {
-      margin-top: 15px;
-      background: #667eea;
-      color: #fff;
-      border: none;
-      padding: 10px;
-      border-radius: 4px;
-      width: 100%;
-      cursor: pointer;
-    }
+    #questionForm .radio-group { margin-top: 10px; }
+    #questionForm .radio-group label { display: block; margin-top: 5px; }
+    #questionForm button { margin-top: 15px; background: #667eea;
+      color: #fff; border: none; padding: 10px; border-radius: 4px;
+      width: 100%; cursor: pointer; }
+    /* Hidden Class */
+    .hidden { display: none; }
     /* Responsive Adjustments */
-    @media screen and (max-width: 768px) {
-      .sidebar {
-        width: 200px;
-      }
-      .content {
-        margin-left: 220px;
-      }
-    }
-    @media screen and (max-width: 576px) {
-      .navbar, .sidebar, .content {
-        width: 100%;
-        margin: 0;
-        padding: 10px;
-      }
-      .sidebar {
-        position: static;
-        box-shadow: none;
-      }
-      .content {
-        margin-left: 0;
-      }
+    @media (max-width: 600px) {
+      .navbar h1 { font-size: 1.2rem; }
+      .menu-overlay ul li button { font-size: 1rem; padding: 8px 16px; }
     }
   </style>
-  <!-- Firebase SDKs (using compat libraries) -->
+  <!-- Firebase SDKs (compat versions) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
@@ -159,28 +85,31 @@
 <body>
   <!-- Navigation Bar -->
   <nav class="navbar">
-    <h1>Dopamine Quiz - Admin Panel</h1>
+    <h1>Dopamine Quiz - Admin Dashboard</h1>
     <button id="menuBtn">☰</button>
   </nav>
-  <!-- Sidebar Menu -->
-  <aside class="sidebar" id="sidebar">
-    <div class="admin-info">
-      <h2>Admin Info</h2>
-      <p><strong>Name:</strong> <span id="adminName">Loading...</span></p>
-      <p><strong>Points:</strong> <span id="adminPoints">0</span></p>
-    </div>
+  <!-- Menu Overlay -->
+  <div class="menu-overlay" id="menuOverlay">
     <ul>
-      <li><a href="#" id="dashboardLink">Dashboard</a></li>
-      <li><a href="#" id="addQuestionsLink">Add Questions</a></li>
-      <li><a href="#" id="referStudentsLink">Refer Students</a></li>
-      <li><button id="logoutBtn">Logout</button></li>
+      <li><button id="menuAdminInfo">Admin Info</button></li>
+      <li><button id="menuReferral">Referral</button></li>
+      <li><button id="menuRewardWithdrawal">Reward Withdrawal</button></li>
+      <li><button id="menuLogout">Logout</button></li>
+      <li><button id="menuClose">Close</button></li>
     </ul>
-  </aside>
+  </div>
   <!-- Main Content -->
-  <main class="content">
+  <div class="content" id="contentArea">
     <h2>Welcome, Admin!</h2>
-    <button id="showQuestionFormBtn">➕ Add Question</button>
-    <!-- Add Question Form -->
+    <!-- This section will show dynamic content based on menu selection -->
+    <div id="adminInfoDisplay" class="hidden">
+      <h3>Admin Information</h3>
+      <p><strong>Name:</strong> <span id="infoName"></span></p>
+      <p><strong>Total Questions Added:</strong> <span id="totalQuestions">0</span></p>
+      <p><strong>Points Earned:</strong> <span id="infoPoints">0</span></p>
+    </div>
+    <!-- Add Questions Section (default view) -->
+    <button class="add-question-btn" id="showQuestionFormBtn">➕ Add Question</button>
     <div id="questionForm" class="hidden">
       <h3>Add a New Question</h3>
       <form id="addQuestionForm">
@@ -200,14 +129,12 @@
         <!-- Question Text -->
         <label for="questionInput">Question:</label>
         <input type="text" id="questionInput" placeholder="Enter your question" required>
-        
         <!-- Options -->
         <label>Options:</label>
         <input type="text" id="option1" placeholder="Option 1" required>
         <input type="text" id="option2" placeholder="Option 2" required>
         <input type="text" id="option3" placeholder="Option 3" required>
         <input type="text" id="option4" placeholder="Option 4" required>
-        
         <!-- Correct Answer Selection -->
         <label>Correct Answer:</label>
         <div class="radio-group">
@@ -216,15 +143,14 @@
           <label><input type="radio" name="correctOption" value="3"> Option 3</label>
           <label><input type="radio" name="correctOption" value="4"> Option 4</label>
         </div>
-        
         <!-- Explanation (Optional) -->
         <label for="explanationInput">Explanation (Optional):</label>
         <textarea id="explanationInput" rows="3" placeholder="Enter explanation (if any)"></textarea>
-        
         <button type="submit">Submit Question</button>
       </form>
     </div>
-  </main>
+  </div>
+
   <script>
     // Firebase configuration using your provided details
     const firebaseConfig = {
@@ -239,18 +165,75 @@
     const auth = firebase.auth();
     const db = firebase.firestore();
 
-    // Check if admin is logged in and load admin info
+    // MENU FUNCTIONALITY
+    const menuBtn = document.getElementById("menuBtn");
+    const menuOverlay = document.getElementById("menuOverlay");
+    const menuClose = document.getElementById("menuClose");
+    menuBtn.addEventListener("click", () => { menuOverlay.style.display = "flex"; });
+    menuClose.addEventListener("click", () => { menuOverlay.style.display = "none"; });
+
+    // Menu Items
+    document.getElementById("menuAdminInfo").addEventListener("click", async () => {
+      menuOverlay.style.display = "none";
+      // Show Admin Info section and populate it
+      document.getElementById("adminInfoDisplay").classList.remove("hidden");
+      // Hide Add Question Form if visible
+      document.getElementById("questionForm").classList.add("hidden");
+      const user = auth.currentUser;
+      if (user) {
+        try {
+          const userDoc = await db.collection("users").doc(user.uid).get();
+          if (userDoc.exists) {
+            const data = userDoc.data();
+            document.getElementById("infoName").innerText = data.name || "Admin";
+            document.getElementById("infoPoints").innerText = data.points || 0;
+            // Count total questions added by this admin
+            const querySnapshot = await db.collection("questions").where("addedBy", "==", user.uid).get();
+            document.getElementById("totalQuestions").innerText = querySnapshot.size;
+          }
+        } catch (error) {
+          console.error("Error fetching admin info:", error);
+        }
+      }
+    });
+    document.getElementById("menuReferral").addEventListener("click", () => {
+      menuOverlay.style.display = "none";
+      document.getElementById("adminInfoDisplay").classList.remove("hidden");
+      document.getElementById("adminInfoDisplay").innerHTML = `<h3>Referral</h3><p>Referral functionality coming soon.</p>`;
+    });
+    document.getElementById("menuRewardWithdrawal").addEventListener("click", () => {
+      menuOverlay.style.display = "none";
+      document.getElementById("adminInfoDisplay").classList.remove("hidden");
+      document.getElementById("adminInfoDisplay").innerHTML = `<h3>Reward Withdrawal</h3><p>Reward Withdrawal functionality coming soon.</p>`;
+    });
+    document.getElementById("menuLogout").addEventListener("click", async () => {
+      menuOverlay.style.display = "none";
+      try {
+        await auth.signOut();
+        window.location.href = "auth.html";
+      } catch (error) {
+        console.error("Error signing out:", error);
+      }
+    });
+
+    // SHOW ADD QUESTION FORM
+    const showQuestionFormBtn = document.getElementById("showQuestionFormBtn");
+    const questionForm = document.getElementById("questionForm");
+    showQuestionFormBtn.addEventListener("click", () => {
+      // Hide admin info display if visible
+      document.getElementById("adminInfoDisplay").classList.add("hidden");
+      // Toggle the add question form
+      questionForm.classList.toggle("hidden");
+    });
+
+    // Check if admin is logged in and load basic info
     auth.onAuthStateChanged(async (user) => {
       if (!user) {
         window.location.href = "auth.html";
       } else {
         try {
           const userDoc = await db.collection("users").doc(user.uid).get();
-          if (userDoc.exists && userDoc.data().role === "admin") {
-            const data = userDoc.data();
-            document.getElementById("adminName").innerText = data.name || "Admin";
-            document.getElementById("adminPoints").innerText = data.points || 0;
-          } else {
+          if (!(userDoc.exists && userDoc.data().role === "admin")) {
             alert("Access Denied: You are not an admin.");
             window.location.href = "homepage.html";
           }
@@ -261,25 +244,11 @@
       }
     });
 
-    // Toggle sidebar for mobile (optional)
-    const menuBtn = document.getElementById("menuBtn");
-    const sidebar = document.getElementById("sidebar");
-    menuBtn.addEventListener("click", () => {
-      sidebar.classList.toggle("hidden");
-    });
-
-    // Toggle Add Question Form visibility
-    const showQuestionFormBtn = document.getElementById("showQuestionFormBtn");
-    const questionForm = document.getElementById("questionForm");
-    showQuestionFormBtn.addEventListener("click", () => {
-      questionForm.classList.toggle("hidden");
-    });
-
-    // Handle Add Question Form submission
+    // HANDLE ADD QUESTION FORM SUBMISSION
     document.getElementById("addQuestionForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       
-      // Retrieve fields
+      // Retrieve form values
       const subject = document.getElementById("subjectSelect").value;
       const questionText = document.getElementById("questionInput").value.trim();
       const option1 = document.getElementById("option1").value.trim();
@@ -300,7 +269,7 @@
       
       try {
         const user = auth.currentUser;
-        // Add the question with subject and explanation fields to Firestore
+        // Add question to Firestore (including subject and explanation)
         await db.collection("questions").add({
           subject: subject,
           question: questionText,
@@ -310,33 +279,18 @@
           addedBy: user.uid,
           timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
-        // Calculate point increment: 1.5 if explanation provided, otherwise 1
+        // Determine point increment: 1.5 if explanation is provided, else 1
         const pointIncrement = explanation ? 1.5 : 1;
         // Update admin's points
         await db.collection("users").doc(user.uid).update({
           points: firebase.firestore.FieldValue.increment(pointIncrement)
         });
         alert(`Question added successfully! ${pointIncrement} point(s) awarded.`);
-        // Reset form fields
+        // Reset the form
         document.getElementById("addQuestionForm").reset();
-        // Update displayed points
-        const userDoc = await db.collection("users").doc(user.uid).get();
-        if (userDoc.exists) {
-          document.getElementById("adminPoints").innerText = userDoc.data().points || 0;
-        }
       } catch (error) {
         console.error("Error adding question:", error);
         alert("Error adding question. Please try again.");
-      }
-    });
-
-    // Logout functionality
-    document.getElementById("logoutBtn").addEventListener("click", async () => {
-      try {
-        await auth.signOut();
-        window.location.href = "auth.html";
-      } catch (error) {
-        console.error("Error signing out:", error);
       }
     });
   </script>
