@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dopamine Quiz - Question Bank</title>
+  <style>
+    /* Base Styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f7f7f7;
+    }
+    /* Navigation Bar */
+    .navbar {
+      background: #667eea;
+      color: #fff;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .navbar h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+    /* Container for content */
+    .container {
+      padding: 20px;
+    }
+    /* Subject list styling */
+    #subjectList {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .subject-btn {
+      background: #667eea;
+      color: #fff;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .subject-btn:hover {
+      background: #556cd6;
+    }
+    /* Questions display styling */
+    #questionDisplay {
+      background: #fff;
+      padding: 15px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .question-item {
+      border-bottom: 1px solid #eee;
+      padding: 10px 0;
+    }
+    .question-item:last-child {
+      border-bottom: none;
+    }
+    .question-item h3 {
+      margin: 0 0 5px;
+      font-size: 1.1rem;
+      color: #333;
+    }
+    .question-item ul {
+      margin: 5px 0 0 20px;
+      padding: 0;
+      list-style: disc;
+    }
+    .question-item p {
+      margin: 5px 0;
+    }
+    /* Responsive adjustments */
+    @media screen and (max-width: 600px) {
+      #subjectList {
+        flex-direction: column;
+      }
+      .subject-btn {
+        width: 100%;
+      }
+    }
+  </style>
+  <!-- Firebase SDKs (compat versions) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <h1>Question Bank</h1>
+    <button id="backBtn" style="background: none;border: none;color:#fff;cursor:pointer;font-size:1rem;">← Back to Dashboard</button>
+  </nav>
+  
+  <!-- Main Container -->
+  <div class="container">
+    <!-- List of Subjects -->
+    <div id="subjectList">
+      <button class="subject-btn" data-subject="Biology 1st">Biology 1st</button>
+      <button class="subject-btn" data-subject="Biology 2nd">Biology 2nd</button>
+      <button class="subject-btn" data-subject="Physics 1st">Physics 1st</button>
+      <button class="subject-btn" data-subject="Physics 2nd">Physics 2nd</button>
+      <button class="subject-btn" data-subject="Chemistry 1st">Chemistry 1st</button>
+      <button class="subject-btn" data-subject="Chemistry 2nd">Chemistry 2nd</button>
+      <button class="subject-btn" data-subject="Bangla">Bangla</button>
+      <button class="subject-btn" data-subject="English">English</button>
+    </div>
+    
+    <!-- Display Area for Questions -->
+    <div id="questionDisplay">
+      <h2>Select a subject to view its questions.</h2>
+    </div>
+  </div>
+  
+  <script>
+    // Firebase configuration using your provided details
+    const firebaseConfig = {
+      apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
+      authDomain: "dopamine-quiz.firebaseapp.com",
+      projectId: "dopamine-quiz",
+      storageBucket: "dopamine-quiz.firebasestorage.app",
+      messagingSenderId: "822531459966",
+      appId: "1:822531459966:web:8e7d2385090e997eb1c12f"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // Check if admin is logged in (optional: only admins can access this page)
+    auth.onAuthStateChanged(async (user) => {
+      if (!user) {
+        window.location.href = "auth.html";
+      } else {
+        // (Optional) you could also verify admin role here if desired.
+      }
+    });
+    
+    // Back button: redirect to admin dashboard
+    document.getElementById("backBtn").addEventListener("click", () => {
+      window.location.href = "admin.html";
+    });
+    
+    // Attach event listeners to subject buttons
+    const subjectButtons = document.querySelectorAll(".subject-btn");
+    subjectButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const subject = btn.getAttribute("data-subject");
+        displayQuestions(subject);
+      });
+    });
+    
+    // Function to display questions for a selected subject
+    function displayQuestions(subject) {
+      const displayDiv = document.getElementById("questionDisplay");
+      displayDiv.innerHTML = `<h2>Questions for ${subject}</h2>`;
+      
+      db.collection("questions")
+        .where("subject", "==", subject)
+        .orderBy("timestamp", "desc")
+        .get()
+        .then(querySnapshot => {
+          if (querySnapshot.empty) {
+            displayDiv.innerHTML += "<p>No questions found for this subject.</p>";
+          } else {
+            querySnapshot.forEach(doc => {
+              const data = doc.data();
+              const qItem = document.createElement("div");
+              qItem.classList.add("question-item");
+              qItem.innerHTML = `
+                <h3>${data.question}</h3>
+                <p><strong>Options:</strong></p>
+                <ul>
+                  <li>${data.options[0]}</li>
+                  <li>${data.options[1]}</li>
+                  <li>${data.options[2]}</li>
+                  <li>${data.options[3]}</li>
+                </ul>
+              `;
+              if (data.explanation && data.explanation.trim() !== "") {
+                qItem.innerHTML += `<p><strong>Explanation:</strong> ${data.explanation}</p>`;
+              }
+              displayDiv.appendChild(qItem);
+            });
+          }
+        })
+        .catch(error => {
+          console.error("Error retrieving questions:", error);
+          displayDiv.innerHTML += "<p>Error retrieving questions.</p>";
+        });
+    }
+  </script>
+</body>
+</html>
