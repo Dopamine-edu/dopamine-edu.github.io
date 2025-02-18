@@ -3,117 +3,70 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dopamine Quiz - Admin Dashboard</title>
+  <title>Admin - Add Questions</title>
   <style>
-    /* Basic Reset */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: Arial, sans-serif; background: #f7f7f7; }
-    /* Navbar */
-    .navbar {
-      background: #667eea;
-      color: #fff;
-      padding: 15px 20px;
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #f4f4f4;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      background: white;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    h2 {
+      text-align: center;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    .radio-group {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      position: relative;
     }
-    .navbar h1 { font-size: 1.5rem; }
-    .navbar button { background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
-    /* Menu Overlay */
-    .menu-overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.7);
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
+    .radio-group label {
+      font-weight: normal;
     }
-    .menu-overlay ul { list-style: none; text-align: center; }
-    .menu-overlay ul li { margin: 15px 0; }
-    .menu-overlay ul li button {
-      background: #fff; border: none; padding: 10px 20px;
-      font-size: 1.2rem; border-radius: 5px; cursor: pointer;
+    button {
+      background: #28a745;
+      color: white;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 1rem;
     }
-    /* Main Content */
-    .content { padding: 20px; }
-    .content h2 { margin-bottom: 20px; }
-    .add-question-btn {
-      background: #667eea; color: #fff; border: none;
-      padding: 10px 20px; font-size: 1rem; border-radius: 5px;
-      cursor: pointer; margin-bottom: 20px;
-    }
-    /* Admin Info Display */
-    #adminInfoDisplay {
-      background: #fff; padding: 20px; border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px;
-    }
-    /* Add Question Form */
-    #questionForm {
-      background: #fff; padding: 20px; border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px;
-    }
-    #questionForm h3 { margin-bottom: 10px; }
-    #questionForm label { display: block; margin-top: 10px; font-weight: bold; }
-    #questionForm input[type="text"],
-    #questionForm select,
-    #questionForm textarea {
-      width: 100%; padding: 8px; margin-top: 5px;
-      border: 1px solid #ccc; border-radius: 4px;
-    }
-    #questionForm .radio-group { margin-top: 10px; }
-    #questionForm .radio-group label { display: block; margin-top: 5px; }
-    #questionForm button { margin-top: 15px; background: #667eea;
-      color: #fff; border: none; padding: 10px; border-radius: 4px;
-      width: 100%; cursor: pointer; }
-    /* Hidden Class */
-    .hidden { display: none; }
-    /* Responsive Adjustments */
-    @media (max-width: 600px) {
-      .navbar h1 { font-size: 1.2rem; }
-      .menu-overlay ul li button { font-size: 1rem; padding: 8px 16px; }
+    button:hover {
+      background: #218838;
     }
   </style>
-  <!-- Firebase SDKs (compat versions) -->
+  <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
-  <!-- Navigation Bar -->
-  <nav class="navbar">
-    <h1>Dopamine Quiz - Admin Dashboard</h1>
-    <button id="menuBtn">☰</button>
-  </nav>
-  <!-- Menu Overlay -->
-  <div class="menu-overlay" id="menuOverlay">
-    <ul>
-      <li><button id="menuAdminInfo">Admin Info</button></li>
-      <li><button id="menuReferral">Referral</button></li>
-      <li><button id="menuRewardWithdrawal">Reward Withdrawal</button></li>
-      <li><button id="menuLogout">Logout</button></li>
-      <li><button id="menuClose">Close</button></li>
-    </ul>
-  </div>
-  <!-- Main Content -->
-  <div class="content" id="contentArea">
-    <h2>Welcome, Admin!</h2>
-    <!-- This section will show dynamic content based on menu selection -->
-    <div id="adminInfoDisplay" class="hidden">
-      <h3>Admin Information</h3>
-      <p><strong>Name:</strong> <span id="infoName"></span></p>
-      <p><strong>Total Questions Added:</strong> <span id="totalQuestions">0</span></p>
-      <p><strong>Points Earned:</strong> <span id="infoPoints">0</span></p>
-    </div>
-    <!-- Add Questions Section (default view) -->
-    <button class="add-question-btn" id="showQuestionFormBtn">➕ Add Question</button>
-    <div id="questionForm" class="hidden">
-      <h3>Add a New Question</h3>
-      <form id="addQuestionForm">
-        <!-- Subject Selection -->
+  <div class="container">
+    <h2>Add Question</h2>
+    <form id="addQuestionForm">
+      <!-- Subject Selection -->
+      <div class="form-group">
         <label for="subjectSelect">Subject:</label>
         <select id="subjectSelect" required>
           <option value="">Select Subject</option>
@@ -126,16 +79,25 @@
           <option value="Bangla">Bangla</option>
           <option value="English">English</option>
         </select>
-        <!-- Question Text -->
+      </div>
+
+      <!-- Question Input -->
+      <div class="form-group">
         <label for="questionInput">Question:</label>
-        <input type="text" id="questionInput" placeholder="Enter your question" required>
-        <!-- Options -->
+        <textarea id="questionInput" required></textarea>
+      </div>
+
+      <!-- Options Input -->
+      <div class="form-group">
         <label>Options:</label>
         <input type="text" id="option1" placeholder="Option 1" required>
         <input type="text" id="option2" placeholder="Option 2" required>
         <input type="text" id="option3" placeholder="Option 3" required>
         <input type="text" id="option4" placeholder="Option 4" required>
-        <!-- Correct Answer Selection -->
+      </div>
+
+      <!-- Correct Option Selection -->
+      <div class="form-group">
         <label>Correct Answer:</label>
         <div class="radio-group">
           <label><input type="radio" name="correctOption" value="1" required> Option 1</label>
@@ -143,16 +105,22 @@
           <label><input type="radio" name="correctOption" value="3"> Option 3</label>
           <label><input type="radio" name="correctOption" value="4"> Option 4</label>
         </div>
-        <!-- Explanation (Optional) -->
+      </div>
+
+      <!-- Explanation (Optional) -->
+      <div class="form-group">
         <label for="explanationInput">Explanation (Optional):</label>
-        <textarea id="explanationInput" rows="3" placeholder="Enter explanation (if any)"></textarea>
-        <button type="submit">Submit Question</button>
-      </form>
-    </div>
+        <textarea id="explanationInput"></textarea>
+      </div>
+
+      <button type="submit">Submit Question</button>
+    </form>
   </div>
 
   <script>
-    // Firebase configuration using your provided details
+    /****************************
+     * Firebase Configuration
+     ****************************/
     const firebaseConfig = {
       apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
       authDomain: "dopamine-quiz.firebaseapp.com",
@@ -162,103 +130,41 @@
       appId: "1:822531459966:web:8e7d2385090e997eb1c12f"
     };
     firebase.initializeApp(firebaseConfig);
+
     const auth = firebase.auth();
     const db = firebase.firestore();
 
-    // MENU FUNCTIONALITY
-    const menuBtn = document.getElementById("menuBtn");
-    const menuOverlay = document.getElementById("menuOverlay");
-    const menuClose = document.getElementById("menuClose");
-    menuBtn.addEventListener("click", () => { menuOverlay.style.display = "flex"; });
-    menuClose.addEventListener("click", () => { menuOverlay.style.display = "none"; });
+    /*******************************************
+     * Persist Selected Subject Across Submissions
+     *******************************************/
+    const subjectSelect = document.getElementById("subjectSelect");
 
-    // Menu Items
-    document.getElementById("menuAdminInfo").addEventListener("click", async () => {
-      menuOverlay.style.display = "none";
-      // Show Admin Info section and populate it
-      document.getElementById("adminInfoDisplay").classList.remove("hidden");
-      // Hide Add Question Form if visible
-      document.getElementById("questionForm").classList.add("hidden");
-      const user = auth.currentUser;
-      if (user) {
-        try {
-          const userDoc = await db.collection("users").doc(user.uid).get();
-          if (userDoc.exists) {
-            const data = userDoc.data();
-            document.getElementById("infoName").innerText = data.name || "Admin";
-            document.getElementById("infoPoints").innerText = data.points || 0;
-            // Count total questions added by this admin
-            const querySnapshot = await db.collection("questions").where("addedBy", "==", user.uid).get();
-            document.getElementById("totalQuestions").innerText = querySnapshot.size;
-          }
-        } catch (error) {
-          console.error("Error fetching admin info:", error);
-        }
-      }
-    });
-    document.getElementById("menuReferral").addEventListener("click", () => {
-      menuOverlay.style.display = "none";
-      document.getElementById("adminInfoDisplay").classList.remove("hidden");
-      document.getElementById("adminInfoDisplay").innerHTML = `<h3>Referral</h3><p>Referral functionality coming soon.</p>`;
-    });
-    document.getElementById("menuRewardWithdrawal").addEventListener("click", () => {
-      menuOverlay.style.display = "none";
-      document.getElementById("adminInfoDisplay").classList.remove("hidden");
-      document.getElementById("adminInfoDisplay").innerHTML = `<h3>Reward Withdrawal</h3><p>Reward Withdrawal functionality coming soon.</p>`;
-    });
-    document.getElementById("menuLogout").addEventListener("click", async () => {
-      menuOverlay.style.display = "none";
-      try {
-        await auth.signOut();
-        window.location.href = "auth.html";
-      } catch (error) {
-        console.error("Error signing out:", error);
-      }
+    // Check if a subject was previously selected and restore it
+    const savedSubject = localStorage.getItem("selectedSubject");
+    if (savedSubject) {
+      subjectSelect.value = savedSubject;
+    }
+
+    subjectSelect.addEventListener("change", () => {
+      localStorage.setItem("selectedSubject", subjectSelect.value);
     });
 
-    // SHOW ADD QUESTION FORM
-    const showQuestionFormBtn = document.getElementById("showQuestionFormBtn");
-    const questionForm = document.getElementById("questionForm");
-    showQuestionFormBtn.addEventListener("click", () => {
-      // Hide admin info display if visible
-      document.getElementById("adminInfoDisplay").classList.add("hidden");
-      // Toggle the add question form
-      questionForm.classList.toggle("hidden");
-    });
-
-    // Check if admin is logged in and load basic info
-    auth.onAuthStateChanged(async (user) => {
-      if (!user) {
-        window.location.href = "auth.html";
-      } else {
-        try {
-          const userDoc = await db.collection("users").doc(user.uid).get();
-          if (!(userDoc.exists && userDoc.data().role === "admin")) {
-            alert("Access Denied: You are not an admin.");
-            window.location.href = "homepage.html";
-          }
-        } catch (error) {
-          console.error("Error fetching admin data:", error);
-          window.location.href = "homepage.html";
-        }
-      }
-    });
-
-    // HANDLE ADD QUESTION FORM SUBMISSION
+    /**************************************
+     * Handle Form Submission
+     **************************************/
     document.getElementById("addQuestionForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       
-      // Retrieve form values
-      const subject = document.getElementById("subjectSelect").value;
+      const selectedSubject = subjectSelect.value;
       const questionText = document.getElementById("questionInput").value.trim();
       const option1 = document.getElementById("option1").value.trim();
       const option2 = document.getElementById("option2").value.trim();
       const option3 = document.getElementById("option3").value.trim();
       const option4 = document.getElementById("option4").value.trim();
-      const correctOption = document.querySelector('input[name="correctOption"]:checked').value;
+      const correctOption = document.querySelector('input[name="correctOption"]:checked')?.value;
       const explanation = document.getElementById("explanationInput").value.trim();
 
-      if (!subject) {
+      if (!selectedSubject) {
         alert("Please select a subject.");
         return;
       }
@@ -266,12 +172,11 @@
         alert("Please fill in all required fields.");
         return;
       }
-      
+
       try {
         const user = auth.currentUser;
-        // Add question to Firestore (including subject and explanation)
         await db.collection("questions").add({
-          subject: subject,
+          subject: selectedSubject,
           question: questionText,
           options: [option1, option2, option3, option4],
           correctOption: correctOption,
@@ -279,15 +184,18 @@
           addedBy: user.uid,
           timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
-        // Determine point increment: 1.5 if explanation is provided, else 1
-        const pointIncrement = explanation ? 1.5 : 1;
-        // Update admin's points
+
+        // Award points: 1.5 if explanation is provided, otherwise 1
+        const points = explanation ? 1.5 : 1;
         await db.collection("users").doc(user.uid).update({
-          points: firebase.firestore.FieldValue.increment(pointIncrement)
+          points: firebase.firestore.FieldValue.increment(points)
         });
-        alert(`Question added successfully! ${pointIncrement} point(s) awarded.`);
-        // Reset the form
+
+        alert(`Question added successfully! ${points} point(s) awarded.`);
+
+        // Reset the form but keep the selected subject
         document.getElementById("addQuestionForm").reset();
+        subjectSelect.value = selectedSubject; // Restore subject selection
       } catch (error) {
         console.error("Error adding question:", error);
         alert("Error adding question. Please try again.");
