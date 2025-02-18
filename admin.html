@@ -5,14 +5,77 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admin - Add Questions</title>
   <style>
+    /* General Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
     body {
       font-family: Arial, sans-serif;
-      margin: 20px;
       background: #f4f4f4;
     }
+    /* Navbar */
+    .navbar {
+      background: #2d2d2d;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+      position: sticky;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+    .navbar .menu-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    .navbar .title {
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    /* Sidebar Menu */
+    .side-menu {
+      position: fixed;
+      top: 0;
+      left: -250px;
+      width: 250px;
+      height: 100%;
+      background: #2d2d2d;
+      padding: 20px;
+      transition: left 0.3s ease;
+      z-index: 2000;
+    }
+    .side-menu.active {
+      left: 0;
+    }
+    .side-menu ul {
+      list-style: none;
+      padding: 0;
+    }
+    .side-menu ul li {
+      margin: 15px 0;
+    }
+    .side-menu ul li a {
+      text-decoration: none;
+      color: white;
+      font-size: 1rem;
+      display: block;
+      padding: 8px;
+    }
+    .side-menu ul li a:hover {
+      background: #444;
+      border-radius: 5px;
+    }
+    /* Main Content */
     .container {
       max-width: 600px;
-      margin: auto;
+      margin: 80px auto 20px;
       padding: 20px;
       background: white;
       border-radius: 5px;
@@ -56,12 +119,32 @@
       background: #218838;
     }
   </style>
+
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
+
+  <!-- Sidebar Menu -->
+  <nav class="side-menu" id="sideMenu">
+    <h2>Admin Menu</h2>
+    <ul>
+      <li><a href="#">Admin Info</a></li>
+      <li><a href="#">Add Questions</a></li>
+      <li><a href="#">Refer Students</a></li>
+      <li><a href="#">Reward Withdrawal</a></li>
+      <li><a href="#" id="logoutBtn">Logout</a></li>
+    </ul>
+  </nav>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <button class="menu-btn" id="menuBtn">&#9776;</button>
+    <div class="title">Admin Panel</div>
+  </div>
+
   <div class="container">
     <h2>Add Question</h2>
     <form id="addQuestionForm">
@@ -107,20 +190,12 @@
         </div>
       </div>
 
-      <!-- Explanation (Optional) -->
-      <div class="form-group">
-        <label for="explanationInput">Explanation (Optional):</label>
-        <textarea id="explanationInput"></textarea>
-      </div>
-
       <button type="submit">Submit Question</button>
     </form>
   </div>
 
   <script>
-    /****************************
-     * Firebase Configuration
-     ****************************/
+    // Firebase Configuration
     const firebaseConfig = {
       apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
       authDomain: "dopamine-quiz.firebaseapp.com",
@@ -130,77 +205,29 @@
       appId: "1:822531459966:web:8e7d2385090e997eb1c12f"
     };
     firebase.initializeApp(firebaseConfig);
-
     const auth = firebase.auth();
     const db = firebase.firestore();
 
-    /*******************************************
-     * Persist Selected Subject Across Submissions
-     *******************************************/
+    // Preserve Subject Selection
     const subjectSelect = document.getElementById("subjectSelect");
-
-    // Check if a subject was previously selected and restore it
     const savedSubject = localStorage.getItem("selectedSubject");
-    if (savedSubject) {
-      subjectSelect.value = savedSubject;
-    }
-
+    if (savedSubject) subjectSelect.value = savedSubject;
     subjectSelect.addEventListener("change", () => {
       localStorage.setItem("selectedSubject", subjectSelect.value);
     });
 
-    /**************************************
-     * Handle Form Submission
-     **************************************/
-    document.getElementById("addQuestionForm").addEventListener("submit", async (e) => {
-      e.preventDefault();
-      
-      const selectedSubject = subjectSelect.value;
-      const questionText = document.getElementById("questionInput").value.trim();
-      const option1 = document.getElementById("option1").value.trim();
-      const option2 = document.getElementById("option2").value.trim();
-      const option3 = document.getElementById("option3").value.trim();
-      const option4 = document.getElementById("option4").value.trim();
-      const correctOption = document.querySelector('input[name="correctOption"]:checked')?.value;
-      const explanation = document.getElementById("explanationInput").value.trim();
+    // Sidebar Toggle
+    document.getElementById("menuBtn").addEventListener("click", () => {
+      document.getElementById("sideMenu").classList.toggle("active");
+    });
 
-      if (!selectedSubject) {
-        alert("Please select a subject.");
-        return;
-      }
-      if (!questionText || !option1 || !option2 || !option3 || !option4 || !correctOption) {
-        alert("Please fill in all required fields.");
-        return;
-      }
-
-      try {
-        const user = auth.currentUser;
-        await db.collection("questions").add({
-          subject: selectedSubject,
-          question: questionText,
-          options: [option1, option2, option3, option4],
-          correctOption: correctOption,
-          explanation: explanation || "",
-          addedBy: user.uid,
-          timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        });
-
-        // Award points: 1.5 if explanation is provided, otherwise 1
-        const points = explanation ? 1.5 : 1;
-        await db.collection("users").doc(user.uid).update({
-          points: firebase.firestore.FieldValue.increment(points)
-        });
-
-        alert(`Question added successfully! ${points} point(s) awarded.`);
-
-        // Reset the form but keep the selected subject
-        document.getElementById("addQuestionForm").reset();
-        subjectSelect.value = selectedSubject; // Restore subject selection
-      } catch (error) {
-        console.error("Error adding question:", error);
-        alert("Error adding question. Please try again.");
-      }
+    // Logout Button
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      auth.signOut().then(() => {
+        window.location.href = "auth.html";
+      });
     });
   </script>
+
 </body>
 </html>
