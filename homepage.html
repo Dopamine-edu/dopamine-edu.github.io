@@ -6,16 +6,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     /* Basic Reset */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: Arial, sans-serif;
       background: #1c1c1c;
       color: #fff;
-      overflow-x: hidden; /* prevent horizontal scroll from menu */
+      overflow-x: hidden;
     }
     /* Navbar */
     .navbar {
@@ -28,144 +24,83 @@
       top: 0;
       z-index: 1000;
     }
-    .navbar .title {
-      font-size: 1.5rem;
-      font-weight: bold;
-    }
+    .navbar .title { font-size: 1.5rem; font-weight: bold; }
     .navbar .menu-btn {
-      background: none;
-      border: none;
-      color: #fff;
-      font-size: 1.5rem;
-      cursor: pointer;
+      background: none; border: none;
+      color: #fff; font-size: 1.5rem; cursor: pointer;
     }
     /* Sliding Menu */
     .side-menu {
       position: fixed;
-      top: 0;
-      left: -250px; /* hidden by default */
-      width: 250px;
-      height: 100%;
-      background: #2d2d2d;
-      padding: 20px;
-      transition: left 0.3s ease;
-      z-index: 2000;
+      top: 0; left: -250px;
+      width: 250px; height: 100%;
+      background: #2d2d2d; padding: 20px;
+      transition: left 0.3s ease; z-index: 2000;
     }
-    .side-menu.active {
-      left: 0;
-    }
-    .side-menu h2 {
-      margin-bottom: 20px;
-    }
-    .side-menu ul {
-      list-style: none;
-      padding: 0;
-    }
+    .side-menu.active { left: 0; }
+    .side-menu h2 { margin-bottom: 20px; }
+    .side-menu ul { list-style: none; padding: 0; }
     .side-menu ul li {
       margin: 15px 0;
     }
-    .side-menu ul li a,
-    .side-menu ul li button {
-      background: none;
-      border: none;
-      color: #fff;
-      text-decoration: none;
-      font-size: 1rem;
-      cursor: pointer;
-      width: 100%;
-      text-align: left;
+    .side-menu ul li button,
+    .side-menu ul li a {
+      background: none; border: none;
+      color: #fff; text-decoration: none;
+      font-size: 1rem; cursor: pointer;
+      width: 100%; text-align: left;
     }
-    .side-menu ul li a:hover,
-    .side-menu ul li button:hover {
-      color: #aaa;
-    }
+    .side-menu ul li button:hover,
+    .side-menu ul li a:hover { color: #aaa; }
     /* Main Content */
-    .container {
-      padding: 20px;
-    }
+    .container { padding: 20px; }
     .tiles {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: center;
+      display: flex; flex-wrap: wrap;
+      gap: 20px; justify-content: center;
       margin-top: 20px;
     }
     .tile {
       background: #2d2d2d;
-      width: 120px;
-      height: 120px;
+      width: 120px; height: 120px;
       border-radius: 10px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      cursor: pointer;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; cursor: pointer;
       transition: background 0.3s;
     }
-    .tile:hover {
-      background: #3a3a3a;
-    }
-    .tile i {
-      font-size: 2rem;
-      margin-bottom: 8px;
-    }
-    .tile span {
-      font-size: 0.9rem;
-      font-weight: 500;
-    }
-    /* Accuracy Chart Container */
+    .tile:hover { background: #3a3a3a; }
+    .tile i { font-size: 2rem; margin-bottom: 8px; }
+    .tile span { font-size: 0.9rem; font-weight: 500; }
+    /* Chart */ 
     .chart-container {
       background: #2d2d2d;
       border-radius: 10px;
       margin: 20px auto;
-      width: 250px;
-      height: 250px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 250px; height: 250px;
+      display: flex; align-items: center; justify-content: center;
       flex-direction: column;
     }
     .chart-container .chart {
-      width: 150px;
-      height: 150px;
+      width: 150px; height: 150px;
       border-radius: 50%;
       background: conic-gradient(#00e676 0deg, #00e676 60deg, #fbc02d 60deg, #fbc02d 75deg, #e53935 75deg, #e53935 360deg);
-      /* green, yellow, red in conic style for demonstration */
     }
     .chart-legend {
-      margin-top: 10px;
-      font-size: 0.9rem;
-      text-align: center;
+      margin-top: 10px; font-size: 0.9rem; text-align: center;
     }
-    .chart-legend p {
-      margin: 4px 0;
-    }
-    /* Responsive */
+    .chart-legend p { margin: 4px 0; }
+    /* Responsive */ 
     @media (max-width: 600px) {
-      .tiles {
-        flex-direction: column;
-        align-items: center;
-      }
-      .tile {
-        width: 200px;
-        height: 60px;
-        flex-direction: row;
-        justify-content: flex-start;
-        padding-left: 10px;
-      }
-      .tile i {
-        font-size: 1.5rem;
-        margin-right: 10px;
-        margin-bottom: 0;
-      }
+      .tiles { flex-direction: column; align-items: center; }
+      .tile { width: 200px; height: 60px; flex-direction: row; justify-content: flex-start; padding-left: 10px; }
+      .tile i { font-size: 1.5rem; margin-right: 10px; margin-bottom: 0; }
     }
   </style>
-  <!-- Firebase App and Auth -->
+  <!-- Firebase SDKs --> 
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-  <!-- Optionally, you can use a free icon library like Font Awesome -->
+  <!-- Font Awesome (or any icon library) --> 
   <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
 </head>
 <body>
@@ -192,34 +127,14 @@
   <div class="container">
     <h1>Welcome to Dopamine Quiz!</h1>
     <div class="tiles">
-      <!-- Example tiles similar to your screenshot: Quick Practice, Mock Exam, etc. -->
-      <div class="tile">
-        <i class="fas fa-bolt"></i>
-        <span>Quick Practice</span>
-      </div>
-      <div class="tile">
-        <i class="fas fa-pencil-alt"></i>
-        <span>Mock Exam</span>
-      </div>
-      <div class="tile">
-        <i class="fas fa-database"></i>
-        <span>Question Bank</span>
-      </div>
-      <div class="tile">
-        <i class="fas fa-calendar"></i>
-        <span>Routine</span>
-      </div>
-      <div class="tile">
-        <i class="fas fa-question-circle"></i>
-        <span>Doubt</span>
-      </div>
-      <div class="tile">
-        <i class="fas fa-trophy"></i>
-        <span>Leaderboard</span>
-      </div>
+      <div class="tile"><i class="fas fa-bolt"></i><span>Quick Practice</span></div>
+      <div class="tile"><i class="fas fa-pencil-alt"></i><span>Mock Exam</span></div>
+      <div class="tile"><i class="fas fa-database"></i><span>Question Bank</span></div>
+      <div class="tile"><i class="fas fa-calendar"></i><span>Routine</span></div>
+      <div class="tile"><i class="fas fa-question-circle"></i><span>Doubt</span></div>
+      <div class="tile"><i class="fas fa-trophy"></i><span>Leaderboard</span></div>
     </div>
-
-    <!-- Accuracy Chart Example -->
+    <!-- Accuracy Chart --> 
     <div class="chart-container">
       <div class="chart"></div>
       <div class="chart-legend">
@@ -231,9 +146,7 @@
   </div>
 
   <script>
-    /*******************************
-     * 1. Firebase Configuration
-     *******************************/
+    // Firebase Configuration
     const firebaseConfig = {
       apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
       authDomain: "dopamine-quiz.firebaseapp.com",
@@ -246,63 +159,23 @@
     const auth = firebase.auth();
     const db = firebase.firestore();
 
-    /***********************************
-     * 2. Check if User is Logged In
-     ***********************************/
+    // Check if User is Logged In
     auth.onAuthStateChanged(user => {
-      if (!user) {
-        // If not logged in, redirect to auth page
-        window.location.href = "auth.html";
-      } else {
-        // Optionally fetch user's name from Firestore
-        db.collection("users").doc(user.uid).get()
-          .then(doc => {
-            if (doc.exists) {
-              const data = doc.data();
-              document.getElementById("userName").textContent = data.name || "User";
-            }
-          })
-          .catch(err => console.error("Error fetching user data:", err));
-      }
-    });
+      if (!user) { window.location.href = "auth.html"; }
+      else {\n        db.collection("users").doc(user.uid).get()\n          .then(doc => {\n            if (doc.exists) {\n              const data = doc.data();\n              document.getElementById(\"userName\").textContent = data.name || \"User\";\n            }\n          })\n          .catch(err => console.error(\"Error fetching user data:\", err));\n      }\n    });
 
-    /***********************************
-     * 3. Sliding Menu Functionality
-     ***********************************/
+    // Sliding Menu Functionality
     const sideMenu = document.getElementById("sideMenu");
     const menuBtn = document.getElementById("menuBtn");
-    menuBtn.addEventListener("click", () => {
-      sideMenu.classList.toggle("active");
-    });
+    menuBtn.addEventListener("click", () => { sideMenu.classList.toggle("active"); });
+    document.addEventListener("click", (e) => {\n      if (!sideMenu.contains(e.target) && e.target !== menuBtn) { sideMenu.classList.remove("active"); }\n    });
 
-    // Close menu on clicking outside (optional)
-    document.addEventListener("click", (e) => {
-      if (!sideMenu.contains(e.target) && e.target !== menuBtn) {
-        sideMenu.classList.remove("active");
-      }
-    });
-
-    /***********************************
-     * 4. Menu Buttons
-     ***********************************/
-    document.getElementById("adminBtn").addEventListener("click", () => {
-      window.location.href = "admin.html"; // Admin Access
-    });
-    document.getElementById("logoutBtn").addEventListener("click", () => {
-      auth.signOut().then(() => {
-        window.location.href = "auth.html";
-      });
-    });
-    // The other buttons (profileBtn, attemptedBtn, etc.) can redirect or do other tasks
-    // For now, they just close the menu
-    const menuButtons = ["profileBtn", "attemptedBtn", "leaderboardBtn", "referBtn"];
-    menuButtons.forEach(btnId => {
-      document.getElementById(btnId).addEventListener("click", () => {
-        sideMenu.classList.remove("active");
-        // Add your custom navigation logic here
-        alert(btnId + " clicked");
-      });
-    });
+    // Menu Buttons
+    document.getElementById("profileBtn").addEventListener("click", () => {\n      window.location.href = "profile.html";\n    });
+    document.getElementById("adminBtn").addEventListener("click", () => { window.location.href = "admin.html"; });
+    document.getElementById("logoutBtn").addEventListener("click", () => {\n      auth.signOut().then(() => { window.location.href = "auth.html"; });\n    });
+    // Other buttons: profileBtn, attemptedBtn, etc. can be handled similarly
+    [\"attemptedBtn\", \"leaderboardBtn\", \"referBtn\"].forEach(btnId => {\n      document.getElementById(btnId).addEventListener(\"click\", () => {\n        sideMenu.classList.remove(\"active\");\n        alert(btnId + \" clicked\");\n      });\n    });
   </script>
 </body>
 </html>
