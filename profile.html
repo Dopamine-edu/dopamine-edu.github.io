@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>User Profile - Dopamine Quiz</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; background: #f7f7f7; }
+    .container {
+      max-width: 500px; margin: auto; background: #fff;
+      padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    h2 { text-align: center; margin-bottom: 20px; }
+    .info { margin-bottom: 10px; }
+    .badge { display: inline-block; background: #667eea; color: #fff; padding: 5px 10px; margin: 5px; border-radius: 5px; }
+    .referral { background: #e0e0e0; padding: 10px; border-radius: 5px; margin-top: 10px; word-break: break-all; }
+  </style>
+  <!-- Firebase SDKs (compat versions) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h2>Your Profile</h2>
+    <div class="info"><strong>Name:</strong> <span id="name"></span></div>
+    <div class="info"><strong>College:</strong> <span id="college"></span></div>
+    <div class="info"><strong>Email:</strong> <span id="email"></span></div>
+    <div class="info"><strong>Referral Code:</strong> <span id="referralCode"></span></div>
+    <div class="info"><strong>Referrals:</strong> <span id="referralCount"></span></div>
+    <div class="info"><strong>Referral Points:</strong> <span id="referralPoints"></span></div>
+    <div class="info"><strong>Badges Earned:</strong> <div id="badges"></div></div>
+    <div class="referral">
+      Share this referral link with your friends: <br>
+      <span id="referralLink"></span>
+    </div>
+  </div>
+  
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
+      authDomain: "dopamine-quiz.firebaseapp.com",
+      projectId: "dopamine-quiz",
+      storageBucket: "dopamine-quiz.firebasestorage.app",
+      messagingSenderId: "822531459966",
+      appId: "1:822531459966:web:8e7d2385090e997eb1c12f"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+    
+    auth.onAuthStateChanged(user => {
+      if (!user) { window.location.href = "auth.html"; }
+      else {
+        db.collection("users").doc(user.uid).get().then(doc => {
+          if (doc.exists) {
+            const data = doc.data();
+            document.getElementById("name").textContent = data.name || "";
+            document.getElementById("college").textContent = data.college || "";
+            document.getElementById("email").textContent = data.email || "";
+            const referralCode = data.referralCode || user.uid;
+            document.getElementById("referralCode").textContent = referralCode;
+            document.getElementById("referralCount").textContent = data.referralCount || 0;
+            document.getElementById("referralPoints").textContent = data.referralPoints || 0;
+            const badgesDiv = document.getElementById("badges");
+            badgesDiv.innerHTML = "";
+            if (data.badges && data.badges.length > 0) {
+              data.badges.forEach(badge => {
+                const span = document.createElement("span");
+                span.className = "badge";
+                span.textContent = badge;
+                badgesDiv.appendChild(span);
+              });
+            } else {
+              badgesDiv.textContent = "No badges yet.";
+            }
+            const referralLink = window.location.origin + "/auth.html?ref=" + referralCode;
+            document.getElementById("referralLink").textContent = referralLink;
+          }
+        }).catch(error => console.error("Error fetching user profile:", error));
+      }
+    });
+  </script>
+</body>
+</html>
