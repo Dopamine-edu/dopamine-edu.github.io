@@ -71,7 +71,7 @@
       color: red;
     }
   </style>
-  <!-- Firebase SDKs -->
+  <!-- Firebase SDKs (compat versions) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
@@ -79,7 +79,7 @@
 <body>
   <div class="auth-card">
     <h2 id="formTitle">Sign Up</h2>
-    <!-- Sign Up fields -->
+    <!-- Sign Up fields (visible in Sign Up mode) -->
     <div id="signupFields">
       <div class="form-group">
         <label for="name">Name</label>
@@ -105,7 +105,7 @@
   </div>
 
   <script>
-    // Firebase configuration (replace with your own)
+    // Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
       authDomain: "dopamine-quiz.firebaseapp.com",
@@ -118,6 +118,10 @@
     const auth = firebase.auth();
     const db = firebase.firestore();
 
+    // Get referral parameter from URL (if present)
+    const urlParams = new URLSearchParams(window.location.search);
+    const referralParam = urlParams.get("ref");
+
     // Elements
     const formTitle = document.getElementById("formTitle");
     const submitBtn = document.getElementById("submitBtn");
@@ -125,10 +129,8 @@
     const messageDiv = document.getElementById("message");
     const signupFields = document.getElementById("signupFields");
 
-    // Mode: sign-up or login
     let isSignUp = true;
 
-    // Toggle mode
     toggleLink.addEventListener("click", () => {
       isSignUp = !isSignUp;
       if (isSignUp) {
@@ -145,17 +147,14 @@
       messageDiv.textContent = "";
     });
 
-    // Handle auth action
     submitBtn.addEventListener("click", async () => {
       messageDiv.textContent = "";
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value.trim();
-      
       if (!email || !password) {
         messageDiv.textContent = "Email and password are required.";
         return;
       }
-      
       if (isSignUp) {
         const name = document.getElementById("name").value.trim();
         const college = document.getElementById("college").value.trim();
@@ -164,22 +163,31 @@
           return;
         }
         try {
-          // Create user
           const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-          // Update display name
           await userCredential.user.updateProfile({ displayName: name });
-          // Optionally store extra details in Firestore
+          // Save additional user details along with referral info and gamification stats
           await db.collection("users").doc(userCredential.user.uid).set({
             name: name,
             college: college,
             email: email,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            role: "user",
+            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+            referralCode: userCredential.user.uid,
+            referredBy: referralParam || "",
+            referralCount: 0,
+            referralPoints: 0,
+            badges: []
           });
+          // If a referral code exists, update the referring user's stats
+          if (referralParam) {
+            await db.collection("users").doc(referralParam).update({
+              referralCount: firebase.firestore.FieldValue.increment(1),
+              referralPoints: firebase.firestore.FieldValue.increment(10)
+            });
+          }
           messageDiv.style.color = "green";
           messageDiv.textContent = "Sign up successful! Redirecting to homepage...";
-          setTimeout(() => {
-            window.location.href = "homepage.html";
-          }, 1500);
+          setTimeout(() => { window.location.href = "homepage.html"; }, 1500);
         } catch (error) {
           messageDiv.style.color = "red";
           messageDiv.textContent = error.message;
@@ -190,9 +198,7 @@
           await auth.signInWithEmailAndPassword(email, password);
           messageDiv.style.color = "green";
           messageDiv.textContent = "Login successful! Redirecting to homepage...";
-          setTimeout(() => {
-            window.location.href = "homepage.html";
-          }, 1500);
+          setTimeout(() => { window.location.href = "homepage.html"; }, 1500);
         } catch (error) {
           messageDiv.style.color = "red";
           messageDiv.textContent = error.message;
