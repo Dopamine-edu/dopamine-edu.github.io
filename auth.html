@@ -1,277 +1,313 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Quiz Auth</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    /* Reset & Base Styles */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .auth-card {
-      background: #fff;
-      padding: 2rem;
-      border-radius: 8px;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-      width: 100%;
-      max-width: 400px;
-      transition: transform 0.3s ease;
-    }
-    .auth-card:hover {
-      transform: scale(1.02);
-    }
-    .auth-card h2 {
-      text-align: center;
-      margin-bottom: 1.5rem;
-      color: #333;
-    }
-    .form-group {
-      margin-bottom: 1rem;
-    }
-    .form-group label {
-      display: block;
-      margin-bottom: 0.5rem;
-      color: #555;
-    }
-    .form-group input,
-    .form-group select {
-      width: 100%;
-      padding: 0.75rem;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 1rem;
-      transition: border 0.3s ease;
-    }
-    .form-group input:focus,
-    .form-group select:focus {
-      border-color: #667eea;
-    }
-    .auth-btn {
-      width: 100%;
-      padding: 0.75rem;
-      background: #667eea;
-      border: none;
-      color: #fff;
-      font-size: 1rem;
-      border-radius: 4px;
-      cursor: pointer;
-      margin-top: 1rem;
-      transition: background 0.3s ease;
-    }
-    .auth-btn:hover {
-      background: #556cd6;
-    }
-    .toggle-link, .login-extras a {
-      text-align: center;
-      margin-top: 1rem;
-      color: #667eea;
-      cursor: pointer;
-      text-decoration: underline;
-      transition: color 0.3s ease;
-    }
-    .toggle-link:hover, .login-extras a:hover {
-      color: #556cd6;
-    }
-    .message {
-      text-align: center;
-      margin-top: 1rem;
-      font-size: 0.9rem;
-      color: red;
-    }
-    .login-extras {
-      text-align: center;
-      margin-top: 0.5rem;
-      display: none;
-    }
-  </style>
-  <!-- Firebase SDKs (compat versions) -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Platform - Auth</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-attachment: fixed;
+        }
+
+        .auth-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+            transform-style: preserve-3d;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .auth-container.signup {
+            transform: rotateY(180deg);
+            display: none;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2d3748;
+            font-size: 2rem;
+            position: relative;
+        }
+
+        h2::after {
+            content: '';
+            width: 60px;
+            height: 4px;
+            background: #667eea;
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+            outline: none;
+        }
+
+        select {
+            appearance: none;
+            background: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") no-repeat right 1rem center/1em;
+        }
+
+        button {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .links {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #4a5568;
+        }
+
+        a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        a:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        .error {
+            color: #e53e3e;
+            text-align: center;
+            margin: 1rem 0;
+            font-weight: 500;
+            padding: 0.5rem;
+            border-radius: 6px;
+            background: #fed7d7;
+            display: none;
+        }
+
+        .flip-container {
+            perspective: 1000px;
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .front, .back {
+            backface-visibility: hidden;
+            transition: 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .back {
+            transform: rotateY(180deg);
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+        }
+
+        .flipped .front {
+            transform: rotateY(180deg);
+        }
+
+        .flipped .back {
+            transform: rotateY(0deg);
+        }
+    </style>
 </head>
 <body>
-  <div class="auth-card">
-    <h2 id="formTitle">Sign Up</h2>
-    <!-- Signup Fields -->
-    <div id="signupFields">
-      <div class="form-group">
-        <label for="name">Name</label>
-        <input type="text" id="name" placeholder="Your Name">
-      </div>
-      <div class="form-group">
-        <label for="college">College Name</label>
-        <input type="text" id="college" placeholder="Your College Name">
-      </div>
-      <div class="form-group">
-        <label for="hscYear">HSC Year</label>
-        <select id="hscYear">
-          <option value="">Select HSC Year</option>
-          <option value="2023">2023</option>
-          <option value="2024">2024</option>
-          <option value="2025">2025</option>
-          <option value="2026">2026</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="phone">Phone Number</label>
-        <input type="text" id="phone" placeholder="Your Phone Number">
-      </div>
+    <div class="flip-container">
+        <!-- Login Form -->
+        <div class="auth-container front" id="login-container">
+            <h2>Welcome Back!</h2>
+            <div class="error" id="login-error"></div>
+            <form id="login-form">
+                <div class="form-group">
+                    <input type="email" id="login-email" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="login-password" placeholder="Password" required>
+                </div>
+                <button type="submit">Sign In</button>
+            </form>
+            <div class="links">
+                <a onclick="showForgotPassword()">Forgot Password?</a><br>
+                <a onclick="flipForm()">Create New Account →</a>
+            </div>
+        </div>
+
+        <!-- Signup Form -->
+        <div class="auth-container back" id="signup-container">
+            <h2>Create Account</h2>
+            <div class="error" id="signup-error"></div>
+            <form id="signup-form">
+                <div class="form-group">
+                    <input type="text" id="full-name" placeholder="Full Name" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" id="college-name" placeholder="College Name" required>
+                </div>
+                <div class="form-group">
+                    <select id="hsc-year" required>
+                        <option value="">HSC Year</option>
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                        <option value="2026">2026</option>
+                        <option value="2027">2027</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="tel" id="phone" placeholder="Phone Number" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" id="signup-email" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="signup-password" placeholder="Create Password" required>
+                </div>
+                <button type="submit">Get Started</button>
+            </form>
+            <div class="links">
+                <a onclick="flipForm()">← Back to Login</a>
+            </div>
+        </div>
     </div>
-    <!-- Common Fields -->
-    <div class="form-group">
-      <label for="email">Email</label>
-      <input type="email" id="email" placeholder="Your Email">
-    </div>
-    <div class="form-group">
-      <label for="password">Password</label>
-      <input type="password" id="password" placeholder="Your Password">
-    </div>
-    <!-- When in Login mode, show this extra div for Forgot Password link -->
-    <div class="login-extras" id="loginExtras">
-      <a href="#" id="forgotPassword">Forgot Password?</a>
-    </div>
-    <button class="auth-btn" id="submitBtn">Sign Up</button>
-    <div class="toggle-link" id="toggleLink">Already have an account? Log in</div>
-    <div class="message" id="message"></div>
-  </div>
 
-  <script>
-    // Firebase configuration (using your provided details)
-    const firebaseConfig = {
-      apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
-      authDomain: "dopamine-quiz.firebaseapp.com",
-      projectId: "dopamine-quiz",
-      storageBucket: "dopamine-quiz.firebasestorage.app",
-      messagingSenderId: "822531459966",
-      appId: "1:822531459966:web:8e7d2385090e997eb1c12f"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
 
-    // Get referral parameter from URL (if present)
-    const urlParams = new URLSearchParams(window.location.search);
-    const referralParam = urlParams.get("ref");
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
+            authDomain: "dopamine-quiz.firebaseapp.com",
+            projectId: "dopamine-quiz",
+            storageBucket: "dopamine-quiz.firebasestorage.app",
+            messagingSenderId: "822531459966",
+            appId: "1:822531459966:web:8e7d2385090e997eb1c12f"
+        };
 
-    // Elements
-    const formTitle = document.getElementById("formTitle");
-    const submitBtn = document.getElementById("submitBtn");
-    const toggleLink = document.getElementById("toggleLink");
-    const messageDiv = document.getElementById("message");
-    const signupFields = document.getElementById("signupFields");
-    const loginExtras = document.getElementById("loginExtras");
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
 
-    let isSignUp = true;  // Default mode: Signup
-
-    // Toggle between Signup and Login modes
-    toggleLink.addEventListener("click", () => {
-      isSignUp = !isSignUp;
-      if (isSignUp) {
-        formTitle.textContent = "Sign Up";
-        submitBtn.textContent = "Sign Up";
-        toggleLink.textContent = "Already have an account? Log in";
-        signupFields.style.display = "block";
-        loginExtras.style.display = "none";
-      } else {
-        formTitle.textContent = "Log In";
-        submitBtn.textContent = "Log In";
-        toggleLink.textContent = "Don't have an account? Sign up";
-        signupFields.style.display = "none";
-        loginExtras.style.display = "block";
-      }
-      messageDiv.textContent = "";
-    });
-
-    // Forgot password functionality in login mode
-    document.getElementById("forgotPassword").addEventListener("click", async () => {
-      const email = document.getElementById("email").value.trim();
-      if (!email) {
-        alert("Please enter your email to reset your password.");
-        return;
-      }
-      try {
-        await auth.sendPasswordResetEmail(email);
-        alert("Password reset email sent.");
-      } catch (error) {
-        alert("Error: " + error.message);
-      }
-    });
-
-    // Handle authentication action
-    submitBtn.addEventListener("click", async () => {
-      messageDiv.textContent = "";
-      const email = document.getElementById("email").value.trim();
-      const password = document.getElementById("password").value.trim();
-      if (!email || !password) {
-        messageDiv.textContent = "Email and password are required.";
-        return;
-      }
-      if (isSignUp) {
-        // Signup mode: validate extra fields
-        const name = document.getElementById("name").value.trim();
-        const college = document.getElementById("college").value.trim();
-        const hscYear = document.getElementById("hscYear").value;
-        const phone = document.getElementById("phone").value.trim();
-        if (!name || !college || !hscYear || !phone) {
-          messageDiv.textContent = "Please fill in all fields (Name, College, HSC Year, Phone).";
-          return;
+        // Form Flip Animation
+        function flipForm() {
+            document.querySelector('.flip-container').classList.toggle('flipped');
         }
-        try {
-          const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-          await userCredential.user.updateProfile({ displayName: name });
-          // Save additional user details with extra fields and referral info
-          await db.collection("users").doc(userCredential.user.uid).set({
-            name: name,
-            college: college,
-            hscYear: hscYear,
-            phone: phone,
-            email: email,
-            role: "user",
-            createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-            referralCode: userCredential.user.uid,
-            referredBy: referralParam || "",
-            referralCount: 0,
-            referralPoints: 0,
-            badges: []
-          });
-          // If a referral code exists, update the referring user's stats
-          if (referralParam) {
-            await db.collection("users").doc(referralParam).update({
-              referralCount: firebase.firestore.FieldValue.increment(1),
-              referralPoints: firebase.firestore.FieldValue.increment(10)
-            });
-          }
-          messageDiv.style.color = "green";
-          messageDiv.textContent = "Sign up successful! Redirecting to homepage...";
-          setTimeout(() => { window.location.href = "homepage.html"; }, 1500);
-        } catch (error) {
-          messageDiv.style.color = "red";
-          messageDiv.textContent = error.message;
+
+        // Login Handler
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+
+            auth.signInWithEmailAndPassword(email, password)
+                .then(() => {
+                    window.location.href = '/dashboard.html';
+                })
+                .catch(error => {
+                    showError('login-error', error.message);
+                });
+        });
+
+        // Signup Handler
+        document.getElementById('signup-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const fullName = document.getElementById('full-name').value;
+            const collegeName = document.getElementById('college-name').value;
+            const hscYear = document.getElementById('hsc-year').value;
+            const phone = document.getElementById('phone').value;
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    return db.collection('users').doc(userCredential.user.uid).set({
+                        fullName,
+                        collegeName,
+                        hscYear,
+                        phone,
+                        email,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                })
+                .then(() => {
+                    window.location.href = '/dashboard.html';
+                })
+                .catch(error => {
+                    showError('signup-error', error.message);
+                });
+        });
+
+        // Forgot Password
+        function showForgotPassword() {
+            const email = prompt('Please enter your email address:');
+            if (email) {
+                auth.sendPasswordResetEmail(email)
+                    .then(() => alert('Password reset email sent! Check your inbox.'))
+                    .catch(error => alert(error.message));
+            }
         }
-      } else {
-        // Login mode
-        try {
-          await auth.signInWithEmailAndPassword(email, password);
-          messageDiv.style.color = "green";
-          messageDiv.textContent = "Login successful! Redirecting to homepage...";
-          setTimeout(() => { window.location.href = "homepage.html"; }, 1500);
-        } catch (error) {
-          messageDiv.style.color = "red";
-          messageDiv.textContent = error.message;
+
+        // Error Handling
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+            setTimeout(() => errorElement.style.display = 'none', 5000);
         }
-      }
-    });
-  </script>
+    </script>
 </body>
 </html>
