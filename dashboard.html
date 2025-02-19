@@ -41,34 +41,9 @@
             flex-direction: column;
         }
 
-        /* Loading Overlay */
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            backdrop-filter: blur(5px);
-        }
-
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #667eea;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        /* Navbar */
+        /* Full-width Navbar */
         .navbar {
             background: var(--nav-bg);
-            padding: 1rem 2rem;
             color: white;
             box-shadow: var(--shadow);
             display: flex;
@@ -76,6 +51,8 @@
             align-items: center;
             position: relative;
             z-index: 100;
+            width: 100%;
+            padding: 1rem 2rem;
         }
 
         .website-name {
@@ -84,65 +61,6 @@
             letter-spacing: 1px;
         }
 
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        /* Notifications */
-        .notifications-container {
-            position: relative;
-        }
-
-        .notifications-badge {
-            position: absolute;
-            top: -8px;
-            right: -8px;
-            background: #e53e3e;
-            color: white;
-            border-radius: 50%;
-            padding: 2px 6px;
-            font-size: 0.8rem;
-            display: none;
-        }
-
-        .notifications-dropdown {
-            position: absolute;
-            right: 0;
-            top: 3rem;
-            background: var(--card-bg);
-            border-radius: 10px;
-            box-shadow: var(--shadow);
-            width: 300px;
-            max-height: 400px;
-            overflow-y: auto;
-            display: none;
-            z-index: 1000;
-        }
-
-        .notification-item {
-            padding: 1rem;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .notification-item:hover {
-            background: rgba(255,255,255,0.05);
-        }
-
-        /* Profile Picture */
-        .profile-picture {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            object-fit: cover;
-            border: 2px solid white;
-        }
-
-        /* Rest of existing styles... */
         .menu-container {
             position: relative;
         }
@@ -319,15 +237,13 @@
                 display: flex;
             }
 
-            .notifications-dropdown {
-                width: 250px;
-                right: -20px;
+            .navbar {
+                padding: 1rem;
             }
-        }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            .website-name {
+                font-size: 1.5rem;
+            }
         }
 
         @keyframes ripple {
@@ -336,55 +252,37 @@
     </style>
 </head>
 <body>
-    <!-- Loading Overlay -->
-    <div class="loading-overlay" id="loadingSpinner">
-        <div class="spinner"></div>
-    </div>
-
     <nav class="navbar">
         <h1 class="website-name">Dopamine</h1>
-        <div class="nav-right">
-            <div class="notifications-container">
-                <button class="menu-btn" onclick="toggleNotifications()">
-                    <i class="material-icons">notifications</i>
-                    <span class="notifications-badge" id="notificationBadge"></span>
-                </button>
-                <div class="notifications-dropdown" id="notificationsDropdown"></div>
-            </div>
-            <img src="https://via.placeholder.com/40" 
-                 class="profile-picture" 
-                 id="profilePicture"
-                 onclick="openProfileModal()">
-            <div class="menu-container">
-                <button class="menu-btn" onclick="toggleMenu(event)">
-                    <i class="material-icons">menu</i>
-                </button>
-                <div class="menu-dropdown" id="menuDropdown">
-                    <a href="#" class="menu-item">
-                        <i class="material-icons">dashboard</i>
-                        Dashboard
-                    </a>
-                    <a href="#" class="menu-item">
-                        <i class="material-icons">person</i>
-                        Profile
-                    </a>
-                    <a href="#" class="menu-item">
-                        <i class="material-icons">leaderboard</i>
-                        Leaderboard
-                    </a>
-                    <a href="#" class="menu-item">
-                        <i class="material-icons">group</i>
-                        Facebook Group
-                    </a>
-                    <a href="#" class="menu-item">
-                        <i class="material-icons">send</i>
-                        Telegram Group
-                    </a>
-                    <a href="#" class="menu-item" onclick="logout()">
-                        <i class="material-icons">logout</i>
-                        Logout
-                    </a>
-                </div>
+        <div class="menu-container">
+            <button class="menu-btn" onclick="toggleMenu(event)">
+                <i class="material-icons">menu</i>
+            </button>
+            <div class="menu-dropdown" id="menuDropdown">
+                <a href="#" class="menu-item">
+                    <i class="material-icons">dashboard</i>
+                    Dashboard
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="material-icons">person</i>
+                    Profile
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="material-icons">leaderboard</i>
+                    Leaderboard
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="material-icons">group</i>
+                    Facebook Group
+                </a>
+                <a href="#" class="menu-item">
+                    <i class="material-icons">send</i>
+                    Telegram Group
+                </a>
+                <a href="#" class="menu-item" onclick="logout()">
+                    <i class="material-icons">logout</i>
+                    Logout
+                </a>
             </div>
         </div>
     </nav>
@@ -444,7 +342,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-storage-compat.js"></script>
 
     <script>
         // Firebase Configuration
@@ -461,12 +358,6 @@
         const app = firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
-        const storage = firebase.storage();
-
-        // Loading Control
-        function showLoader(show) {
-            document.getElementById('loadingSpinner').style.display = show ? 'flex' : 'none';
-        }
 
         // Theme Toggle
         let isDark = localStorage.getItem('theme') === 'dark';
@@ -484,112 +375,33 @@
             menu.classList.toggle('show');
         }
 
-        // Notifications Toggle
-        function toggleNotifications() {
-            const dropdown = document.getElementById('notificationsDropdown');
-            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
-        }
-
-        // Profile Picture Handler
-        async function openProfileModal() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.accept = 'image/*';
-            
-            input.onchange = async (e) => {
-                showLoader(true);
-                try {
-                    const file = e.target.files[0];
-                    const storageRef = storage.ref(`profile_pictures/${auth.currentUser.uid}`);
-                    const snapshot = await storageRef.put(file);
-                    const url = await storageRef.getDownloadURL();
-                    
-                    await db.collection('users').doc(auth.currentUser.uid).update({
-                        profilePicture: url
-                    });
-                    
-                    document.getElementById('profilePicture').src = url;
-                } catch (error) {
-                    console.error('Error updating profile picture:', error);
-                }
-                showLoader(false);
-            };
-            input.click();
-        }
-
-        // Notifications System
-        let notificationsListener;
-        function setupNotifications(userId) {
-            notificationsListener = db.collection('notifications')
-                .where('userId', '==', userId)
-                .orderBy('timestamp', 'desc')
-                .onSnapshot(snapshot => {
-                    const container = document.getElementById('notificationsDropdown');
-                    const badge = document.getElementById('notificationBadge');
-                    let unreadCount = 0;
-                    
-                    container.innerHTML = '';
-                    snapshot.forEach(doc => {
-                        const data = doc.data();
-                        const notification = document.createElement('div');
-                        notification.className = 'notification-item';
-                        notification.innerHTML = `
-                            <h4>${data.title}</h4>
-                            <p>${data.message}</p>
-                            <small>${new Date(data.timestamp?.toDate()).toLocaleString()}</small>
-                        `;
-                        notification.onclick = () => markAsRead(doc.id);
-                        if(!data.read) unreadCount++;
-                        container.appendChild(notification);
-                    });
-                    
-                    badge.textContent = unreadCount > 0 ? unreadCount : '';
-                    badge.style.display = unreadCount > 0 ? 'block' : 'none';
-                });
-        }
-
-        async function markAsRead(notificationId) {
-            await db.collection('notifications').doc(notificationId).update({ read: true });
-        }
-
         // Auth State Listener
-        auth.onAuthStateChanged(async user => {
-            showLoader(true);
+        auth.onAuthStateChanged(user => {
             if (user) {
-                try {
-                    const userDoc = await db.collection('users').doc(user.uid).get();
-                    if (userDoc.exists) {
-                        // Update Profile
-                        const userData = userDoc.data();
-                        if(userData.profilePicture) {
-                            document.getElementById('profilePicture').src = userData.profilePicture;
+                db.collection('users').doc(user.uid).get()
+                    .then(doc => {
+                        if (doc.exists) {
+                            const fullName = doc.data().fullName || 'User';
+                            document.getElementById('lastName').textContent = fullName.split(' ').pop();
                         }
-                        document.getElementById('lastName').textContent = userData.fullName?.split(' ').pop() || 'User';
-
-                        // Setup Notifications
-                        setupNotifications(user.uid);
-                    }
-                    
-                    // Apply Theme
-                    document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
-                    document.getElementById('themeIcon').textContent = isDark ? 'brightness_7' : 'brightness_4';
-                } catch (error) {
-                    console.error('Error:', error);
-                } finally {
-                    showLoader(false);
-                }
+                    })
+                    .catch(error => console.error('Error:', error));
             } else {
                 window.location.href = 'auth.html';
             }
         });
 
+        // Logout Function
+        function logout() {
+            auth.signOut().then(() => {
+                window.location.href = 'auth.html';
+            }).catch(error => alert(error.message));
+        }
+
         // Close menus on outside click
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.menu-container')) {
                 document.getElementById('menuDropdown').classList.remove('show');
-            }
-            if (!e.target.closest('.notifications-container')) {
-                document.getElementById('notificationsDropdown').style.display = 'none';
             }
         });
 
@@ -622,4 +434,4 @@
         document.head.appendChild(style);
     </script>
 </body>
-</html>
+    </html>
