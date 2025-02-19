@@ -1,181 +1,261 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Quiz Homepage</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <title>Dopamine - Homepage</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Example icon library (Font Awesome) -->
+  <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
   <style>
-    /* Basic Reset */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: Arial, sans-serif;
-      background: #1c1c1c;
-      color: #fff;
-      overflow-x: hidden;
+    /* Reset & Base */
+    * {
+      margin: 0; padding: 0; box-sizing: border-box;
     }
-    /* Navbar */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f7f7f7;
+      color: #333;
+      min-height: 100vh;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    /* Top Navbar */
     .navbar {
-      background: #2d2d2d;
+      background: #ffffff;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 10px 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       position: sticky;
       top: 0;
       z-index: 1000;
     }
-    .navbar .title { font-size: 1.5rem; font-weight: bold; }
+    .navbar .brand {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #333;
+    }
     .navbar .menu-btn {
-      background: none; border: none;
-      color: #fff; font-size: 1.5rem; cursor: pointer;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #333;
     }
-    /* Sliding Menu */
-    .side-menu {
+    /* Menu Overlay */
+    .menu-overlay {
       position: fixed;
-      top: 0; left: -250px;
-      width: 250px; height: 100%;
-      background: #2d2d2d; padding: 20px;
-      transition: left 0.3s ease; z-index: 2000;
+      top: 0; right: -100%;
+      width: 250px; height: 100vh;
+      background: #ffffff;
+      box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+      transition: right 0.3s ease;
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
     }
-    .side-menu.active { left: 0; }
-    .side-menu h2 { margin-bottom: 20px; }
-    .side-menu ul { list-style: none; padding: 0; }
-    .side-menu ul li {
-      margin: 15px 0;
+    .menu-overlay.active {
+      right: 0;
     }
-    .side-menu ul li button,
-    .side-menu ul li a {
-      background: none; border: none;
-      color: #fff; text-decoration: none;
-      font-size: 1rem; cursor: pointer;
-      width: 100%; text-align: left;
+    .menu-overlay .menu-close {
+      align-self: flex-end;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      background: none;
+      border: none;
+      cursor: pointer;
     }
-    .side-menu ul li button:hover,
-    .side-menu ul li a:hover { color: #aaa; }
-    /* Main Content */
-    .container { padding: 20px; }
-    .tiles {
-      display: flex; flex-wrap: wrap;
-      gap: 20px; justify-content: center;
+    .menu-overlay ul {
+      list-style: none;
       margin-top: 20px;
     }
-    .tile {
-      background: #2d2d2d;
-      width: 120px; height: 120px;
-      border-radius: 10px;
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      text-align: center; cursor: pointer;
-      transition: background 0.3s;
+    .menu-overlay ul li {
+      margin: 15px 0;
     }
-    .tile:hover { background: #3a3a3a; }
-    .tile i { font-size: 2rem; margin-bottom: 8px; }
-    .tile span { font-size: 0.9rem; font-weight: 500; }
-    /* Chart */ 
-    .chart-container {
-      background: #2d2d2d;
+    .menu-overlay ul li a,
+    .menu-overlay ul li button {
+      color: #333;
+      font-size: 1rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .menu-overlay ul li a:hover,
+    .menu-overlay ul li button:hover {
+      color: #667eea;
+    }
+    /* Greeting Section */
+    .greeting-section {
+      background: #fefefe;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      margin-bottom: 20px;
+    }
+    .greeting-section h1 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      color: #333;
+    }
+    .greeting-section p {
+      color: #666;
+      font-size: 1rem;
+    }
+    /* Cards / Options */
+    .cards-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      padding: 20px;
+    }
+    .card {
+      background: #fff;
+      width: 150px;
+      height: 150px;
       border-radius: 10px;
-      margin: 20px auto;
-      width: 250px; height: 250px;
-      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      display: flex;
       flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.3s ease, background 0.3s ease;
     }
-    .chart-container .chart {
-      width: 150px; height: 150px;
-      border-radius: 50%;
-      background: conic-gradient(#00e676 0deg, #00e676 60deg, #fbc02d 60deg, #fbc02d 75deg, #e53935 75deg, #e53935 360deg);
+    .card:hover {
+      transform: translateY(-5px);
+      background: #f9f9ff;
     }
-    .chart-legend {
-      margin-top: 10px; font-size: 0.9rem; text-align: center;
+    .card i {
+      font-size: 2rem;
+      margin-bottom: 8px;
+      color: #667eea;
     }
-    .chart-legend p { margin: 4px 0; }
-    /* Responsive */ 
+    .card span {
+      font-size: 1rem;
+      color: #333;
+    }
+    /* Example Info Section */
+    .info-section {
+      background: #fff;
+      margin: 20px;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .info-section h2 {
+      margin-bottom: 10px;
+      color: #333;
+    }
+    .info-section p {
+      color: #666;
+      line-height: 1.6;
+    }
+    /* Responsive */
     @media (max-width: 600px) {
-      .tiles { flex-direction: column; align-items: center; }
-      .tile { width: 200px; height: 60px; flex-direction: row; justify-content: flex-start; padding-left: 10px; }
-      .tile i { font-size: 1.5rem; margin-right: 10px; margin-bottom: 0; }
+      .cards-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      .card {
+        width: 80%;
+        max-width: 300px;
+        margin: 0 auto;
+      }
     }
   </style>
-  <!-- Firebase SDKs --> 
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-  <!-- Font Awesome (or any icon library) --> 
-  <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <!-- Sliding Menu -->
-  <nav class="side-menu" id="sideMenu">
-    <h2 id="userName">User</h2>
-    <ul>
-      <li><button id="profileBtn">User Profile</button></li>
-      <li><button id="attemptedBtn">Attempted Exams</button></li>
-      <li><button id="leaderboardBtn">Leaderboard</button></li>
-      <li><button id="referBtn">Refer a Friend</button></li>
-      <li><button id="adminBtn">Admin Access</button></li>
-      <li><button id="logoutBtn">Logout</button></li>
-    </ul>
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="brand">Dopamine</div>
+    <button class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
   </nav>
 
-  <!-- Navbar -->
-  <div class="navbar">
-    <div class="title">Dopamine Quiz</div>
-    <button class="menu-btn" id="menuBtn">&#9776;</button>
+  <!-- Menu Overlay -->
+  <div class="menu-overlay" id="menuOverlay">
+    <button class="menu-close" id="menuClose"><i class="fas fa-times"></i></button>
+    <ul>
+      <li><button><i class="fas fa-user-circle"></i> Profile</button></li>
+      <li><button><i class="fas fa-book"></i> My Exams</button></li>
+      <li><button><i class="fas fa-trophy"></i> Leaderboard</button></li>
+      <li><button><i class="fas fa-question-circle"></i> Doubt Forum</button></li>
+      <li><button><i class="fas fa-sign-out-alt"></i> Logout</button></li>
+    </ul>
   </div>
 
-  <!-- Main Content -->
-  <div class="container">
-    <h1>Welcome to Dopamine Quiz!</h1>
-    <div class="tiles">
-      <div class="tile"><i class="fas fa-bolt"></i><span>Quick Practice</span></div>
-      <div class="tile"><i class="fas fa-pencil-alt"></i><span>Mock Exam</span></div>
-      <div class="tile"><i class="fas fa-database"></i><span>Question Bank</span></div>
-      <div class="tile"><i class="fas fa-calendar"></i><span>Routine</span></div>
-      <div class="tile"><i class="fas fa-question-circle"></i><span>Doubt</span></div>
-      <div class="tile"><i class="fas fa-trophy"></i><span>Leaderboard</span></div>
+  <!-- Greeting Section -->
+  <section class="greeting-section">
+    <!-- In a real app, replace 'Naim' with dynamic data from Firebase or localStorage -->
+    <h1>শুভ দুপুর, Naim</h1>
+    <p>আপনার পড়াশোনা আজ কেমন চলছে?</p>
+  </section>
+
+  <!-- Cards Container -->
+  <div class="cards-container">
+    <div class="card">
+      <i class="fas fa-bolt"></i>
+      <span>Quick Practice</span>
     </div>
-    <!-- Accuracy Chart --> 
-    <div class="chart-container">
-      <div class="chart"></div>
-      <div class="chart-legend">
-        <p><strong>3.7k Correct</strong></p>
-        <p>397 Skipped</p>
-        <p>514 Incorrect</p>
-      </div>
+    <div class="card">
+      <i class="fas fa-lightbulb"></i>
+      <span>Mock Exam</span>
+    </div>
+    <div class="card">
+      <i class="fas fa-database"></i>
+      <span>Question Bank</span>
+    </div>
+    <div class="card">
+      <i class="fas fa-calendar-alt"></i>
+      <span>Routine</span>
+    </div>
+    <div class="card">
+      <i class="fas fa-comments"></i>
+      <span>Doubt Solve</span>
+    </div>
+    <div class="card">
+      <i class="fas fa-trophy"></i>
+      <span>Leaderboard</span>
     </div>
   </div>
+
+  <!-- Additional Info Section -->
+  <section class="info-section">
+    <h2>Some Extra Information</h2>
+    <p>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque a enim libero. 
+      Nulla facilisi. Donec euismod, metus in feugiat tristique, neque nibh mollis ex, 
+      sit amet sollicitudin velit urna non purus. Etiam finibus libero ipsum, 
+      in suscipit lectus dignissim sed.
+    </p>
+  </section>
 
   <script>
-    // Firebase Configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
-      authDomain: "dopamine-quiz.firebaseapp.com",
-      projectId: "dopamine-quiz",
-      storageBucket: "dopamine-quiz.firebasestorage.app",
-      messagingSenderId: "822531459966",
-      appId: "1:822531459966:web:8e7d2385090e997eb1c12f"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+    const menuBtn = document.getElementById('menuBtn');
+    const menuOverlay = document.getElementById('menuOverlay');
+    const menuClose = document.getElementById('menuClose');
 
-    // Check if User is Logged In
-    auth.onAuthStateChanged(user => {
-      if (!user) { window.location.href = "auth.html"; }
-      else {\n        db.collection("users").doc(user.uid).get()\n          .then(doc => {\n            if (doc.exists) {\n              const data = doc.data();\n              document.getElementById(\"userName\").textContent = data.name || \"User\";\n            }\n          })\n          .catch(err => console.error(\"Error fetching user data:\", err));\n      }\n    });
+    menuBtn.addEventListener('click', () => {
+      menuOverlay.classList.add('active');
+    });
+    menuClose.addEventListener('click', () => {
+      menuOverlay.classList.remove('active');
+    });
 
-    // Sliding Menu Functionality
-    const sideMenu = document.getElementById("sideMenu");
-    const menuBtn = document.getElementById("menuBtn");
-    menuBtn.addEventListener("click", () => { sideMenu.classList.toggle("active"); });
-    document.addEventListener("click", (e) => {\n      if (!sideMenu.contains(e.target) && e.target !== menuBtn) { sideMenu.classList.remove("active"); }\n    });
-
-    // Menu Buttons
-    document.getElementById("profileBtn").addEventListener("click", () => {\n      window.location.href = "profile.html";\n    });
-    document.getElementById("adminBtn").addEventListener("click", () => { window.location.href = "admin.html"; });
-    document.getElementById("logoutBtn").addEventListener("click", () => {\n      auth.signOut().then(() => { window.location.href = "auth.html"; });\n    });
-    // Other buttons: profileBtn, attemptedBtn, etc. can be handled similarly
-    [\"attemptedBtn\", \"leaderboardBtn\", \"referBtn\"].forEach(btnId => {\n      document.getElementById(btnId).addEventListener(\"click\", () => {\n        sideMenu.classList.remove(\"active\");\n        alert(btnId + \" clicked\");\n      });\n    });
+    // Optionally close the menu if user clicks outside
+    document.addEventListener('click', (e) => {
+      if (!menuOverlay.contains(e.target) && e.target !== menuBtn) {
+        menuOverlay.classList.remove('active');
+      }
+    });
   </script>
 </body>
 </html>
