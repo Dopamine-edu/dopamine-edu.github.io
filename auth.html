@@ -26,6 +26,10 @@
       box-shadow: 0 10px 20px rgba(0,0,0,0.2);
       width: 100%;
       max-width: 400px;
+      transition: transform 0.3s ease;
+    }
+    .auth-card:hover {
+      transform: scale(1.02);
     }
     .auth-card h2 {
       text-align: center;
@@ -40,11 +44,18 @@
       margin-bottom: 0.5rem;
       color: #555;
     }
-    .form-group input {
+    .form-group input,
+    .form-group select {
       width: 100%;
       padding: 0.75rem;
       border: 1px solid #ccc;
       border-radius: 4px;
+      font-size: 1rem;
+      transition: border 0.3s ease;
+    }
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: #667eea;
     }
     .auth-btn {
       width: 100%;
@@ -56,19 +67,32 @@
       border-radius: 4px;
       cursor: pointer;
       margin-top: 1rem;
+      transition: background 0.3s ease;
     }
-    .toggle-link {
+    .auth-btn:hover {
+      background: #556cd6;
+    }
+    .toggle-link, .login-extras a {
       text-align: center;
       margin-top: 1rem;
       color: #667eea;
       cursor: pointer;
       text-decoration: underline;
+      transition: color 0.3s ease;
+    }
+    .toggle-link:hover, .login-extras a:hover {
+      color: #556cd6;
     }
     .message {
       text-align: center;
       margin-top: 1rem;
       font-size: 0.9rem;
       color: red;
+    }
+    .login-extras {
+      text-align: center;
+      margin-top: 0.5rem;
+      display: none;
     }
   </style>
   <!-- Firebase SDKs (compat versions) -->
@@ -79,7 +103,7 @@
 <body>
   <div class="auth-card">
     <h2 id="formTitle">Sign Up</h2>
-    <!-- Sign Up fields (visible in Sign Up mode) -->
+    <!-- Signup Fields -->
     <div id="signupFields">
       <div class="form-group">
         <label for="name">Name</label>
@@ -89,8 +113,22 @@
         <label for="college">College Name</label>
         <input type="text" id="college" placeholder="Your College Name">
       </div>
+      <div class="form-group">
+        <label for="hscYear">HSC Year</label>
+        <select id="hscYear">
+          <option value="">Select HSC Year</option>
+          <option value="2023">2023</option>
+          <option value="2024">2024</option>
+          <option value="2025">2025</option>
+          <option value="2026">2026</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="text" id="phone" placeholder="Your Phone Number">
+      </div>
     </div>
-    <!-- Common fields -->
+    <!-- Common Fields -->
     <div class="form-group">
       <label for="email">Email</label>
       <input type="email" id="email" placeholder="Your Email">
@@ -99,13 +137,17 @@
       <label for="password">Password</label>
       <input type="password" id="password" placeholder="Your Password">
     </div>
+    <!-- When in Login mode, show this extra div for Forgot Password link -->
+    <div class="login-extras" id="loginExtras">
+      <a href="#" id="forgotPassword">Forgot Password?</a>
+    </div>
     <button class="auth-btn" id="submitBtn">Sign Up</button>
     <div class="toggle-link" id="toggleLink">Already have an account? Log in</div>
     <div class="message" id="message"></div>
   </div>
 
   <script>
-    // Firebase configuration
+    // Firebase configuration (using your provided details)
     const firebaseConfig = {
       apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
       authDomain: "dopamine-quiz.firebaseapp.com",
@@ -128,9 +170,11 @@
     const toggleLink = document.getElementById("toggleLink");
     const messageDiv = document.getElementById("message");
     const signupFields = document.getElementById("signupFields");
+    const loginExtras = document.getElementById("loginExtras");
 
-    let isSignUp = true;
+    let isSignUp = true;  // Default mode: Signup
 
+    // Toggle between Signup and Login modes
     toggleLink.addEventListener("click", () => {
       isSignUp = !isSignUp;
       if (isSignUp) {
@@ -138,15 +182,33 @@
         submitBtn.textContent = "Sign Up";
         toggleLink.textContent = "Already have an account? Log in";
         signupFields.style.display = "block";
+        loginExtras.style.display = "none";
       } else {
         formTitle.textContent = "Log In";
         submitBtn.textContent = "Log In";
         toggleLink.textContent = "Don't have an account? Sign up";
         signupFields.style.display = "none";
+        loginExtras.style.display = "block";
       }
       messageDiv.textContent = "";
     });
 
+    // Forgot password functionality in login mode
+    document.getElementById("forgotPassword").addEventListener("click", async () => {
+      const email = document.getElementById("email").value.trim();
+      if (!email) {
+        alert("Please enter your email to reset your password.");
+        return;
+      }
+      try {
+        await auth.sendPasswordResetEmail(email);
+        alert("Password reset email sent.");
+      } catch (error) {
+        alert("Error: " + error.message);
+      }
+    });
+
+    // Handle authentication action
     submitBtn.addEventListener("click", async () => {
       messageDiv.textContent = "";
       const email = document.getElementById("email").value.trim();
@@ -156,19 +218,24 @@
         return;
       }
       if (isSignUp) {
+        // Signup mode: validate extra fields
         const name = document.getElementById("name").value.trim();
         const college = document.getElementById("college").value.trim();
-        if (!name || !college) {
-          messageDiv.textContent = "Please enter your name and college.";
+        const hscYear = document.getElementById("hscYear").value;
+        const phone = document.getElementById("phone").value.trim();
+        if (!name || !college || !hscYear || !phone) {
+          messageDiv.textContent = "Please fill in all fields (Name, College, HSC Year, Phone).";
           return;
         }
         try {
           const userCredential = await auth.createUserWithEmailAndPassword(email, password);
           await userCredential.user.updateProfile({ displayName: name });
-          // Save additional user details along with referral info and gamification stats
+          // Save additional user details with extra fields and referral info
           await db.collection("users").doc(userCredential.user.uid).set({
             name: name,
             college: college,
+            hscYear: hscYear,
+            phone: phone,
             email: email,
             role: "user",
             createdAt: firebase.firestore.FieldValue.serverTimestamp(),
@@ -193,7 +260,7 @@
           messageDiv.textContent = error.message;
         }
       } else {
-        // Login flow
+        // Login mode
         try {
           await auth.signInWithEmailAndPassword(email, password);
           messageDiv.style.color = "green";
