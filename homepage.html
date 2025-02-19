@@ -6,6 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Example icon library (Font Awesome) -->
   <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
+  <!-- Firebase (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+
   <style>
     /* Reset & Base */
     * {
@@ -39,14 +44,14 @@
     .navbar .brand {
       font-size: 1.5rem;
       font-weight: bold;
-      color: #667eea; /* Appealing color for brand text */
+      color: #667eea; /* Appealing brand color */
     }
     .navbar .menu-btn {
       background: none;
       border: none;
-      font-size: 1.5rem;
+      font-size: 1.8rem;
       cursor: pointer;
-      color: #667eea; /* Matches brand color */
+      color: #667eea;
     }
     /* Menu Overlay */
     .menu-overlay {
@@ -94,6 +99,7 @@
     .menu-overlay ul li button:hover {
       color: #667eea;
     }
+
     /* Greeting Section */
     .greeting-section {
       background: #eef2ff;
@@ -103,9 +109,9 @@
       margin-bottom: 10px;
     }
     .greeting-section h1 {
-      font-size: 1.4rem;
+      font-size: 1.6rem; /* Larger text */
       margin-bottom: 5px;
-      color: #764ba2; /* Another appealing color */
+      color: #764ba2;
     }
     .greeting-section p {
       color: #333;
@@ -118,12 +124,12 @@
       gap: 15px;
       justify-content: center;
       padding: 10px 20px;
-      margin-bottom: 60px; /* space for bottom nav */
+      margin-bottom: 80px; /* space for bottom nav */
     }
     .card {
       background: #fff;
-      width: 120px; /* Smaller card width */
-      height: 120px; /* Smaller card height */
+      width: 110px; /* Smaller card width */
+      height: 110px; /* Smaller card height */
       border-radius: 8px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       display: flex;
@@ -141,14 +147,15 @@
       background: #f9f9ff;
     }
     .card img {
-      width: 40px; /* Space for image/icon */
-      height: 40px; /* Adjust as needed */
-      margin-bottom: 8px;
+      width: 35px; /* Space for image/icon */
+      height: 35px;
+      margin-bottom: 6px;
     }
     .card span {
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       color: #333;
     }
+
     /* Bottom Navigation */
     .bottom-nav {
       background: #ffffff;
@@ -166,18 +173,19 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       color: #333;
       transition: color 0.3s ease;
     }
     .bottom-nav .nav-item i {
-      font-size: 1.3rem;
+      font-size: 1.4rem; /* Larger icon */
       margin-bottom: 3px;
       color: #667eea;
     }
     .bottom-nav .nav-item:hover {
       color: #667eea;
     }
+
     /* Responsive for smaller screens */
     @media (max-width: 600px) {
       .cards-container {
@@ -187,8 +195,15 @@
         justify-content: center;
       }
       .card {
-        width: 100px;
-        height: 100px;
+        width: 90px;
+        height: 90px;
+      }
+      .card img {
+        width: 30px;
+        height: 30px;
+      }
+      .bottom-nav .nav-item i {
+        font-size: 1.3rem;
       }
     }
   </style>
@@ -214,7 +229,7 @@
 
   <!-- Greeting Section -->
   <section class="greeting-section">
-    <h1 id="greetingText">শুভ সকাল, Naim</h1>
+    <h1 id="greetingText">শুভ সকাল, User</h1>
     <p>কেমন চলছে আপনার পড়াশোনা?</p>
   </section>
 
@@ -259,29 +274,38 @@
   </nav>
 
   <script>
-    // 1. Menu Overlay Functionality
-    const menuBtn = document.getElementById('menuBtn');
-    const menuOverlay = document.getElementById('menuOverlay');
-    const menuClose = document.getElementById('menuClose');
+    /***********************************
+     * 1. Firebase Configuration
+     ***********************************/
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_AUTH_DOMAIN",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_STORAGE_BUCKET",
+      messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
 
-    menuBtn.addEventListener('click', () => {
-      menuOverlay.classList.add('active');
-    });
-    menuClose.addEventListener('click', () => {
-      menuOverlay.classList.remove('active');
-    });
-
-    document.addEventListener('click', (e) => {
-      if (!menuOverlay.contains(e.target) && e.target !== menuBtn) {
-        menuOverlay.classList.remove('active');
+    /***********************************
+     * 2. Check if User is Logged In
+     ***********************************/
+    auth.onAuthStateChanged((user) => {
+      if (!user) {
+        // If not logged in, redirect to auth page
+        window.location.href = "auth.html";
+      } else {
+        // We can greet the user by their displayName or fetch from Firestore
+        const userName = user.displayName || "User";
+        const greetingText = document.getElementById("greetingText");
+        greetingText.textContent = `${getBanglaGreeting()}, ${userName}`;
       }
     });
 
-    // 2. Time-Based Greeting
-    // Replace 'Naim' with actual user name from your database or auth state
-    const userName = "Naim";
-    const greetingText = document.getElementById("greetingText");
-
+    /***********************************
+     * 3. Time-Based Greeting (Bangla)
+     ***********************************/
     function getBanglaGreeting() {
       const hour = new Date().getHours();
       if (hour >= 6 && hour <= 11) {
@@ -296,7 +320,27 @@
         return "শুভ রাত্রি";
       }
     }
-    greetingText.textContent = `${getBanglaGreeting()}, ${userName}`;
+
+    /***********************************
+     * 4. Menu Overlay Functionality
+     ***********************************/
+    const menuBtn = document.getElementById('menuBtn');
+    const menuOverlay = document.getElementById('menuOverlay');
+    const menuClose = document.getElementById('menuClose');
+
+    menuBtn.addEventListener('click', () => {
+      menuOverlay.classList.add('active');
+    });
+    menuClose.addEventListener('click', () => {
+      menuOverlay.classList.remove('active');
+    });
+
+    // Close overlay if user clicks outside
+    document.addEventListener('click', (e) => {
+      if (!menuOverlay.contains(e.target) && e.target !== menuBtn) {
+        menuOverlay.classList.remove('active');
+      }
+    });
   </script>
 </body>
 </html>
