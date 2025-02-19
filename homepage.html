@@ -70,8 +70,13 @@
       color: #667eea;
       margin-bottom: 20px;
     }
-    .menu-overlay ul { list-style: none; margin-top: 10px; }
-    .menu-overlay ul li { margin: 15px 0; }
+    .menu-overlay ul {
+      list-style: none;
+      margin-top: 10px;
+    }
+    .menu-overlay ul li {
+      margin: 15px 0;
+    }
     .menu-overlay ul li button {
       background: none;
       border: none;
@@ -235,7 +240,7 @@
   </nav>
 
   <script>
-    // Firebase Configuration using your provided details
+    // Firebase configuration using your provided details
     const firebaseConfig = {
       apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
       authDomain: "dopamine-quiz.firebaseapp.com",
@@ -247,18 +252,18 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
-    // 1. Authentication Check: Redirect to auth.html if user not logged in
+    // Authentication check: if not logged in, redirect to auth.html
     auth.onAuthStateChanged((user) => {
       if (!user) {
         window.location.href = "auth.html";
       } else {
-        // Use displayName from Firebase Auth; if not available, fallback to "User"
+        // Greet the user by name (using displayName, or "User" if not set)
         const userName = user.displayName || "User";
         document.getElementById("greetingText").textContent = `${getBanglaGreeting()}, ${userName}`;
       }
     });
 
-    // 2. Time-Based Greeting (Bangla)
+    // Time-Based Greeting in Bangla
     function getBanglaGreeting() {
       const hour = new Date().getHours();
       if (hour >= 6 && hour <= 11) {
@@ -274,7 +279,7 @@
       }
     }
 
-    // 3. Menu Overlay Functionality
+    // Menu Overlay Functionality
     const menuBtn = document.getElementById('menuBtn');
     const menuOverlay = document.getElementById('menuOverlay');
     const menuClose = document.getElementById('menuClose');
