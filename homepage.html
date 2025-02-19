@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Dopamine - Homepage</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Font Awesome Kit (replace with your kit if needed) -->
+  <!-- Font Awesome Kit (replace with your actual kit code) -->
   <script src="https://kit.fontawesome.com/your-fontawesome-kit.js" crossorigin="anonymous"></script>
   <!-- Firebase SDKs (compat versions) -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -133,11 +133,11 @@
     }
     .card:hover { transform: translateY(-5px); background: #f9f9ff; }
     .card img {
-      width: 35px;
-      height: 35px;
-      margin-bottom: 6px;
+      width: 40px;
+      height: 40px;
+      margin-bottom: 8px;
     }
-    .card span { font-size: 0.85rem; color: #333; }
+    .card span { font-size: 0.9rem; color: #333; }
     /* Bottom Navigation */
     .bottom-nav {
       background: #ffffff;
@@ -155,12 +155,12 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: #333;
       transition: color 0.3s ease;
     }
     .bottom-nav .nav-item i {
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       margin-bottom: 3px;
       color: #667eea;
     }
@@ -170,7 +170,7 @@
       .cards-container { flex-direction: row; flex-wrap: wrap; gap: 15px; justify-content: center; }
       .card { width: 90px; height: 90px; }
       .card img { width: 30px; height: 30px; }
-      .bottom-nav .nav-item i { font-size: 1.3rem; }
+      .bottom-nav .nav-item i { font-size: 1.2rem; }
     }
   </style>
 </head>
@@ -240,7 +240,7 @@
   </nav>
 
   <script>
-    // Firebase configuration using your provided details
+    // Firebase Configuration using your provided values
     const firebaseConfig = {
       apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
       authDomain: "dopamine-quiz.firebaseapp.com",
@@ -252,12 +252,16 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
-    // Authentication check: if not logged in, redirect to auth.html
+    // Set persistence so that the user remains logged in
+    auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).catch((error) => {
+      console.error("Error setting auth persistence:", error);
+    });
+
+    // Authentication check: if user not logged in, redirect to auth.html
     auth.onAuthStateChanged((user) => {
       if (!user) {
         window.location.href = "auth.html";
       } else {
-        // Greet the user by name (using displayName, or "User" if not set)
         const userName = user.displayName || "User";
         document.getElementById("greetingText").textContent = `${getBanglaGreeting()}, ${userName}`;
       }
@@ -266,17 +270,11 @@
     // Time-Based Greeting in Bangla
     function getBanglaGreeting() {
       const hour = new Date().getHours();
-      if (hour >= 6 && hour <= 11) {
-        return "শুভ সকাল";
-      } else if (hour >= 12 && hour <= 14) {
-        return "শুভ দুপুর";
-      } else if (hour >= 15 && hour <= 17) {
-        return "শুভ অপরাহ্ন";
-      } else if (hour >= 18 && hour <= 19) {
-        return "শুভ সন্ধ্যা";
-      } else {
-        return "শুভ রাত্রি";
-      }
+      if (hour >= 6 && hour <= 11) return "শুভ সকাল";
+      else if (hour >= 12 && hour <= 14) return "শুভ দুপুর";
+      else if (hour >= 15 && hour <= 17) return "শুভ অপরাহ্ন";
+      else if (hour >= 18 && hour <= 19) return "শুভ সন্ধ্যা";
+      else return "শুভ রাত্রি";
     }
 
     // Menu Overlay Functionality
@@ -290,7 +288,6 @@
     menuClose.addEventListener('click', () => {
       menuOverlay.classList.remove('active');
     });
-    // Close overlay if clicked outside
     document.addEventListener('click', (e) => {
       if (!menuOverlay.contains(e.target) && e.target !== menuBtn) {
         menuOverlay.classList.remove('active');
