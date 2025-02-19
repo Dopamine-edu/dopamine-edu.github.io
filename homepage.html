@@ -16,6 +16,9 @@
       background: #f7f7f7;
       color: #333;
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
     a {
       text-decoration: none;
@@ -36,20 +39,20 @@
     .navbar .brand {
       font-size: 1.5rem;
       font-weight: bold;
-      color: #333;
+      color: #667eea; /* Appealing color for brand text */
     }
     .navbar .menu-btn {
       background: none;
       border: none;
       font-size: 1.5rem;
       cursor: pointer;
-      color: #333;
+      color: #667eea; /* Matches brand color */
     }
     /* Menu Overlay */
     .menu-overlay {
       position: fixed;
       top: 0; right: -100%;
-      width: 250px; height: 100vh;
+      width: 240px; height: 100vh;
       background: #ffffff;
       box-shadow: -2px 0 5px rgba(0,0,0,0.1);
       transition: right 0.3s ease;
@@ -61,66 +64,67 @@
     .menu-overlay.active {
       right: 0;
     }
-    .menu-overlay .menu-close {
+    .menu-close {
       align-self: flex-end;
       font-size: 1.5rem;
-      margin-bottom: 20px;
       background: none;
       border: none;
       cursor: pointer;
+      color: #667eea;
+      margin-bottom: 20px;
     }
     .menu-overlay ul {
       list-style: none;
-      margin-top: 20px;
+      margin-top: 10px;
     }
     .menu-overlay ul li {
       margin: 15px 0;
     }
-    .menu-overlay ul li a,
     .menu-overlay ul li button {
-      color: #333;
-      font-size: 1rem;
       background: none;
       border: none;
+      color: #333;
+      font-size: 1rem;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      transition: color 0.3s ease;
     }
-    .menu-overlay ul li a:hover,
     .menu-overlay ul li button:hover {
       color: #667eea;
     }
     /* Greeting Section */
     .greeting-section {
-      background: #fefefe;
+      background: #eef2ff;
       padding: 20px;
       text-align: center;
       box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
     .greeting-section h1 {
-      font-size: 1.8rem;
-      margin-bottom: 10px;
-      color: #333;
+      font-size: 1.4rem;
+      margin-bottom: 5px;
+      color: #764ba2; /* Another appealing color */
     }
     .greeting-section p {
-      color: #666;
+      color: #333;
       font-size: 1rem;
     }
-    /* Cards / Options */
+    /* Cards Container */
     .cards-container {
       display: flex;
       flex-wrap: wrap;
-      gap: 20px;
+      gap: 15px;
       justify-content: center;
-      padding: 20px;
+      padding: 10px 20px;
+      margin-bottom: 60px; /* space for bottom nav */
     }
     .card {
       background: #fff;
-      width: 150px;
-      height: 150px;
-      border-radius: 10px;
+      width: 120px; /* Smaller card width */
+      height: 120px; /* Smaller card height */
+      border-radius: 8px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       display: flex;
       flex-direction: column;
@@ -129,52 +133,68 @@
       text-align: center;
       cursor: pointer;
       transition: transform 0.3s ease, background 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
     .card:hover {
       transform: translateY(-5px);
       background: #f9f9ff;
     }
-    .card i {
-      font-size: 2rem;
+    .card img {
+      width: 40px; /* Space for image/icon */
+      height: 40px; /* Adjust as needed */
       margin-bottom: 8px;
-      color: #667eea;
     }
     .card span {
-      font-size: 1rem;
+      font-size: 0.9rem;
       color: #333;
     }
-    /* Example Info Section */
-    .info-section {
-      background: #fff;
-      margin: 20px;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    /* Bottom Navigation */
+    .bottom-nav {
+      background: #ffffff;
+      box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      padding: 10px 0;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      z-index: 1000;
     }
-    .info-section h2 {
-      margin-bottom: 10px;
+    .bottom-nav .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 0.8rem;
       color: #333;
+      transition: color 0.3s ease;
     }
-    .info-section p {
-      color: #666;
-      line-height: 1.6;
+    .bottom-nav .nav-item i {
+      font-size: 1.3rem;
+      margin-bottom: 3px;
+      color: #667eea;
     }
-    /* Responsive */
+    .bottom-nav .nav-item:hover {
+      color: #667eea;
+    }
+    /* Responsive for smaller screens */
     @media (max-width: 600px) {
       .cards-container {
-        flex-direction: column;
-        align-items: center;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 15px;
+        justify-content: center;
       }
       .card {
-        width: 80%;
-        max-width: 300px;
-        margin: 0 auto;
+        width: 100px;
+        height: 100px;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Navbar -->
+  <!-- Top Navbar -->
   <nav class="navbar">
     <div class="brand">Dopamine</div>
     <button class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
@@ -184,61 +204,62 @@
   <div class="menu-overlay" id="menuOverlay">
     <button class="menu-close" id="menuClose"><i class="fas fa-times"></i></button>
     <ul>
-      <li><button><i class="fas fa-user-circle"></i> Profile</button></li>
-      <li><button><i class="fas fa-book"></i> My Exams</button></li>
-      <li><button><i class="fas fa-trophy"></i> Leaderboard</button></li>
-      <li><button><i class="fas fa-question-circle"></i> Doubt Forum</button></li>
-      <li><button><i class="fas fa-sign-out-alt"></i> Logout</button></li>
+      <li><button><i class="fas fa-home"></i>Dashboard</button></li>
+      <li><button><i class="fab fa-facebook"></i>Facebook Group</button></li>
+      <li><button><i class="fab fa-telegram"></i>Telegram Group</button></li>
+      <li><button><i class="fas fa-user-friends"></i>Refer a friend</button></li>
+      <li><button><i class="fas fa-sign-out-alt"></i>Logout</button></li>
     </ul>
   </div>
 
   <!-- Greeting Section -->
   <section class="greeting-section">
-    <!-- In a real app, replace 'Naim' with dynamic data from Firebase or localStorage -->
-    <h1>শুভ দুপুর, Naim</h1>
-    <p>আপনার পড়াশোনা আজ কেমন চলছে?</p>
+    <h1 id="greetingText">শুভ সকাল, Naim</h1>
+    <p>কেমন চলছে আপনার পড়াশোনা?</p>
   </section>
 
   <!-- Cards Container -->
   <div class="cards-container">
     <div class="card">
-      <i class="fas fa-bolt"></i>
+      <img src="quick_practice.png" alt="Quick Practice icon">
       <span>Quick Practice</span>
     </div>
     <div class="card">
-      <i class="fas fa-lightbulb"></i>
-      <span>Mock Exam</span>
+      <img src="customize_exam.png" alt="Customize Exam icon">
+      <span>Customize Exam</span>
     </div>
     <div class="card">
-      <i class="fas fa-database"></i>
-      <span>Question Bank</span>
+      <img src="main_book.png" alt="Main Book Exercise icon">
+      <span>Main Book Exercise</span>
     </div>
     <div class="card">
-      <i class="fas fa-calendar-alt"></i>
-      <span>Routine</span>
+      <img src="performance.png" alt="Performance icon">
+      <span>Performance</span>
     </div>
     <div class="card">
-      <i class="fas fa-comments"></i>
-      <span>Doubt Solve</span>
-    </div>
-    <div class="card">
-      <i class="fas fa-trophy"></i>
+      <img src="leaderboard.png" alt="Leaderboard icon">
       <span>Leaderboard</span>
     </div>
   </div>
 
-  <!-- Additional Info Section -->
-  <section class="info-section">
-    <h2>Some Extra Information</h2>
-    <p>
-      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque a enim libero. 
-      Nulla facilisi. Donec euismod, metus in feugiat tristique, neque nibh mollis ex, 
-      sit amet sollicitudin velit urna non purus. Etiam finibus libero ipsum, 
-      in suscipit lectus dignissim sed.
-    </p>
-  </section>
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <div class="nav-item">
+      <i class="fas fa-home"></i>
+      <span>Dashboard</span>
+    </div>
+    <div class="nav-item">
+      <i class="fas fa-trophy"></i>
+      <span>Leaderboard</span>
+    </div>
+    <div class="nav-item">
+      <i class="fas fa-user"></i>
+      <span>Profile</span>
+    </div>
+  </nav>
 
   <script>
+    // 1. Menu Overlay Functionality
     const menuBtn = document.getElementById('menuBtn');
     const menuOverlay = document.getElementById('menuOverlay');
     const menuClose = document.getElementById('menuClose');
@@ -250,12 +271,32 @@
       menuOverlay.classList.remove('active');
     });
 
-    // Optionally close the menu if user clicks outside
     document.addEventListener('click', (e) => {
       if (!menuOverlay.contains(e.target) && e.target !== menuBtn) {
         menuOverlay.classList.remove('active');
       }
     });
+
+    // 2. Time-Based Greeting
+    // Replace 'Naim' with actual user name from your database or auth state
+    const userName = "Naim";
+    const greetingText = document.getElementById("greetingText");
+
+    function getBanglaGreeting() {
+      const hour = new Date().getHours();
+      if (hour >= 6 && hour <= 11) {
+        return "শুভ সকাল";
+      } else if (hour >= 12 && hour <= 14) {
+        return "শুভ দুপুর";
+      } else if (hour >= 15 && hour <= 17) {
+        return "শুভ অপরাহ্ন";
+      } else if (hour >= 18 && hour <= 19) {
+        return "শুভ সন্ধ্যা";
+      } else {
+        return "শুভ রাত্রি";
+      }
+    }
+    greetingText.textContent = `${getBanglaGreeting()}, ${userName}`;
   </script>
 </body>
 </html>
