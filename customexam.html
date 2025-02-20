@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dopamine Quiz - Custom Exam</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" rel="stylesheet">
+  <style>
+    body { font-family: Arial, sans-serif; background: #f7f9fc; margin: 0; padding: 20px; }
+    .navbar { background: #667eea; padding: 15px 20px; }
+    .navbar-brand { color: #fff; font-weight: bold; }
+    .container { max-width: 600px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    h1 { text-align: center; margin-bottom: 30px; color: #333; }
+    .form-group { margin-bottom: 15px; }
+    .form-control:focus { border-color: #667eea; box-shadow: 0 0 5px rgba(102, 126, 234, 0.5); }
+    .btn-primary { background-color: #667eea; border-color: #667eea; width: 100%; }
+    .btn-primary:hover { background-color: #556cd6; border-color: #556cd6; }
+    .custom-input { display: none; margin-top: 10px; }
+    .loading-spinner { display: none; text-align: center; padding: 20px; color: #667eea; }
+    @media (max-width: 576px) {
+      .container { padding: 15px; }
+      h1 { font-size: 1.5rem; }
+    }
+  </style>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Dopamine Quiz</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h1>Custom Exam</h1>
+    <div id="loading" class="loading-spinner">Creating Exam...</div>
+    <form id="customExamForm">
+      <div class="form-group">
+        <label for="subjectSelect">Subject:</label>
+        <select id="subjectSelect" class="form-control" required>
+          <option value="">Select Subject</option>
+          <option value="Botany">Botany</option>
+          <option value="Zoology">Zoology</option>
+          <option value="Physics 1st">Physics 1st</option>
+          <option value="Physics 2nd">Physics 2nd</option>
+          <option value="Chemistry 1st">Chemistry 1st</option>
+          <option value="Chemistry 2nd">Chemistry 2nd</option>
+          <option value="GK">GK</option>
+          <option value="English">English</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="chapterSelect">Chapter:</label>
+        <select id="chapterSelect" class="form-control" required>
+          <option value="">Select Chapter</option>
+          <!-- Chapters dynamically populated -->
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="numQuestions">Number of Questions (Max 100):</label>
+        <input type="number" id="numQuestions" class="form-control" min="1" max="100" required placeholder="e.g., 10" />
+      </div>
+      <div class="form-group">
+        <label for="timeInput">Time (in Minutes):</label>
+        <input type="number" id="timeInput" class="form-control" min="1" required placeholder="e.g., 30" />
+      </div>
+      <div class="form-group">
+        <label for="negativeMarking">Negative Marking:</label>
+        <select id="negativeMarking" class="form-control" required>
+          <option value="0">0</option>
+          <option value="0.25">0.25</option>
+          <option value="0.5">0.5</option>
+          <option value="0.75">0.75</option>
+          <option value="custom">Custom</option>
+        </select>
+        <input type="number" id="customNegativeMarking" class="form-control custom-input" step="0.01" min="0" placeholder="Enter custom value" />
+      </div>
+      <button type="submit" class="btn btn-primary">Take Exam</button>
+    </form>
+  </div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
+      authDomain: "dopamine-quiz.firebaseapp.com",
+      projectId: "dopamine-quiz",
+      storageBucket: "dopamine-quiz.firebasestorage.app",
+      messagingSenderId: "822531459966",
+      appId: "1:822531459966:web:8e7d2385090e997eb1c12f"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // Authentication check
+    auth.onAuthStateChanged((user) => {
+      if (!user) window.location.href = "auth.html";
+    });
+
+    const subjectSelect = document.getElementById("subjectSelect");
+    const chapterSelect = document.getElementById("chapterSelect");
+    const negativeMarkingSelect = document.getElementById("negativeMarking");
+    const customNegativeInput = document.getElementById("customNegativeMarking");
+    const loadingDiv = document.getElementById("loading");
+
+    // Chapters by subject
+    const chaptersBySubject = {
+      "Botany": [
+        "কোষ ও এর গঠন",
+        "কোষ বিভাজন",
+        "কোষ রসায়ন",
+        "অনুজীব",
+        "শৈবাল ও ছত্রাক",
+        "ব্রায়োফাইটা ও টেরিডোফাইটা",
+        "নগ্নবীজী ও আবৃতবীজী উদ্ভিদ",
+        "টিস্যু ও টিস্যুতন্ত্র",
+        "উদ্ভিদ শারীরতত্ত্ব",
+        "উদ্ভিদ প্রজনন",
+        "জীব প্রযুক্তি",
+        "জীবের পরিবেশ বিস্তার ও সংরক্ষণ"
+      ],
+      "Zoology": [
+        "প্রাণির বৈচিত্র্য ও শ্রেণীবিন্যাস",
+        "প্রাণির পরিচিতি: হাইড্রা, ঘাসফড়িং, রুই মাছ",
+        "মানব শারীরতত্ত্ব: পরিপাক ও শোষণ",
+        "মানব শারীরতত্ত্ব: রক্ত ও সংবহন",
+        "মানব শারীরতত্ত্ব: শ্বাসক্রিয়া ও শ্বাসন",
+        "মানব শারীরতত্ত্ব: বর্জ্য ও নিষ্কাশন",
+        "মানব শারীরতত্ত্ব: চলন ও অঙ্গচালনা",
+        "মানব শারীরতত্ত্ব: সমন্বয় ও নিয়ন্ত্রণ",
+        "মানব জীবনের ধারাবাহিকতা",
+        "মানবদেহের প্রতিরক্ষা",
+        "জিনতত্ত্ব ও বিবর্তন",
+        "প্রাণির আচরণ"
+      ],
+      "Physics 1st": [
+        "ভৌত জগত ও পরিমাপ",
+        "ভেক্টর",
+        "গতিবিদ্যা",
+        "নিউটনিয়ান বলবিদ্যা",
+        "কাজ, শক্তি ও ক্ষমতা",
+        "মহাকর্ষ ও অভিকর্ষ",
+        "পদার্থের গাঠনিক ধর্ম",
+        "পর্যাবৃত্তিক গতি",
+        "তরঙ্গ",
+        "আদর্শ গ্যাস ও গ্যাসের গতি তত্ত্ব"
+      ],
+      "Physics 2nd": [
+        "তাপগতিবিদ্যা",
+        "স্থির তড়িৎ",
+        "চল তড়িৎ",
+        "তড়িৎ প্রবাহের চুম্বক ক্রিয়া ও চৌম্বকত্ব",
+        "জ্যামিতিক আলোকবিজ্ঞান",
+        "ভৌত আলোকবিজ্ঞান",
+        "আধুনিক পদার্থবিজ্ঞানের সূচনা",
+        "পরমাণুর মডেল এবং নিউক্লিয়ার পদার্থবিজ্ঞান",
+        "সেমিকন্ডাক্টর ও ইলেকট্রনিক্স",
+        "জ্যোতির্বিজ্ঞান"
+      ],
+      "Chemistry 1st": [
+        "ল্যাবরেটরির নিরাপদ ব্যবহার",
+        "গুণগত রসায়ন",
+        "মৌলের পর্যায়বৃত্ত ধর্ম ও রাসায়নিক বন্ধন",
+        "রাসায়নিক পরিবর্তন",
+        "কর্মমুখী রসায়ন"
+      ],
+      "Chemistry 2nd": [
+        "পরিবেশ রসায়ন",
+        "জৈব রসায়ন",
+        "পরিমাণগত রসায়ন",
+        "তড়িৎ রসায়ন",
+        "অর্থনৈতিক রসায়ন"
+      ],
+      "GK": [
+        "বাংলাদেশ বিষয়াবলী",
+        "আন্তর্জাতিক বিষয়াবলী"
+      ],
+      "English": [
+        "Grammar",
+        "Literature"
+      ]
+    };
+
+    // Populate chapters based on subject selection
+    subjectSelect.addEventListener("change", () => {
+      const subject = subjectSelect.value;
+      chapterSelect.innerHTML = '<option value="">Select Chapter</option>';
+      if (subject && chaptersBySubject[subject]) {
+        chaptersBySubject[subject].forEach((chapter) => {
+          const option = document.createElement("option");
+          option.value = chapter;
+          option.text = chapter;
+          chapterSelect.appendChild(option);
+        });
+      }
+    });
+
+    // Show/hide custom negative marking input
+    negativeMarkingSelect.addEventListener("change", () => {
+      if (negativeMarkingSelect.value === "custom") {
+        customNegativeInput.style.display = "block";
+        customNegativeInput.required = true;
+      } else {
+        customNegativeInput.style.display = "none";
+        customNegativeInput.required = false;
+      }
+    });
+
+    document.getElementById("customExamForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const subject = subjectSelect.value;
+      const chapter = chapterSelect.value;
+      const numQuestions = parseInt(document.getElementById("numQuestions").value);
+      const time = parseInt(document.getElementById("timeInput").value);
+      let negativeMarking = negativeMarkingSelect.value === "custom" ?
+        parseFloat(document.getElementById("customNegativeMarking").value) :
+        parseFloat(negativeMarkingSelect.value);
+
+      if (!subject || !chapter || !numQuestions || numQuestions > 100 || !time || isNaN(negativeMarking) || negativeMarking < 0) {
+        Toastify({
+          text: "Please fill all fields correctly (Questions ≤ 100, Negative Marking ≥ 0).",
+          duration: 3000,
+          style: { background: "#dc3545" }
+        }).showToast();
+        return;
+      }
+
+      loadingDiv.style.display = "block";
+      try {
+        // Fetch questions from Firestore based on subject and chapter
+        const querySnapshot = await db.collection("questions")
+          .where("subject", "==", subject)
+          .where("chapter", "==", chapter) // Assumes 'chapter' field exists in your Firestore questions
+          .orderBy("timestamp", "desc")
+          .get();
+
+        if (querySnapshot.empty) {
+          throw new Error("No questions available for this subject and chapter.");
+        }
+
+        let questions = querySnapshot.docs.map((doc) => doc.id);
+        if (questions.length < numQuestions) {
+          Toastify({
+            text: `Only ${questions.length} questions available, using all.`,
+            duration: 3000,
+            style: { background: "#ff9800" }
+          }).showToast();
+        }
+
+        // Randomly select the required number of questions
+        questions = questions.sort(() => 0.5 - Math.random()).slice(0, numQuestions);
+
+        const user = auth.currentUser;
+        const examDocRef = await db.collection("exams").add({
+          examName: `${subject} - ${chapter} Custom Exam`,
+          timer: time,
+          marksPerQuestion: 1, // Default value
+          negativeMark: negativeMarking,
+          attemptsAllowed: 1, // Default to 1 attempt
+          lastDate: null, // No deadline for custom exams
+          questions: questions,
+          createdBy: user.uid,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+          isCustom: true // Flag to identify custom exams
+        });
+
+        loadingDiv.style.display = "none";
+        Toastify({
+          text: "Custom exam created successfully!",
+          duration: 3000,
+          style: { background: "#667eea" }
+        }).showToast();
+
+        // Redirect to quiz.html with the new examId
+        window.location.href = `quiz.html?examId=${examDocRef.id}`;
+      } catch (error) {
+        loadingDiv.style.display = "none";
+        console.error("Error creating custom exam:", error);
+        Toastify({
+          text: "Error creating exam: " + error.message,
+          duration: 3000,
+          style: { background: "#dc3545" }
+        }).showToast();
+      }
+    });
+  </script>
+</body>
+</html>
