@@ -18,21 +18,23 @@
     .question-card {
       background: #fff;
       padding: 15px;
-      border-radius: 5px;
+      border-radius: 8px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       margin-bottom: 20px;
     }
+    .question-card p { margin-bottom: 10px; }
     .question-card label {
       display: block;
       padding: 10px;
       border-radius: 5px;
       transition: background 0.3s;
+      margin-bottom: 5px;
     }
     .question-card label:hover { background: #f1f1f1; }
     .question-card input[type="radio"]:disabled + span { opacity: 0.7; }
-    .correct { background-color: #c8e6c9; }
-    .incorrect { background-color: #ffcdd2; }
-    .solution-explanation { margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 5px; }
+    .correct { background-color: #c8e6c9; border: 2px solid #4caf50; } /* Green for correct */
+    .incorrect { background-color: #ffcdd2; border: 2px solid #f44336; } /* Red/Pink for incorrect */
+    .solution-explanation { margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 5px; border-left: 4px solid #667eea; }
     .stats-container { margin-top: 10px; padding: 15px; background: #fff; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
     .btn-primary { background-color: #667eea; border-color: #667eea; }
     .btn-primary:hover { background-color: #556cd6; border-color: #556cd6; }
@@ -40,7 +42,7 @@
     .expired-message { text-align: center; color: #dc3545; font-size: 1.5rem; padding: 20px; }
     @media (max-width: 576px) {
       #examNameDisplay { font-size: 1.4rem; }
-      .question-card label { font-size: 0.9rem; }
+      .question-card label { font-size: 0.9rem; padding: 8px; }
     }
   </style>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -88,7 +90,7 @@
       examName: "Untitled Exam",
       timer: 1,
       marksPerQuestion: 1,
-      negativeMark: 0, // No negative marking unless specified
+      negativeMark: 0, // No negative marking
       lastDate: null
     };
     const urlParams = new URLSearchParams(window.location.search);
