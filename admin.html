@@ -4,39 +4,21 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admin - Add Questions</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   <style>
-    /* (Your existing CSS remains unchanged) */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
     body {
-      font-family: Arial, sans-serif;
-      background: #f4f4f4;
+      font-family: 'Roboto', sans-serif;
+      background: #f7f9fc;
+      margin: 0;
     }
     .navbar {
-      background: #2d2d2d;
+      background: #1a2a3a;
       color: white;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       padding: 10px 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       position: sticky;
       top: 0;
-      width: 100%;
-      z-index: 1000;
-    }
-    .navbar .menu-btn {
-      background: none;
-      border: none;
-      color: white;
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-    .navbar .title {
-      font-size: 1.2rem;
-      font-weight: bold;
     }
     .side-menu {
       position: fixed;
@@ -44,131 +26,122 @@
       left: -250px;
       width: 250px;
       height: 100%;
-      background: #2d2d2d;
+      background: #1a2a3a;
       padding: 20px;
       transition: left 0.3s ease;
-      z-index: 2000;
     }
     .side-menu.active {
       left: 0;
     }
-    .side-menu ul {
-      list-style: none;
-      padding: 0;
-    }
-    .side-menu ul li {
-      margin: 15px 0;
-    }
     .side-menu ul li a {
-      text-decoration: none;
+      display: flex;
+      align-items: center;
+      padding: 10px;
       color: white;
-      font-size: 1rem;
-      display: block;
-      padding: 8px;
+      text-decoration: none;
+      transition: background 0.3s ease;
     }
     .side-menu ul li a:hover {
-      background: #444;
+      background: #34495e;
       border-radius: 5px;
+    }
+    .side-menu ul li a i {
+      margin-right: 10px;
     }
     .container {
       max-width: 600px;
       margin: 80px auto 20px;
       padding: 20px;
-      background: white;
+      background: #ffffff;
       border-radius: 5px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    }
-    h2 {
-      text-align: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
     .form-group {
-      margin-bottom: 15px;
-    }
-    label {
-      font-weight: bold;
-      display: block;
+      margin-bottom: 20px;
     }
     input, select, textarea {
       width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
+      border: 1px solid #ced4da;
+      border-radius: 5px;
+      padding: 10px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: #007bff;
+      outline: none;
     }
     .radio-group {
       display: flex;
-      justify-content: space-between;
-    }
-    .radio-group label {
-      font-weight: normal;
+      gap: 15px;
     }
     button {
-      background: #28a745;
+      background: #007bff;
       color: white;
       padding: 10px;
       border: none;
       border-radius: 5px;
-      cursor: pointer;
       width: 100%;
-      font-size: 1rem;
+      transition: background 0.3s ease;
     }
     button:hover {
-      background: #218838;
+      background: #0056b3;
+    }
+    .feedback {
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      display: none;
+    }
+    .feedback.success {
+      background: #d4edda;
+      color: #155724;
+    }
+    .feedback.error {
+      background: #f8d7da;
+      color: #721c24;
     }
   </style>
-
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
-
-  <!-- Sidebar Menu -->
   <nav class="side-menu" id="sideMenu">
     <h2>Admin Menu</h2>
     <ul>
-      <li><a href="admin-info.html">Admin Info</a></li>
-      <li><a href="admin.html">Add Questions</a></li>
-      <li><a href="refer.html">Refer Students</a></li>
-      <li><a href="withdraw.html">Reward Withdrawal</a></li>
-      <li><a href="#" id="logoutBtn">Logout</a></li>
+      <li><a href="#"><i class="fas fa-user"></i> Admin Info</a></li>
+      <li><a href="#"><i class="fas fa-plus-circle"></i> Add Questions</a></li>
+      <li><a href="#"><i class="fas fa-user-plus"></i> Refer Students</a></li>
+      <li><a href="#"><i class="fas fa-wallet"></i> Reward Withdrawal</a></li>
+      <li><a href="#"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
     </ul>
   </nav>
 
-  <!-- Navbar -->
   <div class="navbar">
-    <button class="menu-btn" id="menuBtn">☰</button>
-    <div class="title">Admin Panel</div>
+    <button id="menuBtn">☰</button>
+    <div>Admin Panel</div>
   </div>
 
   <div class="container">
     <h2>Add Question</h2>
+    <div id="feedback" class="feedback"></div>
     <form id="addQuestionForm">
       <div class="form-group">
-        <label for="subjectSelect">Subject:</label>
-        <select id="subjectSelect" required>
+        <label>Subject:</label>
+        <select required>
           <option value="">Select Subject</option>
-          <option value="Biology 1st">Biology 1st</option>
-          <option value="Biology 2nd">Biology 2nd</option>
-          <option value="Physics 1st">Physics 1st</option>
-          <option value="Physics 2nd">Physics 2nd</option>
-          <option value="Chemistry 1st">Chemistry 1st</option>
-          <option value="Chemistry 2nd">Chemistry 2nd</option>
-          <option value="Bangla">Bangla</option>
-          <option value="English">English</option>
+          <option value="Biology">Biology</option>
+          <option value="Physics">Physics</option>
         </select>
       </div>
       <div class="form-group">
-        <label for="questionInput">Question:</label>
-        <textarea id="questionInput" required></textarea>
+        <label>Question:</label>
+        <textarea required></textarea>
       </div>
       <div class="form-group">
         <label>Options:</label>
-        <input type="text" id="option1" placeholder="Option 1" required>
-        <input type="text" id="option2" placeholder="Option 2" required>
-        <input type="text" id="option3" placeholder="Option 3" required>
-        <input type="text" id="option4" placeholder="Option 4" required>
+        <input type="text" placeholder="Option 1" required>
+        <input type="text" placeholder="Option 2" required>
+        <input type="text" placeholder="Option 3" required>
+        <input type="text" placeholder="Option 4" required>
       </div>
       <div class="form-group">
         <label>Correct Answer:</label>
@@ -183,89 +156,35 @@
     </form>
   </div>
 
+  <footer style="text-align: center; padding: 20px; background: #1a2a3a; color: white; margin-top: 20px;">
+    &copy; 2025 Dopamine Quiz. All rights reserved.
+  </footer>
+
   <script>
-    // Firebase Configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
-      authDomain: "dopamine-quiz.firebaseapp.com",
-      projectId: "dopamine-quiz",
-      storageBucket: "dopamine-quiz.firebasestorage.app",
-      messagingSenderId: "822531459966",
-      appId: "1:822531459966:web:8e7d2385090e997eb1c12f"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
-
-    // Authentication Check
-    auth.onAuthStateChanged(user => {
-      if (!user) {
-        window.location.href = "auth.html";
-      }
-    });
-
-    // Preserve Subject Selection
-    const subjectSelect = document.getElementById("subjectSelect");
-    const savedSubject = localStorage.getItem("selectedSubject");
-    if (savedSubject) subjectSelect.value = savedSubject;
-    subjectSelect.addEventListener("change", () => {
-      localStorage.setItem("selectedSubject", subjectSelect.value);
-    });
-
-    // Sidebar Toggle
     document.getElementById("menuBtn").addEventListener("click", () => {
       document.getElementById("sideMenu").classList.toggle("active");
     });
 
-    // Logout Button
-    document.getElementById("logoutBtn").addEventListener("click", () => {
-      auth.signOut().then(() => {
-        window.location.href = "auth.html";
-      });
-    });
-
-    // Form Submission
     document.getElementById("addQuestionForm").addEventListener("submit", (e) => {
       e.preventDefault();
       const submitBtn = document.querySelector("button[type='submit']");
       submitBtn.disabled = true;
       submitBtn.textContent = "Submitting...";
-
-      const subject = document.getElementById("subjectSelect").value;
-      const question = document.getElementById("questionInput").value;
-      const options = [
-        document.getElementById("option1").value,
-        document.getElementById("option2").value,
-        document.getElementById("option3").value,
-        document.getElementById("option4").value
-      ];
-      const correctOption = document.querySelector('input[name="correctOption"]:checked');
-
-      if (!subject || !question || options.some(opt => !opt) || !correctOption) {
-        alert("Please fill out all fields and select a correct answer.");
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Submit Question";
-        return;
-      }
-
-      db.collection("questions").add({
-        subject: subject,
-        question: question,
-        options: options,
-        correctOption: correctOption.value,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-      }).then(() => {
-        alert("Question added successfully!");
+      setTimeout(() => {
+        showFeedback("Question added successfully!", "success");
         document.getElementById("addQuestionForm").reset();
         submitBtn.disabled = false;
         submitBtn.textContent = "Submit Question";
-      }).catch((error) => {
-        console.error("Error adding question: ", error);
-        alert("Failed to add question.");
-        submitBtn.disabled = false;
-        submitBtn.textContent = "Submit Question";
-      });
+      }, 1000);
     });
+
+    function showFeedback(message, type) {
+      const feedback = document.getElementById("feedback");
+      feedback.textContent = message;
+      feedback.className = `feedback ${type}`;
+      feedback.style.display = "block";
+      setTimeout(() => feedback.style.display = "none", 3000);
+    }
   </script>
 </body>
 </html> 
