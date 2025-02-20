@@ -53,13 +53,13 @@
   <h2>Exam</h2>
   <form id="examForm"></form>
   <div id="submitContainer">
-    <button type="button" id="submitBtn">Submit</button>
+    <button type="button" id="submitBtn" onclick="submitExam()">Submit</button>
   </div>
   <div id="scoreContainer"></div>
   <div id="solutionsContainer"></div>
   
   <script>
-    // Firebase configuration using your provided details
+    // Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
       authDomain: "dopamine-quiz.firebaseapp.com",
@@ -71,8 +71,8 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
-    
-    // Global exam parameters (defaults; updated from exam document if available)
+
+    // Global exam parameters
     let examParams = {
       examName: "Untitled Exam",
       timer: 1, // in minutes
@@ -80,31 +80,25 @@
       negativeMark: 1,
       lastDate: null
     };
-    
-    // Define localStorage keys (unique for this exam)
+
+    // LocalStorage keys unique to this exam
     const urlParams = new URLSearchParams(window.location.search);
     const examId = urlParams.get("examId");
     const startTimeKey = "examStartTime_" + (examId || "default");
     const answersKey = "examAnswers_" + (examId || "default");
-    
-    let savedAnswers = {};
-    try {
-      savedAnswers = JSON.parse(localStorage.getItem(answersKey)) || {};
-    } catch (e) {
-      savedAnswers = {};
-    }
-    
-    // Flag to ensure automatic submission happens only once
+
+    let savedAnswers = JSON.parse(localStorage.getItem(answersKey)) || {};
     let submitted = false;
-    
-    // Utility: Check if exam is expired based on lastDate parameter
+    let timerRef;
+
+    // Check if exam is expired
     function isExamExpired(lastDate) {
       if (!lastDate) return false;
       const examDeadline = new Date(lastDate);
       return new Date() > examDeadline;
     }
-    
-    // Render quiz questions on the page
+
+    // Render quiz questions
     function renderQuiz(questions) {
       const examForm = document.getElementById("examForm");
       examForm.innerHTML = "";
@@ -113,7 +107,7 @@
         questionDiv.className = "question";
         questionDiv.dataset.answer = q.correctOption;
         const questionText = document.createElement("p");
-        questionText.textContent = (index + 1) + ". " + q.question;
+        questionText.textContent = `${index + 1}. ${q.question}`;
         questionDiv.appendChild(questionText);
         q.options.forEach((opt, idx) => {
           const label = document.createElement("label");
@@ -129,18 +123,15 @@
             localStorage.setItem(answersKey, JSON.stringify(savedAnswers));
           });
           label.appendChild(radioInput);
-          label.appendChild(document.createTextNode(" " + opt));
+          label.appendChild(document.createTextNode(` ${opt}`));
           questionDiv.appendChild(label);
         });
         examForm.appendChild(questionDiv);
       });
-      // Start timer (only if not already started)
       startTimer();
     }
-    
-    // Timer functionality in mm:ss format; persist start time via localStorage
-    let timeLeft;
-    let timerRef;
+
+    // Start timer
     function startTimer() {
       const timerElement = document.getElementById("timer");
       let storedStart = localStorage.getItem(startTimeKey);
@@ -151,36 +142,28 @@
         storedStart = parseInt(storedStart, 10);
       }
       const examDurationMs = examParams.timer * 60 * 1000;
-      const elapsed = Date.now() - storedStart;
-      let remainingMs = examDurationMs - elapsed;
-      if (remainingMs < 0) { remainingMs = 0; }
-      timeLeft = Math.floor(remainingMs / 1000);
-      
+      let remainingMs = examDurationMs - (Date.now() - storedStart);
+      if (remainingMs < 0) remainingMs = 0;
+      let timeLeft = Math.floor(remainingMs / 1000);
+
       timerRef = setInterval(() => {
         if (timeLeft <= 0) {
           clearInterval(timerRef);
-          if (!submitted) {
-            submitExam(); // Automatic submission when timer reaches 0
-          }
+          if (!submitted) submitExam();
         } else {
           const minutes = Math.floor(timeLeft / 60);
           const seconds = timeLeft % 60;
-          timerElement.textContent = minutes.toString().padStart(2, "0") + ":" + seconds.toString().padStart(2, "0");
+          timerElement.textContent = `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+          timeLeft--;
         }
-        timeLeft--;
       }, 1000);
     }
-    
-    // Load default questions if no examId is provided
+
+    // Load default questions
     function loadDefaultQuestions() {
       db.collection("questions").orderBy("timestamp", "desc").limit(50).get()
         .then(querySnapshot => {
-          let questions = [];
-          querySnapshot.forEach(doc => {
-            let data = doc.data();
-            data.id = doc.id;
-            questions.push(data);
-          });
+          const questions = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
           renderQuiz(questions);
         })
         .catch(error => {
@@ -188,78 +171,79 @@
           document.getElementById("examForm").innerHTML = "<p>Error retrieving questions.</p>";
         });
     }
-    
-    // Load exam-specific questions if examId exists
-    if (examId) {
-      db.collection("exams").doc(examId).get()
-        .then(doc => {
-          if (doc.exists) {
-            const examData = doc.data();
-            examParams.examName = examData.examName || examParams.examName;
-            examParams.timer = examData.timer || examParams.timer;
-            examParams.marksPerQuestion = examData.marksPerQuestion || examParams.marksPerQuestion;
-            examParams.negativeMark = examData.negativeMark || examParams.negativeMark;
-            examParams.lastDate = examData.lastDate || null;
-            // Display the exam name exactly as set
-            document.getElementById("examNameDisplay").innerText = examParams.examName;
-            if (isExamExpired(examParams.lastDate)) {
-              document.body.innerHTML = "<div class='expired'>This exam is expired. You cannot participate.</div>";
-              return;
-            }
-            const selectedQuestionIds = examData.questions || [];
-            if (selectedQuestionIds.length === 0) {
-              document.getElementById("examForm").innerHTML = "<p>No questions selected for this exam.</p>";
-              return;
-            }
-            if (selectedQuestionIds.length <= 10) {
-              db.collection("questions")
-                .where(firebase.firestore.FieldPath.documentId(), "in", selectedQuestionIds)
-                .get()
-                .then(querySnapshot => {
-                  let questions = [];
-                  querySnapshot.forEach(qdoc => {
-                    let data = qdoc.data();
-                    data.id = qdoc.id;
-                    questions.push(data);
-                  });
-                  renderQuiz(questions);
-                })
-                .catch(error => {
-                  console.error("Error loading exam questions:", error);
-                  document.getElementById("examForm").innerHTML = "<p>Error loading exam questions.</p>";
-                });
-            } else {
-              Promise.all(selectedQuestionIds.map(qid => db.collection("questions").doc(qid).get()))
-                .then(docs => {
-                  let questions = [];
-                  docs.forEach(doc => {
+
+    // Authentication and exam loading
+    auth.onAuthStateChanged(user => {
+      if (!user) {
+        window.location.href = 'auth.html';
+      } else {
+        if (examId) {
+          db.collection("examResults").where("userId", "==", user.uid).where("examId", "==", examId).get()
+            .then(querySnapshot => {
+              if (!querySnapshot.empty) {
+                document.body.innerHTML = "<div class='expired'>You have already taken this exam.</div>";
+              } else {
+                db.collection("exams").doc(examId).get()
+                  .then(doc => {
                     if (doc.exists) {
-                      let data = doc.data();
-                      data.id = doc.id;
-                      questions.push(data);
+                      const examData = doc.data();
+                      examParams.examName = examData.examName || examParams.examName;
+                      examParams.timer = examData.timer || examParams.timer;
+                      examParams.marksPerQuestion = examData.marksPerQuestion || examParams.marksPerQuestion;
+                      examParams.negativeMark = examData.negativeMark || examParams.negativeMark;
+                      examParams.lastDate = examData.lastDate || null;
+                      document.getElementById("examNameDisplay").innerText = examParams.examName;
+                      if (isExamExpired(examParams.lastDate)) {
+                        document.body.innerHTML = "<div class='expired'>This exam is expired. You cannot participate.</div>";
+                        return;
+                      }
+                      const questionIds = examData.questions || [];
+                      if (questionIds.length === 0) {
+                        document.getElementById("examForm").innerHTML = "<p>No questions selected for this exam.</p>";
+                        return;
+                      }
+                      if (questionIds.length <= 10) {
+                        db.collection("questions").where(firebase.firestore.FieldPath.documentId(), "in", questionIds).get()
+                          .then(querySnapshot => {
+                            const questions = querySnapshot.docs.map(qdoc => ({ id: qdoc.id, ...qdoc.data() }));
+                            renderQuiz(questions);
+                          })
+                          .catch(error => {
+                            console.error("Error loading exam questions:", error);
+                            document.getElementById("examForm").innerHTML = "<p>Error loading exam questions.</p>";
+                          });
+                      } else {
+                        Promise.all(questionIds.map(qid => db.collection("questions").doc(qid).get()))
+                          .then(docs => {
+                            const questions = docs.filter(doc => doc.exists).map(doc => ({ id: doc.id, ...doc.data() }));
+                            renderQuiz(questions);
+                          })
+                          .catch(error => {
+                            console.error("Error loading exam questions:", error);
+                            document.getElementById("examForm").innerHTML = "<p>Error loading exam questions.</p>";
+                          });
+                      }
+                    } else {
+                      console.error("Exam not found.");
+                      loadDefaultQuestions();
                     }
+                  })
+                  .catch(error => {
+                    console.error("Error retrieving exam:", error);
+                    loadDefaultQuestions();
                   });
-                  renderQuiz(questions);
-                })
-                .catch(error => {
-                  console.error("Error loading exam questions:", error);
-                  document.getElementById("examForm").innerHTML = "<p>Error loading exam questions.</p>";
-                });
-            }
-          } else {
-            console.error("Exam not found.");
-            loadDefaultQuestions();
-          }
-        })
-        .catch(error => {
-          console.error("Error retrieving exam:", error);
+              }
+            })
+            .catch(error => {
+              console.error("Error checking exam result:", error);
+            });
+        } else {
           loadDefaultQuestions();
-        });
-    } else {
-      loadDefaultQuestions();
-    }
-    
-    // Submit exam: calculate score, display result summary, and record exam result
+        }
+      }
+    });
+
+    // Submit exam
     function submitExam() {
       if (submitted) return;
       submitted = true;
@@ -268,7 +252,7 @@
       let correctCount = 0;
       let wrongCount = 0;
       const questionDivs = document.querySelectorAll(".question");
-      
+
       questionDivs.forEach(q => {
         const correctAnswer = q.dataset.answer;
         const selectedOption = q.querySelector("input[type='radio']:checked");
@@ -282,22 +266,18 @@
             wrongCount++;
             selectedOption.parentElement.classList.add("incorrect");
             q.querySelectorAll("label").forEach(label => {
-              if (label.querySelector("input").value === correctAnswer) {
-                label.classList.add("correct");
-              }
+              if (label.querySelector("input").value === correctAnswer) label.classList.add("correct");
             });
           }
         } else {
           wrongCount++;
           q.querySelectorAll("label").forEach(label => {
-            if (label.querySelector("input").value === correctAnswer) {
-              label.classList.add("correct");
-            }
+            if (label.querySelector("input").value === correctAnswer) label.classList.add("correct");
           });
         }
       });
-      
-      document.getElementById("scoreContainer").innerHTML = "Your Score: " + score.toFixed(2);
+
+      document.getElementById("scoreContainer").innerHTML = `Your Score: ${score.toFixed(2)}`;
       const resultsHTML = `
         <p class="result correct">Correct Answers: ${correctCount}</p>
         <p class="result wrong">Wrong Answers: ${wrongCount}</p>
@@ -305,15 +285,27 @@
       document.getElementById("solutionsContainer").innerHTML = resultsHTML + "<h3>Solutions:</h3>" + document.getElementById("examForm").innerHTML;
       document.getElementById("examForm").style.display = "none";
       document.getElementById("submitContainer").style.display = "none";
-      
-      // Optionally, record exam result here in a collection
-      
-      // Clear stored exam state
+
+      // Record exam result
+      if (examId) {
+        const userId = auth.currentUser.uid;
+        db.collection("examResults").add({
+          userId: userId,
+          examId: examId,
+          score: score,
+          correctCount: correctCount,
+          wrongCount: wrongCount,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        }).then(() => {
+          console.log("Exam result recorded.");
+        }).catch(error => {
+          console.error("Error recording exam result:", error);
+        });
+      }
+
       localStorage.removeItem(startTimeKey);
       localStorage.removeItem(answersKey);
     }
-    
-    // Auto-submit when time runs out is handled inside startTimer()
   </script>
 </body>
 </html>
