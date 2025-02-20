@@ -30,6 +30,7 @@
     .question-card label:hover { background: #f1f1f1; }
     .correct { background-color: #c8e6c9; }
     .incorrect { background-color: #ffcdd2; }
+    .solution-explanation { margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 5px; }
     .btn-primary { background-color: #667eea; border-color: #667eea; }
     .btn-primary:hover { background-color: #556cd6; border-color: #556cd6; }
     .loading-spinner { display: none; text-align: center; padding: 20px; color: #667eea; }
@@ -203,13 +204,22 @@
 
       timer.style.display = "none"; // Hide timer in review mode
       renderQuiz(questions, true, resultData.answers || {});
-      scoreContainer.innerHTML = `Your Score: ${resultData.score.toFixed(2)}`;
+      scoreContainer.innerHTML = `Your Score: ${resultData.score.toFixed(2)} / ${questions.length}`; // Show obtained/total
       solutionsContainer.innerHTML = `
         <div class="stats-container">
           <p class="text-success fw-bold">Correct Answers: ${resultData.correctCount}</p>
           <p class="text-danger fw-bold">Wrong Answers: ${resultData.wrongCount}</p>
         </div>
       `;
+      questions.forEach((q, idx) => {
+        const questionDiv = examForm.querySelector(`[data-answer="${q.correctOption}"]`);
+        if (q.explanation && q.explanation.trim() !== "") {
+          const explanationDiv = document.createElement("div");
+          explanationDiv.className = "solution-explanation";
+          explanationDiv.innerHTML = `<strong>Explanation:</strong> ${q.explanation}`;
+          questionDiv.appendChild(explanationDiv);
+        }
+      });
       submitContainer.style.display = "none";
       Toastify({
         text: "Showing your previous submission",
@@ -338,6 +348,7 @@
       let correctCount = 0;
       let wrongCount = 0;
       const questionDivs = document.querySelectorAll(".question-card");
+      const totalQuestions = questionDivs.length;
 
       questionDivs.forEach((q, idx) => {
         const correctAnswer = q.dataset.answer;
@@ -367,14 +378,27 @@
         }
       });
 
-      document.getElementById("scoreContainer").innerHTML = `Your Score: ${score.toFixed(2)}`;
+      document.getElementById("scoreContainer").innerHTML = `Your Score: ${score.toFixed(2)} / ${totalQuestions}`; // Show obtained/total
       const resultsHTML = `
         <div class="stats-container">
           <p class="text-success fw-bold">Correct Answers: ${correctCount}</p>
           <p class="text-danger fw-bold">Wrong Answers: ${wrongCount}</p>
         </div>
       `;
-      document.getElementById("solutionsContainer").innerHTML = resultsHTML + "<h3>Solutions:</h3>" + document.getElementById("examForm").innerHTML;
+      const solutionsHTML = `<h3>Solutions:</h3>`;
+      questionDivs.forEach((q, idx) => {
+        const questionData = allQuestions[idx]; // Assuming allQuestions is global from renderQuiz
+        const correctAnswer = q.dataset.answer;
+        solutionsHTML += `
+          <div class="question-card">
+            <p class="fw-bold">${idx + 1}. ${questionData.question}</p>
+            ${q.innerHTML}
+            ${questionData.explanation && questionData.explanation.trim() !== "" ? 
+              `<div class="solution-explanation"><strong>Explanation:</strong> ${questionData.explanation}</div>` : ""}
+          </div>
+        `;
+      });
+      document.getElementById("solutionsContainer").innerHTML = resultsHTML + solutionsHTML;
       document.getElementById("examForm").style.display = "none";
       document.getElementById("submitContainer").style.display = "none";
 
@@ -386,7 +410,7 @@
           score: score,
           correctCount: correctCount,
           wrongCount: wrongCount,
-          answers: savedAnswers, // Save the user's answers
+          answers: savedAnswers,
           timestamp: firebase.firestore.FieldValue.serverTimestamp()
         }).then(() => {
           Toastify({
@@ -413,6 +437,57 @@
         submitExam();
       }
     });
+
+    // Make allQuestions global for use in submitExam
+    let allQuestions = [];
+    function renderQuiz(questions, isReview = false, previousAnswers = {}) {
+      allQuestions = questions; // Store questions globally
+      const examForm = document.getElementById("examForm");
+      examForm.innerHTML = "";
+
+      questions.forEach((q, idx) => {
+        const questionDiv = document.createElement("div");
+        questionDiv.className = "question-card";
+        questionDiv.dataset.answer = q.correctOption;
+        questionDiv.innerHTML = `
+          <p class="fw-bold mb-3">${idx + 1}. ${q.question}</p>
+        `;
+        q.options.forEach((opt, optIdx) => {
+          const label = document.createElement("label");
+          const radioInput = document.createElement("input");
+          radioInput.type = "radio";
+          radioInput.name = "q" + idx;
+          radioInput.value = String(optIdx + 1);
+          if (isReview) {
+            radioInput.disabled = true; // Disable inputs in review mode
+            if (previousAnswers["q" + idx] === radioInput.value) {
+              radioInput.checked = true;
+              if (radioInput.value === q.correctOption) {
+                label.classList.add("correct");
+              } else {
+                label.classList.add("incorrect");
+              }
+            } else if (radioInput.value === q.correctOption) {
+              label.classList.add("correct");
+            }
+          } else {
+            if (savedAnswers["q" + idx] === radioInput.value) {
+              radioInput.checked = true;
+            }
+            radioInput.addEventListener("change", () => {
+              savedAnswers["q" + idx] = radioInput.value;
+              localStorage.setItem(answersKey, JSON.stringify(savedAnswers));
+            });
+          }
+          label.appendChild(radioInput);
+          label.appendChild(document.createTextNode(" " + opt));
+          questionDiv.appendChild(label);
+        });
+        examForm.appendChild(questionDiv);
+      });
+
+      if (!isReview && !timerRef) startTimer();
+    }
   </script>
 </body>
 </html> 
