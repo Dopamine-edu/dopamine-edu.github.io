@@ -1,62 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Set Exam Parameters</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" rel="stylesheet">
   <style>
-    body { font-family: Arial, sans-serif; background: #f7f7f7; padding: 20px; }
+    body { font-family: Arial, sans-serif; background: #f7f9fc; padding: 20px; }
     .container {
-      max-width: 500px; margin: auto; background: #fff;
-      padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      max-width: 500px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     }
-    h2 { text-align: center; margin-bottom: 20px; }
-    label { display: block; margin-top: 10px; }
-    input[type="number"],
-    input[type="text"],
-    input[type="date"] {
-      width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px;
-    }
-    button {
-      margin-top: 20px; padding: 10px 20px; background: #667eea; color: #fff;
-      border: none; border-radius: 4px; cursor: pointer; width: 100%;
-    }
+    .form-group { margin-bottom: 15px; }
+    .form-control:focus { border-color: #667eea; box-shadow: 0 0 5px rgba(102, 126, 234, 0.5); }
+    .btn-primary { background-color: #667eea; border-color: #667eea; }
+    .btn-primary:hover { background-color: #556cd6; border-color: #556cd6; }
     .share-link {
-      margin-top: 20px; word-break: break-all; background: #e0e0e0; padding: 10px; border-radius: 4px;
+      margin-top: 20px;
+      padding: 10px;
+      background: #e9f7ff;
+      border-radius: 5px;
+      word-break: break-all;
     }
     .hidden { display: none; }
+    .loading-spinner { display: none; text-align: center; padding: 10px; color: #667eea; }
+    @media (max-width: 576px) {
+      .container { padding: 15px; }
+    }
   </style>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </head>
 <body>
   <div class="container">
-    <h2>Set Exam Parameters</h2>
+    <h2 class="text-center mb-4">Set Exam Parameters</h2>
+    <div id="loading" class="loading-spinner">Saving...</div>
     <form id="examParamsForm">
-      <label for="examNameInput">Exam Name:</label>
-      <input type="text" id="examNameInput" placeholder="Enter Exam Name" required />
-      
-      <label for="timerInput">Exam Timer (minutes):</label>
-      <input type="number" id="timerInput" min="1" required />
-      
-      <label for="markInput">Marks per Question:</label>
-      <input type="number" id="markInput" min="0" step="0.1" required />
-      
-      <label for="negativeMarkInput">Negative Mark per Wrong Answer:</label>
-      <input type="number" id="negativeMarkInput" min="0" step="0.01" required />
-      
-      <label for="attemptsAllowedInput">Attempts Allowed (per user):</label>
-      <input type="number" id="attemptsAllowedInput" min="1" required />
-      
-      <label for="lastDateInput">Last Date (Deadline):</label>
-      <input type="date" id="lastDateInput" required />
-      
-      <button type="submit">Create Exam Link</button>
+      <div class="form-group">
+        <label for="examNameInput">Exam Name:</label>
+        <input type="text" id="examNameInput" class="form-control" placeholder="Enter Exam Name" required />
+      </div>
+      <div class="form-group">
+        <label for="timerInput">Exam Timer (minutes):</label>
+        <input type="number" id="timerInput" class="form-control" min="1" required />
+      </div>
+      <div class="form-group">
+        <label for="markInput">Marks per Question:</label>
+        <input type="number" id="markInput" class="form-control" min="0" step="0.1" required />
+      </div>
+      <div class="form-group">
+        <label for="negativeMarkInput">Negative Mark per Wrong Answer:</label>
+        <input type="number" id="negativeMarkInput" class="form-control" min="0" step="0.01" required />
+      </div>
+      <div class="form-group">
+        <label for="attemptsAllowedInput">Attempts Allowed (per user):</label>
+        <input type="number" id="attemptsAllowedInput" class="form-control" min="1" required />
+      </div>
+      <div class="form-group">
+        <label for="lastDateInput">Last Date (Deadline):</label>
+        <input type="date" id="lastDateInput" class="form-control" required />
+      </div>
+      <button type="submit" class="btn btn-primary">Create Exam Link</button>
     </form>
     <div id="examLink" class="share-link hidden"></div>
   </div>
-  
+
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
@@ -69,11 +84,11 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
-    
-    // Get examId from query string if provided (optional)
+
     const urlParams = new URLSearchParams(window.location.search);
     const examId = urlParams.get("examId");
-    
+    const loadingDiv = document.getElementById("loading");
+
     document.getElementById("examParamsForm").addEventListener("submit", async (e) => {
       e.preventDefault();
       const examName = document.getElementById("examNameInput").value.trim();
@@ -82,44 +97,62 @@
       const negativeMark = parseFloat(document.getElementById("negativeMarkInput").value);
       const attemptsAllowed = parseInt(document.getElementById("attemptsAllowedInput").value);
       const lastDate = document.getElementById("lastDateInput").value;
-      
+
       if (!examName || !timer || isNaN(marksPerQuestion) || isNaN(negativeMark) || !attemptsAllowed || !lastDate) {
-        alert("Please fill in all fields.");
+        Toastify({
+          text: "Please fill in all fields correctly.",
+          duration: 3000,
+          style: { background: "#dc3545" }
+        }).showToast();
         return;
       }
-      
-      try {
-        let examDocRef;
-        if (examId) {
-          examDocRef = db.collection("exams").doc(examId);
-          await examDocRef.update({
-            examName: examName,
-            timer: timer,
-            marksPerQuestion: marksPerQuestion,
-            negativeMark: negativeMark,
-            attemptsAllowed: attemptsAllowed,
-            lastDate: lastDate
-          });
-        } else {
-          examDocRef = await db.collection("exams").add({
-            examName: examName,
-            timer: timer,
-            marksPerQuestion: marksPerQuestion,
-            negativeMark: negativeMark,
-            attemptsAllowed: attemptsAllowed,
-            lastDate: lastDate,
-            questions: [],
-            createdBy: auth.currentUser ? auth.currentUser.uid : null,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-          });
+
+      if (confirm("Save these exam parameters?")) {
+        loadingDiv.style.display = "block";
+        try {
+          let examDocRef;
+          if (examId) {
+            examDocRef = db.collection("exams").doc(examId);
+            await examDocRef.update({
+              examName,
+              timer,
+              marksPerQuestion,
+              negativeMark,
+              attemptsAllowed,
+              lastDate
+            });
+          } else {
+            examDocRef = await db.collection("exams").add({
+              examName,
+              timer,
+              marksPerQuestion,
+              negativeMark,
+              attemptsAllowed,
+              lastDate,
+              questions: [],
+              createdBy: auth.currentUser ? auth.currentUser.uid : null,
+              createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+          }
+          const link = `${window.location.origin}/quiz.html?examId=${examDocRef.id}`;
+          const examLinkDiv = document.getElementById("examLink");
+          examLinkDiv.classList.remove("hidden");
+          examLinkDiv.innerText = "Share this exam link: " + link;
+          loadingDiv.style.display = "none";
+          Toastify({
+            text: "Exam parameters saved!",
+            duration: 3000,
+            style: { background: "#667eea" }
+          }).showToast();
+        } catch (error) {
+          loadingDiv.style.display = "none";
+          console.error("Error updating exam parameters:", error);
+          Toastify({
+            text: "Error saving parameters",
+            duration: 3000,
+            style: { background: "#dc3545" }
+          }).showToast();
         }
-        const link = window.location.origin + "/quiz.html?examId=" + examDocRef.id;
-        const examLinkDiv = document.getElementById("examLink");
-        examLinkDiv.classList.remove("hidden");
-        examLinkDiv.innerText = "Share this exam link: " + link;
-      } catch (error) {
-        console.error("Error updating exam parameters:", error);
-        alert("Error setting exam parameters. Please try again.");
       }
     });
   </script>
