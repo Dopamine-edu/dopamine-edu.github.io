@@ -25,7 +25,6 @@
       display: block;
       padding: 10px;
       border-radius: 5px;
-      cursor: pointer;
       transition: background 0.3s;
     }
     .question-card label:hover { background: #f1f1f1; }
@@ -35,6 +34,7 @@
     .btn-primary:hover { background-color: #556cd6; border-color: #556cd6; }
     .loading-spinner { display: none; text-align: center; padding: 20px; color: #667eea; }
     .expired-message { text-align: center; color: #dc3545; font-size: 1.5rem; padding: 20px; }
+    .stats-container { margin-top: 20px; padding: 15px; background: #fff; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
     @media (max-width: 576px) {
       .header { flex-direction: column; gap: 10px; }
       #examNameDisplay { font-size: 1.4rem; }
@@ -102,7 +102,7 @@
       return new Date() > examDeadline;
     }
 
-    function renderQuiz(questions) {
+    function renderQuiz(questions, isReview = false, previousAnswers = {}) {
       const examForm = document.getElementById("examForm");
       examForm.innerHTML = "";
 
@@ -119,13 +119,27 @@
           radioInput.type = "radio";
           radioInput.name = "q" + idx;
           radioInput.value = String(optIdx + 1);
-          if (savedAnswers["q" + idx] === radioInput.value) {
-            radioInput.checked = true;
+          if (isReview) {
+            radioInput.disabled = true; // Disable inputs in review mode
+            if (previousAnswers["q" + idx] === radioInput.value) {
+              radioInput.checked = true;
+              if (radioInput.value === q.correctOption) {
+                label.classList.add("correct");
+              } else {
+                label.classList.add("incorrect");
+              }
+            } else if (radioInput.value === q.correctOption) {
+              label.classList.add("correct");
+            }
+          } else {
+            if (savedAnswers["q" + idx] === radioInput.value) {
+              radioInput.checked = true;
+            }
+            radioInput.addEventListener("change", () => {
+              savedAnswers["q" + idx] = radioInput.value;
+              localStorage.setItem(answersKey, JSON.stringify(savedAnswers));
+            });
           }
-          radioInput.addEventListener("change", () => {
-            savedAnswers["q" + idx] = radioInput.value;
-            localStorage.setItem(answersKey, JSON.stringify(savedAnswers));
-          });
           label.appendChild(radioInput);
           label.appendChild(document.createTextNode(" " + opt));
           questionDiv.appendChild(label);
@@ -133,7 +147,7 @@
         examForm.appendChild(questionDiv);
       });
 
-      if (!timerRef) startTimer();
+      if (!isReview && !timerRef) startTimer();
     }
 
     function startTimer() {
@@ -180,6 +194,30 @@
         });
     }
 
+    function displayReviewMode(questions, resultData) {
+      const examForm = document.getElementById("examForm");
+      const scoreContainer = document.getElementById("scoreContainer");
+      const solutionsContainer = document.getElementById("solutionsContainer");
+      const submitContainer = document.getElementById("submitContainer");
+      const timer = document.getElementById("timer");
+
+      timer.style.display = "none"; // Hide timer in review mode
+      renderQuiz(questions, true, resultData.answers || {});
+      scoreContainer.innerHTML = `Your Score: ${resultData.score.toFixed(2)}`;
+      solutionsContainer.innerHTML = `
+        <div class="stats-container">
+          <p class="text-success fw-bold">Correct Answers: ${resultData.correctCount}</p>
+          <p class="text-danger fw-bold">Wrong Answers: ${resultData.wrongCount}</p>
+        </div>
+      `;
+      submitContainer.style.display = "none";
+      Toastify({
+        text: "Showing your previous submission",
+        duration: 3000,
+        style: { background: "#667eea" }
+      }).showToast();
+    }
+
     auth.onAuthStateChanged((user) => {
       const loadingDiv = document.getElementById("loading");
       loadingDiv.style.display = "block";
@@ -190,12 +228,38 @@
           db.collection("examResults").where("userId", "==", user.uid).where("examId", "==", examId).get()
             .then((querySnapshot) => {
               if (!querySnapshot.empty) {
-                loadingDiv.style.display = "none";
-                document.getElementById("expiredMessage").style.display = "block";
-                document.getElementById("expiredMessage").innerText = "You have already taken this exam.";
-                document.getElementById("examForm").style.display = "none";
-                document.getElementById("submitContainer").style.display = "none";
+                // User has already taken the quiz, display review mode
+                const resultDoc = querySnapshot.docs[0].data();
+                db.collection("exams").doc(examId).get()
+                  .then((doc) => {
+                    loadingDiv.style.display = "none";
+                    if (doc.exists) {
+                      const examData = doc.data();
+                      examParams.examName = examData.examName || examParams.examName;
+                      examParams.timer = examData.timer || examParams.timer;
+                      examParams.marksPerQuestion = examData.marksPerQuestion || examParams.marksPerQuestion;
+                      examParams.negativeMark = examData.negativeMark || examParams.negativeMark;
+                      examParams.lastDate = examData.lastDate || null;
+                      document.getElementById("examNameDisplay").innerText = examParams.examName;
+
+                      const questionIds = examData.questions || [];
+                      Promise.all(questionIds.map((qid) => db.collection("questions").doc(qid).get()))
+                        .then((docs) => {
+                          const questions = docs.filter((doc) => doc.exists).map((doc) => ({ id: doc.id, ...doc.data() }));
+                          displayReviewMode(questions, resultDoc);
+                        })
+                        .catch((error) => {
+                          console.error("Error loading exam questions for review:", error);
+                          Toastify({
+                            text: "Error loading review data",
+                            duration: 3000,
+                            style: { background: "#dc3545" }
+                          }).showToast();
+                        });
+                    }
+                  });
               } else {
+                // User hasn't taken the quiz yet, proceed with normal quiz mode
                 db.collection("exams").doc(examId).get()
                   .then((doc) => {
                     loadingDiv.style.display = "none";
@@ -305,8 +369,10 @@
 
       document.getElementById("scoreContainer").innerHTML = `Your Score: ${score.toFixed(2)}`;
       const resultsHTML = `
-        <p class="text-success fw-bold">Correct Answers: ${correctCount}</p>
-        <p class="text-danger fw-bold">Wrong Answers: ${wrongCount}</p>
+        <div class="stats-container">
+          <p class="text-success fw-bold">Correct Answers: ${correctCount}</p>
+          <p class="text-danger fw-bold">Wrong Answers: ${wrongCount}</p>
+        </div>
       `;
       document.getElementById("solutionsContainer").innerHTML = resultsHTML + "<h3>Solutions:</h3>" + document.getElementById("examForm").innerHTML;
       document.getElementById("examForm").style.display = "none";
@@ -320,6 +386,7 @@
           score: score,
           correctCount: correctCount,
           wrongCount: wrongCount,
+          answers: savedAnswers, // Save the user's answers
           timestamp: firebase.firestore.FieldValue.serverTimestamp()
         }).then(() => {
           Toastify({
