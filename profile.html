@@ -68,14 +68,24 @@
             margin-bottom: 2rem;
         }
 
-        .profile-picture {
-            width: 150px;
-            height: 150px;
+        .avatar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .avatar {
+            width: 100%;
             border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 1rem;
             cursor: pointer;
-            border: 3px solid var(--primary-color);
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .avatar.selected {
+            border-color: var(--primary-color);
+            transform: scale(1.1);
         }
 
         .profile-form {
@@ -139,6 +149,10 @@
             .profile-form {
                 grid-template-columns: 1fr;
             }
+
+            .avatar-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
         }
     </style>
 </head>
@@ -152,15 +166,30 @@
 
     <div class="profile-container">
         <div class="profile-header">
-            <img src="https://via.placeholder.com/150" 
-                 class="profile-picture" 
-                 id="profilePicture"
-                 onclick="document.getElementById('profileUpload').click()">
-            <input type="file" 
-                   id="profileUpload" 
-                   accept="image/*" 
-                   style="display: none;">
             <h2>User Profile</h2>
+            <p>Choose your avatar:</p>
+        </div>
+
+        <!-- Avatar Selection Grid -->
+        <div class="avatar-grid" id="avatarGrid">
+            <img src="https://cdn-icons-png.flaticon.com/512/4333/4333609.png" 
+                 class="avatar" 
+                 data-avatar="1">
+            <img src="https://cdn-icons-png.flaticon.com/512/4333/4333607.png" 
+                 class="avatar" 
+                 data-avatar="2">
+            <img src="https://cdn-icons-png.flaticon.com/512/4333/4333608.png" 
+                 class="avatar" 
+                 data-avatar="3">
+            <img src="https://cdn-icons-png.flaticon.com/512/4333/4333605.png" 
+                 class="avatar" 
+                 data-avatar="4">
+            <img src="https://cdn-icons-png.flaticon.com/512/4333/4333606.png" 
+                 class="avatar" 
+                 data-avatar="5">
+            <img src="https://cdn-icons-png.flaticon.com/512/4333/4333604.png" 
+                 class="avatar" 
+                 data-avatar="6">
         </div>
 
         <form class="profile-form" id="profileForm">
@@ -213,7 +242,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-storage-compat.js"></script>
 
     <script>
         // Firebase Configuration
@@ -230,9 +258,24 @@
         const app = firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
-        const storage = firebase.storage();
 
         let currentUser = null;
+        let selectedAvatar = null;
+
+        // Avatar Selection
+        const avatarGrid = document.getElementById('avatarGrid');
+        avatarGrid.addEventListener('click', (e) => {
+            if (e.target.classList.contains('avatar')) {
+                // Remove selection from all avatars
+                document.querySelectorAll('.avatar').forEach(avatar => {
+                    avatar.classList.remove('selected');
+                });
+
+                // Select clicked avatar
+                e.target.classList.add('selected');
+                selectedAvatar = e.target.src;
+            }
+        });
 
         // Load user data
         auth.onAuthStateChanged(async user => {
@@ -248,30 +291,18 @@
                     document.getElementById('hscYear').value = userData.hscYear || '';
                     document.getElementById('phone').value = userData.phone || '';
                     document.getElementById('email').value = user.email;
-                    
-                    // Load profile picture
-                    if (userData.profilePicture) {
-                        document.getElementById('profilePicture').src = userData.profilePicture;
+
+                    // Select current avatar
+                    if (userData.avatar) {
+                        const avatar = document.querySelector(`[data-avatar="${userData.avatar}"]`);
+                        if (avatar) {
+                            avatar.classList.add('selected');
+                            selectedAvatar = userData.avatar;
+                        }
                     }
                 }
             } else {
                 window.location.href = 'auth.html';
-            }
-        });
-
-        // Profile picture upload
-        document.getElementById('profileUpload').addEventListener('change', async (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const storageRef = storage.ref(`profile_pictures/${currentUser.uid}`);
-                await storageRef.put(file);
-                const downloadURL = await storageRef.getDownloadURL();
-                
-                // Update Firestore and UI
-                await db.collection('users').doc(currentUser.uid).update({
-                    profilePicture: downloadURL
-                });
-                document.getElementById('profilePicture').src = downloadURL;
             }
         });
 
@@ -283,7 +314,8 @@
                 fullName: document.getElementById('fullName').value,
                 collegeName: document.getElementById('collegeName').value,
                 hscYear: document.getElementById('hscYear').value,
-                phone: document.getElementById('phone').value
+                phone: document.getElementById('phone').value,
+                avatar: selectedAvatar
             };
 
             await db.collection('users').doc(currentUser.uid).update(updates);
@@ -323,4 +355,4 @@
         }
     </script>
 </body>
-</html> 
+    </html> 
