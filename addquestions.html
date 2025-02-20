@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dopamine Quiz - Add Questions</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" rel="stylesheet">
+  <style>
+    body { font-family: Arial, sans-serif; background: #f7f9fc; margin: 0; padding: 20px; }
+    .navbar { background: #667eea; padding: 15px 20px; }
+    .navbar-brand { color: #fff; font-weight: bold; }
+    .container { max-width: 600px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    h1 { text-align: center; margin-bottom: 30px; color: #333; }
+    .btn-primary { background-color: #667eea; border-color: #667eea; width: 100%; }
+    .btn-primary:hover { background-color: #556cd6; border-color: #556cd6; }
+    .loading-spinner { display: none; text-align: center; padding: 20px; color: #667eea; }
+    .status-message { text-align: center; margin-top: 20px; font-weight: bold; }
+    .success { color: #28a745; }
+    .error { color: #dc3545; }
+    @media (max-width: 576px) {
+      .container { padding: 15px; }
+      h1 { font-size: 1.5rem; }
+    }
+  </style>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Dopamine Quiz</a>
+    </div>
+  </nav>
+
+  <div class="container">
+    <h1>Add Questions to Firestore</h1>
+    <div id="loading" class="loading-spinner">Adding Questions...</div>
+    <button id="addQuestionsBtn" class="btn btn-primary">Add Questions</button>
+    <div id="status" class="status-message"></div>
+  </div>
+
+  <script>
+    // Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
+      authDomain: "dopamine-quiz.firebaseapp.com",
+      projectId: "dopamine-quiz",
+      storageBucket: "dopamine-quiz.firebasestorage.app",
+      messagingSenderId: "822531459966",
+      appId: "1:822531459966:web:8e7d2385090e997eb1c12f"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // Authentication check (optional: restrict to admins)
+    auth.onAuthStateChanged((user) => {
+      if (!user) {
+        window.location.href = "auth.html"; // Redirect to login if not authenticated
+      }
+    });
+
+    // Questions data from pages 166–172
+    const questions = [
+      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষের গঠন ও কার্যাবলির মধ্যে সম্পর্ক স্থাপন করে কোনটি?",options:["কোষঝিল্লি","নিউক্লিয়াস","সাইটোপ্লাজম","মাইটোকন্ড্রিয়া"],correctOption:"2",explanation:"নিউক্লিয়াস কোষের গঠন ও কার্যাবলির মধ্যে সম্পর্ক স্থাপন করে কারণ এটি কোষের নিয়ন্ত্রণ কেন্দ্র হিসেবে কাজ করে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
+      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষের কোন অংশটি জীবনের একক হিসেবে পরিচিত?",options:["নিউক্লিয়াস","মাইটোকন্ড্রিয়া","কোষঝিল্লি","সাইটোপ্লাজম"],correctOption:"1",explanation:"নিউক্লিয়াসকে জীবনের একক বলা হয় কারণ এটি কোষের সমস্ত কার্যক্রম নিয়ন্ত্রণ করে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
+      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষঝিল্লির প্রধান কাজ কী?",options:["শক্তি উৎপাদন","পদার্থ পরিবহন","কোষ বিভাজন","ডিএনএ সংরক্ষণ"],correctOption:"2",explanation:"কোষঝিল্লি পদার্থ পরিবহন নিয়ন্ত্রণ করে, যা কোষের ভিতরে ও বাইরে পদার্থের প্রবেশ ও বেরিয়ে যাওয়া নিয়ন্ত্রণ করে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
+      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষের শক্তি উৎপাদন কেন্দ্র কোনটি?",options:["নিউক্লিয়াস","মাইটোকন্ড্রিয়া","গলগি বডি","রাইবোজোম"],correctOption:"2",explanation:"মাইটোকন্ড্রিয়া কোষের শক্তি উৎপাদন কেন্দ্র হিসেবে পরিচিত কারণ এটি ATP উৎপাদন করে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
+      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষে প্রোটিন সংশ্লেষণের জন্য কোনটি দায়ী?",options:["নিউক্লিয়াস","রাইবোজোম","মাইটোকন্ড্রিয়া","গলগি বডি"],correctOption:"2",explanation:"রাইবোজোম প্রোটিন সংশ্লেষণের জন্য দায়ী কারণ এটি mRNA থেকে প্রোটিন তৈরি করে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
+      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষঝিল্লি প্রধানত কী দিয়ে গঠিত?",options:["প্রোটিন ও লিপিড","কার্বোহাইড্রেট","নিউক্লিক এসিড","পানি"],correctOption:"1",explanation:"কোষঝিল্লি প্রোটিন ও লিপিডের সমন্বয়ে গঠিত, যা এটিকে নমনীয় ও কার্যকরী করে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
+      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"নিউক্লিয়াসের প্রধান কাজ কী?",options:["শক্তি উৎপাদন","জিন নিয়ন্ত্রণ","প্রোটিন সংশ্লেষণ","পদার্থ পরিবহন"],correctOption:"2",explanation:"নিউক্লিয়াস জিন নিয়ন্ত্রণ করে এবং কোষের সমস্ত কার্যক্রম পরিচালনা করে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
+      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষের কোন অংশে রাইবোজোম থাকে?",options:["নিউক্লিয়াস","সাইটোপ্লাজম","মাইটোকন্ড্রিয়া","গলগি বডি"],correctOption:"2",explanation:"রাইবোজোম সাইটোপ্লাজমে অবস্থান করে এবং প্রোটিন সংশ্লেষণে ভূমিকা রাখে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
+      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষের কোন অংশ পদার্থ সংরক্ষণে সাহায্য করে?",options:["গলগি বডি","মাইটোকন্ড্রিয়া","নিউক্লিয়াস","রাইবোজোম"],correctOption:"1",explanation:"গলগি বডি পদার্থ সংরক্ষণ ও পরিবহনে সাহায্য করে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
+      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষে শক্তি সঞ্চয়ের জন্য কোনটি দায়ী?",options:["নিউক্লিয়াস","মাইটোকন্ড্রিয়া","কোষঝিল্লি","গলগি বডি"],correctOption:"2",explanation:"মাইটোকন্ড্রিয়া শক্তি সঞ্চয়ের জন্য ATP উৎপাদন করে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
+      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষের কোন অংশে DNA থাকে?",options:["নিউক্লিয়াস","মাইটোকন্ড্রিয়া","গলগি বডি","রাইবোজোম"],correctOption:"1",explanation:"নিউক্লিয়াসে DNA থাকে, যা জিনগত তথ্য সংরক্ষণ করে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
+      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষের কোন অংশে লাইসোজোম থাকে?",options:["নিউক্লিয়াস","সাইটোপ্লাজম","মাইটোকন্ড্রিয়া","কোষঝিল্লি"],correctOption:"2",explanation:"লাইসোজোম সাইটোপ্লাজমে অবস্থান করে এবং পদার্থ হজমে সাহায্য করে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
+      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষের কোন অংশে পানি সঞ্চয় করা হয়?",options:["নিউক্লিয়াস","ভ্যাকুওল","মাইটোকন্ড্রিয়া","গলগি বডি"],correctOption:"2",explanation:"ভ্যাকুওল কোষে পানি ও অন্যান্য পদার্থ সঞ্চয় করে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
+      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষের কোন অংশে কোষ বিভাজন নিয়ন্ত্রণ করা হয়?",options:["নিউক্লিয়াস","মাইটোকন্ড্রিয়া","গলগি বডি","কোষঝিল্লি"],correctOption:"1",explanation:"নিউক্লিয়াস কোষ বিভাজন নিয়ন্ত্রণ করে কারণ এটি ক্রোমোজোম ধারণ করে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
+      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষের কোন অংশে RNA সংশ্লেষিত হয়?",options:["নিউক্লিয়াস","রাইবোজোম","মাইটোকন্ড্রিয়া","গলগি বডি"],correctOption:"1",explanation:"RNA নিউক্লিয়াসে সংশ্লেষিত হয়, যেখানে ট্রান্সক্রিপশন প্রক্রিয়া ঘটে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
+      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষের কোন অংশে সালোকসংশ্লেষণ ঘটে?",options:["নিউক্লিয়াস","ক্লোরোপ্লাস্ট","মাইটোকন্ড্রিয়া","গলগি বডি"],correctOption:"2",explanation:"ক্লোরোপ্লাস্টে সালোকসংশ্লেষণ ঘটে, যেখানে ক্লোরোফিল থাকে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
+      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষের কোন অংশে গ্লাইকোলাইসিস ঘটে?",options:["নিউক্লিয়াস","মাইটোকন্ড্রিয়া","সাইটোপ্লাজম","গলগি বডি"],correctOption:"3",explanation:"গ্লাইকোলাইসিস সাইটোপ্লাজমে ঘটে, যেখানে গ্লুকোজ ভেঙে শক্তি উৎপন্ন হয়।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
+      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষের কোন অংশে এন্ডোপ্লাজমিক রেটিকুলাম থাকে?",options:["নিউক্লিয়াস","সাইটোপ্লাজম","মাইটোকন্ড্রিয়া","কোষঝিল্লি"],correctOption:"2",explanation:"এন্ডোপ্লাজমিক রেটিকুলাম সাইটোপ্লাজমে অবস্থান করে এবং প্রোটিন পরিবহনে সাহায্য করে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
+      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষের কোন অংশে ক্রোমোজোম থাকে?",options:["নিউক্লিয়াস","মাইটোকন্ড্রিয়া","গলগি বডি","রাইবোজোম"],correctOption:"1",explanation:"ক্রোমোজোম নিউক্লিয়াসে থাকে, যেখানে জিনগত তথ্য সংরক্ষিত হয়।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
+      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষের কোন অংশে পড়ে পদার্থ হজম হয়?",options:["নিউক্লিয়াস","লাইসোজোম","মাইটোকন্ড্রিয়া","গলগি বডি"],correctOption:"2",explanation:"লাইসোজোমে পড়ে পদার্থ হজম হয় কারণ এটি হজমকারী এনজাইম ধারণ করে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()}
+    ];
+
+    // Button click handler
+    document.getElementById("addQuestionsBtn").addEventListener("click", async () => {
+      const loadingDiv = document.getElementById("loading");
+      const statusDiv = document.getElementById("status");
+      const addButton = document.getElementById("addQuestionsBtn");
+
+      loadingDiv.style.display = "block";
+      statusDiv.textContent = "";
+      addButton.disabled = true;
+
+      try {
+        for (const question of questions) {
+          await db.collection("questions").add(question);
+          console.log(`Added question: ${question.question}`);
+        }
+        loadingDiv.style.display = "none";
+        statusDiv.textContent = "All 20 questions added successfully!";
+        statusDiv.className = "status-message success";
+        Toastify({
+          text: "Questions added successfully!",
+          duration: 3000,
+          style: { background: "#667eea" }
+        }).showToast();
+      } catch (error) {
+        loadingDiv.style.display = "none";
+        statusDiv.textContent = "Error adding questions: " + error.message;
+        statusDiv.className = "status-message error";
+        addButton.disabled = false;
+        Toastify({
+          text: "Error adding questions",
+          duration: 3000,
+          style: { background: "#dc3545" }
+        }).showToast();
+      }
+    });
+  </script>
+</body>
+</html>
