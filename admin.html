@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Admin - Add Questions</title>
   <style>
-    /* General Styles */
+    /* (Your existing CSS remains unchanged) */
     * {
       margin: 0;
       padding: 0;
@@ -15,7 +15,6 @@
       font-family: Arial, sans-serif;
       background: #f4f4f4;
     }
-    /* Navbar */
     .navbar {
       background: #2d2d2d;
       color: white;
@@ -39,7 +38,6 @@
       font-size: 1.2rem;
       font-weight: bold;
     }
-    /* Sidebar Menu */
     .side-menu {
       position: fixed;
       top: 0;
@@ -72,7 +70,6 @@
       background: #444;
       border-radius: 5px;
     }
-    /* Main Content */
     .container {
       max-width: 600px;
       margin: 80px auto 20px;
@@ -131,24 +128,23 @@
   <nav class="side-menu" id="sideMenu">
     <h2>Admin Menu</h2>
     <ul>
-      <li><a href="#">Admin Info</a></li>
-      <li><a href="#">Add Questions</a></li>
-      <li><a href="#">Refer Students</a></li>
-      <li><a href="#">Reward Withdrawal</a></li>
+      <li><a href="admin-info.html">Admin Info</a></li>
+      <li><a href="admin.html">Add Questions</a></li>
+      <li><a href="refer.html">Refer Students</a></li>
+      <li><a href="withdraw.html">Reward Withdrawal</a></li>
       <li><a href="#" id="logoutBtn">Logout</a></li>
     </ul>
   </nav>
 
   <!-- Navbar -->
   <div class="navbar">
-    <button class="menu-btn" id="menuBtn">&#9776;</button>
+    <button class="menu-btn" id="menuBtn">☰</button>
     <div class="title">Admin Panel</div>
   </div>
 
   <div class="container">
     <h2>Add Question</h2>
     <form id="addQuestionForm">
-      <!-- Subject Selection -->
       <div class="form-group">
         <label for="subjectSelect">Subject:</label>
         <select id="subjectSelect" required>
@@ -163,14 +159,10 @@
           <option value="English">English</option>
         </select>
       </div>
-
-      <!-- Question Input -->
       <div class="form-group">
         <label for="questionInput">Question:</label>
         <textarea id="questionInput" required></textarea>
       </div>
-
-      <!-- Options Input -->
       <div class="form-group">
         <label>Options:</label>
         <input type="text" id="option1" placeholder="Option 1" required>
@@ -178,8 +170,6 @@
         <input type="text" id="option3" placeholder="Option 3" required>
         <input type="text" id="option4" placeholder="Option 4" required>
       </div>
-
-      <!-- Correct Option Selection -->
       <div class="form-group">
         <label>Correct Answer:</label>
         <div class="radio-group">
@@ -189,7 +179,6 @@
           <label><input type="radio" name="correctOption" value="4"> Option 4</label>
         </div>
       </div>
-
       <button type="submit">Submit Question</button>
     </form>
   </div>
@@ -207,6 +196,13 @@
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
+
+    // Authentication Check
+    auth.onAuthStateChanged(user => {
+      if (!user) {
+        window.location.href = "auth.html";
+      }
+    });
 
     // Preserve Subject Selection
     const subjectSelect = document.getElementById("subjectSelect");
@@ -227,7 +223,49 @@
         window.location.href = "auth.html";
       });
     });
-  </script>
 
+    // Form Submission
+    document.getElementById("addQuestionForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const submitBtn = document.querySelector("button[type='submit']");
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Submitting...";
+
+      const subject = document.getElementById("subjectSelect").value;
+      const question = document.getElementById("questionInput").value;
+      const options = [
+        document.getElementById("option1").value,
+        document.getElementById("option2").value,
+        document.getElementById("option3").value,
+        document.getElementById("option4").value
+      ];
+      const correctOption = document.querySelector('input[name="correctOption"]:checked');
+
+      if (!subject || !question || options.some(opt => !opt) || !correctOption) {
+        alert("Please fill out all fields and select a correct answer.");
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Submit Question";
+        return;
+      }
+
+      db.collection("questions").add({
+        subject: subject,
+        question: question,
+        options: options,
+        correctOption: correctOption.value,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      }).then(() => {
+        alert("Question added successfully!");
+        document.getElementById("addQuestionForm").reset();
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Submit Question";
+      }).catch((error) => {
+        console.error("Error adding question: ", error);
+        alert("Failed to add question.");
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Submit Question";
+      });
+    });
+  </script>
 </body>
-</html>
+</html> 
