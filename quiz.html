@@ -33,7 +33,7 @@
     .correct { background-color: #c8e6c9; }
     .incorrect { background-color: #ffcdd2; }
     .solution-explanation { margin-top: 10px; padding: 10px; background: #f8f9fa; border-radius: 5px; }
-    .stats-container { margin-top: 20px; padding: 15px; background: #fff; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+    .stats-container { margin-top: 10px; padding: 15px; background: #fff; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
     .btn-primary { background-color: #667eea; border-color: #667eea; }
     .btn-primary:hover { background-color: #556cd6; border-color: #556cd6; }
     .loading-spinner { display: none; text-align: center; padding: 20px; color: #667eea; }
@@ -60,6 +60,7 @@
       <div id="examNameDisplay">Loading...</div>
       <div id="timer">--:--</div>
       <div id="scoreDisplay" style="display: none;"></div>
+      <div id="statsContainer" class="stats-container" style="display: none;"></div>
     </div>
     <div id="loading" class="loading-spinner">Loading Quiz...</div>
     <div id="expiredMessage" class="expired-message" style="display: none;"></div>
@@ -67,7 +68,6 @@
     <div id="submitContainer" class="text-center mt-3">
       <button type="button" id="submitBtn" class="btn btn-primary">Submit</button>
     </div>
-    <div id="statsContainer" class="stats-container" style="display: none;"></div>
     <div id="solutionsContainer" class="mt-3"></div>
   </div>
 
@@ -88,7 +88,7 @@
       examName: "Untitled Exam",
       timer: 1,
       marksPerQuestion: 1,
-      negativeMark: 1,
+      negativeMark: 0, // No negative marking unless specified
       lastDate: null
     };
     const urlParams = new URLSearchParams(window.location.search);
@@ -212,13 +212,13 @@
       timer.style.display = "none"; // Hide timer in review mode
       renderQuiz(questions, true, resultData.answers || {});
       scoreDisplay.style.display = "block";
-      scoreDisplay.innerHTML = `Your Score: ${resultData.score.toFixed(2)} / ${questions.length}`;
+      scoreDisplay.innerHTML = `Your Score: ${resultData.score} / ${questions.length}`;
       statsContainer.style.display = "block";
       statsContainer.innerHTML = `
         <p class="text-success fw-bold">Correct Answers: ${resultData.correctCount}</p>
         <p class="text-danger fw-bold">Wrong Answers: ${resultData.wrongCount}</p>
       `;
-      solutionsContainer.innerHTML = "<h3>Solutions:</h3>";
+      solutionsContainer.innerHTML = "";
       questions.forEach((q, idx) => {
         const questionDiv = document.createElement("div");
         questionDiv.className = "question-card";
@@ -379,7 +379,6 @@
             correctCount++;
             selectedOption.parentElement.classList.add("correct");
           } else {
-            score -= examParams.negativeMark;
             wrongCount++;
             selectedOption.parentElement.classList.add("incorrect");
             q.querySelectorAll("label").forEach((label) => {
@@ -400,7 +399,7 @@
 
       const scoreDisplay = document.getElementById("scoreDisplay");
       scoreDisplay.style.display = "block";
-      scoreDisplay.innerHTML = `Your Score: ${score.toFixed(2)} / ${totalQuestions}`;
+      scoreDisplay.innerHTML = `Your Score: ${score} / ${totalQuestions}`;
       const statsContainer = document.getElementById("statsContainer");
       statsContainer.style.display = "block";
       statsContainer.innerHTML = `
@@ -408,7 +407,7 @@
         <p class="text-danger fw-bold">Wrong Answers: ${wrongCount}</p>
       `;
       const solutionsContainer = document.getElementById("solutionsContainer");
-      solutionsContainer.innerHTML = "<h3>Solutions:</h3>";
+      solutionsContainer.innerHTML = "";
       allQuestions.forEach((q, idx) => {
         const questionDiv = document.createElement("div");
         questionDiv.className = "question-card";
@@ -439,6 +438,7 @@
         db.collection("examResults").add({
           userId: userId,
           examId: examId,
+          examName: examParams.examName, // Store exam name for reference
           score: score,
           correctCount: correctCount,
           wrongCount: wrongCount,
