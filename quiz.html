@@ -31,8 +31,6 @@
     .question-card label:hover { background: #f1f1f1; }
     .correct { background-color: #c8e6c9; }
     .incorrect { background-color: #ffcdd2; }
-    .pagination { margin: 20px 0; display: flex; gap: 5px; justify-content: center; }
-    .pagination button { padding: 5px 10px; }
     .btn-primary { background-color: #667eea; border-color: #667eea; }
     .btn-primary:hover { background-color: #556cd6; border-color: #556cd6; }
     .loading-spinner { display: none; text-align: center; padding: 20px; color: #667eea; }
@@ -63,7 +61,6 @@
     <div id="loading" class="loading-spinner">Loading Quiz...</div>
     <div id="expiredMessage" class="expired-message" style="display: none;"></div>
     <form id="examForm"></form>
-    <div class="pagination" id="pagination"></div>
     <div id="submitContainer" class="text-center mt-3">
       <button type="button" id="submitBtn" class="btn btn-primary">Submit</button>
     </div>
@@ -98,9 +95,6 @@
     let savedAnswers = JSON.parse(localStorage.getItem(answersKey)) || {};
     let submitted = false;
     let timerRef;
-    let currentPage = 0;
-    let questionsPerPage = 1;
-    let allQuestions = [];
 
     function isExamExpired(lastDate) {
       if (!lastDate) return false;
@@ -109,31 +103,27 @@
     }
 
     function renderQuiz(questions) {
-      allQuestions = questions;
       const examForm = document.getElementById("examForm");
       examForm.innerHTML = "";
-      const startIdx = currentPage * questionsPerPage;
-      const endIdx = Math.min(startIdx + questionsPerPage, questions.length);
-      const currentQuestions = questions.slice(startIdx, endIdx);
 
-      currentQuestions.forEach((q, idx) => {
+      questions.forEach((q, idx) => {
         const questionDiv = document.createElement("div");
         questionDiv.className = "question-card";
         questionDiv.dataset.answer = q.correctOption;
         questionDiv.innerHTML = `
-          <p class="fw-bold mb-3">${startIdx + idx + 1}. ${q.question}</p>
+          <p class="fw-bold mb-3">${idx + 1}. ${q.question}</p>
         `;
         q.options.forEach((opt, optIdx) => {
           const label = document.createElement("label");
           const radioInput = document.createElement("input");
           radioInput.type = "radio";
-          radioInput.name = "q" + (startIdx + idx);
+          radioInput.name = "q" + idx;
           radioInput.value = String(optIdx + 1);
-          if (savedAnswers["q" + (startIdx + idx)] === radioInput.value) {
+          if (savedAnswers["q" + idx] === radioInput.value) {
             radioInput.checked = true;
           }
           radioInput.addEventListener("change", () => {
-            savedAnswers["q" + (startIdx + idx)] = radioInput.value;
+            savedAnswers["q" + idx] = radioInput.value;
             localStorage.setItem(answersKey, JSON.stringify(savedAnswers));
           });
           label.appendChild(radioInput);
@@ -142,25 +132,8 @@
         });
         examForm.appendChild(questionDiv);
       });
-      renderPagination(questions.length);
+
       if (!timerRef) startTimer();
-    }
-
-    function renderPagination(totalQuestions) {
-      const paginationDiv = document.getElementById("pagination");
-      paginationDiv.innerHTML = "";
-      const totalPages = Math.ceil(totalQuestions / questionsPerPage);
-
-      for (let i = 0; i < totalPages; i++) {
-        const btn = document.createElement("button");
-        btn.className = `btn btn-outline-primary ${i === currentPage ? "active" : ""}`;
-        btn.innerText = i + 1;
-        btn.addEventListener("click", () => {
-          currentPage = i;
-          renderQuiz(allQuestions);
-        });
-        paginationDiv.appendChild(btn);
-      }
     }
 
     function startTimer() {
@@ -338,7 +311,6 @@
       document.getElementById("solutionsContainer").innerHTML = resultsHTML + "<h3>Solutions:</h3>" + document.getElementById("examForm").innerHTML;
       document.getElementById("examForm").style.display = "none";
       document.getElementById("submitContainer").style.display = "none";
-      document.getElementById("pagination").style.display = "none";
 
       if (examId) {
         const userId = auth.currentUser.uid;
