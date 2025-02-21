@@ -94,43 +94,55 @@
     <script>
         // Exam Data
         const exams = [
-            { university: "রুয়েট (লিখিত)", date: "2024-02-20" },
-            { university: "MIST", date: "2024-02-22" },
-            { university: "জাবি (A)", date: "2024-02-22" },
-            { university: "ডেন্টাল", date: "2024-02-28" },
-            { university: "শাবিপ্রবি (ক)", date: "2024-02-28" },
-            { university: "শাবিপ্রবি (খ)", date: "2024-02-28" },
-            { university: "জাবি (C)", date: "2024-02-28" },
-            { university: "চবি (ক)", date: "2024-03-06" },
-            { university: "বুটেক্স", date: "2024-03-07" },
-            { university: "চবি (খ)", date: "2024-03-08" },
-            { university: "চবি বি(০১)", date: "2024-03-10" },
-            { university: "চবি বি(০২)", date: "2024-03-11" },
-            { university: "চবি (গ)", date: "2024-03-15" },
-            { university: "চবি (ঘ)", date: "2024-03-22" },
-            { university: "চবি ডি(০৩)", date: "2024-03-24" },
-            { university: "রাবি (খ)", date: "2024-04-12" },
-            { university: "কৃষি গুচ্ছ", date: "2024-04-12" },
-            { university: "খুবি (গ)", date: "2024-04-17" },
-            { university: "খুবি (ঘ)", date: "2024-04-17" },
-            { university: "খুবি (ক)", date: "2024-04-18" },
-            { university: "খুবি (খ)", date: "2024-04-18" },
-            { university: "৭ কলেজ (ব্যবসা)", date: "2024-04-18" },
-            { university: "রাবি (ক)", date: "2024-04-19" },
-            { university: "কুবি (গ)", date: "2024-04-19" },
-            { university: "কুবি (ক)", date: "2024-04-19" },
-            { university: "হাবিপ্রবি", date: "2024-04-21" },
-            { university: "৭ কলেজ (বিজ্ঞান)", date: "2024-04-19" },
-            { university: "৭ কলেজ (মানবিক)", date: "2024-04-25" },
-            { university: "নার্সিং", date: "2024-04-25" },
-            { university: "কুবি (খ)", date: "2024-04-25" },
-            { university: "রাবি (গ)", date: "2024-04-26" },
-            { university: "ঢাবি প্রযুক্তি ইউনিট", date: "2024-05-15" },
-            { university: "গার্হস্থ্য ইউনিট", date: "2024-05-02" },
-            { university: "নিটোর", date: "2024-05-02" },
-            { university: "জাতীয়", date: "2024-05-03" },
-            { university: "টেক্সটাইল কলেজ", date: "2024-05-10" }
+            { university: "রুয়েট (লিখিত)", date: "2025-02-20" },
+            { university: "MIST", date: "2025-02-22" },
+            { university: "জবি (A)", date: "2025-02-22" },
+            { university: "ডেন্টাল", date: "2025-02-28" },
+            { university: "শাবিপ্রবি (ক)", date: "2025-02-28" },
+            { university: "শাবিপ্রবি (খ)", date: "2025-02-28" },
+            { university: "জাবি (C)", date: "2025-02-28" },
+            { university: "চবি (ক)", date: "2025-03-06" },
+            { university: "বুটেক্স", date: "2025-03-07" },
+            { university: "চবি (খ)", date: "2025-03-08" },
+            { university: "চবি বি(০১)", date: "2025-03-10" },
+            { university: "চবি বি(০২)", date: "2025-03-11" },
+            { university: "চবি (গ)", date: "2025-03-15" },
+            { university: "চবি (ঘ)", date: "2025-03-22" },
+            { university: "চবি ডি(০৩)", date: "2025-03-24" },
+            { university: "রাবি (খ)", date: "2025-04-12" },
+            { university: "কৃষি গুচ্ছ", date: "2025-04-12" },
+            { university: "খুবি (গ)", date: "2025-04-17" },
+            { university: "খুবি (ঘ)", date: "2025-04-17" },
+            { university: "খুবি (ক)", date: "2025-04-18" },
+            { university: "খুবি (খ)", date: "2025-04-18" },
+            { university: "৭ কলেজ (ব্যবসা)", date: "2025-04-18" },
+            { university: "রাবি (ক)", date: "2025-04-19" },
+            { university: "কুবি (গ)", date: "2025-04-19" },
+            { university: "কুবি (ক)", date: "2025-04-19" },
+            { university: "হাবিপ্রবি", date: "2025-04-21" },
+            { university: "৭ কলেজ (বিজ্ঞান)", date: "2025-04-19" },
+            { university: "৭ কলেজ (মানবিক)", date: "2025-04-25" },
+            { university: "নার্সিং", date: "2025-04-25" },
+            { university: "কুবি (খ)", date: "2025-04-25" },
+            { university: "রাবি (গ)", date: "2025-04-26" },
+            { university: "ঢাবি প্রযুক্তি ইউনিট", date: "2025-05-15" },
+            { university: "গার্হস্থ্য ইউনিট", date: "2025-05-02" },
+            { university: "নিটোর", date: "2025-05-02" },
+            { university: "জাতীয়", date: "2025-05-03" },
+            { university: "টেক্সটাইল কলেজ", date: "2025-05-10" }
         ];
+
+        // Function to format date as "Day Month" (e.g., "20 February")
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const monthNames = [
+                "January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+            ];
+            const day = date.getDate();
+            const month = monthNames[date.getMonth()];
+            return `${day} ${month}`;
+        }
 
         // Function to calculate time left
         function getTimeLeft(targetDate) {
@@ -161,7 +173,7 @@
             tableBody.innerHTML = exams.map(exam => `
                 <tr>
                     <td>${exam.university}</td>
-                    <td>${exam.date}</td>
+                    <td>${formatDate(exam.date)}</td>
                     <td class="countdown">${getTimeLeft(exam.date)}</td>
                 </tr>
             `).join('');
