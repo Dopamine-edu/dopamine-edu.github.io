@@ -111,10 +111,10 @@
     <div id="submitContainer" class="text-center mt-3">
       <button type="button" id="submitBtn" class="btn btn-primary">Submit</button>
     </div>
-    <div id="solutionsContainer" class="mt-3"></div>
   </div>
 
   <script>
+    // Firebase configuration remains the same.
     const firebaseConfig = {
       apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
       authDomain: "dopamine-quiz.firebaseapp.com",
@@ -129,15 +129,16 @@
 
     let examParams = {
       examName: "Untitled Exam",
-      timer: 1,
+      timer: 1, // in minutes
       marksPerQuestion: 1,
       negativeMark: 0,
       lastDate: null
     };
     const urlParams = new URLSearchParams(window.location.search);
-    const examId = urlParams.get("examId");
-    const startTimeKey = "examStartTime_" + (examId || "default");
-    const answersKey = "examAnswers_" + (examId || "default");
+    const examId = urlParams.get("examId") || "default";
+    const startTimeKey = "examStartTime_" + examId;
+    const answersKey = "examAnswers_" + examId;
+    const submittedFlagKey = "examSubmitted_" + examId;
     let savedAnswers = JSON.parse(localStorage.getItem(answersKey)) || {};
     let submitted = false;
     let timerRef;
@@ -149,6 +150,7 @@
       return new Date() > examDeadline;
     }
 
+    // Renders quiz questions into the exam form.
     function renderQuiz(questions, isReview = false, previousAnswers = {}) {
       allQuestions = questions;
       const examForm = document.getElementById("examForm");
@@ -180,7 +182,6 @@
               label.classList.add("correct");
             }
           } else {
-            // If already locked, disable this input
             if (savedAnswers["q" + idx] && savedAnswers["q" + idx + "_locked"]) {
               if (savedAnswers["q" + idx] === radioInput.value) {
                 radioInput.checked = true;
@@ -188,11 +189,10 @@
               radioInput.disabled = true;
             }
             radioInput.addEventListener("change", () => {
-              // Check if an answer for this question is not locked yet
               if (!savedAnswers["q" + idx + "_locked"]) {
                 savedAnswers["q" + idx] = radioInput.value;
                 savedAnswers["q" + idx + "_locked"] = true;
-                // Disable all radio buttons for this question to lock the answer permanently
+                // Disable all options for this question.
                 const radios = document.getElementsByName("q" + idx);
                 Array.from(radios).forEach(radio => {
                   radio.disabled = true;
@@ -273,6 +273,14 @@
             }
           });
         }
+        // Append the explanation directly within the same question card.
+        const explanation = allQuestions[idx].explanation;
+        if (explanation && explanation.trim() !== "") {
+          const explanationDiv = document.createElement("div");
+          explanationDiv.className = "solution-explanation";
+          explanationDiv.innerHTML = `<strong>Explanation:</strong> ${explanation}`;
+          qDiv.appendChild(explanationDiv);
+        }
       });
 
       document.getElementById("scoreDisplay").style.display = "block";
@@ -283,20 +291,14 @@
         <p class="text-danger fw-bold">Wrong Answers: ${wrongCount}</p>
       `;
 
-      questionDivs.forEach((qDiv, idx) => {
-        const explanation = allQuestions[idx].explanation;
-        if (explanation && explanation.trim() !== "") {
-          const explanationDiv = document.createElement("div");
-          explanationDiv.className = "solution-explanation";
-          explanationDiv.innerHTML = `<strong>Explanation:</strong> ${explanation}`;
-          qDiv.appendChild(explanationDiv);
-        }
-      });
-
       document.getElementById("submitContainer").style.display = "none";
       document.getElementById("timer").style.pointerEvents = "none";
 
-      if (examId) {
+      localStorage.removeItem(startTimeKey);
+      localStorage.removeItem(answersKey);
+      localStorage.setItem(submittedFlagKey, "true");
+
+      if (examId && examId !== "default") {
         const userId = auth.currentUser.uid;
         db.collection("examResults").add({
           userId: userId,
@@ -314,7 +316,7 @@
             style: { background: "#667eea" }
           }).showToast();
         }).catch((error) => {
-          console.error("Error recording exam result:", error);
+          console.error("Error saving exam result:", error);
           Toastify({
             text: "Error saving results",
             duration: 3000,
@@ -322,9 +324,42 @@
           }).showToast();
         });
       }
+    }
 
-      localStorage.removeItem(startTimeKey);
-      localStorage.removeItem(answersKey);
+    // In review mode, we render the same question cards (with answers and explanations appended)
+    function displayReviewMode(questions, resultData) {
+      const examForm = document.getElementById("examForm");
+      const scoreDisplay = document.getElementById("scoreDisplay");
+      const statsContainer = document.getElementById("statsContainer");
+      const submitContainer = document.getElementById("submitContainer");
+      const timer = document.getElementById("timer");
+
+      timer.style.display = "none";
+      renderQuiz(questions, true, resultData.answers || {});
+      // Append explanations to each question card
+      const questionDivs = document.querySelectorAll(".question-card");
+      questionDivs.forEach((qDiv, idx) => {
+        const explanation = questions[idx].explanation;
+        if (explanation && explanation.trim() !== "") {
+          const explanationDiv = document.createElement("div");
+          explanationDiv.className = "solution-explanation";
+          explanationDiv.innerHTML = `<strong>Explanation:</strong> ${explanation}`;
+          qDiv.appendChild(explanationDiv);
+        }
+      });
+      scoreDisplay.style.display = "block";
+      scoreDisplay.innerHTML = `Your Score: ${resultData.score} / ${questions.length}`;
+      statsContainer.style.display = "block";
+      statsContainer.innerHTML = `
+        <p class="text-success fw-bold">Correct Answers: ${resultData.correctCount}</p>
+        <p class="text-danger fw-bold">Wrong Answers: ${resultData.wrongCount}</p>
+      `;
+      submitContainer.style.display = "none";
+      Toastify({
+        text: "Showing your previous submission",
+        duration: 3000,
+        style: { background: "#667eea" }
+      }).showToast();
     }
 
     // Submit button event listener
@@ -341,10 +376,13 @@
         window.location.href = "auth.html";
       } else {
         if (examId) {
-          db.collection("examResults").where("userId", "==", user.uid).where("examId", "==", examId).get()
+          db.collection("examResults")
+            .where("userId", "==", user.uid)
+            .where("examId", "==", examId)
+            .get()
             .then((querySnapshot) => {
               if (!querySnapshot.empty) {
-                // User has already taken the quiz, display review mode
+                // If exam already taken, load review mode using the saved result.
                 const resultDoc = querySnapshot.docs[0].data();
                 db.collection("exams").doc(examId).get()
                   .then((doc) => {
@@ -357,7 +395,6 @@
                       examParams.negativeMark = examData.negativeMark || examParams.negativeMark;
                       examParams.lastDate = examData.lastDate || null;
                       document.getElementById("examNameDisplay").innerText = examParams.examName;
-
                       const questionIds = examData.questions || [];
                       Promise.all(questionIds.map(qid => db.collection("questions").doc(qid).get()))
                         .then((docs) => {
@@ -365,7 +402,7 @@
                           displayReviewMode(questions, resultDoc);
                         })
                         .catch((error) => {
-                          console.error("Error loading exam questions for review:", error);
+                          console.error("Error loading review questions:", error);
                           Toastify({
                             text: "Error loading review data",
                             duration: 3000,
@@ -379,7 +416,7 @@
                     loadDefaultQuestions();
                   });
               } else {
-                // User hasn't taken the quiz yet, proceed with normal quiz mode
+                // User hasn't taken the exam; load normal quiz mode.
                 db.collection("exams").doc(examId).get()
                   .then((doc) => {
                     loadingDiv.style.display = "none";
@@ -391,7 +428,6 @@
                       examParams.negativeMark = examData.negativeMark || examParams.negativeMark;
                       examParams.lastDate = examData.lastDate || null;
                       document.getElementById("examNameDisplay").innerText = examParams.examName;
-
                       if (isExamExpired(examParams.lastDate)) {
                         document.getElementById("expiredMessage").style.display = "block";
                         document.getElementById("expiredMessage").innerText = "This exam is expired. You cannot participate.";
@@ -399,13 +435,11 @@
                         document.getElementById("submitContainer").style.display = "none";
                         return;
                       }
-
                       const questionIds = examData.questions || [];
                       if (questionIds.length === 0) {
                         document.getElementById("examForm").innerHTML = "<p>No questions selected for this exam.</p>";
                         return;
                       }
-
                       Promise.all(questionIds.map(qid => db.collection("questions").doc(qid).get()))
                         .then((docs) => {
                           const questions = docs.filter(doc => doc.exists).map(doc => ({ id: doc.id, ...doc.data() }));
@@ -465,54 +499,7 @@
           }).showToast();
         });
     }
-
-    function displayReviewMode(questions, resultData) {
-      const examForm = document.getElementById("examForm");
-      const scoreDisplay = document.getElementById("scoreDisplay");
-      const statsContainer = document.getElementById("statsContainer");
-      const solutionsContainer = document.getElementById("solutionsContainer");
-      const submitContainer = document.getElementById("submitContainer");
-      const timer = document.getElementById("timer");
-
-      timer.style.display = "none"; // Hide timer in review mode
-      renderQuiz(questions, true, resultData.answers || {});
-      scoreDisplay.style.display = "block";
-      scoreDisplay.innerHTML = `Your Score: ${resultData.score} / ${questions.length}`;
-      statsContainer.style.display = "block";
-      statsContainer.innerHTML = `
-        <p class="text-success fw-bold">Correct Answers: ${resultData.correctCount}</p>
-        <p class="text-danger fw-bold">Wrong Answers: ${resultData.wrongCount}</p>
-      `;
-
-      solutionsContainer.innerHTML = "";
-      questions.forEach((q, idx) => {
-        const questionDiv = document.createElement("div");
-        questionDiv.className = "question-card";
-        questionDiv.innerHTML = `
-          <p class="fw-bold">${idx + 1}. ${q.question}</p>
-          ${q.options.map((opt, optIdx) => {
-            const isUserAnswer = resultData.answers["q" + idx] === String(optIdx + 1);
-            const isCorrect = String(optIdx + 1) === q.correctOption;
-            let className = "";
-            if (isUserAnswer) {
-              className = isCorrect ? "correct" : "incorrect";
-            } else if (isCorrect) {
-              className = "correct";
-            }
-            return `<label><input type="radio" name="q${idx}" value="${optIdx + 1}" disabled ${isUserAnswer || isCorrect ? "checked" : ""}> ${opt}</label>`;
-          }).join("")}
-          ${q.explanation && q.explanation.trim() !== "" ? 
-            `<div class="solution-explanation"><strong>Explanation:</strong> ${q.explanation}</div>` : ""}
-        `;
-        solutionsContainer.appendChild(questionDiv);
-      });
-      submitContainer.style.display = "none";
-      Toastify({
-        text: "Showing your previous submission",
-        duration: 3000,
-        style: { background: "#667eea" }
-      }).showToast();
-    }
   </script>
 </body>
 </html>
+ 
