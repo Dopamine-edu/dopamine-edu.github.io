@@ -34,7 +34,6 @@
     .question-card label:hover { background: #f1f1f1; }
     /* Custom Radio Button Styling */
     input[type="radio"] {
-      /* Remove default appearance */
       -webkit-appearance: none;
       appearance: none;
       margin-right: 8px;
@@ -56,7 +55,6 @@
       background: blue;
       border-radius: 50%;
     }
-    /* Even when disabled, keep the blue dot visible */
     input[type="radio"]:disabled {
       cursor: not-allowed;
       opacity: 1;
@@ -133,7 +131,7 @@
       examName: "Untitled Exam",
       timer: 1,
       marksPerQuestion: 1,
-      negativeMark: 0, // No negative marking
+      negativeMark: 0,
       lastDate: null
     };
     const urlParams = new URLSearchParams(window.location.search);
@@ -143,6 +141,7 @@
     let savedAnswers = JSON.parse(localStorage.getItem(answersKey)) || {};
     let submitted = false;
     let timerRef;
+    let allQuestions = [];
 
     function isExamExpired(lastDate) {
       if (!lastDate) return false;
@@ -150,12 +149,8 @@
       return new Date() > examDeadline;
     }
 
-    // Global variable to store questions for later use in submitExam
-    let allQuestions = [];
-
-    // Updated renderQuiz: creates custom radio buttons that lock upon selection.
     function renderQuiz(questions, isReview = false, previousAnswers = {}) {
-      allQuestions = questions; // Store questions globally
+      allQuestions = questions;
       const examForm = document.getElementById("examForm");
       examForm.innerHTML = "";
 
@@ -171,7 +166,7 @@
           radioInput.type = "radio";
           radioInput.name = "q" + idx;
           radioInput.value = String(optIdx + 1);
-
+          
           if (isReview) {
             radioInput.disabled = true;
             if (previousAnswers["q" + idx] === radioInput.value) {
@@ -185,7 +180,7 @@
               label.classList.add("correct");
             }
           } else {
-            // If an answer hasn't been locked yet, allow selection.
+            // If already locked, disable this input
             if (savedAnswers["q" + idx] && savedAnswers["q" + idx + "_locked"]) {
               if (savedAnswers["q" + idx] === radioInput.value) {
                 radioInput.checked = true;
@@ -193,12 +188,16 @@
               radioInput.disabled = true;
             }
             radioInput.addEventListener("change", () => {
+              // Check if an answer for this question is not locked yet
               if (!savedAnswers["q" + idx + "_locked"]) {
-                // Lock the answer: mark as selected and disable further changes.
                 savedAnswers["q" + idx] = radioInput.value;
                 savedAnswers["q" + idx + "_locked"] = true;
+                // Disable all radio buttons for this question to lock the answer permanently
+                const radios = document.getElementsByName("q" + idx);
+                Array.from(radios).forEach(radio => {
+                  radio.disabled = true;
+                });
                 radioInput.checked = true;
-                radioInput.disabled = true;
                 localStorage.setItem(answersKey, JSON.stringify(savedAnswers));
               }
             });
@@ -245,9 +244,7 @@
       submitted = true;
       clearInterval(timerRef);
 
-      let score = 0;
-      let correctCount = 0;
-      let wrongCount = 0;
+      let score = 0, correctCount = 0, wrongCount = 0;
       const questionDivs = document.querySelectorAll(".question-card");
       const totalQuestions = questionDivs.length;
 
@@ -262,7 +259,7 @@
           } else {
             wrongCount++;
             selectedOption.parentElement.classList.add("incorrect");
-            qDiv.querySelectorAll("label").forEach((label) => {
+            qDiv.querySelectorAll("label").forEach(label => {
               if (label.querySelector("input").value === correctAnswer) {
                 label.classList.add("correct");
               }
@@ -270,7 +267,7 @@
           }
         } else {
           wrongCount++;
-          qDiv.querySelectorAll("label").forEach((label) => {
+          qDiv.querySelectorAll("label").forEach(label => {
             if (label.querySelector("input").value === correctAnswer) {
               label.classList.add("correct");
             }
@@ -278,18 +275,14 @@
         }
       });
 
-      const scoreDisplay = document.getElementById("scoreDisplay");
-      scoreDisplay.style.display = "block";
-      scoreDisplay.innerHTML = `Your Score: ${score} / ${totalQuestions}`;
-
-      const statsContainer = document.getElementById("statsContainer");
-      statsContainer.style.display = "block";
-      statsContainer.innerHTML = `
+      document.getElementById("scoreDisplay").style.display = "block";
+      document.getElementById("scoreDisplay").innerHTML = `Your Score: ${score} / ${totalQuestions}`;
+      document.getElementById("statsContainer").style.display = "block";
+      document.getElementById("statsContainer").innerHTML = `
         <p class="text-success fw-bold">Correct Answers: ${correctCount}</p>
         <p class="text-danger fw-bold">Wrong Answers: ${wrongCount}</p>
       `;
 
-      // Append explanations under each question
       questionDivs.forEach((qDiv, idx) => {
         const explanation = allQuestions[idx].explanation;
         if (explanation && explanation.trim() !== "") {
@@ -306,6 +299,13 @@
       localStorage.removeItem(startTimeKey);
       localStorage.removeItem(answersKey);
     }
+
+    // Submit button event listener
+    document.getElementById("submitBtn").addEventListener("click", () => {
+      if (confirm("Are you sure you want to submit your answers?")) {
+        submitExam();
+      }
+    });
 
     auth.onAuthStateChanged((user) => {
       const loadingDiv = document.getElementById("loading");
@@ -331,9 +331,9 @@
                       document.getElementById("examNameDisplay").innerText = examParams.examName;
 
                       const questionIds = examData.questions || [];
-                      Promise.all(questionIds.map((qid) => db.collection("questions").doc(qid).get()))
+                      Promise.all(questionIds.map(qid => db.collection("questions").doc(qid).get()))
                         .then((docs) => {
-                          const questions = docs.filter((doc) => doc.exists).map((doc) => ({ id: doc.id, ...doc.data() }));
+                          const questions = docs.filter(doc => doc.exists).map(doc => ({ id: doc.id, ...doc.data() }));
                           displayReviewMode(questions, resultDoc);
                         })
                         .catch((error) => {
@@ -373,9 +373,9 @@
                         return;
                       }
 
-                      Promise.all(questionIds.map((qid) => db.collection("questions").doc(qid).get()))
+                      Promise.all(questionIds.map(qid => db.collection("questions").doc(qid).get()))
                         .then((docs) => {
-                          const questions = docs.filter((doc) => doc.exists).map((doc) => ({ id: doc.id, ...doc.data() }));
+                          const questions = docs.filter(doc => doc.exists).map(doc => ({ id: doc.id, ...doc.data() }));
                           renderQuiz(questions);
                           Toastify({
                             text: "Quiz loaded successfully!",
@@ -419,7 +419,7 @@
     function loadDefaultQuestions() {
       db.collection("questions").orderBy("timestamp", "desc").limit(50).get()
         .then((querySnapshot) => {
-          const questions = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+          const questions = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
           renderQuiz(questions);
         })
         .catch((error) => {
@@ -432,56 +432,7 @@
           }).showToast();
         });
     }
-    
-    // For review mode (not modified here)
-    function displayReviewMode(questions, resultData) {
-      const examForm = document.getElementById("examForm");
-      const scoreDisplay = document.getElementById("scoreDisplay");
-      const statsContainer = document.getElementById("statsContainer");
-      const solutionsContainer = document.getElementById("solutionsContainer");
-      const submitContainer = document.getElementById("submitContainer");
-      const timer = document.getElementById("timer");
-
-      timer.style.display = "none";
-
-      renderQuiz(questions, true, resultData.answers || {});
-      scoreDisplay.style.display = "block";
-      scoreDisplay.innerHTML = `Your Score: ${resultData.score} / ${questions.length}`;
-      statsContainer.style.display = "block";
-      statsContainer.innerHTML = `
-        <p class="text-success fw-bold">Correct Answers: ${resultData.correctCount}</p>
-        <p class="text-danger fw-bold">Wrong Answers: ${resultData.wrongCount}</p>
-      `;
-
-      solutionsContainer.innerHTML = "";
-      questions.forEach((q, idx) => {
-        const questionDiv = document.createElement("div");
-        questionDiv.className = "question-card";
-        questionDiv.innerHTML = `
-          <p class="fw-bold">${idx + 1}. ${q.question}</p>
-          ${q.options.map((opt, optIdx) => {
-            const isUserAnswer = resultData.answers["q" + idx] === String(optIdx + 1);
-            const isCorrect = String(optIdx + 1) === q.correctOption;
-            let className = "";
-            if (isUserAnswer) {
-              className = isCorrect ? "correct" : "incorrect";
-            } else if (isCorrect) {
-              className = "correct";
-            }
-            return `<label><input type="radio" name="q${idx}" value="${optIdx + 1}" disabled ${isUserAnswer || isCorrect ? "checked" : ""}> ${opt}</label>`;
-          }).join("")}
-          ${q.explanation && q.explanation.trim() !== "" ? 
-            `<div class="solution-explanation"><strong>Explanation:</strong> ${q.explanation}</div>` : ""}
-        `;
-        solutionsContainer.appendChild(questionDiv);
-      });
-      submitContainer.style.display = "none";
-      Toastify({
-        text: "Showing your previous submission",
-        duration: 3000,
-        style: { background: "#667eea" }
-      }).showToast();
-    }
   </script>
 </body>
 </html>
+ 
