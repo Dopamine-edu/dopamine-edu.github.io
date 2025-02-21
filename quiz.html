@@ -115,7 +115,6 @@
   </div>
 
   <script>
-    // Firebase configuration
     const firebaseConfig = {
       apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
       authDomain: "dopamine-quiz.firebaseapp.com",
@@ -130,17 +129,15 @@
 
     let examParams = {
       examName: "Untitled Exam",
-      timer: 1, // exam duration in minutes
+      timer: 1,
       marksPerQuestion: 1,
       negativeMark: 0,
       lastDate: null
     };
-
     const urlParams = new URLSearchParams(window.location.search);
-    const examId = urlParams.get("examId") || "default";
-    const startTimeKey = "examStartTime_" + examId;
-    const answersKey = "examAnswers_" + examId;
-    const submittedFlagKey = "examSubmitted_" + examId;
+    const examId = urlParams.get("examId");
+    const startTimeKey = "examStartTime_" + (examId || "default");
+    const answersKey = "examAnswers_" + (examId || "default");
     let savedAnswers = JSON.parse(localStorage.getItem(answersKey)) || {};
     let submitted = false;
     let timerRef;
@@ -183,6 +180,7 @@
               label.classList.add("correct");
             }
           } else {
+            // If already locked, disable this input
             if (savedAnswers["q" + idx] && savedAnswers["q" + idx + "_locked"]) {
               if (savedAnswers["q" + idx] === radioInput.value) {
                 radioInput.checked = true;
@@ -190,10 +188,11 @@
               radioInput.disabled = true;
             }
             radioInput.addEventListener("change", () => {
+              // Check if an answer for this question is not locked yet
               if (!savedAnswers["q" + idx + "_locked"]) {
                 savedAnswers["q" + idx] = radioInput.value;
                 savedAnswers["q" + idx + "_locked"] = true;
-                // Lock all options for this question
+                // Disable all radio buttons for this question to lock the answer permanently
                 const radios = document.getElementsByName("q" + idx);
                 Array.from(radios).forEach(radio => {
                   radio.disabled = true;
@@ -210,7 +209,6 @@
         examForm.appendChild(questionDiv);
       });
 
-      // Only start the timer if we are not in review mode.
       if (!isReview && !timerRef) startTimer();
     }
 
@@ -298,43 +296,17 @@
       document.getElementById("submitContainer").style.display = "none";
       document.getElementById("timer").style.pointerEvents = "none";
 
-      // Remove exam timing keys and mark exam as submitted.
       localStorage.removeItem(startTimeKey);
       localStorage.removeItem(answersKey);
-      localStorage.setItem(submittedFlagKey, "true");
-
-      // Save exam result to Firestore (if examId exists)
-      if (examId !== "default") {
-        const userId = auth.currentUser.uid;
-        db.collection("examResults").add({
-          userId: userId,
-          examId: examId,
-          examName: examParams.examName,
-          score: score,
-          correctCount: correctCount,
-          wrongCount: wrongCount,
-          answers: savedAnswers,
-          timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        })
-        .then(() => {
-          Toastify({
-            text: "Results saved successfully!",
-            duration: 3000,
-            style: { background: "#667eea" }
-          }).showToast();
-        })
-        .catch((error) => {
-          console.error("Error saving exam result:", error);
-          Toastify({
-            text: "Error saving results",
-            duration: 3000,
-            style: { background: "#dc3545" }
-          }).showToast();
-        });
-      }
     }
 
-    // Check exam status on auth state change.
+    // Submit button event listener
+    document.getElementById("submitBtn").addEventListener("click", () => {
+      if (confirm("Are you sure you want to submit your answers?")) {
+        submitExam();
+      }
+    });
+
     auth.onAuthStateChanged((user) => {
       const loadingDiv = document.getElementById("loading");
       loadingDiv.style.display = "block";
@@ -342,156 +314,102 @@
         window.location.href = "auth.html";
       } else {
         if (examId) {
-          // If exam already submitted (flag in localStorage), load review mode.
-          if (localStorage.getItem(submittedFlagKey) === "true") {
-            db.collection("examResults")
-              .where("userId", "==", user.uid)
-              .where("examId", "==", examId)
-              .get()
-              .then((querySnapshot) => {
-                if (!querySnapshot.empty) {
-                  const resultDoc = querySnapshot.docs[0].data();
-                  db.collection("exams").doc(examId).get()
-                    .then((doc) => {
-                      loadingDiv.style.display = "none";
-                      if (doc.exists) {
-                        const examData = doc.data();
-                        examParams.examName = examData.examName || examParams.examName;
-                        examParams.timer = examData.timer || examParams.timer;
-                        examParams.marksPerQuestion = examData.marksPerQuestion || examParams.marksPerQuestion;
-                        examParams.negativeMark = examData.negativeMark || examParams.negativeMark;
-                        examParams.lastDate = examData.lastDate || null;
-                        document.getElementById("examNameDisplay").innerText = examParams.examName;
-                        
-                        const questionIds = examData.questions || [];
-                        Promise.all(questionIds.map(qid => db.collection("questions").doc(qid).get()))
-                          .then((docs) => {
-                            const questions = docs.filter(doc => doc.exists).map(doc => ({ id: doc.id, ...doc.data() }));
-                            displayReviewMode(questions, resultDoc);
-                          })
-                          .catch((error) => {
-                            console.error("Error loading review questions:", error);
-                            Toastify({
-                              text: "Error loading review data",
-                              duration: 3000,
-                              style: { background: "#dc3545" }
-                            }).showToast();
-                          });
+          db.collection("examResults").where("userId", "==", user.uid).where("examId", "==", examId).get()
+            .then((querySnapshot) => {
+              if (!querySnapshot.empty) {
+                const resultDoc = querySnapshot.docs[0].data();
+                db.collection("exams").doc(examId).get()
+                  .then((doc) => {
+                    loadingDiv.style.display = "none";
+                    if (doc.exists) {
+                      const examData = doc.data();
+                      examParams.examName = examData.examName || examParams.examName;
+                      examParams.timer = examData.timer || examParams.timer;
+                      examParams.marksPerQuestion = examData.marksPerQuestion || examParams.marksPerQuestion;
+                      examParams.negativeMark = examData.negativeMark || examParams.negativeMark;
+                      examParams.lastDate = examData.lastDate || null;
+                      document.getElementById("examNameDisplay").innerText = examParams.examName;
+
+                      const questionIds = examData.questions || [];
+                      Promise.all(questionIds.map(qid => db.collection("questions").doc(qid).get()))
+                        .then((docs) => {
+                          const questions = docs.filter(doc => doc.exists).map(doc => ({ id: doc.id, ...doc.data() }));
+                          displayReviewMode(questions, resultDoc);
+                        })
+                        .catch((error) => {
+                          console.error("Error loading exam questions for review:", error);
+                          Toastify({
+                            text: "Error loading review data",
+                            duration: 3000,
+                            style: { background: "#dc3545" }
+                          }).showToast();
+                        });
+                    }
+                  });
+              } else {
+                db.collection("exams").doc(examId).get()
+                  .then((doc) => {
+                    loadingDiv.style.display = "none";
+                    if (doc.exists) {
+                      const examData = doc.data();
+                      examParams.examName = examData.examName || examParams.examName;
+                      examParams.timer = examData.timer || examParams.timer;
+                      examParams.marksPerQuestion = examData.marksPerQuestion || examParams.marksPerQuestion;
+                      examParams.negativeMark = examData.negativeMark || examParams.negativeMark;
+                      examParams.lastDate = examData.lastDate || null;
+                      document.getElementById("examNameDisplay").innerText = examParams.examName;
+
+                      if (isExamExpired(examParams.lastDate)) {
+                        document.getElementById("expiredMessage").style.display = "block";
+                        document.getElementById("expiredMessage").innerText = "This exam is expired. You cannot participate.";
+                        document.getElementById("examForm").style.display = "none";
+                        document.getElementById("submitContainer").style.display = "none";
+                        return;
                       }
-                    });
-                }
-              })
-              .catch((error) => {
-                console.error("Error checking exam result:", error);
-                Toastify({
-                  text: "Error checking exam status",
-                  duration: 3000,
-                  style: { background: "#dc3545" }
-                }).showToast();
-              });
-          } else {
-            // If not yet submitted, check Firestore for exam result.
-            db.collection("examResults")
-              .where("userId", "==", user.uid)
-              .where("examId", "==", examId)
-              .get()
-              .then((querySnapshot) => {
-                if (!querySnapshot.empty) {
-                  const resultDoc = querySnapshot.docs[0].data();
-                  db.collection("exams").doc(examId).get()
-                    .then((doc) => {
-                      loadingDiv.style.display = "none";
-                      if (doc.exists) {
-                        const examData = doc.data();
-                        examParams.examName = examData.examName || examParams.examName;
-                        examParams.timer = examData.timer || examParams.timer;
-                        examParams.marksPerQuestion = examData.marksPerQuestion || examParams.marksPerQuestion;
-                        examParams.negativeMark = examData.negativeMark || examParams.negativeMark;
-                        examParams.lastDate = examData.lastDate || null;
-                        document.getElementById("examNameDisplay").innerText = examParams.examName;
 
-                        const questionIds = examData.questions || [];
-                        Promise.all(questionIds.map(qid => db.collection("questions").doc(qid).get()))
-                          .then((docs) => {
-                            const questions = docs.filter(doc => doc.exists).map(doc => ({ id: doc.id, ...doc.data() }));
-                            displayReviewMode(questions, resultDoc);
-                          })
-                          .catch((error) => {
-                            console.error("Error loading exam questions for review:", error);
-                            Toastify({
-                              text: "Error loading review data",
-                              duration: 3000,
-                              style: { background: "#dc3545" }
-                            }).showToast();
-                          });
+                      const questionIds = examData.questions || [];
+                      if (questionIds.length === 0) {
+                        document.getElementById("examForm").innerHTML = "<p>No questions selected for this exam.</p>";
+                        return;
                       }
-                    });
-                } else {
-                  // New exam: fetch exam questions normally
-                  db.collection("exams").doc(examId).get()
-                    .then((doc) => {
-                      loadingDiv.style.display = "none";
-                      if (doc.exists) {
-                        const examData = doc.data();
-                        examParams.examName = examData.examName || examParams.examName;
-                        examParams.timer = examData.timer || examParams.timer;
-                        examParams.marksPerQuestion = examData.marksPerQuestion || examParams.marksPerQuestion;
-                        examParams.negativeMark = examData.negativeMark || examParams.negativeMark;
-                        examParams.lastDate = examData.lastDate || null;
-                        document.getElementById("examNameDisplay").innerText = examParams.examName;
 
-                        if (isExamExpired(examParams.lastDate)) {
-                          document.getElementById("expiredMessage").style.display = "block";
-                          document.getElementById("expiredMessage").innerText = "This exam is expired. You cannot participate.";
-                          document.getElementById("examForm").style.display = "none";
-                          document.getElementById("submitContainer").style.display = "none";
-                          return;
-                        }
-
-                        const questionIds = examData.questions || [];
-                        if (questionIds.length === 0) {
-                          document.getElementById("examForm").innerHTML = "<p>No questions selected for this exam.</p>";
-                          return;
-                        }
-
-                        Promise.all(questionIds.map(qid => db.collection("questions").doc(qid).get()))
-                          .then((docs) => {
-                            const questions = docs.filter(doc => doc.exists).map(doc => ({ id: doc.id, ...doc.data() }));
-                            renderQuiz(questions);
-                            Toastify({
-                              text: "Quiz loaded successfully!",
-                              duration: 3000,
-                              style: { background: "#667eea" }
-                            }).showToast();
-                          })
-                          .catch((error) => {
-                            console.error("Error loading exam questions:", error);
-                            document.getElementById("examForm").innerHTML = "<p>Error loading exam questions.</p>";
-                            Toastify({
-                              text: "Error loading questions",
-                              duration: 3000,
-                              style: { background: "#dc3545" }
-                            }).showToast();
-                          });
-                      } else {
-                        loadDefaultQuestions();
-                      }
-                    })
-                    .catch((error) => {
-                      console.error("Error retrieving exam:", error);
+                      Promise.all(questionIds.map(qid => db.collection("questions").doc(qid).get()))
+                        .then((docs) => {
+                          const questions = docs.filter(doc => doc.exists).map(doc => ({ id: doc.id, ...doc.data() }));
+                          renderQuiz(questions);
+                          Toastify({
+                            text: "Quiz loaded successfully!",
+                            duration: 3000,
+                            style: { background: "#667eea" }
+                          }).showToast();
+                        })
+                        .catch((error) => {
+                          console.error("Error loading exam questions:", error);
+                          document.getElementById("examForm").innerHTML = "<p>Error loading exam questions.</p>";
+                          Toastify({
+                            text: "Error loading questions",
+                            duration: 3000,
+                            style: { background: "#dc3545" }
+                          }).showToast();
+                        });
+                    } else {
                       loadDefaultQuestions();
-                    });
-                }
-              })
-              .catch((error) => {
-                console.error("Error checking exam result:", error);
-                Toastify({
-                  text: "Error checking exam status",
-                  duration: 3000,
-                  style: { background: "#dc3545" }
-                }).showToast();
-              });
-          }
+                    }
+                  })
+                  .catch((error) => {
+                    console.error("Error retrieving exam:", error);
+                    loadDefaultQuestions();
+                  });
+              }
+            })
+            .catch((error) => {
+              console.error("Error checking exam result:", error);
+              Toastify({
+                text: "Error checking exam status",
+                duration: 3000,
+                style: { background: "#dc3545" }
+              }).showToast();
+            });
         } else {
           loadDefaultQuestions();
         }
@@ -513,55 +431,6 @@
             style: { background: "#dc3545" }
           }).showToast();
         });
-    }
-    
-    // Review mode: similar to renderQuiz but without timer and with disabled inputs
-    function displayReviewMode(questions, resultData) {
-      const examForm = document.getElementById("examForm");
-      const scoreDisplay = document.getElementById("scoreDisplay");
-      const statsContainer = document.getElementById("statsContainer");
-      const solutionsContainer = document.getElementById("solutionsContainer");
-      const submitContainer = document.getElementById("submitContainer");
-      const timer = document.getElementById("timer");
-
-      timer.style.display = "none";
-      renderQuiz(questions, true, resultData.answers || {});
-      scoreDisplay.style.display = "block";
-      scoreDisplay.innerHTML = `Your Score: ${resultData.score} / ${questions.length}`;
-      statsContainer.style.display = "block";
-      statsContainer.innerHTML = `
-        <p class="text-success fw-bold">Correct Answers: ${resultData.correctCount}</p>
-        <p class="text-danger fw-bold">Wrong Answers: ${resultData.wrongCount}</p>
-      `;
-
-      solutionsContainer.innerHTML = "";
-      questions.forEach((q, idx) => {
-        const questionDiv = document.createElement("div");
-        questionDiv.className = "question-card";
-        questionDiv.innerHTML = `
-          <p class="fw-bold">${idx + 1}. ${q.question}</p>
-          ${q.options.map((opt, optIdx) => {
-            const isUserAnswer = resultData.answers["q" + idx] === String(optIdx + 1);
-            const isCorrect = String(optIdx + 1) === q.correctOption;
-            let className = "";
-            if (isUserAnswer) {
-              className = isCorrect ? "correct" : "incorrect";
-            } else if (isCorrect) {
-              className = "correct";
-            }
-            return `<label><input type="radio" name="q${idx}" value="${optIdx + 1}" disabled ${isUserAnswer || isCorrect ? "checked" : ""}> ${opt}</label>`;
-          }).join("")}
-          ${q.explanation && q.explanation.trim() !== "" ? 
-            `<div class="solution-explanation"><strong>Explanation:</strong> ${q.explanation}</div>` : ""}
-        `;
-        solutionsContainer.appendChild(questionDiv);
-      });
-      submitContainer.style.display = "none";
-      Toastify({
-        text: "Showing your previous submission",
-        duration: 3000,
-        style: { background: "#667eea" }
-      }).showToast();
     }
   </script>
 </body>
