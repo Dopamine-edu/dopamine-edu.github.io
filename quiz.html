@@ -296,6 +296,33 @@
       document.getElementById("submitContainer").style.display = "none";
       document.getElementById("timer").style.pointerEvents = "none";
 
+      if (examId) {
+        const userId = auth.currentUser.uid;
+        db.collection("examResults").add({
+          userId: userId,
+          examId: examId,
+          examName: examParams.examName,
+          score: score,
+          correctCount: correctCount,
+          wrongCount: wrongCount,
+          answers: savedAnswers,
+          timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        }).then(() => {
+          Toastify({
+            text: "Results saved successfully!",
+            duration: 3000,
+            style: { background: "#667eea" }
+          }).showToast();
+        }).catch((error) => {
+          console.error("Error recording exam result:", error);
+          Toastify({
+            text: "Error saving results",
+            duration: 3000,
+            style: { background: "#dc3545" }
+          }).showToast();
+        });
+      }
+
       localStorage.removeItem(startTimeKey);
       localStorage.removeItem(answersKey);
     }
@@ -317,6 +344,7 @@
           db.collection("examResults").where("userId", "==", user.uid).where("examId", "==", examId).get()
             .then((querySnapshot) => {
               if (!querySnapshot.empty) {
+                // User has already taken the quiz, display review mode
                 const resultDoc = querySnapshot.docs[0].data();
                 db.collection("exams").doc(examId).get()
                   .then((doc) => {
@@ -345,8 +373,13 @@
                           }).showToast();
                         });
                     }
+                  })
+                  .catch((error) => {
+                    console.error("Error retrieving exam:", error);
+                    loadDefaultQuestions();
                   });
               } else {
+                // User hasn't taken the quiz yet, proceed with normal quiz mode
                 db.collection("exams").doc(examId).get()
                   .then((doc) => {
                     loadingDiv.style.display = "none";
@@ -431,6 +464,54 @@
             style: { background: "#dc3545" }
           }).showToast();
         });
+    }
+
+    function displayReviewMode(questions, resultData) {
+      const examForm = document.getElementById("examForm");
+      const scoreDisplay = document.getElementById("scoreDisplay");
+      const statsContainer = document.getElementById("statsContainer");
+      const solutionsContainer = document.getElementById("solutionsContainer");
+      const submitContainer = document.getElementById("submitContainer");
+      const timer = document.getElementById("timer");
+
+      timer.style.display = "none"; // Hide timer in review mode
+      renderQuiz(questions, true, resultData.answers || {});
+      scoreDisplay.style.display = "block";
+      scoreDisplay.innerHTML = `Your Score: ${resultData.score} / ${questions.length}`;
+      statsContainer.style.display = "block";
+      statsContainer.innerHTML = `
+        <p class="text-success fw-bold">Correct Answers: ${resultData.correctCount}</p>
+        <p class="text-danger fw-bold">Wrong Answers: ${resultData.wrongCount}</p>
+      `;
+
+      solutionsContainer.innerHTML = "";
+      questions.forEach((q, idx) => {
+        const questionDiv = document.createElement("div");
+        questionDiv.className = "question-card";
+        questionDiv.innerHTML = `
+          <p class="fw-bold">${idx + 1}. ${q.question}</p>
+          ${q.options.map((opt, optIdx) => {
+            const isUserAnswer = resultData.answers["q" + idx] === String(optIdx + 1);
+            const isCorrect = String(optIdx + 1) === q.correctOption;
+            let className = "";
+            if (isUserAnswer) {
+              className = isCorrect ? "correct" : "incorrect";
+            } else if (isCorrect) {
+              className = "correct";
+            }
+            return `<label><input type="radio" name="q${idx}" value="${optIdx + 1}" disabled ${isUserAnswer || isCorrect ? "checked" : ""}> ${opt}</label>`;
+          }).join("")}
+          ${q.explanation && q.explanation.trim() !== "" ? 
+            `<div class="solution-explanation"><strong>Explanation:</strong> ${q.explanation}</div>` : ""}
+        `;
+        solutionsContainer.appendChild(questionDiv);
+      });
+      submitContainer.style.display = "none";
+      Toastify({
+        text: "Showing your previous submission",
+        duration: 3000,
+        style: { background: "#667eea" }
+      }).showToast();
     }
   </script>
 </body>
