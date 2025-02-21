@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admission Calendar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --bg-color: #f5f7fb;
+            --text-color: #2d3748;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a;
+            --text-color: #ffffff;
+            --card-bg: #2d2d2d;
+            --shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        table {
+            width: 100%;
+            max-width: 800px;
+            border-collapse: collapse;
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: var(--primary-color);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .countdown {
+            font-weight: 500;
+            color: var(--secondary-color);
+        }
+    </style>
+</head>
+<body>
+    <h1>Admission Calendar</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>বিশ্ববিদ্যালয়</th>
+                <th>তারিখ</th>
+                <th>সময় বাকি</th>
+            </tr>
+        </thead>
+        <tbody id="examTable">
+            <!-- Exam rows will be dynamically added here -->
+        </tbody>
+    </table>
+
+    <script>
+        // Exam Data
+        const exams = [
+            { university: "রুয়েট (লিখিত)", date: "2024-02-20" },
+            { university: "MIST", date: "2024-02-22" },
+            { university: "জাবি (A)", date: "2024-02-22" },
+            { university: "ডেন্টাল", date: "2024-02-28" },
+            { university: "শাবিপ্রবি (ক)", date: "2024-02-28" },
+            { university: "শাবিপ্রবি (খ)", date: "2024-02-28" },
+            { university: "জাবি (C)", date: "2024-02-28" },
+            { university: "চবি (ক)", date: "2024-03-06" },
+            { university: "বুটেক্স", date: "2024-03-07" },
+            { university: "চবি (খ)", date: "2024-03-08" },
+            { university: "চবি বি(০১)", date: "2024-03-10" },
+            { university: "চবি বি(০২)", date: "2024-03-11" },
+            { university: "চবি (গ)", date: "2024-03-15" },
+            { university: "চবি (ঘ)", date: "2024-03-22" },
+            { university: "চবি ডি(০৩)", date: "2024-03-24" },
+            { university: "রাবি (খ)", date: "2024-04-12" },
+            { university: "কৃষি গুচ্ছ", date: "2024-04-12" },
+            { university: "খুবি (গ)", date: "2024-04-17" },
+            { university: "খুবি (ঘ)", date: "2024-04-17" },
+            { university: "খুবি (ক)", date: "2024-04-18" },
+            { university: "খুবি (খ)", date: "2024-04-18" },
+            { university: "৭ কলেজ (ব্যবসা)", date: "2024-04-18" },
+            { university: "রাবি (ক)", date: "2024-04-19" },
+            { university: "কুবি (গ)", date: "2024-04-19" },
+            { university: "কুবি (ক)", date: "2024-04-19" },
+            { university: "হাবিপ্রবি", date: "2024-04-21" },
+            { university: "৭ কলেজ (বিজ্ঞান)", date: "2024-04-19" },
+            { university: "৭ কলেজ (মানবিক)", date: "2024-04-25" },
+            { university: "নার্সিং", date: "2024-04-25" },
+            { university: "কুবি (খ)", date: "2024-04-25" },
+            { university: "রাবি (গ)", date: "2024-04-26" },
+            { university: "ঢাবি প্রযুক্তি ইউনিট", date: "2024-05-15" },
+            { university: "গার্হস্থ্য ইউনিট", date: "2024-05-02" },
+            { university: "নিটোর", date: "2024-05-02" },
+            { university: "জাতীয়", date: "2024-05-03" },
+            { university: "টেক্সটাইল কলেজ", date: "2024-05-10" }
+        ];
+
+        // Function to calculate time left
+        function getTimeLeft(targetDate) {
+            const now = new Date();
+            const examStart = new Date(targetDate + "T10:00:00"); // Exam starts at 10:00 AM
+            const examEnd = new Date(examStart.getTime() + 60 * 60 * 1000); // Exam ends at 11:00 AM
+
+            if (now < examStart) {
+                // Exam has not started yet
+                const diff = examStart - now;
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                return `${days} দিন ${hours} ঘণ্টা ${minutes} মিনিট ${seconds} সেকেন্ড`;
+            } else if (now >= examStart && now < examEnd) {
+                // Exam is ongoing
+                return "পরীক্ষা শুরু হয়েছে";
+            } else {
+                // Exam has ended
+                return "পরীক্ষা শেষ হয়েছে";
+            }
+        }
+
+        // Function to render the table
+        function renderTable() {
+            const tableBody = document.getElementById('examTable');
+            tableBody.innerHTML = exams.map(exam => `
+                <tr>
+                    <td>${exam.university}</td>
+                    <td>${exam.date}</td>
+                    <td class="countdown">${getTimeLeft(exam.date)}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Initial render
+        renderTable();
+
+        // Update countdown every second
+        setInterval(renderTable, 1000);
+    </script>
+</body>
+</html>
