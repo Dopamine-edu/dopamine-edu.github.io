@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Study Planner</title>
+    <title>Study Planner - Dopamine</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
     <style>
         :root {
             --primary-color: #667eea;
@@ -92,7 +95,7 @@
         }
 
         .chapter-container {
-            display: none; /* Hidden by default */
+            display: none;
             margin-top: 2rem;
             width: 100%;
             max-width: 800px;
@@ -231,7 +234,23 @@
     </div>
 
     <script>
-        // Subject and Chapter Data
+        const firebaseConfig = {
+            apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
+            authDomain: "dopamine-quiz.firebaseapp.com",
+            projectId: "dopamine-quiz",
+            storageBucket: "dopamine-quiz.appspot.com",
+            messagingSenderId: "822531459966",
+            appId: "1:822531459966:web:8e7d2385090e997eb1c12f"
+        };
+
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        let userId = null;
+        let completedChapters = {};
+        let selectedSubjects = [];
+
         const subjects = {
             "Botany": [
                 "Chapter 01: কোষ ও এর গঠন",
@@ -310,77 +329,91 @@
             "Bangla": []
         };
 
-        let completedChapters = JSON.parse(localStorage.getItem('completedChapters')) || {};
-        let selectedSubjects = JSON.parse(localStorage.getItem('selectedSubjects')) || [];
+        auth.onAuthStateChanged(user => {
+            if (!user) {
+                window.location.href = 'auth.html';
+            } else {
+                userId = user.uid;
+                loadUserProgress();
+            }
+        });
 
-        // Pre-select checkboxes based on saved subjects
+        async function loadUserProgress() {
+            try {
+                const doc = await db.collection('studyPlans').doc(userId).get();
+                if (doc.exists) {
+                    const data = doc.data();
+                    completedChapters = data.completedChapters || {};
+                    selectedSubjects = data.selectedSubjects || [];
+                    
+                    if (selectedSubjects.length > 0) {
+                        showChapters();
+                    } else {
+                        preSelectSubjects();
+                    }
+                }
+            } catch (error) {
+                console.error("Error loading progress:", error);
+                alert("Error loading your study progress!");
+            }
+        }
+
         function preSelectSubjects() {
             const checkboxes = document.querySelectorAll('.subject-item input[type="checkbox"]');
             checkboxes.forEach(checkbox => {
                 const subjectName = checkbox.nextElementSibling.textContent;
-                if (selectedSubjects.includes(subjectName)) {
-                    checkbox.checked = true;
-                }
+                checkbox.checked = selectedSubjects.includes(subjectName);
             });
         }
 
-        // Automatically show chapters if subjects are already selected
-        if (selectedSubjects.length > 0) {
-            showChapters();
-        } else {
-            preSelectSubjects(); // Pre-select subjects if any are saved
-        }
-
-        // Show Chapters for Selected Subjects
         function showChapters() {
             const checkboxes = document.querySelectorAll('.subject-item input[type="checkbox"]');
-
-            // If subjects are not already selected, get them from checkboxes
+            
             if (selectedSubjects.length === 0) {
-                checkboxes.forEach(checkbox => {
-                    if (checkbox.checked) {
-                        selectedSubjects.push(checkbox.nextElementSibling.textContent);
-                    }
-                });
-                localStorage.setItem('selectedSubjects', JSON.stringify(selectedSubjects));
+                selectedSubjects = Array.from(checkboxes)
+                    .filter(checkbox => checkbox.checked)
+                    .map(checkbox => checkbox.nextElementSibling.textContent);
+                
+                if (selectedSubjects.length === 0) {
+                    alert("Please select at least one subject.");
+                    return;
+                }
+                
+                saveProgress();
             }
 
-            if (selectedSubjects.length > 0) {
-                const chapterContainer = document.getElementById('chapterContainer');
-                const selectedChapters = document.getElementById('selectedChapters');
+            const chapterContainer = document.getElementById('chapterContainer');
+            const selectedChaptersDiv = document.getElementById('selectedChapters');
+            
+            document.querySelector('.subject-container').style.display = 'none';
+            chapterContainer.style.display = 'block';
 
-                // Hide subject selection and show chapters
-                document.querySelector('.subject-container').style.display = 'none';
-                chapterContainer.style.display = 'block';
-
-                // Render chapters for selected subjects
-                selectedChapters.innerHTML = selectedSubjects.map(subject => `
-                    <div class="subject-chapters">
-                        <h3>${subject}</h3>
-                        <div class="chapter-list">
-                            ${subjects[subject].map((chapter, index) => {
-                                const isCompleted = completedChapters[`${subject}-${index}`] || false;
-                                return `
-                                    <div class="chapter-item ${isCompleted ? 'completed' : ''}">
-                                        <input type="checkbox" id="${subject}-${index}" onchange="toggleChapter('${subject}', ${index})" ${isCompleted ? 'checked' : ''}>
-                                        <label for="${subject}-${index}">${chapter}</label>
-                                    </div>
-                                `;
-                            }).join('')}
-                        </div>
+            selectedChaptersDiv.innerHTML = selectedSubjects.map(subject => `
+                <div class="subject-chapters">
+                    <h3>${subject}</h3>
+                    <div class="chapter-list">
+                        ${subjects[subject].map((chapter, index) => {
+                            const isCompleted = completedChapters[`${subject}-${index}`] || false;
+                            return `
+                                <div class="chapter-item ${isCompleted ? 'completed' : ''}">
+                                    <input type="checkbox" id="${subject}-${index}" 
+                                           onchange="toggleChapter('${subject}', ${index})" 
+                                           ${isCompleted ? 'checked' : ''}>
+                                    <label for="${subject}-${index}">${chapter}</label>
+                                </div>
+                            `;
+                        }).join('')}
                     </div>
-                `).join('');
+                </div>
+            `).join('');
 
-                updateProgress();
-            } else {
-                alert("Please select at least one subject.");
-            }
+            updateProgress();
         }
 
-        // Toggle Chapter Completion
         function toggleChapter(subject, index) {
             const checkbox = document.getElementById(`${subject}-${index}`);
             const label = checkbox.nextElementSibling;
+            
             if (checkbox.checked) {
                 label.parentElement.classList.add('completed');
                 completedChapters[`${subject}-${index}`] = true;
@@ -388,10 +421,11 @@
                 label.parentElement.classList.remove('completed');
                 completedChapters[`${subject}-${index}`] = false;
             }
+            
             updateProgress();
+            saveProgress();
         }
 
-        // Update Progress Bar
         function updateProgress() {
             const totalChapters = document.querySelectorAll('.chapter-item').length;
             const completed = document.querySelectorAll('.chapter-item.completed').length;
@@ -401,17 +435,31 @@
             document.getElementById('progressText').textContent = `${Math.round(progress)}% Completed`;
         }
 
-        // Save Progress
-        function saveProgress() {
-            localStorage.setItem('completedChapters', JSON.stringify(completedChapters));
-            alert("Progress saved!");
+        async function saveProgress() {
+            try {
+                await db.collection('studyPlans').doc(userId).set({
+                    selectedSubjects,
+                    completedChapters,
+                    lastUpdated: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+            } catch (error) {
+                console.error("Error saving progress:", error);
+                alert("Error saving your progress!");
+            }
         }
 
-        // Back to Subject Selection
-        function backToSubjectSelection() {
-            localStorage.removeItem('selectedSubjects'); // Clear selected subjects
-            location.reload(); // Reload the page to show subject selection
+        async function backToSubjectSelection() {
+            try {
+                await db.collection('studyPlans').doc(userId).update({
+                    selectedSubjects: []
+                });
+                selectedSubjects = [];
+                location.reload();
+            } catch (error) {
+                console.error("Error resetting subjects:", error);
+                alert("Error resetting subjects!");
+            }
         }
     </script>
 </body>
-</html>
+</html> 
