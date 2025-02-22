@@ -265,8 +265,120 @@
             to { transform: scale(2); opacity: 0; }
         }
     </style>
+    <!-- Loading Animation Styles -->
+    <style>
+        .loading-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .book-loader {
+            width: 100px;
+            height: 100px;
+            position: relative;
+            perspective: 200px;
+        }
+
+        .book-page {
+            width: 50%;
+            height: 100%;
+            position: absolute;
+            left: 50%;
+            background: var(--primary-color);
+            transform-origin: left;
+            animation: flip 1.2s infinite ease-in-out;
+            border-radius: 0 5px 5px 0;
+        }
+
+        .book-page:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .book-page:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .book-page:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        .book-page:nth-child(4) {
+            animation-delay: 0.6s;
+        }
+
+        .book-page:nth-child(5) {
+            animation-delay: 0.8s;
+        }
+
+        @keyframes flip {
+            0%, 100% {
+                transform: rotateY(0deg);
+            }
+            50% {
+                transform: rotateY(-180deg);
+            }
+        }
+
+        .loading-text {
+            margin-top: 2rem;
+            font-size: 1.2rem;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        .loading-text span {
+            display: inline-block;
+            animation: bounce 1s infinite;
+        }
+
+        .loading-text span:nth-child(1) { animation-delay: 0.1s; }
+        .loading-text span:nth-child(2) { animation-delay: 0.2s; }
+        .loading-text span:nth-child(3) { animation-delay: 0.3s; }
+        .loading-text span:nth-child(4) { animation-delay: 0.4s; }
+        .loading-text span:nth-child(5) { animation-delay: 0.5s; }
+        .loading-text span:nth-child(6) { animation-delay: 0.6s; }
+        .loading-text span:nth-child(7) { animation-delay: 0.7s; }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- Loading Animation -->
+    <div class="loading-container" id="loading">
+        <div class="book-loader">
+            <div class="book-page"></div>
+            <div class="book-page"></div>
+            <div class="book-page"></div>
+            <div class="book-page"></div>
+            <div class="book-page"></div>
+        </div>
+        <div class="loading-text">
+            <span>L</span>
+            <span>o</span>
+            <span>a</span>
+            <span>d</span>
+            <span>i</span>
+            <span>n</span>
+            <span>g</span>
+        </div>
+    </div>
+
     <nav class="navbar">
         <div class="nav-left">
             <button class="theme-toggle" onclick="toggleTheme()">
@@ -312,8 +424,6 @@
         <p class="sub-greeting">কেমন চলছে আপনার পড়াশোনা?</p>
     </div>
 
-
-    
     <div class="cards-container">
         <div class="card" onclick="window.location.href='studyplanner.html'">
             <i class="material-icons card-icon">assignment</i>
@@ -332,8 +442,8 @@
             <h3 class="card-title">PDF Books</h3>
         </div>
         <div class="card">
-         <i class="material-icons card-icon">smart_toy</i>
-         <h3 class="card-title">Exam Bot</h3>
+            <i class="material-icons card-icon">smart_toy</i>
+            <h3 class="card-title">Exam Bot</h3>
         </div>
         <div class="card">
             <i class="material-icons card-icon">sports_esports</i>
@@ -380,6 +490,14 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
+        // Show loading animation
+        const loading = document.getElementById('loading');
+
+        // Hide loading animation when data is ready
+        function hideLoading() {
+            loading.style.display = 'none';
+        }
+
         // Theme Toggle
         let isDark = localStorage.getItem('theme') === 'dark';
         function toggleTheme() {
@@ -396,17 +514,28 @@
             menu.classList.toggle('show');
         }
 
-        // Auth State Listener
-        auth.onAuthStateChanged(user => {
+        // Auth State Listener with Loading Animation
+        auth.onAuthStateChanged(async user => {
             if (user) {
-                db.collection('users').doc(user.uid).get()
-                    .then(doc => {
-                        if (doc.exists) {
-                            const fullName = doc.data().fullName || 'User';
-                            document.getElementById('lastName').textContent = fullName.split(' ').pop();
-                        }
-                    })
-                    .catch(error => console.error('Error:', error));
+                try {
+                    // Show loading
+                    loading.style.display = 'flex';
+
+                    // Fetch data
+                    const doc = await db.collection('users').doc(user.uid).get();
+
+                    // Process data
+                    if (doc.exists) {
+                        const fullName = doc.data().fullName || 'User';
+                        document.getElementById('lastName').textContent = fullName.split(' ').pop();
+                    }
+
+                    // Hide loading when done
+                    hideLoading();
+                } catch (error) {
+                    console.error('Error:', error);
+                    hideLoading();
+                }
             } else {
                 window.location.href = 'auth.html';
             }
@@ -455,4 +584,4 @@
         document.head.appendChild(style);
     </script>
 </body>
-</html> 
+</html>
