@@ -175,6 +175,8 @@
             justify-content: center;
             align-items: center;
             min-height: 150px;
+            position: relative; /* for ripple */
+            overflow: hidden;   /* for ripple */
         }
 
         .card:hover {
@@ -262,92 +264,112 @@
         }
 
         @keyframes ripple {
-            to { transform: scale(2); opacity: 0; }
+            to { 
+                transform: scale(2); 
+                opacity: 0; 
+            }
+        }
+    </style>
+
+    <!-- Loading Animation Styles -->
+    <style>
+        .loading-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
         }
 
-    /* Loading Animation Styles (from CodePen mdMydQO, adapted) */
-    .loader {
-        width: 100px;
-        height: 100px;
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-    }
-
-    .loader::before,
-    .loader::after {
-        content: '';
-        position: absolute;
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        background: var(--primary-color); /* Match dashboard theme */
-        animation: rotate 1.5s linear infinite;
-    }
-
-    .loader::after {
-        animation-delay: 0.75s;
-    }
-
-    @keyframes rotate {
-        0% {
-            transform: translate(-50%, -50%) rotate(0deg);
+        .book-loader {
+            width: 100px;
+            height: 100px;
+            position: relative;
+            perspective: 200px;
         }
-        100% {
-            transform: translate(-50%, -50%) rotate(360deg);
+
+        .book-page {
+            width: 50%;
+            height: 100%;
+            position: absolute;
+            left: 50%;
+            background: var(--primary-color);
+            transform-origin: left;
+            animation: flip 1.2s infinite ease-in-out;
+            border-radius: 0 5px 5px 0;
         }
-    }
 
-    .loading-container {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: var(--bg-color);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-    }
-
-    .loading-text {
-        margin-top: 2rem;
-        font-size: 1.2rem;
-        color: var(--text-color);
-        text-align: center;
-    }
-
-    .loading-text span {
-        display: inline-block;
-        animation: bounce 1s infinite;
-    }
-
-    .loading-text span:nth-child(1) { animation-delay: 0.1s; }
-    .loading-text span:nth-child(2) { animation-delay: 0.2s; }
-    .loading-text span:nth-child(3) { animation-delay: 0.3s; }
-    .loading-text span:nth-child(4) { animation-delay: 0.4s; }
-    .loading-text span:nth-child(5) { animation-delay: 0.5s; }
-    .loading-text span:nth-child(6) { animation-delay: 0.6s; }
-    .loading-text span:nth-child(7) { animation-delay: 0.7s; }
-
-    @keyframes bounce {
-        0%, 100% {
-            transform: translateY(0);
+        .book-page:nth-child(1) {
+            animation-delay: 0s;
         }
-        50% {
-            transform: translateY(-10px);
+        .book-page:nth-child(2) {
+            animation-delay: 0.2s;
         }
-    }
-</style>
+        .book-page:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        .book-page:nth-child(4) {
+            animation-delay: 0.6s;
+        }
+        .book-page:nth-child(5) {
+            animation-delay: 0.8s;
+        }
+
+        @keyframes flip {
+            0%, 100% {
+                transform: rotateY(0deg);
+            }
+            50% {
+                transform: rotateY(-180deg);
+            }
+        }
+
+        .loading-text {
+            margin-top: 2rem;
+            font-size: 1.2rem;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        .loading-text span {
+            display: inline-block;
+            animation: bounce 1s infinite;
+        }
+
+        .loading-text span:nth-child(1) { animation-delay: 0.1s; }
+        .loading-text span:nth-child(2) { animation-delay: 0.2s; }
+        .loading-text span:nth-child(3) { animation-delay: 0.3s; }
+        .loading-text span:nth-child(4) { animation-delay: 0.4s; }
+        .loading-text span:nth-child(5) { animation-delay: 0.5s; }
+        .loading-text span:nth-child(6) { animation-delay: 0.6s; }
+        .loading-text span:nth-child(7) { animation-delay: 0.7s; }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Loading Animation -->
     <div class="loading-container" id="loading">
-        <div class="loader"></div>
+        <div class="book-loader">
+            <div class="book-page"></div>
+            <div class="book-page"></div>
+            <div class="book-page"></div>
+            <div class="book-page"></div>
+            <div class="book-page"></div>
+        </div>
         <div class="loading-text">
             <span>L</span>
             <span>o</span>
@@ -450,6 +472,7 @@
         </a>
     </nav>
 
+    <!-- Firebase JS SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
@@ -517,6 +540,7 @@
                     hideLoading();
                 }
             } else {
+                // No user signed in
                 window.location.href = 'auth.html';
             }
         });
@@ -535,7 +559,7 @@
             }
         });
 
-        // Ripple Effect
+        // Ripple Effect on .card
         document.querySelectorAll('.card').forEach(card => {
             card.addEventListener('click', (e) => {
                 const ripple = document.createElement('div');
@@ -558,10 +582,24 @@
             });
         });
 
-        // Initialize Ripple Animation
+        // Insert keyframes for ripple effect
         const style = document.createElement('style');
-        style.textContent = `@keyframes ripple { to { transform: scale(2); opacity: 0; } }`;
+        style.textContent = `
+            @keyframes ripple {
+                to { 
+                    transform: scale(2); 
+                    opacity: 0; 
+                }
+            }
+        `;
         document.head.appendChild(style);
+
+        // Initialize the theme based on stored preference
+        if (isDark) {
+            document.body.setAttribute('data-theme', 'dark');
+            document.getElementById('themeIcon').textContent = 'brightness_7';
+        }
     </script>
 </body>
 </html>
+ 
