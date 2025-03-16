@@ -333,6 +333,32 @@
                     .catch(error => alert(error.message));
             }
         }
+
+        // Automatically log in user after email verification
+        function handleEmailVerification() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const email = urlParams.get('email');
+            const verificationLink = window.location.href;
+
+            if (email && verificationLink.includes('mode=verifyEmail')) {
+                auth.signInWithEmailLink(email, verificationLink)
+                    .then((userCredential) => {
+                        // Update user status to active
+                        return db.collection('users').doc(userCredential.user.uid).update({
+                            status: 'active'
+                        }).then(() => {
+                            window.location.href = '/dashboard.html';
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error signing in with email link:', error);
+                        alert('Failed to log in automatically. Please log in manually.');
+                    });
+            }
+        }
+
+        // Call the email verification handler on page load
+        handleEmailVerification();
     </script>
 </body>
 </html>
