@@ -161,19 +161,6 @@
         .flipped .back {
             transform: rotateY(0deg);
         }
-
-        .verification-status {
-            text-align: center;
-            padding: 1rem;
-            margin: 1rem 0;
-            border-radius: 8px;
-            background: #e2e8f0;
-            display: none;
-        }
-
-        #step2 {
-            display: none;
-        }
     </style>
 </head>
 <body>
@@ -201,21 +188,7 @@
         <div class="auth-container back" id="signup-container">
             <h2>Create Account</h2>
             <div class="error" id="signup-error"></div>
-            <div class="verification-status" id="verification-status">
-                Verification email sent! Please check your inbox.
-                <div id="verified-success" style="display: none;">✅ Email verified! Continue below.</div>
-            </div>
-            
-            <!-- Step 1: Email Verification -->
-            <form id="signup-step1">
-                <div class="form-group">
-                    <input type="email" id="signup-email" placeholder="Email Address" required>
-                </div>
-                <button type="submit">Send Verification Email</button>
-            </form>
-
-            <!-- Step 2: Additional Details -->
-            <form id="signup-step2">
+            <form id="signup-form">
                 <div class="form-group">
                     <input type="text" id="full-name" placeholder="Full Name" required>
                 </div>
@@ -235,11 +208,13 @@
                     <input type="tel" id="phone" placeholder="Phone Number" required>
                 </div>
                 <div class="form-group">
+                    <input type="email" id="signup-email" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
                     <input type="password" id="signup-password" placeholder="Create Password" required>
                 </div>
-                <button type="submit">Complete Registration</button>
+                <button type="submit">Get Started</button>
             </form>
-
             <div class="links">
                 <a onclick="flipForm()">← Back to Login</a>
             </div>
@@ -252,6 +227,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
 
     <script>
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
             authDomain: "dopamine-quiz.firebaseapp.com",
@@ -261,124 +237,77 @@
             appId: "1:822531459966:web:8e7d2385090e997eb1c12f"
         };
 
+        // Initialize Firebase
         const app = firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // Email verification state listener
-        let verificationInterval;
-        let temporaryUser = null;
-
-        // Step 1: Start signup process
-        document.getElementById('signup-step1').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('signup-email').value;
-
-            try {
-                // Create temporary user with random password
-                const tempPassword = Math.random().toString(36).slice(-8);
-                temporaryUser = await auth.createUserWithEmailAndPassword(email, tempPassword);
-                
-                // Send verification email
-                await temporaryUser.user.sendEmailVerification();
-                
-                // Show verification status
-                document.getElementById('verification-status').style.display = 'block';
-                document.getElementById('signup-step1').style.display = 'none';
-                
-                // Start checking verification status
-                verificationInterval = setInterval(checkEmailVerification, 3000);
-            } catch (error) {
-                showError('signup-error', error.message);
-            }
-        });
-
-        // Step 2: Complete registration
-        document.getElementById('signup-step2').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            if (!temporaryUser) return;
-
-            try {
-                // Update user with actual password and details
-                const password = document.getElementById('signup-password').value;
-                await temporaryUser.user.updatePassword(password);
-
-                // Save additional details to Firestore
-                await db.collection('users').doc(temporaryUser.user.uid).set({
-                    fullName: document.getElementById('full-name').value,
-                    collegeName: document.getElementById('college-name').value,
-                    hscYear: document.getElementById('hsc-year').value,
-                    phone: document.getElementById('phone').value,
-                    email: temporaryUser.user.email,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-
-                window.location.href = '/dashboard.html';
-            } catch (error) {
-                showError('signup-error', error.message);
-            }
-        });
-
-        async function checkEmailVerification() {
-            try {
-                await temporaryUser.user.reload();
-                if (temporaryUser.user.emailVerified) {
-                    clearInterval(verificationInterval);
-                    document.getElementById('verified-success').style.display = 'block';
-                    document.getElementById('signup-step2').style.display = 'block';
-                }
-            } catch (error) {
-                clearInterval(verificationInterval);
-                showError('signup-error', 'Session expired. Please start over.');
-            }
-        }
-
-        // Keep existing functions (flipForm, showForgotPassword, showError)
+        // Form Flip Animation
         function flipForm() {
             document.querySelector('.flip-container').classList.toggle('flipped');
-            // Reset signup form if flipping back
-            if (!document.querySelector('.flip-container').classList.contains('flipped')) {
-                resetSignupForm();
-            }
         }
 
-        function resetSignupForm() {
-            document.getElementById('signup-step1').style.display = 'block';
-            document.getElementById('signup-step2').style.display = 'none';
-            document.getElementById('verification-status').style.display = 'none';
-            document.getElementById('verified-success').style.display = 'none';
-            if (temporaryUser) {
-                temporaryUser.user.delete();
-                temporaryUser = null;
-            }
-        }
-
-        function showError(elementId, message) {
-            const errorElement = document.getElementById(elementId);
-            errorElement.textContent = message;
-            errorElement.style.display = 'block';
-            setTimeout(() => errorElement.style.display = 'none', 5000);
-        }
-
-        // Existing login handler
+        // Login Handler
         document.getElementById('login-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
 
             auth.signInWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    if (userCredential.user.emailVerified) {
-                        window.location.href = '/dashboard.html';
-                    } else {
-                        auth.signOut();
-                        showError('login-error', 'Please verify your email before logging in.');
-                    }
+                .then(() => {
+                    window.location.href = '/dashboard.html';
                 })
                 .catch(error => {
                     showError('login-error', error.message);
                 });
         });
+
+        // Signup Handler
+        document.getElementById('signup-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const fullName = document.getElementById('full-name').value;
+            const collegeName = document.getElementById('college-name').value;
+            const hscYear = document.getElementById('hsc-year').value;
+            const phone = document.getElementById('phone').value;
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    return db.collection('users').doc(userCredential.user.uid).set({
+                        fullName,
+                        collegeName,
+                        hscYear,
+                        phone,
+                        email,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                })
+                .then(() => {
+                    window.location.href = '/dashboard.html';
+                })
+                .catch(error => {
+                    showError('signup-error', error.message);
+                });
+        });
+
+        // Forgot Password
+        function showForgotPassword() {
+            const email = prompt('Please enter your email address:');
+            if (email) {
+                auth.sendPasswordResetEmail(email)
+                    .then(() => alert('Password reset email sent! Check your inbox.'))
+                    .catch(error => alert(error.message));
+            }
+        }
+
+        // Error Handling
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+            setTimeout(() => errorElement.style.display = 'none', 5000);
+        }
     </script>
 </body>
 </html> 
