@@ -161,6 +161,20 @@
         .flipped .back {
             transform: rotateY(0deg);
         }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -176,7 +190,15 @@
                 <div class="form-group">
                     <input type="password" id="login-password" placeholder="Password" required>
                 </div>
-                <button type="submit">Sign In</button>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="remember-me"> Remember Me
+                    </label>
+                </div>
+                <button type="submit" id="login-button">
+                    <span id="login-button-text">Sign In</span>
+                    <span id="login-button-loader" class="loading" style="display: none;"></span>
+                </button>
             </form>
             <div class="links">
                 <a onclick="showForgotPassword()">Forgot Password?</a><br>
@@ -213,7 +235,10 @@
                 <div class="form-group">
                     <input type="password" id="signup-password" placeholder="Create Password" required>
                 </div>
-                <button type="submit">Get Started</button>
+                <button type="submit" id="signup-button">
+                    <span id="signup-button-text">Get Started</span>
+                    <span id="signup-button-loader" class="loading" style="display: none;"></span>
+                </button>
             </form>
             <div class="links">
                 <a onclick="flipForm()">← Back to Login</a>
@@ -247,30 +272,96 @@
             document.querySelector('.flip-container').classList.toggle('flipped');
         }
 
+        // Input Validation
+        function validateInputs(formId) {
+            const form = document.getElementById(formId);
+            const inputs = form.querySelectorAll('input, select');
+            let isValid = true;
+
+            inputs.forEach(input => {
+                if (!input.value.trim()) {
+                    isValid = false;
+                    input.style.borderColor = '#e53e3e'; // Highlight error
+                } else {
+                    input.style.borderColor = '#e2e8f0'; // Reset border color
+                }
+            });
+
+            return isValid;
+        }
+
+        // Toggle Button Loading State
+        function toggleButtonLoading(buttonId, isLoading) {
+            const button = document.getElementById(buttonId);
+            const buttonText = document.getElementById(`${buttonId}-text`);
+            const buttonLoader = document.getElementById(`${buttonId}-loader`);
+
+            if (isLoading) {
+                button.disabled = true;
+                buttonText.style.display = 'none';
+                buttonLoader.style.display = 'inline';
+            } else {
+                button.disabled = false;
+                buttonText.style.display = 'inline';
+                buttonLoader.style.display = 'none';
+            }
+        }
+
+        // Improved Error Handling
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+
+            // Clear error on input focus
+            const inputs = document.querySelectorAll('input, select');
+            inputs.forEach(input => {
+                input.addEventListener('focus', () => {
+                    errorElement.style.display = 'none';
+                });
+            });
+        }
+
         // Login Handler
         document.getElementById('login-form').addEventListener('submit', (e) => {
             e.preventDefault();
+            if (!validateInputs('login-form')) return;
+
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
+            const rememberMe = document.getElementById('remember-me').checked;
 
-            auth.signInWithEmailAndPassword(email, password)
+            toggleButtonLoading('login-button', true);
+
+            // Set persistence based on "Remember Me" option
+            const persistence = rememberMe ? firebase.auth.Auth.Persistence.LOCAL : firebase.auth.Auth.Persistence.SESSION;
+
+            auth.setPersistence(persistence)
+                .then(() => {
+                    return auth.signInWithEmailAndPassword(email, password);
+                })
                 .then(() => {
                     window.location.href = '/dashboard.html';
                 })
                 .catch(error => {
                     showError('login-error', error.message);
-                });
+                })
+                .finally(() => toggleButtonLoading('login-button', false));
         });
 
         // Signup Handler
         document.getElementById('signup-form').addEventListener('submit', (e) => {
             e.preventDefault();
+            if (!validateInputs('signup-form')) return;
+
             const email = document.getElementById('signup-email').value;
             const password = document.getElementById('signup-password').value;
             const fullName = document.getElementById('full-name').value;
             const collegeName = document.getElementById('college-name').value;
             const hscYear = document.getElementById('hsc-year').value;
             const phone = document.getElementById('phone').value;
+
+            toggleButtonLoading('signup-button', true);
 
             auth.createUserWithEmailAndPassword(email, password)
                 .then((userCredential) => {
@@ -288,7 +379,8 @@
                 })
                 .catch(error => {
                     showError('signup-error', error.message);
-                });
+                })
+                .finally(() => toggleButtonLoading('signup-button', false));
         });
 
         // Forgot Password
@@ -300,14 +392,6 @@
                     .catch(error => alert(error.message));
             }
         }
-
-        // Error Handling
-        function showError(elementId, message) {
-            const errorElement = document.getElementById(elementId);
-            errorElement.textContent = message;
-            errorElement.style.display = 'block';
-            setTimeout(() => errorElement.style.display = 'none', 5000);
-        }
     </script>
 </body>
-</html>
+    </html>
