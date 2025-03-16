@@ -28,14 +28,7 @@
             box-shadow: 0 8px 32px rgba(0,0,0,0.1);
             width: 100%;
             max-width: 500px;
-            transform-style: preserve-3d;
-            transition: all 0.3s ease;
             position: relative;
-        }
-
-        .auth-container.signup {
-            transform: rotateY(180deg);
-            display: none;
         }
 
         h2 {
@@ -60,7 +53,6 @@
 
         .form-group {
             margin-bottom: 1.5rem;
-            position: relative;
         }
 
         input, select {
@@ -78,11 +70,6 @@
             outline: none;
         }
 
-        select {
-            appearance: none;
-            background: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") no-repeat right 1rem center/1em;
-        }
-
         button {
             width: 100%;
             padding: 1rem;
@@ -94,8 +81,6 @@
             font-size: 16px;
             font-weight: 600;
             transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         button:hover {
@@ -114,11 +99,9 @@
             text-decoration: none;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
         }
 
         a:hover {
-            color: #764ba2;
             text-decoration: underline;
         }
 
@@ -126,7 +109,6 @@
             color: #e53e3e;
             text-align: center;
             margin: 1rem 0;
-            font-weight: 500;
             padding: 0.5rem;
             border-radius: 6px;
             background: #fed7d7;
@@ -181,6 +163,7 @@
             <div class="links">
                 <a onclick="showForgotPassword()">Forgot Password?</a><br>
                 <a onclick="flipForm()">Create New Account →</a>
+                <a id="resend-verification" style="display: none;" onclick="resendVerification()">Resend Verification Email</a>
             </div>
         </div>
 
@@ -193,27 +176,12 @@
                     <input type="text" id="full-name" placeholder="Full Name" required>
                 </div>
                 <div class="form-group">
-                    <input type="text" id="college-name" placeholder="College Name" required>
-                </div>
-                <div class="form-group">
-                    <select id="hsc-year" required>
-                        <option value="">HSC Year</option>
-                        <option value="2024">2024</option>
-                        <option value="2025">2025</option>
-                        <option value="2026">2026</option>
-                        <option value="2027">2027</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <input type="tel" id="phone" placeholder="Phone Number" required>
-                </div>
-                <div class="form-group">
                     <input type="email" id="signup-email" placeholder="Email Address" required>
                 </div>
                 <div class="form-group">
                     <input type="password" id="signup-password" placeholder="Create Password" required>
                 </div>
-                <button type="submit">Get Started</button>
+                <button type="submit">Sign Up</button>
             </form>
             <div class="links">
                 <a onclick="flipForm()">← Back to Login</a>
@@ -227,7 +195,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
 
     <script>
-        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
             authDomain: "dopamine-quiz.firebaseapp.com",
@@ -237,7 +204,6 @@
             appId: "1:822531459966:web:8e7d2385090e997eb1c12f"
         };
 
-        // Initialize Firebase
         const app = firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
@@ -247,6 +213,36 @@
             document.querySelector('.flip-container').classList.toggle('flipped');
         }
 
+        // Signup Handler
+        document.getElementById('signup-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const fullName = document.getElementById('full-name').value;
+
+            auth.createUserWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    // Send verification email
+                    return userCredential.user.sendEmailVerification();
+                })
+                .then(() => {
+                    // Store user data in Firestore
+                    return db.collection('users').doc(userCredential.user.uid).set({
+                        fullName: fullName,
+                        email: email,
+                        status: 'unverified',
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                })
+                .then(() => {
+                    alert('Verification email sent. Please check your inbox.');
+                    flipForm();
+                })
+                .catch(error => {
+                    showError('signup-error', error.message);
+                });
+        });
+
         // Login Handler
         document.getElementById('login-form').addEventListener('submit', (e) => {
             e.preventDefault();
@@ -254,51 +250,44 @@
             const password = document.getElementById('login-password').value;
 
             auth.signInWithEmailAndPassword(email, password)
-                .then(() => {
-                    window.location.href = '/dashboard.html';
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    if (user.emailVerified) {
+                        // Update user status to active
+                        return db.collection('users').doc(user.uid).update({
+                            status: 'active'
+                        }).then(() => {
+                            window.location.href = '/dashboard.html';
+                        });
+                    } else {
+                        auth.signOut();
+                        showError('login-error', 'Please verify your email first');
+                        document.getElementById('resend-verification').style.display = 'inline';
+                    }
                 })
                 .catch(error => {
                     showError('login-error', error.message);
                 });
         });
 
-        // Signup Handler
-        document.getElementById('signup-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('signup-email').value;
-            const password = document.getElementById('signup-password').value;
-            const fullName = document.getElementById('full-name').value;
-            const collegeName = document.getElementById('college-name').value;
-            const hscYear = document.getElementById('hsc-year').value;
-            const phone = document.getElementById('phone').value;
+        // Resend Verification Email
+        function resendVerification() {
+            const email = document.getElementById('login-email').value;
+            const password = prompt('Please enter your password to resend verification email:');
+            
+            if (!email || !password) return;
 
-            auth.createUserWithEmailAndPassword(email, password)
+            auth.signInWithEmailAndPassword(email, password)
                 .then((userCredential) => {
-                    return db.collection('users').doc(userCredential.user.uid).set({
-                        fullName,
-                        collegeName,
-                        hscYear,
-                        phone,
-                        email,
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
+                    return userCredential.user.sendEmailVerification();
                 })
                 .then(() => {
-                    window.location.href = '/dashboard.html';
+                    alert('Verification email resent. Please check your inbox.');
+                    auth.signOut();
                 })
                 .catch(error => {
-                    showError('signup-error', error.message);
+                    showError('login-error', error.message);
                 });
-        });
-
-        // Forgot Password
-        function showForgotPassword() {
-            const email = prompt('Please enter your email address:');
-            if (email) {
-                auth.sendPasswordResetEmail(email)
-                    .then(() => alert('Password reset email sent! Check your inbox.'))
-                    .catch(error => alert(error.message));
-            }
         }
 
         // Error Handling
@@ -308,6 +297,16 @@
             errorElement.style.display = 'block';
             setTimeout(() => errorElement.style.display = 'none', 5000);
         }
+
+        // Forgot Password
+        function showForgotPassword() {
+            const email = prompt('Please enter your email address:');
+            if (email) {
+                auth.sendPasswordResetEmail(email)
+                    .then(() => alert('Password reset email sent!'))
+                    .catch(error => alert(error.message));
+            }
+        }
     </script>
 </body>
-</html> 
+</html>
