@@ -246,19 +246,19 @@
             auth.createUserWithEmailAndPassword(email, password)
                 .then((userCredential) => {
                     // Send verification email
-                    return userCredential.user.sendEmailVerification();
-                })
-                .then(() => {
-                    // Store user data in Firestore
-                    return db.collection('users').doc(userCredential.user.uid).set({
-                        fullName: fullName,
-                        collegeName: collegeName,
-                        hscYear: hscYear,
-                        phone: phone,
-                        email: email,
-                        status: 'unverified',
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                    });
+                    return userCredential.user.sendEmailVerification()
+                        .then(() => {
+                            // Store user data in Firestore
+                            return db.collection('users').doc(userCredential.user.uid).set({
+                                fullName: fullName,
+                                collegeName: collegeName,
+                                hscYear: hscYear,
+                                phone: phone,
+                                email: email,
+                                status: 'unverified',
+                                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                            });
+                        });
                 })
                 .then(() => {
                     alert('Verification email sent. Please check your inbox.');
