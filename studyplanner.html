@@ -172,9 +172,49 @@
         .back-button:hover {
             background: #bbb;
         }
+
+        /* Loading Screen Styles */
+        .loading-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--primary-color);
+            border-top: 5px solid transparent;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            margin-top: 1rem;
+            font-size: 1.2rem;
+            color: var(--text-color);
+        }
     </style>
 </head>
 <body>
+    <div class="loading-container" id="loading">
+        <div class="spinner"></div>
+        <div class="loading-text">Loading Study Plan...</div>
+    </div>
+
     <h1>Select Your Subjects</h1>
     <div class="subject-container">
         <div class="subject-list" id="subjectList">
@@ -329,11 +369,18 @@
             "Bangla": []
         };
 
+        const loading = document.getElementById('loading');
+
+        function hideLoading() {
+            loading.style.display = 'none';
+        }
+
         auth.onAuthStateChanged(user => {
             if (!user) {
                 window.location.href = 'auth.html';
             } else {
                 userId = user.uid;
+                loading.style.display = 'flex'; // Show loading
                 loadUserProgress();
             }
         });
@@ -355,6 +402,8 @@
             } catch (error) {
                 console.error("Error loading progress:", error);
                 alert("Error loading your study progress!");
+            } finally {
+                hideLoading(); // Hide loading regardless of success or failure
             }
         }
 
