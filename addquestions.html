@@ -1,127 +1,438 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Dopamine Quiz - Add Questions</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Add Question - Admin</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    rel="stylesheet"
+  />
   <style>
-    body { font-family: Arial, sans-serif; background: #f7f9fc; margin: 0; padding: 20px; }
-    .navbar { background: #667eea; padding: 15px 20px; }
-    .navbar-brand { color: #fff; font-weight: bold; }
-    .container { max-width: 600px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-    h1 { text-align: center; margin-bottom: 30px; color: #333; }
-    .btn-primary { background-color: #667eea; border-color: #667eea; width: 100%; }
-    .btn-primary:hover { background-color: #556cd6; border-color: #556cd6; }
-    .loading-spinner { display: none; text-align: center; padding: 20px; color: #667eea; }
-    .status-message { text-align: center; margin-top: 20px; font-weight: bold; }
-    .success { color: #28a745; }
-    .error { color: #dc3545; }
-    @media (max-width: 576px) {
-      .container { padding: 15px; }
-      h1 { font-size: 1.5rem; }
+    :root {
+      --primary-color: #667eea;
+      --secondary-color: #764ba2;
+      --bg-color: #f5f7fb;
+      --text-color: #2d3748;
+      --card-bg: #ffffff;
+      --border-color: #e2e8f0;
+      --input-bg: #edf2f7;
+    }
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: "Poppins", sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+    .sidebar {
+      position: fixed;
+      top: 2rem;
+      width: 200px;
+      padding: 1rem;
+      background: var(--card-bg);
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .sidebar-left {
+      left: 1rem;
+    }
+    .sidebar-right {
+      right: 1rem;
+    }
+    .form-container {
+      max-width: 600px;
+      margin: 2rem 220px;
+      padding: 2rem 3rem;
+      background: var(--card-bg);
+      border-radius: 15px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background-color: var(--input-bg);
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    input:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+    }
+    .option-container {
+      margin: 1rem 0;
+    }
+    .option-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .option-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .option-item input[type="radio"] {
+      margin: 0;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--primary-color);
+      border-radius: 50%;
+      outline: none;
+      position: relative;
+      cursor: pointer;
+    }
+    .option-item input[type="radio"]:checked::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 10px;
+      height: 10px;
+      background-color: var(--primary-color);
+      border-radius: 50%;
+    }
+    .option-item input[type="text"] {
+      flex: 1;
+      margin: 0;
+      padding: 0.6rem;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      background-color: var(--input-bg);
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .option-item input[type="text"]:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+    }
+    .submit-btn {
+      background: var(--primary-color);
+      color: white;
+      padding: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+    }
+    .submit-btn:hover {
+      background-color: #5a67d8;
+    }
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+        align-items: center;
+      }
+      .sidebar {
+        position: static;
+        width: 100%;
+        max-width: 300px;
+        margin: 1rem 0;
+      }
+      .sidebar-left,
+      .sidebar-right {
+        left: auto;
+        right: auto;
+      }
+      .form-container {
+        margin: 1rem;
+        width: 100%;
+        max-width: 100%;
+        padding: 2rem 1rem;
+      }
     }
   </style>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </head>
 <body>
-  <nav class="navbar">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">Dopamine Quiz</a>
+  <div class="sidebar sidebar-left">
+    <input type="file" id="uploadJson" accept=".json" />
+    <div class="form-group">
+      <label>Subject</label>
+      <select id="subjectSelect" required>
+        <option value="">Select Subject</option>
+        <option>Botany</option>
+        <option>Zoology</option>
+        <option>Physics 1st</option>
+        <option>Physics 2nd</option>
+        <option>Chemistry 1st</option>
+        <option>Chemistry 2nd</option>
+        <option>Higher Math 1st</option>
+        <option>Higher Math 2nd</option>
+        <option>English</option>
+        <option>Bangla</option>
+      </select>
     </div>
-  </nav>
-
-  <div class="container">
-    <h1>Add Questions to Firestore</h1>
-    <div id="loading" class="loading-spinner">Adding Questions...</div>
-    <button id="addQuestionsBtn" class="btn btn-primary">Add Questions</button>
-    <div id="status" class="status-message"></div>
   </div>
 
+  <div class="sidebar sidebar-right">
+    <div class="form-group">
+      <label>Chapter</label>
+      <select id="chapterSelect" required>
+        <option value="">Select Chapter</option>
+      </select>
+    </div>
+    <button id="downloadJson">Download JSON</button>
+  </div>
+
+  <div class="form-container">
+    <h2>Add New Question</h2>
+    <div class="form-group">
+      <label>Question</label>
+      <textarea id="questionText" rows="2" required></textarea>
+    </div>
+    <div class="option-container">
+      <label>Options (Select the correct answer)</label>
+      <div class="option-grid">
+        <div class="option-item">
+          <input type="radio" name="correctOption" value="1" />
+          <input type="text" placeholder="Option 1" class="option-input" required />
+        </div>
+        <div class="option-item">
+          <input type="radio" name="correctOption" value="2" />
+          <input type="text" placeholder="Option 2" class="option-input" required />
+        </div>
+        <div class="option-item">
+          <input type="radio" name="correctOption" value="3" />
+          <input type="text" placeholder="Option 3" class="option-input" required />
+        </div>
+        <div class="option-item">
+          <input type="radio" name="correctOption" value="4" />
+          <input type="text" placeholder="Option 4" class="option-input" required />
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Explanation (Optional)</label>
+      <textarea id="explanation" rows="1"></textarea>
+    </div>
+    <button class="submit-btn" onclick="submitQuestion()">Add Question</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <script>
-    // Firebase Configuration
-    const firebaseConfig = {
-      apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
-      authDomain: "dopamine-quiz.firebaseapp.com",
-      projectId: "dopamine-quiz",
-      storageBucket: "dopamine-quiz.firebasestorage.app",
-      messagingSenderId: "822531459966",
-      appId: "1:822531459966:web:8e7d2385090e997eb1c12f"
+    let quizData = {};
+
+    const subjects = {
+      "Botany": [
+        "Chapter 01: কোষ ও এর গঠন",
+        "Chapter 02: কোষ বিভাজন",
+        "Chapter 03: কোষ রসায়ন",
+        "Chapter 04: অণুজীব",
+        "Chapter 05: শৈবাল ও ছত্রাক",
+        "Chapter 06: ব্রায়োফাইটা ও টেরেডোফাইটা",
+        "Chapter 07: নগ্নবীজী ও আবৃতবীজী উদ্ভিদ",
+        "Chapter 08: টিস্যু ও টিস্যুতন্ত্র",
+        "Chapter 09: উদ্ভিদ শারীরতত্ত্ব",
+        "Chapter 10: উদ্ভিদ প্রজনন",
+        "Chapter 11: জীবপ্রযুক্তি"
+      ],
+      "Zoology": [
+        "Chapter 01: প্রাণীর বিভিন্নতা ও শ্রেণিবিন্যাস",
+        "Chapter 02: প্রাণীর পরিচিতি",
+        "Chapter 03: পরিপাক ও শোষণ",
+        "Chapter 04: রক্ত সঞ্চালন",
+        "Chapter 05: শ্বাসক্রিয়া ও শ্বসন",
+        "Chapter 06: বর্জ্য ও নিষ্কাশন",
+        "Chapter 07: চলন ও অঙ্গচালনা",
+        "Chapter 08: সমন্বয় ও নিয়ন্ত্রণ",
+        "Chapter 09: মানব জীবনের ধারাবাহিকতা",
+        "Chapter 10: মানবদেহের প্রতিরক্ষা",
+        "Chapter 11: জীনতত্ত্ব ও বিবর্তন"
+      ],
+      "Physics 1st": [
+        "Chapter 01: ভৌত জগৎ ও পরিমাপ",
+        "Chapter 02: ভেক্টর",
+        "Chapter 04: নিউটোনিয়ান বলবিদ্যা",
+        "Chapter 05: কাজ, শক্তি ও ক্ষমতা",
+        "Chapter 06: মহাকর্ষ ও অভিকর্ষ",
+        "Chapter 07: পদার্থের গাঠনিক ধর্ম",
+        "Chapter 08: পর্যাবৃত্ত গতি",
+        "Chapter 10: আদর্শ গ্যাস ও গ্যাসের গতিতত্ত্ব"
+      ],
+      "Physics 2nd": [
+        "Chapter 01: তাপগতিবিদ্যা",
+        "Chapter 02: স্থির তড়িৎ",
+        "Chapter 03: চলতড়িৎ",
+        "Chapter 07: ভৌত আলোকবিজ্ঞান",
+        "Chapter 08: আধুনিক পদার্থবিজ্ঞানের সূচনা",
+        "Chapter 09: পরমাণুর মডেল এবং নিউক্লিয়ার পদার্থবিজ্ঞানের",
+        "Chapter 10: সেমিকন্ডাক্টর ও ইলেকট্রনিকস"
+      ],
+      "Chemistry 1st": [
+        "Chapter 02: গুণগত রসায়ন",
+        "Chapter 03: মৌলের পর্যায়বৃত্ত ধর্ম",
+        "Chapter 04: রাসায়নিক পরিবর্তন",
+        "Chapter 05: কর্মমুখী রসায়ন"
+      ],
+      "Chemistry 2nd": [
+        "Chapter 01: পরিবেশ রসায়ন",
+        "Chapter 02: জৈব রসায়ন",
+        "Chapter 03: পরিমাণগত রসায়ন (Quantitative Chemistry)",
+        "Chapter 04: তড়িৎ রসায়ন"
+      ],
+      "Higher Math 1st": [
+        "Chapter 01: ম্যাট্রিক্স ও নির্ণায়ক",
+        "Chapter 03: সরলরেখা",
+        "Chapter 04: বৃত্ত",
+        "Chapter 07: সংযুক্ত কোণের ত্রিকোণমিতিক অনুপাত",
+        "Chapter 09: অন্তরীকরণ (Differentiation)",
+        "Chapter 10: যোগজীকরণ (Integration)"
+      ],
+      "Higher Math 2nd": [
+        "Chapter 03: জটিল সংখ্যা",
+        "Chapter 04: বহুপদী ও বহুপদী সমীকরণ",
+        "Chapter 06: কণিক",
+        "Chapter 07: বিপরীত ত্রিকোণমিতিক ফাংশন ও ত্রিকোণমিতিক সমীকরণ",
+        "Chapter 08: স্থিতিবিদ্যা",
+        "Chapter 09: সমতলে বস্তুকণার গতি"
+      ],
+      "English": [],
+      "Bangla": []
     };
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
 
-    // Authentication check (optional: restrict to admins)
-    auth.onAuthStateChanged((user) => {
-      if (!user) {
-        window.location.href = "auth.html"; // Redirect to login if not authenticated
+    // Populate chapter select based on subject
+    document.getElementById("subjectSelect").addEventListener("change", function () {
+      const subject = this.value;
+      const chapterSelect = document.getElementById("chapterSelect");
+      chapterSelect.innerHTML = '<option value="">Select Chapter</option>';
+      if (subject && subjects[subject]) {
+        subjects[subject].forEach((chapter) => {
+          const option = document.createElement("option");
+          option.value = chapter;
+          option.textContent = chapter;
+          chapterSelect.appendChild(option);
+        });
       }
     });
 
-    // Questions data from pages 166–172
-    const questions = [
-      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষের গঠন ও কার্যাবলির মধ্যে সম্পর্ক স্থাপন করে কোনটি?",options:["কোষঝিল্লি","নিউক্লিয়াস","সাইটোপ্লাজম","মাইটোকন্ড্রিয়া"],correctOption:"2",explanation:"নিউক্লিয়াস কোষের গঠন ও কার্যাবলির মধ্যে সম্পর্ক স্থাপন করে কারণ এটি কোষের নিয়ন্ত্রণ কেন্দ্র হিসেবে কাজ করে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
-      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষের কোন অংশটি জীবনের একক হিসেবে পরিচিত?",options:["নিউক্লিয়াস","মাইটোকন্ড্রিয়া","কোষঝিল্লি","সাইটোপ্লাজম"],correctOption:"1",explanation:"নিউক্লিয়াসকে জীবনের একক বলা হয় কারণ এটি কোষের সমস্ত কার্যক্রম নিয়ন্ত্রণ করে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
-      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষঝিল্লির প্রধান কাজ কী?",options:["শক্তি উৎপাদন","পদার্থ পরিবহন","কোষ বিভাজন","ডিএনএ সংরক্ষণ"],correctOption:"2",explanation:"কোষঝিল্লি পদার্থ পরিবহন নিয়ন্ত্রণ করে, যা কোষের ভিতরে ও বাইরে পদার্থের প্রবেশ ও বেরিয়ে যাওয়া নিয়ন্ত্রণ করে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
-      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষের শক্তি উৎপাদন কেন্দ্র কোনটি?",options:["নিউক্লিয়াস","মাইটোকন্ড্রিয়া","গলগি বডি","রাইবোজোম"],correctOption:"2",explanation:"মাইটোকন্ড্রিয়া কোষের শক্তি উৎপাদন কেন্দ্র হিসেবে পরিচিত কারণ এটি ATP উৎপাদন করে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
-      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষে প্রোটিন সংশ্লেষণের জন্য কোনটি দায়ী?",options:["নিউক্লিয়াস","রাইবোজোম","মাইটোকন্ড্রিয়া","গলগি বডি"],correctOption:"2",explanation:"রাইবোজোম প্রোটিন সংশ্লেষণের জন্য দায়ী কারণ এটি mRNA থেকে প্রোটিন তৈরি করে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
-      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষঝিল্লি প্রধানত কী দিয়ে গঠিত?",options:["প্রোটিন ও লিপিড","কার্বোহাইড্রেট","নিউক্লিক এসিড","পানি"],correctOption:"1",explanation:"কোষঝিল্লি প্রোটিন ও লিপিডের সমন্বয়ে গঠিত, যা এটিকে নমনীয় ও কার্যকরী করে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
-      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"নিউক্লিয়াসের প্রধান কাজ কী?",options:["শক্তি উৎপাদন","জিন নিয়ন্ত্রণ","প্রোটিন সংশ্লেষণ","পদার্থ পরিবহন"],correctOption:"2",explanation:"নিউক্লিয়াস জিন নিয়ন্ত্রণ করে এবং কোষের সমস্ত কার্যক্রম পরিচালনা করে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
-      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষের কোন অংশে রাইবোজোম থাকে?",options:["নিউক্লিয়াস","সাইটোপ্লাজম","মাইটোকন্ড্রিয়া","গলগি বডি"],correctOption:"2",explanation:"রাইবোজোম সাইটোপ্লাজমে অবস্থান করে এবং প্রোটিন সংশ্লেষণে ভূমিকা রাখে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
-      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষের কোন অংশ পদার্থ সংরক্ষণে সাহায্য করে?",options:["গলগি বডি","মাইটোকন্ড্রিয়া","নিউক্লিয়াস","রাইবোজোম"],correctOption:"1",explanation:"গলগি বডি পদার্থ সংরক্ষণ ও পরিবহনে সাহায্য করে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
-      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষে শক্তি সঞ্চয়ের জন্য কোনটি দায়ী?",options:["নিউক্লিয়াস","মাইটোকন্ড্রিয়া","কোষঝিল্লি","গলগি বডি"],correctOption:"2",explanation:"মাইটোকন্ড্রিয়া শক্তি সঞ্চয়ের জন্য ATP উৎপাদন করে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
-      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষের কোন অংশে DNA থাকে?",options:["নিউক্লিয়াস","মাইটোকন্ড্রিয়া","গলগি বডি","রাইবোজোম"],correctOption:"1",explanation:"নিউক্লিয়াসে DNA থাকে, যা জিনগত তথ্য সংরক্ষণ করে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
-      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষের কোন অংশে লাইসোজোম থাকে?",options:["নিউক্লিয়াস","সাইটোপ্লাজম","মাইটোকন্ড্রিয়া","কোষঝিল্লি"],correctOption:"2",explanation:"লাইসোজোম সাইটোপ্লাজমে অবস্থান করে এবং পদার্থ হজমে সাহায্য করে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
-      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষের কোন অংশে পানি সঞ্চয় করা হয়?",options:["নিউক্লিয়াস","ভ্যাকুওল","মাইটোকন্ড্রিয়া","গলগি বডি"],correctOption:"2",explanation:"ভ্যাকুওল কোষে পানি ও অন্যান্য পদার্থ সঞ্চয় করে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
-      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষের কোন অংশে কোষ বিভাজন নিয়ন্ত্রণ করা হয়?",options:["নিউক্লিয়াস","মাইটোকন্ড্রিয়া","গলগি বডি","কোষঝিল্লি"],correctOption:"1",explanation:"নিউক্লিয়াস কোষ বিভাজন নিয়ন্ত্রণ করে কারণ এটি ক্রোমোজোম ধারণ করে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
-      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষের কোন অংশে RNA সংশ্লেষিত হয়?",options:["নিউক্লিয়াস","রাইবোজোম","মাইটোকন্ড্রিয়া","গলগি বডি"],correctOption:"1",explanation:"RNA নিউক্লিয়াসে সংশ্লেষিত হয়, যেখানে ট্রান্সক্রিপশন প্রক্রিয়া ঘটে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
-      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষের কোন অংশে সালোকসংশ্লেষণ ঘটে?",options:["নিউক্লিয়াস","ক্লোরোপ্লাস্ট","মাইটোকন্ড্রিয়া","গলগি বডি"],correctOption:"2",explanation:"ক্লোরোপ্লাস্টে সালোকসংশ্লেষণ ঘটে, যেখানে ক্লোরোফিল থাকে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
-      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষের কোন অংশে গ্লাইকোলাইসিস ঘটে?",options:["নিউক্লিয়াস","মাইটোকন্ড্রিয়া","সাইটোপ্লাজম","গলগি বডি"],correctOption:"3",explanation:"গ্লাইকোলাইসিস সাইটোপ্লাজমে ঘটে, যেখানে গ্লুকোজ ভেঙে শক্তি উৎপন্ন হয়।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
-      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষের কোন অংশে এন্ডোপ্লাজমিক রেটিকুলাম থাকে?",options:["নিউক্লিয়াস","সাইটোপ্লাজম","মাইটোকন্ড্রিয়া","কোষঝিল্লি"],correctOption:"2",explanation:"এন্ডোপ্লাজমিক রেটিকুলাম সাইটোপ্লাজমে অবস্থান করে এবং প্রোটিন পরিবহনে সাহায্য করে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
-      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষের কোন অংশে ক্রোমোজোম থাকে?",options:["নিউক্লিয়াস","মাইটোকন্ড্রিয়া","গলগি বডি","রাইবোজোম"],correctOption:"1",explanation:"ক্রোমোজোম নিউক্লিয়াসে থাকে, যেখানে জিনগত তথ্য সংরক্ষিত হয়।",timestamp:firebase.firestore.FieldValue.serverTimestamp()},
-      {subject:"Botany",chapter:"কোষ ও এর গঠন",question:"কোষের কোন অংশে পড়ে পদার্থ হজম হয়?",options:["নিউক্লিয়াস","লাইসোজোম","মাইটোকন্ড্রিয়া","গলগি বডি"],correctOption:"2",explanation:"লাইসোজোমে পড়ে পদার্থ হজম হয় কারণ এটি হজমকারী এনজাইম ধারণ করে।",timestamp:firebase.firestore.FieldValue.serverTimestamp()}
-    ];
-
-    // Button click handler
-    document.getElementById("addQuestionsBtn").addEventListener("click", async () => {
-      const loadingDiv = document.getElementById("loading");
-      const statusDiv = document.getElementById("status");
-      const addButton = document.getElementById("addQuestionsBtn");
-
-      loadingDiv.style.display = "block";
-      statusDiv.textContent = "";
-      addButton.disabled = true;
-
-      try {
-        for (const question of questions) {
-          await db.collection("questions").add(question);
-          console.log(`Added question: ${question.question}`);
-        }
-        loadingDiv.style.display = "none";
-        statusDiv.textContent = "All 20 questions added successfully!";
-        statusDiv.className = "status-message success";
-        Toastify({
-          text: "Questions added successfully!",
-          duration: 3000,
-          style: { background: "#667eea" }
-        }).showToast();
-      } catch (error) {
-        loadingDiv.style.display = "none";
-        statusDiv.textContent = "Error adding questions: " + error.message;
-        statusDiv.className = "status-message error";
-        addButton.disabled = false;
-        Toastify({
-          text: "Error adding questions",
-          duration: 3000,
-          style: { background: "#dc3545" }
-        }).showToast();
+    // Handle JSON file upload
+    document.getElementById("uploadJson").addEventListener("change", function (event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          try {
+            quizData = JSON.parse(e.target.result);
+            Toastify({
+              text: "JSON file loaded successfully!",
+              duration: 3000,
+              style: { background: "#667eea" },
+            }).showToast();
+          } catch (error) {
+            showError("Invalid JSON file");
+          }
+        };
+        reader.readAsText(file);
       }
     });
+
+    // Handle JSON download
+    document.getElementById("downloadJson").addEventListener("click", function () {
+      const jsonStr = JSON.stringify(quizData, null, 2);
+      const blob = new Blob([jsonStr], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "questions.json";
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    // Submit new question to quizData
+    function submitQuestion() {
+      const subject = document.getElementById("subjectSelect").value;
+      const chapter = document.getElementById("chapterSelect").value;
+      const questionText = document.getElementById("questionText").value;
+      const explanation = document.getElementById("explanation").value;
+      const options = Array.from(document.querySelectorAll(".option-input")).map(
+        (input) => input.value
+      );
+      const correctOptionRadio = document.querySelector(
+        'input[name="correctOption"]:checked'
+      );
+
+      if (
+        !subject ||
+        !chapter ||
+        !questionText ||
+        options.some((opt) => !opt) ||
+        !correctOptionRadio
+      ) {
+        showError("Please fill all required fields and select the correct option");
+        return;
+      }
+
+      const correctOption = parseInt(correctOptionRadio.value);
+
+      const questionData = {
+        question: questionText,
+        options: options,
+        correctOption: correctOption,
+        explanation: explanation,
+      };
+
+      // Ensure subject and chapter exist in quizData
+      if (!quizData[subject]) {
+        quizData[subject] = {};
+      }
+      if (!quizData[subject][chapter]) {
+        quizData[subject][chapter] = [];
+      }
+
+      // Add question to quizData
+      quizData[subject][chapter].push(questionData);
+
+      Toastify({
+        text: "Question added successfully!",
+        duration: 3000,
+        style: { background: "#667eea" },
+      }).showToast();
+
+      // Reset the form
+      document.getElementById("questionText").value = "";
+      document.getElementById("explanation").value = "";
+      document.querySelectorAll(".option-input").forEach((input) => (input.value = ""));
+      document.querySelectorAll('input[name="correctOption"]').forEach((radio) => (radio.checked = false));
+    }
+
+    // Show error message
+    function showError(message) {
+      Toastify({
+        text: message,
+        duration: 3000,
+        style: { background: "#dc3545" },
+      }).showToast();
+    }
   </script>
 </body>
 </html>
