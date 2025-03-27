@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz Platform - Auth</title>
+    <title>Dopamine - Auth</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -17,110 +18,163 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: linear-gradient(135deg, #8e9aef 0%, #a78bfa 100%);
-            background-attachment: fixed;
+            background: #f5f5f5;
+            padding: 0.5rem;
         }
 
         .auth-wrapper {
             width: 100%;
-            max-width: 500px;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .logo-container {
+            margin-bottom: 1rem;
+        }
+
+        .logo-container img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-bottom: 0.3rem;
+        }
+
+        .logo-container h1 {
+            font-size: 1.8rem;
+            color: #333;
+            font-weight: 700;
+        }
+
+        .auth-options {
+            display: flex;
+            justify-content: space-between;
+            background: #f0f0f0;
+            border-radius: 25px;
+            padding: 0.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-option {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            color: #666;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .auth-option.active {
+            background: #fff;
+            color: #6b48ff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
 
         .auth-container {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 3rem;
-            border-radius: 20px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-            width: 100%;
-            border: 1px solid #e2e8f0;
-        }
-
-        h2 {
-            text-align: center;
-            margin-bottom: 2rem;
-            color: #2d3748;
-            font-size: 2.5rem;
-            position: relative;
-        }
-
-        h2::after {
-            content: '';
-            width: 60px;
-            height: 4px;
-            background: #667eea;
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-radius: 2px;
+            background: #fff;
+            padding: 1rem;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: none;
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            position: relative;
+            margin-bottom: 0.8rem;
         }
 
-        input, select {
+        input {
             width: 100%;
-            padding: 1rem;
-            border: 2px solid #e2e8f0;
+            padding: 0.8rem 2.5rem 0.8rem 2.5rem;
+            border: 1px solid #ddd;
             border-radius: 8px;
-            font-size: 17px;
-            transition: all 0.3s ease;
+            font-size: 1rem;
+            color: #333;
+            background: #f9f9f9;
         }
 
-        input:focus, select:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        input:focus {
+            border-color: #6b48ff;
             outline: none;
+            background: #fff;
         }
 
-        select {
-            appearance: none;
-            background: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") no-repeat right 1rem center/1em;
+        input::placeholder {
+            color: #999;
+        }
+
+        .form-group i.icon-left {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 1rem;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+            cursor: pointer;
+            font-size: 1rem;
+            width: 1rem;
+            height: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         button {
             width: 100%;
-            padding: 1rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 0.8rem;
+            background: #6b48ff;
             color: white;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-size: 16px;
-            font-weight: 600;
-            transition: all 0.3s ease;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background 0.3s ease;
         }
 
         button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            background: #5a3de6;
         }
 
         .google-btn {
             background: #fff;
             color: #4285F4;
-            border: 2px solid #4285F4;
-            margin-top: 1rem;
+            border: 1px solid #ddd;
+            margin-top: 0.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+
+        .google-btn i {
+            font-size: 1rem;
         }
 
         .google-btn:hover {
-            background: #4285F4;
-            color: #fff;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(66, 133, 244, 0.4);
+            background: #f0f0f0;
         }
 
         .divider {
             position: relative;
             text-align: center;
-            margin: 1.5rem 0;
-            color: #4a5568;
-            font-weight: 600;
+            margin: 0.8rem 0;
+            color: #666;
+            font-size: 0.9rem;
         }
 
         .divider span {
-            background: white;
+            background: #fff;
             padding: 0 10px;
             position: relative;
             z-index: 1;
@@ -133,106 +187,135 @@
             top: 50%;
             width: 40%;
             height: 1px;
-            background: #e2e8f0;
+            background: #ddd;
         }
 
-        .divider::before {
-            left: 0;
-        }
-
-        .divider::after {
-            right: 0;
-        }
+        .divider::before { left: 0; }
+        .divider::after { right: 0; }
 
         .links {
             text-align: center;
-            margin-top: 1.5rem;
-            color: #4a5568;
+            margin-top: 0.8rem;
+            color: #666;
+            font-size: 0.9rem;
         }
 
         a {
-            color: #667eea;
+            color: #6b48ff;
             text-decoration: none;
-            font-weight: 600;
-            cursor: pointer;
+            font-weight: 500;
+            margin: 0 0.5rem;
         }
 
-        a:hover {
-            text-decoration: underline;
-        }
+        a:hover { text-decoration: underline; }
 
         .error {
             color: #e53e3e;
             text-align: center;
-            margin: 1rem 0;
+            margin: 0.5rem 0;
             padding: 0.5rem;
             border-radius: 6px;
             background: #fed7d7;
             display: none;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 576px) {
+            .auth-wrapper { max-width: 100%; padding: 0 10px; }
+            .logo-container img { width: 50px; height: 50px; }
+            .logo-container h1 { font-size: 1.5rem; }
+            .auth-options { padding: 0.2rem; margin-bottom: 0.3rem; }
+            .auth-option { font-size: 0.9rem; padding: 0.4rem 0.8rem; }
+            .auth-container { padding: 0.8rem; }
+            input { font-size: 0.9rem; padding: 0.7rem 2.2rem 0.7rem 2.2rem; }
+            button { font-size: 0.9rem; padding: 0.7rem; }
+            .form-group i, .password-toggle { font-size: 0.9rem; }
+            .form-group { margin-bottom: 0.6rem; }
+            .google-btn { margin-top: 0.6rem; }
+            .divider { margin: 0.6rem 0; }
+            .links { margin-top: 0.6rem; }
         }
     </style>
 </head>
 <body>
     <div class="auth-wrapper">
+        <div class="logo-container">
+            <img src="logo.png" alt="Dopamine Logo">
+            <h1>Dopamine</h1>
+        </div>
+
+        <div class="auth-options">
+            <div class="auth-option active" onclick="showLogin()">Login</div>
+            <div class="auth-option" onclick="showSignup()">Registration</div>
+        </div>
+
         <!-- Login Form -->
-        <div class="auth-container" id="login-container">
-            <h2>Welcome Back!</h2>
+        <div class="auth-container" id="login-container" style="display: block;">
             <div class="error" id="login-error"></div>
             <form id="login-form">
                 <div class="form-group">
-                    <input type="email" id="login-email" placeholder="Email Address" required>
+                    <i class="fas fa-envelope icon-left"></i>
+                    <input type="email" id="login-email" placeholder="Email" required>
                 </div>
                 <div class="form-group">
+                    <i class="fas fa-lock icon-left"></i>
+                    <i class="fas fa-eye password-toggle" onclick="togglePassword('login-password')"></i>
                     <input type="password" id="login-password" placeholder="Password" required>
                 </div>
-                <button type="submit">Sign In</button>
+                <button type="submit">Login</button>
             </form>
             <div class="divider"><span>or</span></div>
-            <button type="button" class="google-btn" onclick="signInWithGoogle()">Sign in with Google</button>
+            <button type="button" class="google-btn" onclick="signInWithGoogle()">
+                <i class="fab fa-google"></i> Sign in with Google
+            </button>
             <div class="links">
-                <a onclick="showForgotPassword()">Forgot Password?</a><br>
-                <a onclick="showSignup()">Create New Account →</a>
-                <a id="resend-verification" style="display: none;" onclick="resendVerification()">Resend Verification Email</a>
+                <a onclick="showForgotPassword()">Forgot Password?</a>
+                <a id="resend-verification" style="display: none;" onclick="resendVerification()">Resend Verification</a>
             </div>
         </div>
 
         <!-- Signup Form -->
-        <div class="auth-container" id="signup-container" style="display: none;">
-            <h2>Create Account</h2>
+        <div class="auth-container" id="signup-container">
             <div class="error" id="signup-error"></div>
             <form id="signup-form">
                 <div class="form-group">
-                    <input type="email" id="signup-email" placeholder="Email Address" required>
+                    <i class="fas fa-envelope icon-left"></i>
+                    <input type="email" id="signup-email" placeholder="Email" required>
                 </div>
                 <div class="form-group">
-                    <input type="password" id="signup-password" placeholder="Create Password" required>
+                    <i class="fas fa-lock icon-left"></i>
+                    <i class="fas fa-eye password-toggle" onclick="togglePassword('signup-password')"></i>
+                    <input type="password" id="signup-password" placeholder="Password" required>
                 </div>
                 <div class="form-group">
+                    <i class="fas fa-lock icon-left"></i>
+                    <i class="fas fa-eye password-toggle" onclick="togglePassword('confirm-password')"></i>
                     <input type="password" id="confirm-password" placeholder="Confirm Password" required>
                 </div>
-                <button type="submit">Sign Up</button>
+                <button type="submit">Register</button>
             </form>
             <div class="divider"><span>or</span></div>
-            <button type="button" class="google-btn" onclick="signInWithGoogle()">Sign up with Google</button>
-            <div class="links">
-                <a onclick="showLogin()">← Back to Login</a>
-            </div>
+            <button type="button" class="google-btn" onclick="signInWithGoogle()">
+                <i class="fab fa-google"></i> Sign up with Google
+            </button>
         </div>
 
         <!-- Profile Completion Form -->
-        <div class="auth-container" id="profile-container" style="display: none;">
-            <h2>Complete Your Profile</h2>
-            <p style="text-align: center; color: #4a5568; margin-bottom: 1.5rem;">Please provide your details to access the dashboard.</p>
+        <div class="auth-container" id="profile-container">
+            <p style="text-align: center; color: #666; margin-bottom: 0.8rem;">Please provide your details.</p>
             <div class="error" id="profile-error"></div>
             <form id="profile-form">
                 <div class="form-group">
+                    <i class="fas fa-user icon-left"></i>
                     <input type="text" id="full-name" placeholder="Full Name" required>
                 </div>
                 <div class="form-group">
+                    <i class="fas fa-university icon-left"></i>
                     <input type="text" id="college-name" placeholder="College Name" required>
                 </div>
                 <div class="form-group">
-                    <select id="hsc-year" required>
+                    <i class="fas fa-calendar-alt icon-left"></i>
+                    <select id="hsc-year" required style="padding-left: 2.5rem;">
                         <option value="">HSC Year</option>
                         <option value="2024">2024</option>
                         <option value="2025">2025</option>
@@ -240,6 +323,7 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <i class="fas fa-phone icon-left"></i>
                     <input type="tel" id="phone" placeholder="Phone Number" required>
                 </div>
                 <button type="submit">Submit</button>
@@ -252,41 +336,56 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
 
     <script>
-        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
             authDomain: "dopamine-quiz.firebaseapp.com",
             projectId: "dopamine-quiz",
-            storageBucket: "dopamine-quiz.firebasestorage.app",
+            storageBucket: "dopamine-quiz.appspot.com",
             messagingSenderId: "822531459966",
-            appId: "1:822531459966:web:8e7d2385090e997eb1c12f",
-            measurementId: "G-6TWRMVGB18"
+            appId: "1:822531459966:web:8e7d2385090e997eb1c12f"
         };
 
         const app = firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // Form Visibility Functions
         function showLogin() {
             document.getElementById('login-container').style.display = 'block';
             document.getElementById('signup-container').style.display = 'none';
             document.getElementById('profile-container').style.display = 'none';
+            document.querySelector('.auth-option.active').classList.remove('active');
+            document.querySelector('.auth-option:first-child').classList.add('active');
         }
 
         function showSignup() {
             document.getElementById('login-container').style.display = 'none';
             document.getElementById('signup-container').style.display = 'block';
             document.getElementById('profile-container').style.display = 'none';
+            document.querySelector('.auth-option.active').classList.remove('active');
+            document.querySelector('.auth-option:last-child').classList.add('active');
         }
 
         function showProfile() {
             document.getElementById('login-container').style.display = 'none';
             document.getElementById('signup-container').style.display = 'none';
             document.getElementById('profile-container').style.display = 'block';
+            document.querySelector('.auth-option.active')?.classList.remove('active');
         }
 
-        // Signup Form Submission
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const icon = input.parentElement.querySelector('.password-toggle');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
         document.getElementById('signup-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const email = document.getElementById('signup-email').value;
@@ -321,7 +420,6 @@
                 });
         });
 
-        // Login Form Submission
         document.getElementById('login-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const email = document.getElementById('login-email').value;
@@ -353,7 +451,6 @@
                 });
         });
 
-        // Google Sign-In/Sign-Up Handler
         function signInWithGoogle() {
             const provider = new firebase.auth.GoogleAuthProvider();
             auth.signInWithPopup(provider)
@@ -362,7 +459,6 @@
                     db.collection('users').doc(user.uid).get()
                         .then((doc) => {
                             if (!doc.exists) {
-                                // New Google user
                                 return db.collection('users').doc(user.uid).set({
                                     fullName: user.displayName || '',
                                     email: user.email,
@@ -391,7 +487,6 @@
                 });
         }
 
-        // Profile Form Submission
         document.getElementById('profile-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const fullName = document.getElementById('full-name').value;
@@ -419,7 +514,6 @@
             }
         });
 
-        // Resend Verification Email
         function resendVerification() {
             const email = document.getElementById('login-email').value;
             const password = prompt('Please enter your password to resend verification email:');
@@ -439,7 +533,6 @@
                 });
         }
 
-        // Forgot Password
         function showForgotPassword() {
             const email = prompt('Please enter your email address:');
             if (email) {
@@ -449,7 +542,6 @@
             }
         }
 
-        // Error Display Function
         function showError(elementId, message) {
             const errorElement = document.getElementById(elementId);
             errorElement.textContent = message;
