@@ -17,25 +17,29 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #8e9aef 0%, #a78bfa 100%);
             background-attachment: fixed;
+        }
+
+        .auth-wrapper {
+            width: 100%;
+            max-width: 500px;
         }
 
         .auth-container {
             background: rgba(255, 255, 255, 0.95);
-            padding: 2.5rem;
+            padding: 3rem;
             border-radius: 20px;
             box-shadow: 0 8px 32px rgba(0,0,0,0.1);
             width: 100%;
-            max-width: 500px;
-            position: relative;
+            border: 1px solid #e2e8f0;
         }
 
         h2 {
             text-align: center;
             margin-bottom: 2rem;
             color: #2d3748;
-            font-size: 2rem;
+            font-size: 2.5rem;
             position: relative;
         }
 
@@ -60,7 +64,7 @@
             padding: 1rem;
             border: 2px solid #e2e8f0;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 17px;
             transition: all 0.3s ease;
         }
 
@@ -93,6 +97,53 @@
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
 
+        .google-btn {
+            background: #fff;
+            color: #4285F4;
+            border: 2px solid #4285F4;
+            margin-top: 1rem;
+        }
+
+        .google-btn:hover {
+            background: #4285F4;
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(66, 133, 244, 0.4);
+        }
+
+        .divider {
+            position: relative;
+            text-align: center;
+            margin: 1.5rem 0;
+            color: #4a5568;
+            font-weight: 600;
+        }
+
+        .divider span {
+            background: white;
+            padding: 0 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 40%;
+            height: 1px;
+            background: #e2e8f0;
+        }
+
+        .divider::before {
+            left: 0;
+        }
+
+        .divider::after {
+            right: 0;
+        }
+
         .links {
             text-align: center;
             margin-top: 1.5rem;
@@ -119,41 +170,12 @@
             background: #fed7d7;
             display: none;
         }
-
-        .flip-container {
-            perspective: 1000px;
-            position: relative;
-            width: 100%;
-            max-width: 500px;
-        }
-
-        .front, .back {
-            backface-visibility: hidden;
-            transition: 0.6s;
-            transform-style: preserve-3d;
-        }
-
-        .back {
-            transform: rotateY(180deg);
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-        }
-
-        .flipped .front {
-            transform: rotateY(180deg);
-        }
-
-        .flipped .back {
-            transform: rotateY(0deg);
-        }
     </style>
 </head>
 <body>
-    <div class="flip-container">
+    <div class="auth-wrapper">
         <!-- Login Form -->
-        <div class="auth-container front" id="login-container">
+        <div class="auth-container" id="login-container">
             <h2>Welcome Back!</h2>
             <div class="error" id="login-error"></div>
             <form id="login-form">
@@ -165,18 +187,44 @@
                 </div>
                 <button type="submit">Sign In</button>
             </form>
+            <div class="divider"><span>or</span></div>
+            <button type="button" class="google-btn" onclick="signInWithGoogle()">Sign in with Google</button>
             <div class="links">
                 <a onclick="showForgotPassword()">Forgot Password?</a><br>
-                <a onclick="flipForm()">Create New Account →</a>
+                <a onclick="showSignup()">Create New Account →</a>
                 <a id="resend-verification" style="display: none;" onclick="resendVerification()">Resend Verification Email</a>
             </div>
         </div>
 
         <!-- Signup Form -->
-        <div class="auth-container back" id="signup-container">
+        <div class="auth-container" id="signup-container" style="display: none;">
             <h2>Create Account</h2>
             <div class="error" id="signup-error"></div>
             <form id="signup-form">
+                <div class="form-group">
+                    <input type="email" id="signup-email" placeholder="Email Address" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="signup-password" placeholder="Create Password" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" id="confirm-password" placeholder="Confirm Password" required>
+                </div>
+                <button type="submit">Sign Up</button>
+            </form>
+            <div class="divider"><span>or</span></div>
+            <button type="button" class="google-btn" onclick="signInWithGoogle()">Sign up with Google</button>
+            <div class="links">
+                <a onclick="showLogin()">← Back to Login</a>
+            </div>
+        </div>
+
+        <!-- Profile Completion Form -->
+        <div class="auth-container" id="profile-container" style="display: none;">
+            <h2>Complete Your Profile</h2>
+            <p style="text-align: center; color: #4a5568; margin-bottom: 1.5rem;">Please provide your details to access the dashboard.</p>
+            <div class="error" id="profile-error"></div>
+            <form id="profile-form">
                 <div class="form-group">
                     <input type="text" id="full-name" placeholder="Full Name" required>
                 </div>
@@ -189,87 +237,91 @@
                         <option value="2024">2024</option>
                         <option value="2025">2025</option>
                         <option value="2026">2026</option>
-                        <option value="2027">2027</option>
                     </select>
                 </div>
                 <div class="form-group">
                     <input type="tel" id="phone" placeholder="Phone Number" required>
                 </div>
-                <div class="form-group">
-                    <input type="email" id="signup-email" placeholder="Email Address" required>
-                </div>
-                <div class="form-group">
-                    <input type="password" id="signup-password" placeholder="Create Password" required>
-                </div>
-                <button type="submit">Sign Up</button>
+                <button type="submit">Submit</button>
             </form>
-            <div class="links">
-                <a onclick="flipForm()">← Back to Login</a>
-            </div>
         </div>
     </div>
 
-    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
 
     <script>
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
             authDomain: "dopamine-quiz.firebaseapp.com",
             projectId: "dopamine-quiz",
             storageBucket: "dopamine-quiz.firebasestorage.app",
             messagingSenderId: "822531459966",
-            appId: "1:822531459966:web:8e7d2385090e997eb1c12f"
+            appId: "1:822531459966:web:8e7d2385090e997eb1c12f",
+            measurementId: "G-6TWRMVGB18"
         };
 
         const app = firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        // Form Flip Animation
-        function flipForm() {
-            document.querySelector('.flip-container').classList.toggle('flipped');
+        // Form Visibility Functions
+        function showLogin() {
+            document.getElementById('login-container').style.display = 'block';
+            document.getElementById('signup-container').style.display = 'none';
+            document.getElementById('profile-container').style.display = 'none';
         }
 
-        // Signup Handler
+        function showSignup() {
+            document.getElementById('login-container').style.display = 'none';
+            document.getElementById('signup-container').style.display = 'block';
+            document.getElementById('profile-container').style.display = 'none';
+        }
+
+        function showProfile() {
+            document.getElementById('login-container').style.display = 'none';
+            document.getElementById('signup-container').style.display = 'none';
+            document.getElementById('profile-container').style.display = 'block';
+        }
+
+        // Signup Form Submission
         document.getElementById('signup-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const email = document.getElementById('signup-email').value;
             const password = document.getElementById('signup-password').value;
-            const fullName = document.getElementById('full-name').value;
-            const collegeName = document.getElementById('college-name').value;
-            const hscYear = document.getElementById('hsc-year').value;
-            const phone = document.getElementById('phone').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
 
+            if (password !== confirmPassword) {
+                showError('signup-error', 'Passwords do not match');
+                return;
+            }
+
+            let createdUser;
             auth.createUserWithEmailAndPassword(email, password)
                 .then((userCredential) => {
-                    // Send verification email
-                    return userCredential.user.sendEmailVerification()
-                        .then(() => {
-                            // Store user data in Firestore
-                            return db.collection('users').doc(userCredential.user.uid).set({
-                                fullName: fullName,
-                                collegeName: collegeName,
-                                hscYear: hscYear,
-                                phone: phone,
-                                email: email,
-                                status: 'unverified',
-                                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                            });
-                        });
+                    createdUser = userCredential.user;
+                    return db.collection('users').doc(createdUser.uid).set({
+                        email: email,
+                        status: 'unverified',
+                        profileComplete: false,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                })
+                .then(() => {
+                    return createdUser.sendEmailVerification();
                 })
                 .then(() => {
                     alert('Verification email sent. Please check your inbox.');
-                    flipForm();
+                    showLogin();
                 })
                 .catch(error => {
                     showError('signup-error', error.message);
                 });
         });
 
-        // Login Handler
+        // Login Form Submission
         document.getElementById('login-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const email = document.getElementById('login-email').value;
@@ -279,12 +331,17 @@
                 .then((userCredential) => {
                     const user = userCredential.user;
                     if (user.emailVerified) {
-                        // Update user status to active
-                        return db.collection('users').doc(user.uid).update({
-                            status: 'active'
-                        }).then(() => {
-                            window.location.href = '/dashboard.html';
-                        });
+                        db.collection('users').doc(user.uid).get()
+                            .then((doc) => {
+                                if (doc.exists && doc.data().profileComplete) {
+                                    window.location.href = '/dashboard.html';
+                                } else {
+                                    showProfile();
+                                }
+                            })
+                            .catch(error => {
+                                showError('login-error', 'Error checking profile: ' + error.message);
+                            });
                     } else {
                         auth.signOut();
                         showError('login-error', 'Please verify your email first');
@@ -294,6 +351,72 @@
                 .catch(error => {
                     showError('login-error', error.message);
                 });
+        });
+
+        // Google Sign-In/Sign-Up Handler
+        function signInWithGoogle() {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    const user = result.user;
+                    db.collection('users').doc(user.uid).get()
+                        .then((doc) => {
+                            if (!doc.exists) {
+                                // New Google user
+                                return db.collection('users').doc(user.uid).set({
+                                    fullName: user.displayName || '',
+                                    email: user.email,
+                                    status: 'active',
+                                    profileComplete: false,
+                                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                                });
+                            }
+                        })
+                        .then(() => {
+                            return db.collection('users').doc(user.uid).get();
+                        })
+                        .then((doc) => {
+                            if (doc.data().profileComplete) {
+                                window.location.href = '/dashboard.html';
+                            } else {
+                                showProfile();
+                            }
+                        })
+                        .catch(error => {
+                            showError('login-error', error.message);
+                        });
+                })
+                .catch(error => {
+                    showError('login-error', error.message);
+                });
+        }
+
+        // Profile Form Submission
+        document.getElementById('profile-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const fullName = document.getElementById('full-name').value;
+            const collegeName = document.getElementById('college-name').value;
+            const hscYear = document.getElementById('hsc-year').value;
+            const phone = document.getElementById('phone').value;
+
+            const user = auth.currentUser;
+            if (user) {
+                db.collection('users').doc(user.uid).update({
+                    fullName: fullName,
+                    collegeName: collegeName,
+                    hscYear: hscYear,
+                    phone: phone,
+                    profileComplete: true
+                })
+                .then(() => {
+                    window.location.href = '/dashboard.html';
+                })
+                .catch(error => {
+                    showError('profile-error', error.message);
+                });
+            } else {
+                showError('profile-error', 'User not authenticated');
+            }
         });
 
         // Resend Verification Email
@@ -316,14 +439,6 @@
                 });
         }
 
-        // Error Handling
-        function showError(elementId, message) {
-            const errorElement = document.getElementById(elementId);
-            errorElement.textContent = message;
-            errorElement.style.display = 'block';
-            setTimeout(() => errorElement.style.display = 'none', 5000);
-        }
-
         // Forgot Password
         function showForgotPassword() {
             const email = prompt('Please enter your email address:');
@@ -334,31 +449,13 @@
             }
         }
 
-        // Automatically log in user after email verification
-        function handleEmailVerification() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const email = urlParams.get('email');
-            const verificationLink = window.location.href;
-
-            if (email && verificationLink.includes('mode=verifyEmail')) {
-                auth.signInWithEmailLink(email, verificationLink)
-                    .then((userCredential) => {
-                        // Update user status to active
-                        return db.collection('users').doc(userCredential.user.uid).update({
-                            status: 'active'
-                        }).then(() => {
-                            window.location.href = '/dashboard.html';
-                        });
-                    })
-                    .catch(error => {
-                        console.error('Error signing in with email link:', error);
-                        alert('Failed to log in automatically. Please log in manually.');
-                    });
-            }
+        // Error Display Function
+        function showError(elementId, message) {
+            const errorElement = document.getElementById(elementId);
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+            setTimeout(() => errorElement.style.display = 'none', 5000);
         }
-
-        // Call the email verification handler on page load
-        handleEmailVerification();
     </script>
 </body>
 </html>
