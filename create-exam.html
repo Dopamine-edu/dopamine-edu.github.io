@@ -1,0 +1,341 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Exam - Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --bg-color: #f5f7fb;
+            --text-color: #2d3748;
+            --card-bg: #ffffff;
+        }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Poppins', sans-serif;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        select, input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        .questions-container {
+            max-height: 400px;
+            overflow-y: auto;
+            margin: 2rem 0;
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .question-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            background: var(--bg-color);
+        }
+        .question-checkbox {
+            margin: 3px 1rem 0 0;
+            flex-shrink: 0;
+        }
+        .question-text {
+            flex: 1;
+            padding-top: 2px;
+        }
+        .submit-btn {
+            background: var(--primary-color);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+        }
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 1rem;
+        }
+        .exam-link-container {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background: #f0f4ff;
+            border-radius: 8px;
+            display: none;
+        }
+        .exam-link {
+            color: var(--primary-color);
+            word-break: break-all;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .exam-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Create New Exam</h2>
+        
+        <div class="form-group">
+            <label>Exam Title</label>
+            <input type="text" id="examTitle" required>
+        </div>
+
+        <div class="form-group">
+            <label>Subject</label>
+            <select id="subjectSelect" required>
+                <option value="">Loading subjects...</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Chapter</label>
+            <select id="chapterSelect" required disabled>
+                <option value="">Select subject first</option>
+            </select>
+        </div>
+
+        <div class="loading" id="loadingQuestions">Loading questions...</div>
+        <div class="questions-container" id="questionsContainer"></div>
+
+        <div class="form-group">
+            <label>Exam Duration (minutes)</label>
+            <input type="number" id="examDuration" min="1" required>
+        </div>
+
+        <div class="form-group">
+            <label>Marks per Question</label>
+            <input type="number" id="marksPerQuestion" min="1" value="1" required>
+        </div>
+
+        <div class="form-group">
+            <label>Negative Marking</label>
+            <input type="number" id="negativeMarking" min="0" step="0.25" value="0" required>
+        </div>
+
+        <div class="form-group">
+            <label>Last Date (optional)</label>
+            <input type="date" id="lastDate">
+        </div>
+
+        <button class="submit-btn" onclick="createExam()">Create Exam</button>
+
+        <div class="exam-link-container" id="examLinkContainer">
+            <p>Exam created successfully! Share this link:</p>
+            <a id="examLink" class="exam-link" target="_blank"></a>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
+            authDomain: "dopamine-quiz.firebaseapp.com",
+            projectId: "dopamine-quiz",
+            storageBucket: "dopamine-quiz.appspot.com",
+            messagingSenderId: "822531459966",
+            appId: "1:822531459966:web:8e7d2385090e997eb1c12f"
+        };
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        let questionsData = {};
+        let selectedQuestions = new Set();
+        let currentSubject = '';
+        let currentChapter = '';
+
+        /** Load questions from JSON file */
+        async function loadQuestionsData() {
+            try {
+                // Fetch questions.json from the same directory
+                const response = await fetch('./questions.json'); // Relative path to same directory
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                questionsData = await response.json();
+                console.log('Loaded questions data:', questionsData); // Debug: Check the data
+                loadSubjects();
+            } catch (error) {
+                console.error('Error loading questions:', error);
+                showError(`Failed to load questions.json: ${error.message}. Please ensure the file exists and is valid JSON.`);
+            }
+        }
+
+        /** Populate the subject dropdown */
+        function loadSubjects() {
+            const subjectSelect = document.getElementById('subjectSelect');
+            subjectSelect.innerHTML = '<option value="">Select Subject</option>';
+            if (Object.keys(questionsData).length === 0) {
+                console.warn('No subjects found in questionsData'); // Debug: Check if data is empty
+                showError('No subjects available. Check questions.json.');
+                return;
+            }
+            Object.keys(questionsData).forEach(subject => {
+                const option = document.createElement('option');
+                option.value = subject;
+                option.textContent = subject;
+                subjectSelect.appendChild(option);
+            });
+            console.log('Subjects loaded into dropdown'); // Debug: Confirm subjects are added
+        }
+
+        /** Handle subject selection to populate chapters */
+        document.getElementById('subjectSelect').addEventListener('change', (e) => {
+            currentSubject = e.target.value;
+            const chapterSelect = document.getElementById('chapterSelect');
+            chapterSelect.innerHTML = '<option value="">Select Chapter</option>';
+
+            if (currentSubject && questionsData[currentSubject]) {
+                Object.keys(questionsData[currentSubject]).forEach(chapter => {
+                    const option = document.createElement('option');
+                    option.value = chapter;
+                    option.textContent = chapter;
+                    chapterSelect.appendChild(option);
+                });
+                chapterSelect.disabled = false;
+            } else {
+                chapterSelect.disabled = true;
+            }
+        });
+
+        /** Handle chapter selection to display questions */
+        document.getElementById('chapterSelect').addEventListener('change', (e) => {
+            currentChapter = e.target.value;
+            const questionsContainer = document.getElementById('questionsContainer');
+            questionsContainer.innerHTML = '';
+            document.getElementById('loadingQuestions').style.display = 'block';
+
+            if (currentSubject && currentChapter && questionsData[currentSubject][currentChapter]) {
+                const questions = questionsData[currentSubject][currentChapter];
+                questions.forEach((question, index) => {
+                    const questionDiv = document.createElement('div');
+                    questionDiv.className = 'question-item';
+                    questionDiv.innerHTML = `
+                        <input type="checkbox" class="question-checkbox" data-index="${index}">
+                        <div class="question-text">${question.question}</div>
+                    `;
+                    questionsContainer.appendChild(questionDiv);
+                });
+
+                document.querySelectorAll('.question-checkbox').forEach(checkbox => {
+                    checkbox.addEventListener('change', (e) => {
+                        const index = parseInt(e.target.dataset.index);
+                        if (e.target.checked) {
+                            selectedQuestions.add(index);
+                        } else {
+                            selectedQuestions.delete(index);
+                        }
+                    });
+                });
+            }
+            document.getElementById('loadingQuestions').style.display = 'none';
+        });
+
+        /** Create the exam and save to Firestore */
+        async function createExam() {
+            const title = document.getElementById('examTitle').value;
+            const duration = document.getElementById('examDuration').value;
+            const marks = document.getElementById('marksPerQuestion').value;
+            const negative = document.getElementById('negativeMarking').value;
+            const lastDate = document.getElementById('lastDate').value;
+
+            if (!title || !currentSubject || !currentChapter || selectedQuestions.size === 0 || !duration || !marks) {
+                showError('Please fill all required fields and select at least one question');
+                return;
+            }
+
+            try {
+                const examData = {
+                    title,
+                    subject: currentSubject,
+                    chapter: currentChapter,
+                    questions: Array.from(selectedQuestions).sort((a, b) => a - b),
+                    duration: parseInt(duration),
+                    marksPerQuestion: parseFloat(marks),
+                    negativeMark: parseFloat(negative),
+                    lastDate: lastDate ? new Date(lastDate) : null,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                };
+
+                const examRef = await db.collection('exams').add(examData);
+                const examId = examRef.id;
+
+                const examLink = `${window.location.origin}/quiz.html?examId=${examId}`;
+                document.getElementById('examLink').textContent = examLink;
+                document.getElementById('examLink').href = examLink;
+                document.getElementById('examLinkContainer').style.display = 'block';
+
+                document.getElementById('examLinkContainer').scrollIntoView({
+                    behavior: 'smooth'
+                });
+
+                Toastify({
+                    text: "Exam created successfully!",
+                    duration: 3000,
+                    style: { background: "#667eea" }
+                }).showToast();
+
+            } catch (error) {
+                console.error('Error creating exam:', error);
+                showError('Error creating exam: ' + error.message);
+            }
+        }
+
+        /** Display error messages */
+        function showError(message) {
+            Toastify({
+                text: message,
+                duration: 3000,
+                style: { background: "#dc3545" }
+            }).showToast();
+        }
+
+        /** Handle authentication and load data */
+        auth.onAuthStateChanged(async (user) => {
+            if (!user) {
+                window.location.href = 'auth.html';
+            } else {
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                if (!userDoc.exists || !userDoc.data().isAdmin) {
+                    window.location.href = 'dashboard.html';
+                } else {
+                    loadQuestionsData();
+                }
+            }
+        });
+    </script>
+</body>
+</html>
