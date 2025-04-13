@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>ডোপামিন - কাস্টম পরীক্ষা</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Hind+Siliguri');
+        :root {
+            --bg-color: #f5f5f5; --text-color: #333; --card-bg: #fff; --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --border-color: #ddd; --primary-color: #6b48ff; --hover-color: #5a3de6; --secondary-text-color: #666;
+        }
+        [data-theme="dark"] {
+            --bg-color: #1a1a1a; --text-color: #e0e0e0; --card-bg: #2d2d2d; --shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
+            --border-color: #444; --secondary-text-color: #b0b0b0;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Hind Siliguri', sans-serif; transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
+        body { background: var(--bg-color); color: var(--text-color); min-height: 100vh; display: flex; flex-direction: column; }
+        .navbar { background: var(--card-bg); padding: 1rem; border-radius: 15px; box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; position: sticky; top: 0; z-index: 100; }
+        .nav-left { display: flex; align-items: center; gap: 1rem; }
+        .nav-left img { width: 40px; height: 40px; border-radius: 50%; }
+        .website-name { font-size: 1.5rem; color: var(--text-color); font-weight: 700; }
+        .nav-right { display: flex; align-items: center; gap: 1rem; }
+        .back-to-dashboard, .theme-toggle, .menu-btn { background: none; border: none; color: var(--primary-color); cursor: pointer; font-size: 1.5rem; padding: 0.5rem; transition: transform 0.3s; }
+        .back-to-dashboard:hover { transform: scale(1.1); }
+        .theme-toggle:hover { transform: scale(1.1); }
+        .menu-btn:hover { transform: rotate(90deg); }
+        .menu-container { position: relative; }
+        .menu-dropdown { position: absolute; right: 0; top: 3rem; background: var(--card-bg); border-radius: 10px; box-shadow: var(--shadow); display: none; min-width: 200px; z-index: 1000; }
+        .menu-dropdown.show { display: block; animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .menu-item { padding: 1rem 1.5rem; color: var(--text-color); text-decoration: none; display: flex; align-items: center; gap: 1rem; transition: all 0.3s; }
+        .menu-item:hover { background: var(--border-color); padding-left: 2rem; }
+        .container { flex: 1; padding: 1rem; max-width: 1200px; margin: 0 auto; }
+        .form-group { margin-bottom: 1rem; }
+        h2 { font-size: 1.5rem; color: var(--primary-color); margin-bottom: 0.5rem; }
+        .subject-box { border: 1px solid var(--border-color); border-radius: 10px; margin-bottom: 0.5rem; background: var(--card-bg); box-shadow: var(--shadow); }
+        .subject-header { display: flex; align-items: center; justify-content: space-between; padding: 0.8rem; cursor: pointer; }
+        .subject-header:hover { background: var(--border-color); }
+        .subject-header .form-check-input { margin-right: 0.5rem; width: 20px; height: 20px; border: 2px solid var(--border-color); cursor: pointer; }
+        .subject-header .form-check-input:checked { background-color: var(--primary-color); border-color: var(--primary-color); }
+        .subject-name { flex-grow: 1; font-size: 1rem; }
+        .question-count { color: #fff; background: var(--primary-color); padding: 0.2rem 0.5rem; border-radius: 12px; font-size: 0.9rem; }
+        .arrow { display: none; cursor: pointer; color: var(--primary-color); font-size: 1.2rem; transition: transform 0.3s; }
+        .arrow.active { transform: rotate(180deg); }
+        .chapter-list { max-height: 0; overflow: hidden; padding: 0 0 0 2rem; transition: max-height 0.5s ease-in-out; }
+        .chapter-list.show { max-height: 500px; padding: 0.5rem 0 0.5rem 2rem; }
+        .chapter-box { display: flex; align-items: center; padding: 0.5rem 0; justify-content: space-between; }
+        .chapter-box .form-check-input { margin-right: 0.5rem; width: 18px; height: 18px; border: 2px solid var(--border-color); cursor: pointer; }
+        .chapter-box .form-check-input:checked { background-color: var(--primary-color); border-color: var(--primary-color); }
+        .chapter-name { flex-grow: 1; font-size: 0.9rem; }
+        .chapter-question-count { color: #fff; background: #ff9800; padding: 0.2rem 0.5rem; border-radius: 12px; font-size: 0.9rem; }
+        .settings-box { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem; box-shadow: var(--shadow); }
+        .settings-box .form-control { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 5px; padding: 0.5rem; color: var(--text-color); }
+        .settings-box .form-control:focus { border-color: var(--primary-color); box-shadow: 0 0 5px rgba(107, 72, 255, 0.3); outline: none; }
+        .btn-primary { background-color: var(--primary-color); border: none; color: #fff; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; width: 100%; }
+        .btn-primary:hover { background-color: var(--hover-color); }
+        .loading-spinner { display: none; text-align: center; padding: 1rem; color: var(--primary-color); }
+        @media (max-width: 768px) {
+            .navbar { padding: 0.8rem; }
+            .nav-left img { width: 30px; height: 30px; }
+            .website-name { font-size: 1.2rem; }
+            .back-to-dashboard, .theme-toggle, .menu-btn { font-size: 1.2rem; padding: 0.3rem; }
+            .row { flex-direction: column; }
+            .col-md-6 { width: 100%; }
+            .subject-box, .chapter-box { font-size: 0.9rem; }
+            .question-count, .chapter-question-count { font-size: 0.8rem; }
+        }
+    </style>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-left">
+            <img src="logo.png" alt="ডোপামিন Logo">
+            <h1 class="website-name">ডোপামিন</h1>
+        </div>
+        <div class="nav-right">
+            <button class="back-to-dashboard" onclick="window.location.href='https://dopamine-edu.github.io/dashboard.html'">
+                <i class="fas fa-arrow-left"></i>
+            </button>
+            <button class="theme-toggle" onclick="toggleTheme()">
+                <i class="fas fa-moon" id="themeIcon"></i>
+            </button>
+            <div class="menu-container">
+                <button class="menu-btn" onclick="toggleMenu(event)">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="menu-dropdown" id="menuDropdown">
+                    <a href="https://dopamine-edu.github.io/courses.html" class="menu-item">
+                        <i class="fas fa-book"></i> কোর্স
+                    </a>
+                    <a href="#" class="menu-item" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> লগআউট
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div id="loading" class="loading-spinner">পরীক্ষা তৈরি হচ্ছে...</div>
+        <form id="customExamForm">
+            <div class="row">
+                <div class="col-md-6 form-group">
+                    <h2>বিষয় নির্বাচন</h2>
+                    <div id="subjectSelection"></div>
+                </div>
+                <div class="col-md-6 form-group">
+                    <h2>পরীক্ষা সেটিংস</h2>
+                    <div class="settings-box">
+                        <div class="form-group">
+                            <label for="numQuestions">প্রশ্নের সংখ্যা (সর্বোচ্চ ১০০):</label>
+                            <input type="number" id="numQuestions" class="form-control" min="1" max="100" required placeholder="০০ থেকে ১০০" />
+                        </div>
+                        <div class="form-group">
+                            <label for="timeInput">সময় (মিনিটে):</label>
+                            <input type="number" id="timeInput" class="form-control" min="1" required placeholder="১৫ মিনিট" />
+                        </div>
+                        <div class="form-group">
+                            <label for="marksPerQuestion">প্রতি প্রশ্নে নম্বর:</label>
+                            <input type="number" id="marksPerQuestion" class="form-control" min="1" required placeholder="১ নম্বর" value="1" />
+                        </div>
+                        <div class="form-group">
+                            <label for="negativeMarking">নেগেটিভ নম্বর:</label>
+                            <input type="number" id="negativeMarking" class="form-control" min="0" step="0.01" required placeholder="০ নম্বর" value="0" />
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary mt-3">পরীক্ষা শুরু</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
+            authDomain: "dopamine-quiz.firebaseapp.com",
+            projectId: "dopamine-quiz",
+            storageBucket: "dopamine-quiz.appspot.com",
+            messagingSenderId: "822531459966",
+            appId: "1:822531459966:web:8e7d2385090e997eb1c12f"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        auth.onAuthStateChanged((user) => {
+            if (!user) window.location.href = "auth.html";
+        });
+
+        const subjects = {
+            "Botany": [
+                "Chapter 01: কোষ ও এর গঠন",
+                "Chapter 02: কোষ বিভাজন",
+                "Chapter 03: কোষ রসায়ন",
+                "Chapter 04: অণুজীব",
+                "Chapter 05: শৈবাল ও ছত্রাক",
+                "Chapter 06: ব্রায়োফাইটা ও টেরেডোফাইটা",
+                "Chapter 07: নগ্নবীজী ও আবৃতবীজী উদ্ভিদ",
+                "Chapter 08: টিস্যু ও টিস্যুতন্ত্র",
+                "Chapter 09: উদ্ভিদ শারীরতত্ত্ব",
+                "Chapter 10: উদ্ভিদ প্রজনন",
+                "Chapter 11: জীবপ্রযুক্তি"
+            ],
+            "Zoology": [
+                "Chapter 01: প্রাণীর বিভিন্নতা ও শ্রেণিবিন্যাস",
+                "Chapter 02: প্রাণীর পরিচিতি",
+                "Chapter 03: পরিপাক ও শোষণ",
+                "Chapter 04: রক্ত সঞ্চালন",
+                "Chapter 05: শ্বাসক্রিয়া ও শ্বসন",
+                "Chapter 06: বর্জ্য ও নিষ্কাশন",
+                "Chapter 07: চলন ও অঙ্গচালনা",
+                "Chapter 08: সমন্বয় ও নিয়ন্ত্রণ",
+                "Chapter 09: মানব জীবনের ধারাবাহিকতা",
+                "Chapter 10: মানবদেহের প্রতিরক্ষা",
+                "Chapter 11: জীনতত্ত্ব ও বিবর্তন"
+            ],
+            "Physics 1st": [
+                "Chapter 01: ভৌত জগৎ ও পরিমাপ",
+                "Chapter 02: ভেক্টর",
+                "Chapter 04: নিউটোনিয়ান বলবিদ্যা",
+                "Chapter 05: কাজ, শক্তি ও ক্ষমতা",
+                "Chapter 06: মহাকর্ষ ও অভিকর্ষ",
+                "Chapter 07: পদার্থের গাঠনিক ধর্ম",
+                "Chapter 08: পর্যাবৃত্ত গতি",
+                "Chapter 10: আদর্শ গ্যাস ও গ্যাসের গতিতত্ত্ব"
+            ],
+            "Physics 2nd": [
+                "Chapter 01: তাপগতিবিদ্যা",
+                "Chapter 02: স্থির তড়িৎ",
+                "Chapter 03: চলতড়িৎ",
+                "Chapter 07: ভৌত আলোকবিজ্ঞান",
+                "Chapter 08: আধুনিক পদার্থবিজ্ঞানের সূচনা",
+                "Chapter 09: পরমাণুর মডেল এবং নিউক্লিয়ার পদার্থবিজ্ঞান",
+                "Chapter 10: সেমিকন্ডাক্টর ও ইলেকট্রনিক্স"
+            ],
+            "Chemistry 1st": [
+                "Chapter 02: গুণগত রসায়ন",
+                "Chapter 03: মৌলের পর্যায়বৃত্ত ধর্ম",
+                "Chapter 04: রাসায়নিক পরিবর্তন",
+                "Chapter 05: কর্মমুখী রসায়ন"
+            ],
+            "Chemistry 2nd": [
+                "Chapter 01: পরিবেশ রসায়ন",
+                "Chapter 02: জৈব রসায়ন",
+                "Chapter 03: পরিমাণগত রসায়ন",
+                "Chapter 04: তড়িৎ রসায়ন"
+            ],
+            "Higher Math 1st": [
+                "Chapter 01: ম্যাট্রিক্স ও নির্ণায়ক",
+                "Chapter 03: সরলরেখা",
+                "Chapter 04: বৃত্ত",
+                "Chapter 07: সংযুক্ত কোণের ত্রিকোণমিতিক অনুপাত",
+                "Chapter 09: অন্তরীকরণ",
+                "Chapter 10: যোগজীকরণ"
+            ],
+            "Higher Math 2nd": [
+                "Chapter 03: জটিল সংখ্যা",
+                "Chapter 04: বহুপদী ও বহুপদী সমীকরণ",
+                "Chapter 06: কণিক",
+                "Chapter 07: বিপরীত ত্রিকোণমিতিক ফাংশন ও ত্রিকোণমিতিক সমীকরণ",
+                "Chapter 08: স্থিতিবিদ্যা",
+                "Chapter 09: সমতলে বস্তুকণার গতি"
+            ],
+            "English": [],
+            "Bangla": []
+        };
+
+        function sanitizeFileName(name) {
+            return name.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9\u0980-\u09FF-]/g, '');
+        }
+
+        async function loadQuestionsFromJSON(subject, chapter) {
+            const sanitizedSubject = sanitizeFileName(subject);
+            const sanitizedChapter = sanitizeFileName(chapter.replace(/^Chapter \d+:\s*/, ''));
+            const filePath = `./questions/subjects/${sanitizedSubject}/${sanitizedChapter}.json`;
+            console.log(`Attempting to load: ${filePath}`);
+            try {
+                const response = await fetch(filePath);
+                if (!response.ok) {
+                    console.error(`Fetch failed for ${filePath}: ${response.status} - ${response.statusText}`);
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+                console.log(`Loaded ${data.length} questions from ${filePath}`);
+                return data;
+            } catch (error) {
+                console.error(`Error loading ${filePath}:`, error);
+                Toastify({ text: `${subject} - ${chapter} প্রশ্ন লোড করতে ব্যর্থ: ${error.message}`, duration: 3000, style: { background: "#dc3545" } }).showToast();
+                return [];
+            }
+        }
+
+        async function fetchQuestionCounts() {
+            const questionCounts = {};
+            const chapterQuestionCounts = {};
+            for (const subject in subjects) {
+                let subjectCount = 0;
+                const chapters = subjects[subject];
+                const chapterCounts = [];
+                for (const chapter of chapters) {
+                    const questions = await loadQuestionsFromJSON(subject, chapter);
+                    const count = questions.length;
+                    subjectCount += count;
+                    chapterCounts.push(count);
+                }
+                questionCounts[subject] = subjectCount;
+                chapterQuestionCounts[subject] = chapterCounts;
+            }
+            return { questionCounts, chapterQuestionCounts };
+        }
+
+        function createSubjectBox(subject, questionCount, chapterCounts) {
+            const subjectBox = document.createElement('div');
+            subjectBox.className = 'subject-box';
+            subjectBox.innerHTML = `
+                <div class="subject-header" onclick="toggleChapters(this)">
+                    <input type="checkbox" class="form-check-input" onchange="toggleSubject(this)">
+                    <span class="subject-name">${subject}</span>
+                    <span class="question-count">${questionCount} প্রশ্ন</span>
+                    <i class="fas fa-chevron-down arrow"></i>
+                </div>
+            `;
+            const chapterList = document.createElement('div');
+            chapterList.className = 'chapter-list';
+            subjects[subject].forEach((chapter, index) => {
+                const displayChapterName = chapter.replace(/^Chapter \d+:\s*/, '');
+                const chapterBox = document.createElement('div');
+                chapterBox.className = 'chapter-box';
+                chapterBox.dataset.originalChapter = chapter;
+                chapterBox.dataset.subject = subject;
+                chapterBox.innerHTML = `
+                    <input type="checkbox" class="form-check-input" onchange="toggleChapter(this)">
+                    <span class="chapter-name">${displayChapterName}</span>
+                    <span class="chapter-question-count">${chapterCounts[index]} প্রশ্ন</span>
+                `;
+                chapterList.appendChild(chapterBox);
+            });
+            subjectBox.appendChild(chapterList);
+            return subjectBox;
+        }
+
+        function toggleSubject(checkbox) {
+            const subjectBox = checkbox.parentElement.parentElement;
+            const arrow = subjectBox.querySelector('.arrow');
+            arrow.style.display = checkbox.checked ? 'block' : 'none';
+        }
+
+        function toggleChapters(header) {
+            const chapterList = header.parentElement.querySelector('.chapter-list');
+            const arrow = header.querySelector('.arrow');
+            chapterList.classList.toggle('show');
+            arrow.classList.toggle('active');
+        }
+
+        function toggleChapter(checkbox) {}
+
+        async function populateSubjects() {
+            try {
+                const { questionCounts, chapterQuestionCounts } = await fetchQuestionCounts();
+                const subjectSelection = document.getElementById('subjectSelection');
+                subjectSelection.innerHTML = '';
+                for (const subject in subjects) {
+                    if (subjects[subject].length > 0) {
+                        const subjectBox = createSubjectBox(subject, questionCounts[subject], chapterQuestionCounts[subject]);
+                        subjectSelection.appendChild(subjectBox);
+                    }
+                }
+            } catch (error) {
+                console.error("Error populating subjects:", error);
+                Toastify({ text: "বিষয়গুলো লোড করতে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
+            }
+        }
+
+        document.getElementById("customExamForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const selectedChapters = [];
+            document.querySelectorAll('.chapter-box .form-check-input:checked').forEach(checkbox => {
+                const chapterBox = checkbox.parentElement;
+                const originalChapter = chapterBox.dataset.originalChapter;
+                const subject = chapterBox.dataset.subject;
+                selectedChapters.push({ subject, chapter: originalChapter });
+            });
+            const numQuestions = parseInt(document.getElementById("numQuestions").value);
+            const time = parseInt(document.getElementById("timeInput").value);
+            const marksPerQuestion = parseFloat(document.getElementById("marksPerQuestion").value);
+            const negativeMarking = parseFloat(document.getElementById("negativeMarking").value);
+
+            if (selectedChapters.length === 0) {
+                Toastify({ text: "অন্তত একটি অধ্যায় নির্বাচন করুন!", duration: 3000, style: { background: "#dc3545" } }).showToast();
+                return;
+            }
+            if (!numQuestions || numQuestions > 100 || !time || !marksPerQuestion || marksPerQuestion <= 0 || negativeMarking < 0) {
+                Toastify({ text: "সব ক্ষেত্র সঠিকভাবে পূরণ করুন (প্রশ্ন ≤ ১০০, নম্বর > ০, নেগেটিভ নম্বর ≥ ০)।", duration: 3000, style: { background: "#dc3545" } }).showToast();
+                return;
+            }
+
+            const loadingDiv = document.getElementById("loading");
+            loadingDiv.style.display = "block";
+
+            try {
+                const allQuestions = [];
+                for (const { subject, chapter } of selectedChapters) {
+                    const chapterQuestions = await loadQuestionsFromJSON(subject, chapter);
+                    chapterQuestions.forEach((q, index) => {
+                        allQuestions.push({ id: index, subject, chapter });
+                    });
+                }
+                if (allQuestions.length === 0) throw new Error("নির্বাচিত অধ্যায়গুলোর জন্য কোনো প্রশ্ন পাওয়া যায়নি।");
+                if (allQuestions.length < numQuestions) {
+                    Toastify({ text: `মাত্র ${allQuestions.length}টি প্রশ্ন পাওয়া গেছে, সবগুলো ব্যবহার করা হচ্ছে।`, duration: 3000, style: { background: "#ff9800" } }).showToast();
+                }
+
+                const selectedQuestions = allQuestions.sort(() => 0.5 - Math.random()).slice(0, Math.min(numQuestions, allQuestions.length));
+                const subjectsList = [...new Set(selectedChapters.map(item => item.subject))];
+                const chaptersList = selectedChapters.map(item => item.chapter);
+
+                const examDocRef = await db.collection("exams").add({
+                    title: `কাস্টম পরীক্ষা - ${chaptersList.map(ch => ch.replace(/^Chapter \d+:\s*/, '')).join(", ")}`,
+                    duration: time,
+                    marksPerQuestion: marksPerQuestion,
+                    negativeMark: negativeMarking,
+                    lastDate: null,
+                    questions: selectedQuestions,
+                    subjects: subjectsList,
+                    chapters: chaptersList,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                loadingDiv.style.display = "none";
+                Toastify({ text: "কাস্টম পরীক্ষা সফলভাবে তৈরি হয়েছে!", duration: 3000, style: { background: "#6b48ff" } }).showToast();
+                window.location.href = `quiz.html?examId=${examDocRef.id}`;
+            } catch (error) {
+                loadingDiv.style.display = "none";
+                console.error("কাস্টম পরীক্ষা তৈরিতে ত্রুটি:", error);
+                Toastify({ text: "পরীক্ষা তৈরিতে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
+            }
+        });
+
+        let isDark = localStorage.getItem('theme') === 'dark';
+        if (isDark) {
+            document.body.setAttribute('data-theme', 'dark');
+            document.getElementById('themeIcon').classList.replace('fa-moon', 'fa-sun');
+        }
+        function toggleTheme() {
+            isDark = !isDark;
+            document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
+            document.getElementById('themeIcon').classList.toggle('fa-moon');
+            document.getElementById('themeIcon').classList.toggle('fa-sun');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+        function toggleMenu(event) {
+            event.stopPropagation();
+            document.getElementById('menuDropdown').classList.toggle('show');
+        }
+        function logout() {
+            auth.signOut().then(() => {
+                localStorage.removeItem('theme');
+                window.location.href = 'https://dopamine-edu.github.io/auth.html';
+            }).catch(error => alert(error.message));
+        }
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.menu-container')) document.getElementById('menuDropdown').classList.remove('show');
+        });
+        document.addEventListener("DOMContentLoaded", populateSubjects);
+    </script>
+</body>
+</html>
