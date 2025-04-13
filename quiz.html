@@ -1,75 +1,352 @@
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>ডোপামিন - কুইজ</title>
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Toastify CSS -->
     <link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" rel="stylesheet">
+    <!-- Chart.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Chart.js Datalabels Plugin -->
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
     <style>
         @import url('https://fonts.googleapis.com/css?family=Hind+Siliguri');
+
         :root {
-            --bg-color: #f5f5f5; --text-color: #333; --card-bg: #fff; --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            --border-color: #ddd; --primary-color: #6b48ff; --hover-color: #5a3de6; --secondary-text-color: #666;
-            --correct-bg: #d4edda; --correct-border: #28a745; --incorrect-bg: #f8d7da; --incorrect-border: #dc3545;
+            --bg-color: #f5f5f5;
+            --text-color: #333;
+            --card-bg: #fff;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --border-color: #ddd;
+            --primary-color: #6b48ff;
+            --hover-color: #5a3de6;
+            --secondary-text-color: #666;
+            --correct-bg: #d4edda;
+            --correct-border: #28a745;
+            --incorrect-bg: #f8d7da;
+            --incorrect-border: #dc3545;
         }
+
         [data-theme="dark"] {
-            --bg-color: #1a1a1a; --text-color: #e0e0e0; --card-bg: #2d2d2d; --shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
-            --border-color: #444; --secondary-text-color: #b0b0b0; --correct-bg: #2e7d32; --correct-border: #4caf50;
-            --incorrect-bg: #d32f2f; --incorrect-border: #f44336;
+            --bg-color: #1a1a1a;
+            --text-color: #e0e0e0;
+            --card-bg: #2d2d2d;
+            --shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
+            --border-color: #444;
+            --secondary-text-color: #b0b0b0;
+            --correct-bg: #2e7d32;
+            --correct-border: #4caf50;
+            --incorrect-bg: #d32f2f;
+            --incorrect-border: #f44336;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Hind Siliguri', sans-serif; transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
-        body { background: var(--bg-color); color: var(--text-color); min-height: 100vh; display: flex; flex-direction: column; }
-        .navbar { background: var(--card-bg); padding: 0.8rem; border-radius: 15px; box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: center; margin: 0.5rem 0.5rem 1rem; position: sticky; top: 0; z-index: 100; }
-        .nav-left { display: flex; align-items: center; gap: 0.5rem; }
-        #timer { background: var(--card-bg); padding: 0.5rem; border-radius: 5px; font-weight: bold; box-shadow: var(--shadow); color: var(--primary-color); font-size: 0.9rem; }
-        .nav-right { display: flex; align-items: center; gap: 0.5rem; }
-        .theme-toggle, .menu-btn { background: none; border: none; color: var(--primary-color); cursor: pointer; font-size: 1.2rem; padding: 0.3rem; transition: transform 0.3s; }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Hind Siliguri', sans-serif;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+        }
+
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar {
+            background: var(--card-bg);
+            padding: 1rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        #timer {
+            background: var(--card-bg);
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            box-shadow: var(--shadow);
+            color: var(--primary-color);
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .theme-toggle, .menu-btn {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+            font-size: 1.5rem;
+            padding: 0.5rem;
+            transition: transform 0.3s;
+        }
+
         .theme-toggle:hover { transform: scale(1.1); }
         .menu-btn:hover { transform: rotate(90deg); }
+
         .menu-container { position: relative; }
-        .menu-dropdown { position: absolute; right: 0; top: 2.5rem; background: var(--card-bg); border-radius: 10px; box-shadow: var(--shadow); display: none; min-width: 180px; z-index: 1000; }
-        .menu-dropdown.show { display: block; animation: fadeIn 0.3s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        .menu-item { padding: 0.8rem 1rem; color: var(--text-color); text-decoration: none; display: flex; align-items: center; gap: 0.5rem; transition: all 0.3s; }
-        .menu-item:hover { background: var(--border-color); padding-left: 1.5rem; }
-        .container { flex: 1; padding: 0.5rem; max-width: 1200px; margin: 0 auto; }
-        .header { margin-bottom: 1rem; }
-        #examNameDisplay { font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem; color: var(--text-color); }
-        .progress-container { margin-bottom: 1rem; }
-        .progress { height: 1rem; background-color: var(--border-color); border-radius: 10px; overflow: hidden; }
-        .progress-bar { background-color: var(--primary-color); height: 100%; transition: width 0.3s ease-in-out; }
-        #scoreDisplay { font-size: 1.2rem; font-weight: bold; margin-bottom: 0.5rem; display: none; color: var(--text-color); }
-        .question-card { background: var(--card-bg); padding: 0.8rem; border-radius: 8px; box-shadow: var(--shadow); margin-bottom: 1rem; }
-        .question-card p { margin-bottom: 0.5rem; font-size: 0.9rem; }
-        .question-card label { display: block; padding: 0.5rem; border-radius: 5px; transition: background 0.3s; margin-bottom: 0.3rem; cursor: pointer; font-size: 0.85rem; }
-        .question-card label:hover { background: var(--border-color); }
-        input[type="radio"] { -webkit-appearance: none; appearance: none; margin-right: 0.5rem; border: 2px solid var(--border-color); border-radius: 50%; width: 14px; height: 14px; position: relative; cursor: pointer; vertical-align: middle; }
-        input[type="radio"]:checked::after { content: ""; position: absolute; top: 2px; left: 2px; width: 6px; height: 6px; background: var(--primary-color); border-radius: 50%; }
+
+        .menu-dropdown {
+            position: absolute;
+            right: 0;
+            top: 3rem;
+            background: var(--card-bg);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            display: none;
+            min-width: 200px;
+            z-index: 1000;
+        }
+
+        .menu-dropdown.show {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .menu-item {
+            padding: 1rem 1.5rem;
+            color: var(--text-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s;
+        }
+
+        .menu-item:hover {
+            background: var(--border-color);
+            padding-left: 2rem;
+        }
+
+        .container {
+            flex: 1;
+            padding: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header { margin-bottom: 20px; }
+
+        #examNameDisplay {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        .progress-container { margin-bottom: 20px; }
+        .progress {
+            height: 20px;
+            background-color: var(--border-color);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            background-color: var(--primary-color);
+            height: 100%;
+            transition: width 0.3s ease-in-out;
+        }
+
+        #scoreDisplay {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: none;
+            color: var(--text-color);
+        }
+
+        .question-card {
+            background: var(--card-bg);
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            margin-bottom: 20px;
+            min-height: 100px;
+        }
+
+        .question-card p {
+            margin-bottom: 10px;
+            min-height: 20px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 5px;
+            border-radius: 5px;
+            transition: background 0.3s;
+            margin-bottom: 5px;
+            cursor: pointer;
+            height: 80px; /* Fixed height for option placeholder */
+        }
+
+        .option-label:hover { background: var(--border-color); }
+
+        input[type="radio"] {
+            -webkit-appearance: none;
+            appearance: none;
+            margin-right: 8px;
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+            position: relative;
+            cursor: pointer;
+            vertical-align: middle;
+        }
+
+        input[type="radio"]:checked::after {
+            content: "";
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 8px;
+            height: 8px;
+            background: var(--primary-color);
+            border-radius: 50%;
+        }
+
         input[type="radio"]:disabled { cursor: not-allowed; opacity: 1; }
+
         .correct { background-color: var(--correct-bg); border: 2px solid var(--correct-border); }
         .incorrect { background-color: var(--incorrect-bg); border: 2px solid var(--incorrect-border); }
-        .solution-explanation { margin-top: 0.5rem; padding: 0.5rem; background: var(--border-color); border-radius: 5px; border-left: 4px solid var(--primary-color); font-size: 0.8rem; }
-        .stats-container { margin-top: 0.5rem; padding: 0.8rem; background: var(--card-bg); border-radius: 5px; box-shadow: var(--shadow); display: none; font-size: 0.9rem; }
-        .chart-container { margin-top: 1rem; max-width: 400px; margin-left: auto; margin-right: auto; display: none; padding: 1rem; background: var(--card-bg); border-radius: 15px; box-shadow: var(--shadow); }
-        .btn-primary { background-color: var(--primary-color); border-color: var(--primary-color); color: #fff; padding: 0.5rem 1rem; border-radius: 5px; transition: background-color 0.3s; font-size: 0.9rem; }
-        .btn-primary:hover { background-color: var(--hover-color); border-color: var(--hover-color); }
-        .loading-spinner { display: none; text-align: center; padding: 1rem; color: var(--primary-color); font-size: 0.9rem; }
-        .expired-message { text-align: center; color: #dc3545; font-size: 1.2rem; padding: 1rem; display: none; }
+
+        .solution-explanation {
+            margin-top: 10px;
+            padding: 10px;
+            background: var(--border-color);
+            border-radius: 5px;
+            border-left: 4px solid var(--primary-color);
+            font-size: 0.9rem;
+            min-height: 50px;
+        }
+
+        .solution-explanation.image-only {
+            height: 200px; /* Fixed height for image-only explanations */
+            padding: 0;
+        }
+
+        .question-image,
+        .option-image,
+        .explanation-image {
+            height: auto;
+            border-radius: 5px;
+            box-shadow: var(--shadow);
+        }
+
+        .question-image {
+            width: 100%;
+            max-width: none;
+            margin: 5px 0;
+        }
+
+        .option-image {
+            height: 100%;
+            width: auto;
+            max-width: 120px; /* Prevent overly wide images */
+            margin-left: 5px;
+            object-fit: contain;
+        }
+
+        .explanation-image {
+            width: 100%;
+            height: 100%;
+            max-width: none;
+            max-height: none;
+            object-fit: contain;
+            margin: 0;
+        }
+
+        .stats-container {
+            margin-top: 10px;
+            padding: 15px;
+            background: var(--card-bg);
+            border-radius: 5px;
+            box-shadow: var(--shadow);
+            display: none;
+        }
+
+        .chart-container {
+            margin-top: 20px;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            display: none;
+            padding: 1.5rem;
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--hover-color);
+            border-color: var(--hover-color);
+        }
+
+        .loading-spinner {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            color: var(--primary-color);
+        }
+
+        .expired-message {
+            text-align: center;
+            color: #dc3545;
+            font-size: 1.5rem;
+            padding: 20px;
+            display: none;
+        }
+
         @media (max-width: 768px) {
-            .navbar { padding: 0.6rem; }
-            .theme-toggle, .menu-btn { font-size: 1rem; padding: 0.2rem; }
-            #examNameDisplay { font-size: 1.2rem; }
-            .question-card { padding: 0.6rem; }
-            .question-card p { font-size: 0.85rem; }
-            .question-card label { font-size: 0.8rem; padding: 0.4rem; }
-            .solution-explanation { font-size: 0.75rem; padding: 0.4rem; }
+            .navbar { padding: 0.8rem; }
+            .theme-toggle, .menu-btn { font-size: 1.2rem; padding: 0.3rem; }
+            #examNameDisplay { font-size: 1.4rem; }
+            .option-label { padding: 4px; height: 60px; }
+            .solution-explanation.image-only { height: 150px; }
+            .question-card label { font-size: 0.9rem; }
+            .solution-explanation { font-size: 0.8rem; padding: 8px; }
             .chart-container { max-width: 300px; }
-            .btn-primary { padding: 0.4rem 0.8rem; font-size: 0.8rem; }
+            .option-image { max-width: 100px; }
         }
     </style>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -109,7 +386,7 @@
                 <div class="progress">
                     <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
-                <div id="progressText" class="text-center mt-1"></div>
+                <div id="progressText" class="text-center mt-2"></div>
             </div>
             <div id="scoreDisplay"></div>
             <div id="statsContainer" class="stats-container"></div>
@@ -120,10 +397,10 @@
         <div id="loading" class="loading-spinner">পরীক্ষা লোড হচ্ছে...</div>
         <div id="expiredMessage" class="expired-message"></div>
         <form id="examForm"></form>
-        <div id="submitContainer" class="text-center mt-2">
+        <div id="submitContainer" class="text-center mt-3">
             <button type="button" id="submitBtn" class="btn btn-primary">জমা দিন</button>
         </div>
-        <div id="backToDashboardContainer" class="text-center mt-2" style="display: none;">
+        <div id="backToDashboardContainer" class="text-center mt-3" style="display: none;">
             <button type="button" id="backToDashboardBtn" class="btn btn-primary">ড্যাশবোর্ডে ফিরে যান</button>
         </div>
     </div>
@@ -142,14 +419,13 @@
         const db = firebase.firestore();
 
         auth.onAuthStateChanged((user) => {
-            if (!user) window.location.href = "https://dopamine-edu.github.io/auth.html";
+            if (!user) window.location.href = "auth.html";
         });
 
         let questions = [];
         let examData = {};
         let userAnswers = {};
         let timerInterval;
-        let timeLeft;
         let submitted = false;
         const urlParams = new URLSearchParams(window.location.search);
         const examId = urlParams.get('examId');
@@ -165,11 +441,35 @@
             const sanitizedSubject = sanitizeFileName(subject);
             const sanitizedChapter = sanitizeFileName(chapter.replace(/^Chapter \d+:\s*/, ''));
             const filePath = `./questions/subjects/${sanitizedSubject}/${sanitizedChapter}.json`;
+            console.log(`Attempting to load: ${filePath}`);
             try {
                 const response = await fetch(filePath);
-                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-                return await response.json();
+                if (!response.ok) {
+                    console.error(`Fetch failed for ${filePath}: ${response.status} - ${response.statusText}`);
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+                // Validate JSON structure
+                data.forEach((q, idx) => {
+                    if (!q.options || q.options.length === 0 || !q.correctOption) {
+                        console.warn(`Invalid question at index ${idx} in ${filePath}: Missing options or correctOption`);
+                        throw new Error(`Invalid question at index ${idx}`);
+                    }
+                    // Ensure optionImages array matches options length
+                    if (q.optionImages && q.optionImages.length !== q.options.length) {
+                        console.warn(`optionImages length mismatch for question ${idx} in ${filePath}`);
+                        q.optionImages = q.options.map(() => null);
+                    }
+                    // Handle empty question text
+                    if (!q.question && !q.questionImage) {
+                        console.warn(`Question at index ${idx} in ${filePath} has no text or image`);
+                        q.question = `প্রশ্ন ${idx + 1}`;
+                    }
+                });
+                console.log(`Loaded ${data.length} questions from ${filePath}`);
+                return data;
             } catch (error) {
+                console.error(`Error loading ${filePath}:`, error);
                 Toastify({ text: `${subject} - ${chapter} প্রশ্ন লোড করতে ব্যর্থ: ${error.message}`, duration: 3000, style: { background: "#dc3545" } }).showToast();
                 return [];
             }
@@ -225,12 +525,20 @@
                 if (questions.length === 0) throw new Error("No questions found for this exam");
 
                 userAnswers = JSON.parse(localStorage.getItem(answersKey)) || {};
+
                 document.getElementById("examNameDisplay").textContent = examData.title;
                 updateProgress();
                 renderQuiz(questions);
             } catch (error) {
-                Toastify({ text: "পরীক্ষা লোড করতে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
-                setTimeout(() => window.location.href = "https://dopamine-edu.github.io/dashboard.html", 3000);
+                console.error("Error loading exam:", error);
+                Toastify({
+                    text: "পরীক্ষা লোড করতে ত্রুটি: " + error.message,
+                    duration: 3000,
+                    style: { background: "#dc3545" }
+                }).showToast();
+                setTimeout(() => {
+                    window.location.href = "https://dopamine-edu.github.io/dashboard.html";
+                }, 3000);
             } finally {
                 loadingDiv.style.display = "none";
             }
@@ -278,25 +586,46 @@
                 const questionDiv = document.createElement("div");
                 questionDiv.className = "question-card";
                 questionDiv.dataset.answer = q.correctOption;
-                questionDiv.innerHTML = `<p class="fw-bold mb-3">${idx + 1}. ${q.question}</p>`;
 
+                // Render question text and/or image
+                let questionHTML = "";
+                if (q.question?.trim()) {
+                    questionHTML += `<p class="fw-bold mb-3">${idx + 1}. ${q.question}</p>`;
+                } else {
+                    questionHTML += `<p class="fw-bold mb-3">${idx + 1}.</p>`;
+                }
+                if (q.questionImage) {
+                    questionHTML += `<img src="${q.questionImage}" class="question-image" alt="Question ${idx + 1} diagram" loading="lazy" onerror="this.style.display='none'">`;
+                }
+                questionDiv.innerHTML = questionHTML;
+
+                // Render options with images
                 q.options.forEach((opt, optIdx) => {
                     const label = document.createElement("label");
+                    label.className = "option-label";
                     const radioInput = document.createElement("input");
                     radioInput.type = "radio";
                     radioInput.name = "q" + idx;
                     radioInput.value = String(optIdx + 1);
+                    radioInput.setAttribute("aria-label", `Option ${optIdx + 1} for question ${idx + 1}`);
 
                     if (isReview) {
                         radioInput.disabled = true;
                         if (previousAnswers["q" + idx] === radioInput.value) {
                             radioInput.checked = true;
-                            if (radioInput.value === q.correctOption) label.classList.add("correct");
-                            else label.classList.add("incorrect");
-                        } else if (radioInput.value === q.correctOption) label.classList.add("correct");
+                            if (radioInput.value === q.correctOption) {
+                                label.classList.add("correct");
+                            } else {
+                                label.classList.add("incorrect");
+                            }
+                        } else if (radioInput.value === q.correctOption) {
+                            label.classList.add("correct");
+                        }
                     } else {
                         if (userAnswers["q" + idx] && userAnswers["q" + idx + "_locked"]) {
-                            if (userAnswers["q" + idx] === radioInput.value) radioInput.checked = true;
+                            if (userAnswers["q" + idx] === radioInput.value) {
+                                radioInput.checked = true;
+                            }
                             radioInput.disabled = true;
                         }
                         radioInput.addEventListener("change", () => {
@@ -311,15 +640,48 @@
                             }
                         });
                     }
+
                     label.appendChild(radioInput);
-                    label.appendChild(document.createTextNode(" " + opt));
+                    // Only append text if present
+                    if (opt?.trim()) {
+                        label.appendChild(document.createTextNode(" " + opt));
+                    }
+                    // Render option image if present
+                    if (q.optionImages && q.optionImages[optIdx]) {
+                        const optionImg = document.createElement("img");
+                        optionImg.src = q.optionImages[optIdx];
+                        optionImg.className = "option-image";
+                        optionImg.alt = `Option ${optIdx + 1} diagram`;
+                        optionImg.loading = "lazy";
+                        optionImg.onerror = () => (optionImg.style.display = "none");
+                        label.appendChild(optionImg);
+                    }
                     questionDiv.appendChild(label);
                 });
 
-                if (isReview && q.explanation?.trim() && examData.showResults !== false) {
+                // Render explanation with image in review mode
+                if (isReview) {
                     const explanationDiv = document.createElement("div");
                     explanationDiv.className = "solution-explanation";
-                    explanationDiv.innerHTML = `<strong>ব্যাখ্যা:</strong> ${q.explanation}`;
+                    const hasExplanationText = q.explanation?.trim();
+                    const hasExplanationImage = q.explanationImage;
+                    if (hasExplanationText) {
+                        explanationDiv.innerHTML = `<strong>ব্যাখ্যা:</strong> ${q.explanation}`;
+                    } else if (hasExplanationImage) {
+                        explanationDiv.classList.add("image-only");
+                        explanationDiv.innerHTML = "";
+                    } else {
+                        explanationDiv.innerHTML = `<strong>ব্যাখ্যা:</strong> ব্যাখ্যা উপলব্ধ নয়`;
+                    }
+                    if (hasExplanationImage) {
+                        const explanationImg = document.createElement("img");
+                        explanationImg.src = q.explanationImage;
+                        explanationImg.className = "explanation-image";
+                        explanationImg.alt = `Explanation diagram for question ${idx + 1}`;
+                        explanationImg.loading = "lazy";
+                        explanationImg.onerror = () => (explanationImg.style.display = "none");
+                        explanationDiv.appendChild(explanationImg);
+                    }
                     questionDiv.appendChild(explanationDiv);
                 }
 
@@ -331,26 +693,25 @@
 
         function startTimer() {
             const timerElement = document.getElementById("timer");
-            let storedStart = localStorage.getItem(startTimeKey) || Date.now();
+            let storedStart = parseInt(localStorage.getItem(startTimeKey)) || Date.now();
             localStorage.setItem(startTimeKey, storedStart);
-            storedStart = parseInt(storedStart, 10);
-
             const examDurationMs = examData.duration * 60 * 1000;
-            let remainingMs = examDurationMs - (Date.now() - storedStart);
-            remainingMs = remainingMs < 0 ? 0 : remainingMs;
-            timeLeft = Math.floor(remainingMs / 1000);
 
-            timerInterval = setInterval(() => {
-                if (timeLeft <= 0) {
+            function updateTimer() {
+                const elapsed = Date.now() - storedStart;
+                let remainingMs = examDurationMs - elapsed;
+                if (remainingMs <= 0) {
                     clearInterval(timerInterval);
                     if (!submitted) submitQuiz();
                 } else {
-                    const minutes = Math.floor(timeLeft / 60);
-                    const seconds = timeLeft % 60;
+                    const minutes = Math.floor(remainingMs / 60000);
+                    const seconds = Math.floor((remainingMs % 60000) / 1000);
                     timerElement.textContent = `সময়: ${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-                    timeLeft--;
                 }
-            }, 1000);
+            }
+
+            updateTimer();
+            timerInterval = setInterval(updateTimer, 1000);
         }
 
         function createGradient(ctx, colorStart, colorEnd) {
@@ -376,17 +737,50 @@
                         data: [correct, incorrect, skipped],
                         backgroundColor: [gradientCorrect, gradientIncorrect, gradientSkipped],
                         borderColor: '#fff',
-                        borderWidth: 2
+                        borderWidth: 2,
+                        shadowOffsetX: 3,
+                        shadowOffsetY: 3,
+                        shadowBlur: 10,
+                        shadowColor: 'rgba(0, 0, 0, 0.2)'
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: true,
-                    animation: { animateScale: true, animateRotate: true, duration: 1500, easing: 'easeOutQuart' },
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true,
+                        duration: 1500,
+                        easing: 'easeOutQuart'
+                    },
                     plugins: {
-                        legend: { position: 'bottom', labels: { font: { size: 14, family: "'Hind Siliguri', sans-serif" }, padding: 20, usePointStyle: true, pointStyle: 'circle', color: getComputedStyle(document.documentElement).getPropertyValue('--text-color').trim() } },
-                        tooltip: { enabled: true, backgroundColor: 'rgba(0, 0, 0, 0.8)', titleFont: { size: 14 }, bodyFont: { size: 12 }, padding: 10, cornerRadius: 8 },
-                        datalabels: { formatter: (value, context) => ((value / total) * 100).toFixed(1) + '%', color: '#fff', font: { size: 14, weight: 'bold' }, textShadow: '0 0 5px rgba(0, 0, 0, 0.5)' }
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { size: 14, family: "'Hind Siliguri', sans-serif" },
+                                padding: 20,
+                                usePointStyle: true,
+                                pointStyle: 'circle',
+                                color: getComputedStyle(document.documentElement).getPropertyValue('--text-color').trim()
+                            }
+                        },
+                        tooltip: {
+                            enabled: true,
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleFont: { size: 14 },
+                            bodyFont: { size: 12 },
+                            padding: 10,
+                            cornerRadius: 8
+                        },
+                        datalabels: {
+                            formatter: (value, context) => {
+                                const percentage = ((value / total) * 100).toFixed(1);
+                                return `${percentage}%`;
+                            },
+                            color: '#fff',
+                            font: { size: 14, weight: 'bold' },
+                            textShadow: '0 0 5px rgba(0, 0, 0, 0.5)'
+                        }
                     },
                     layout: { padding: 20 }
                 },
@@ -426,33 +820,37 @@
                     skippedAnswers++;
                 }
 
-                qDiv.querySelectorAll("label").forEach(label => {
-                    if (label.querySelector("input").value === correctAnswer) label.classList.add("correct");
+                qDiv.querySelectorAll(".option-label").forEach(label => {
+                    if (label.querySelector("input").value === correctAnswer) {
+                        label.classList.add("correct");
+                    }
                 });
 
-                if (examData.showResults !== false && questions[idx].explanation?.trim()) {
-                    const explanationDiv = document.createElement("div");
-                    explanationDiv.className = "solution-explanation";
-                    explanationDiv.innerHTML = `<strong>ব্যাখ্যা:</strong> ${questions[idx].explanation}`;
-                    qDiv.appendChild(explanationDiv);
+                const explanation = questions[idx].explanation;
+                const explanationImage = questions[idx].explanationImage;
+                const explanationDiv = document.createElement("div");
+                explanationDiv.className = "solution-explanation";
+                const hasExplanationText = explanation?.trim();
+                const hasExplanationImage = explanationImage;
+                if (hasExplanationText) {
+                    explanationDiv.innerHTML = `<strong>ব্যাখ্যা:</strong> ${explanation}`;
+                } else if (hasExplanationImage) {
+                    explanationDiv.classList.add("image-only");
+                    explanationDiv.innerHTML = "";
+                } else {
+                    explanationDiv.innerHTML = `<strong>ব্যাখ্যা:</strong> ব্যাখ্যা উপলব্ধ নয়`;
                 }
+                if (hasExplanationImage) {
+                    const explanationImg = document.createElement("img");
+                    explanationImg.src = explanationImage;
+                    explanationImg.className = "explanation-image";
+                    explanationImg.alt = `Explanation diagram for question ${idx + 1}`;
+                    explanationImg.loading = "lazy";
+                    explanationImg.onerror = () => (explanationImg.style.display = "none");
+                    explanationDiv.appendChild(explanationImg);
+                }
+                qDiv.appendChild(explanationDiv);
             });
-
-            await db.collection("attempts").add({
-                userId: auth.currentUser.uid,
-                examId: examData.id,
-                score: score,
-                correctAnswers: correctAnswers,
-                totalQuestions: questions.length,
-                answers: userAnswers,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            });
-
-            if (examData.showResults === false) {
-                Toastify({ text: "পরীক্ষা জমা দেওয়া হয়েছে! ফলাফল দেখতে ড্যাশবোর্ডে যান।", duration: 3000, style: { background: "#6b48ff" } }).showToast();
-                setTimeout(() => window.location.href = "https://dopamine-edu.github.io/dashboard.html", 3000);
-                return;
-            }
 
             document.getElementById("scoreDisplay").style.display = "block";
             document.getElementById("scoreDisplay").innerHTML = `আপনার স্কোর: ${score} / ${totalQuestions * examData.marksPerQuestion}`;
@@ -462,7 +860,9 @@
                 <p class="text-danger fw-bold">ভুল উত্তর: ${wrongAnswers - skippedAnswers}</p>
                 <p class="text-secondary fw-bold">এড়িয়ে যাওয়া: ${skippedAnswers}</p>
             `;
+
             createPieChart(correctAnswers, wrongAnswers - skippedAnswers, skippedAnswers);
+
             document.getElementById("submitContainer").style.display = "none";
             document.getElementById("backToDashboardContainer").style.display = "block";
             document.getElementById("timer").style.pointerEvents = "none";
@@ -471,7 +871,29 @@
             localStorage.removeItem(answersKey);
             localStorage.setItem(submittedFlagKey, "true");
 
-            Toastify({ text: `পরীক্ষা সম্পন্ন! আপনার স্কোর: ${score}`, duration: 5000, style: { background: "#6b48ff" } }).showToast();
+            try {
+                await db.collection("attempts").add({
+                    userId: auth.currentUser.uid,
+                    examId: examData.id,
+                    score: score,
+                    correctAnswers: correctAnswers,
+                    totalQuestions: questions.length,
+                    answers: userAnswers,
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                Toastify({
+                    text: `পরীক্ষা সম্পন্ন! আপনার স্কোর: ${score}`,
+                    duration: 5000,
+                    style: { background: "#6b48ff" }
+                }).showToast();
+            } catch (error) {
+                console.error("Error submitting quiz:", error);
+                Toastify({
+                    text: "পরীক্ষা জমা দিতে ত্রুটি: " + error.message,
+                    duration: 3000,
+                    style: { background: "#dc3545" }
+                }).showToast();
+            }
         }
 
         function displayReviewMode(questions, resultData) {
@@ -485,17 +907,15 @@
             const wrongAnswers = totalQuestions - correctAnswers;
             const skippedAnswers = wrongAnswers - (resultData.totalQuestions - resultData.correctAnswers);
 
-            if (examData.showResults !== false) {
-                document.getElementById("scoreDisplay").style.display = "block";
-                document.getElementById("scoreDisplay").innerHTML = `আপনার স্কোর: ${resultData.score} / ${questions.length * examData.marksPerQuestion}`;
-                document.getElementById("statsContainer").style.display = "block";
-                document.getElementById("statsContainer").innerHTML = `
-                    <p class="text-success fw-bold">সঠিক উত্তর: ${correctAnswers}</p>
-                    <p class="text-danger fw-bold">ভুল উত্তর: ${wrongAnswers - skippedAnswers}</p>
-                    <p class="text-secondary fw-bold">এড়িয়ে যাওয়া: ${skippedAnswers}</p>
-                `;
-                createPieChart(correctAnswers, wrongAnswers - skippedAnswers, skippedAnswers);
-            }
+            document.getElementById("scoreDisplay").style.display = "block";
+            document.getElementById("scoreDisplay").innerHTML = `আপনার স্কোর: ${resultData.score} / ${questions.length * examData.marksPerQuestion}`;
+            document.getElementById("statsContainer").style.display = "block";
+            document.getElementById("statsContainer").innerHTML = `
+                <p class="text-success fw-bold">সঠিক উত্তর: ${correctAnswers}</p>
+                <p class="text-danger fw-bold">ভুল উত্তর: ${wrongAnswers - skippedAnswers}</p>
+                <p class="text-secondary fw-bold">এড়িয়ে যাওয়া: ${skippedAnswers}</p>
+            `;
+            createPieChart(correctAnswers, wrongAnswers - skippedAnswers, skippedAnswers);
             document.getElementById("submitContainer").style.display = "none";
             document.getElementById("backToDashboardContainer").style.display = "block";
         }
@@ -535,7 +955,9 @@
         }
 
         document.addEventListener('click', (e) => {
-            if (!e.target.closest('.menu-container')) document.getElementById('menuDropdown').classList.remove('show');
+            if (!e.target.closest('.menu-container')) {
+                document.getElementById('menuDropdown').classList.remove('show');
+            }
         });
 
         document.addEventListener("DOMContentLoaded", loadExam);
