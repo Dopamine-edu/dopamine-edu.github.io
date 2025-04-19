@@ -18,27 +18,27 @@
         @import url('https://fonts.googleapis.com/css?family=Hind+Siliguri');
 
         :root {
-            --bg-color: #f8f9fa;
-            --text-color: #212529;
-            --card-bg: #ffffff;
-            --shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-            --border-color: #ced4da;
-            --primary-color: #007bff;
-            --hover-color: #0056b3;
-            --secondary-text-color: #6c757d;
-            --correct-bg: #e6f4ea;
+            --bg-color: #f5f5f5;
+            --text-color: #333;
+            --card-bg: #fff;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --border-color: #ddd;
+            --primary-color: #6b48ff;
+            --hover-color: #5a3de6;
+            --secondary-text-color: #666;
+            --correct-bg: #d4edda;
             --correct-border: #28a745;
             --incorrect-bg: #f8d7da;
             --incorrect-border: #dc3545;
         }
 
         [data-theme="dark"] {
-            --bg-color: #212529;
-            --text-color: #e9ecef;
-            --card-bg: #343a40;
-            --shadow: 0 2px 8px rgba(255, 255, 255, 0.1);
-            --border-color: #495057;
-            --secondary-text-color: #adb5bd;
+            --bg-color: #1a1a1a;
+            --text-color: #e0e0e0;
+            --card-bg: #2d2d2d;
+            --shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
+            --border-color: #444;
+            --secondary-text-color: #b0b0b0;
             --correct-bg: #2e7d32;
             --correct-border: #4caf50;
             --incorrect-bg: #d32f2f;
@@ -63,7 +63,8 @@
 
         .navbar {
             background: var(--card-bg);
-            padding: 0.75rem 1rem;
+            padding: 1rem;
+            border-radius: 15px;
             box-shadow: var(--shadow);
             display: flex;
             justify-content: space-between;
@@ -81,18 +82,18 @@
         }
 
         #timer {
-            background: var(--primary-color);
-            color: #fff;
-            padding: 8px 12px;
+            background: var(--card-bg);
+            padding: 10px;
             border-radius: 5px;
-            font-weight: 600;
-            font-size: 1rem;
+            font-weight: bold;
+            box-shadow: var(--shadow);
+            color: var(--primary-color);
         }
 
         .nav-right {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 1rem;
         }
 
         .theme-toggle, .menu-btn {
@@ -100,7 +101,7 @@
             border: none;
             color: var(--primary-color);
             cursor: pointer;
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             padding: 0.5rem;
             transition: transform 0.3s;
         }
@@ -113,12 +114,12 @@
         .menu-dropdown {
             position: absolute;
             right: 0;
-            top: 2.5rem;
+            top: 3rem;
             background: var(--card-bg);
-            border-radius: 8px;
+            border-radius: 10px;
             box-shadow: var(--shadow);
             display: none;
-            min-width: 180px;
+            min-width: 200px;
             z-index: 1000;
         }
 
@@ -133,40 +134,41 @@
         }
 
         .menu-item {
-            padding: 0.75rem 1.25rem;
+            padding: 1rem 1.5rem;
             color: var(--text-color);
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            transition: background 0.3s;
+            gap: 1rem;
+            transition: all 0.3s;
         }
 
         .menu-item:hover {
             background: var(--border-color);
+            padding-left: 2rem;
         }
 
         .container {
             flex: 1;
             padding: 1rem;
-            max-width: 900px;
+            max-width: 1200px;
             margin: 0 auto;
         }
 
-        .header { margin-bottom: 1.5rem; }
+        .header { margin-bottom: 20px; }
 
         #examNameDisplay {
-            font-size: 1.5rem;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 10px;
             color: var(--text-color);
         }
 
-        .progress-container { margin-bottom: 1rem; }
+        .progress-container { margin-bottom: 20px; }
         .progress {
-            height: 1rem;
+            height: 20px;
             background-color: var(--border-color);
-            border-radius: 5px;
+            border-radius: 10px;
             overflow: hidden;
         }
         .progress-bar {
@@ -176,56 +178,51 @@
         }
 
         #scoreDisplay {
-            font-size: 1.25rem;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
             display: none;
             color: var(--text-color);
         }
 
         .question-card {
             background: var(--card-bg);
-            padding: 1rem;
+            padding: 15px;
             border-radius: 8px;
             box-shadow: var(--shadow);
-            margin-bottom: 1.5rem;
-            max-width: 700px;
-            margin: 0 auto 1.5rem;
+            margin-bottom: 20px;
+            min-height: 100px;
         }
 
         .question-card p {
-            margin-bottom: 0.75rem;
-            font-size: 1.1rem;
-            font-weight: 500;
+            margin-bottom: 10px;
+            min-height: 20px;
         }
 
         .option-label {
             display: flex;
             align-items: center;
-            padding: 0.75rem;
-            border: 1px solid var(--border-color);
+            padding: 5px;
             border-radius: 5px;
-            margin-bottom: 0.5rem;
+            transition: background 0.3s;
+            margin-bottom: 5px;
             cursor: pointer;
-            background: var(--card-bg);
-            transition: background 0.3s, border-color 0.3s;
+            height: 80px; /* Fixed height for option placeholder */
         }
 
-        .option-label:hover {
-            background: var(--border-color);
-            border-color: var(--primary-color);
-        }
+        .option-label:hover { background: var(--border-color); }
 
         input[type="radio"] {
             -webkit-appearance: none;
             appearance: none;
-            margin-right: 0.5rem;
+            margin-right: 8px;
             border: 2px solid var(--border-color);
             border-radius: 50%;
-            width: 1rem;
-            height: 1rem;
+            width: 16px;
+            height: 16px;
             position: relative;
             cursor: pointer;
+            vertical-align: middle;
         }
 
         input[type="radio"]:checked::after {
@@ -233,28 +230,29 @@
             position: absolute;
             top: 2px;
             left: 2px;
-            width: 0.5rem;
-            height: 0.5rem;
+            width: 8px;
+            height: 8px;
             background: var(--primary-color);
             border-radius: 50%;
         }
 
-        input[type="radio"]:disabled { cursor: not-allowed; opacity: 0.7; }
+        input[type="radio"]:disabled { cursor: not-allowed; opacity: 1; }
 
         .correct { background-color: var(--correct-bg); border: 2px solid var(--correct-border); }
         .incorrect { background-color: var(--incorrect-bg); border: 2px solid var(--incorrect-border); }
 
         .solution-explanation {
-            margin-top: 0.75rem;
-            padding: 0.75rem;
+            margin-top: 10px;
+            padding: 10px;
             background: var(--border-color);
             border-radius: 5px;
             border-left: 4px solid var(--primary-color);
             font-size: 0.9rem;
+            min-height: 50px;
         }
 
         .solution-explanation.image-only {
-            height: auto;
+            height: 200px; /* Fixed height for image-only explanations */
             padding: 0;
         }
 
@@ -263,34 +261,35 @@
         .explanation-image {
             height: auto;
             border-radius: 5px;
+            box-shadow: var(--shadow);
         }
 
         .question-image {
-            width: auto;
-            max-width: 100%;
-            max-height: 300px;
-            margin: 0.5rem 0;
+            width: 100%;
+            max-width: none;
+            margin: 5px 0;
         }
 
         .option-image {
-            height: auto;
+            height: 100%;
             width: auto;
-            max-width: 80px;
-            margin-left: 0.5rem;
+            max-width: 120px; /* Prevent overly wide images */
+            margin-left: 5px;
             object-fit: contain;
         }
 
         .explanation-image {
             width: 100%;
-            height: auto;
-            max-height: 200px;
+            height: 100%;
+            max-width: none;
+            max-height: none;
             object-fit: contain;
             margin: 0;
         }
 
         .stats-container {
-            margin-top: 0.75rem;
-            padding: 1rem;
+            margin-top: 10px;
+            padding: 15px;
             background: var(--card-bg);
             border-radius: 5px;
             box-shadow: var(--shadow);
@@ -298,14 +297,14 @@
         }
 
         .chart-container {
-            margin-top: 1rem;
-            max-width: 350px;
+            margin-top: 20px;
+            max-width: 400px;
             margin-left: auto;
             margin-right: auto;
             display: none;
-            padding: 1rem;
+            padding: 1.5rem;
             background: var(--card-bg);
-            border-radius: 8px;
+            border-radius: 15px;
             box-shadow: var(--shadow);
         }
 
@@ -326,57 +325,28 @@
         .loading-spinner {
             display: none;
             text-align: center;
-            padding: 1rem;
+            padding: 20px;
             color: var(--primary-color);
         }
 
         .expired-message {
             text-align: center;
             color: #dc3545;
-            font-size: 1.25rem;
-            padding: 1rem;
+            font-size: 1.5rem;
+            padding: 20px;
             display: none;
         }
 
-        .question-nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .question-nav button {
-            background: var(--primary-color);
-            color: #fff;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        .question-nav button:hover {
-            background: var(--hover-color);
-        }
-
-        .question-nav button:disabled {
-            background: var(--border-color);
-            cursor: not-allowed;
-        }
-
         @media (max-width: 768px) {
-            .navbar { padding: 0.5rem; }
-            .theme-toggle, .menu-btn { font-size: 1rem; padding: 0.25rem; }
-            #examNameDisplay { font-size: 1.25rem; }
-            .question-card { max-width: 100%; padding: 0.75rem; }
-            .option-label { padding: 0.5rem; margin-bottom: 0.4rem; }
-            .question-image { max-height: 200px; }
-            .option-image { max-width: 60px; }
-            .explanation-image { max-height: 150px; }
-            .solution-explanation { font-size: 0.85rem; padding: 0.5rem; }
+            .navbar { padding: 0.8rem; }
+            .theme-toggle, .menu-btn { font-size: 1.2rem; padding: 0.3rem; }
+            #examNameDisplay { font-size: 1.4rem; }
+            .option-label { padding: 4px; height: 60px; }
+            .solution-explanation.image-only { height: 150px; }
+            .question-card label { font-size: 0.9rem; }
+            .solution-explanation { font-size: 0.8rem; padding: 8px; }
             .chart-container { max-width: 300px; }
-            #timer { font-size: 0.9rem; padding: 6px 10px; }
-            .question-nav button { padding: 0.4rem 0.8rem; font-size: 0.9rem; }
+            .option-image { max-width: 100px; }
         }
     </style>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -416,7 +386,7 @@
                 <div class="progress">
                     <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
-                <div id="progressText" class="text-center mt-1"></div>
+                <div id="progressText" class="text-center mt-2"></div>
             </div>
             <div id="scoreDisplay"></div>
             <div id="statsContainer" class="stats-container"></div>
@@ -426,16 +396,11 @@
         </div>
         <div id="loading" class="loading-spinner">পরীক্ষা লোড হচ্ছে...</div>
         <div id="expiredMessage" class="expired-message"></div>
-        <div class="question-nav" id="questionNav" style="display: none;">
-            <button id="prevQuestion" onclick="navigateQuestion(-1)">পূর্ববর্তী</button>
-            <span id="questionIndex">প্রশ্ন: ১ / ১</span>
-            <button id="nextQuestion" onclick="navigateQuestion(1)">পরবর্তী</button>
-        </div>
         <form id="examForm"></form>
-        <div id="submitContainer" class="text-center mt-2">
+        <div id="submitContainer" class="text-center mt-3">
             <button type="button" id="submitBtn" class="btn btn-primary">জমা দিন</button>
         </div>
-        <div id="backToDashboardContainer" class="text-center mt-2" style="display: none;">
+        <div id="backToDashboardContainer" class="text-center mt-3" style="display: none;">
             <button type="button" id="backToDashboardBtn" class="btn btn-primary">ড্যাশবোর্ডে ফিরে যান</button>
         </div>
     </div>
@@ -462,7 +427,6 @@
         let userAnswers = {};
         let timerInterval;
         let submitted = false;
-        let currentQuestionIndex = 0;
         const urlParams = new URLSearchParams(window.location.search);
         const examId = urlParams.get('examId');
         const answersKey = "examAnswers_" + examId;
@@ -485,15 +449,18 @@
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 const data = await response.json();
+                // Validate JSON structure
                 data.forEach((q, idx) => {
                     if (!q.options || q.options.length === 0 || !q.correctOption) {
                         console.warn(`Invalid question at index ${idx} in ${filePath}: Missing options or correctOption`);
                         throw new Error(`Invalid question at index ${idx}`);
                     }
+                    // Ensure optionImages array matches options length
                     if (q.optionImages && q.optionImages.length !== q.options.length) {
                         console.warn(`optionImages length mismatch for question ${idx} in ${filePath}`);
                         q.optionImages = q.options.map(() => null);
                     }
+                    // Handle empty question text
                     if (!q.question && !q.questionImage) {
                         console.warn(`Question at index ${idx} in ${filePath} has no text or image`);
                         q.question = `প্রশ্ন ${idx + 1}`;
@@ -538,7 +505,6 @@
                     document.getElementById("expiredMessage").textContent = "এই পরীক্ষার সময় শেষ হয়ে গেছে। আপনি অংশ নিতে পারবেন না।";
                     document.getElementById("examForm").style.display = "none";
                     document.getElementById("submitContainer").style.display = "none";
-                    document.getElementById("questionNav").style.display = "none";
                     loadingDiv.style.display = "none";
                     return;
                 }
@@ -563,7 +529,6 @@
                 document.getElementById("examNameDisplay").textContent = examData.title;
                 updateProgress();
                 renderQuiz(questions);
-                setupQuestionNavigation();
             } catch (error) {
                 console.error("Error loading exam:", error);
                 Toastify({
@@ -617,136 +582,113 @@
             const examForm = document.getElementById("examForm");
             examForm.innerHTML = "";
 
-            if (!isReview) {
-                renderSingleQuestion(questions[currentQuestionIndex], currentQuestionIndex, isReview, previousAnswers);
-                document.getElementById("questionNav").style.display = "flex";
-            } else {
-                questions.forEach((q, idx) => {
-                    renderSingleQuestion(q, idx, isReview, previousAnswers);
-                });
-                document.getElementById("questionNav").style.display = "none";
-            }
-        }
+            questions.forEach((q, idx) => {
+                const questionDiv = document.createElement("div");
+                questionDiv.className = "question-card";
+                questionDiv.dataset.answer = q.correctOption;
 
-        function renderSingleQuestion(q, idx, isReview, previousAnswers) {
-            const examForm = document.getElementById("examForm");
-            const questionDiv = document.createElement("div");
-            questionDiv.className = "question-card";
-            questionDiv.dataset.answer = q.correctOption;
-
-            let questionHTML = "";
-            if (q.question?.trim()) {
-                questionHTML += `<p class="fw-bold mb-3">${idx + 1}. ${q.question}</p>`;
-            } else {
-                questionHTML += `<p class="fw-bold mb-3">${idx + 1}.</p>`;
-            }
-            if (q.questionImage) {
-                questionHTML += `<img src="${q.questionImage}" class="question-image" alt="Question ${idx + 1} diagram" loading="lazy" onerror="this.style.display='none'">`;
-            }
-            questionDiv.innerHTML = questionHTML;
-
-            q.options.forEach((opt, optIdx) => {
-                const label = document.createElement("label");
-                label.className = "option-label";
-                const radioInput = document.createElement("input");
-                radioInput.type = "radio";
-                radioInput.name = "q" + idx;
-                radioInput.value = String(optIdx + 1);
-                radioInput.setAttribute("aria-label", `Option ${optIdx + 1} for question ${idx + 1}`);
-
-                if (isReview) {
-                    radioInput.disabled = true;
-                    if (previousAnswers["q" + idx] === radioInput.value) {
-                        radioInput.checked = true;
-                        if (radioInput.value === q.correctOption) {
-                            label.classList.add("correct");
-                        } else {
-                            label.classList.add("incorrect");
-                        }
-                    } else if (radioInput.value === q.correctOption) {
-                        label.classList.add("correct");
-                    }
+                // Render question text and/or image
+                let questionHTML = "";
+                if (q.question?.trim()) {
+                    questionHTML += `<p class="fw-bold mb-3">${idx + 1}. ${q.question}</p>`;
                 } else {
-                    if (userAnswers["q" + idx] && userAnswers["q" + idx + "_locked"]) {
-                        if (userAnswers["q" + idx] === radioInput.value) {
-                            radioInput.checked = true;
-                        }
+                    questionHTML += `<p class="fw-bold mb-3">${idx + 1}.</p>`;
+                }
+                if (q.questionImage) {
+                    questionHTML += `<img src="${q.questionImage}" class="question-image" alt="Question ${idx + 1} diagram" loading="lazy" onerror="this.style.display='none'">`;
+                }
+                questionDiv.innerHTML = questionHTML;
+
+                // Render options with images
+                q.options.forEach((opt, optIdx) => {
+                    const label = document.createElement("label");
+                    label.className = "option-label";
+                    const radioInput = document.createElement("input");
+                    radioInput.type = "radio";
+                    radioInput.name = "q" + idx;
+                    radioInput.value = String(optIdx + 1);
+                    radioInput.setAttribute("aria-label", `Option ${optIdx + 1} for question ${idx + 1}`);
+
+                    if (isReview) {
                         radioInput.disabled = true;
-                    }
-                    radioInput.addEventListener("change", () => {
-                        if (!userAnswers["q" + idx + "_locked"]) {
-                            userAnswers["q" + idx] = radioInput.value;
-                            userAnswers["q" + idx + "_locked"] = true;
-                            const radios = document.getElementsByName("q" + idx);
-                            Array.from(radios).forEach(radio => radio.disabled = true);
+                        if (previousAnswers["q" + idx] === radioInput.value) {
                             radioInput.checked = true;
-                            localStorage.setItem(answersKey, JSON.stringify(userAnswers));
-                            updateProgress();
+                            if (radioInput.value === q.correctOption) {
+                                label.classList.add("correct");
+                            } else {
+                                label.classList.add("incorrect");
+                            }
+                        } else if (radioInput.value === q.correctOption) {
+                            label.classList.add("correct");
                         }
-                    });
+                    } else {
+                        if (userAnswers["q" + idx] && userAnswers["q" + idx + "_locked"]) {
+                            if (userAnswers["q" + idx] === radioInput.value) {
+                                radioInput.checked = true;
+                            }
+                            radioInput.disabled = true;
+                        }
+                        radioInput.addEventListener("change", () => {
+                            if (!userAnswers["q" + idx + "_locked"]) {
+                                userAnswers["q" + idx] = radioInput.value;
+                                userAnswers["q" + idx + "_locked"] = true;
+                                const radios = document.getElementsByName("q" + idx);
+                                Array.from(radios).forEach(radio => radio.disabled = true);
+                                radioInput.checked = true;
+                                localStorage.setItem(answersKey, JSON.stringify(userAnswers));
+                                updateProgress();
+                            }
+                        });
+                    }
+
+                    label.appendChild(radioInput);
+                    // Only append text if present
+                    if (opt?.trim()) {
+                        label.appendChild(document.createTextNode(" " + opt));
+                    }
+                    // Render option image if present
+                    if (q.optionImages && q.optionImages[optIdx]) {
+                        const optionImg = document.createElement("img");
+                        optionImg.src = q.optionImages[optIdx];
+                        optionImg.className = "option-image";
+                        optionImg.alt = `Option ${optIdx + 1} diagram`;
+                        optionImg.loading = "lazy";
+                        optionImg.onerror = () => (optionImg.style.display = "none");
+                        label.appendChild(optionImg);
+                    }
+                    questionDiv.appendChild(label);
+                });
+
+                // Render explanation with image in review mode
+                if (isReview) {
+                    const explanationDiv = document.createElement("div");
+                    explanationDiv.className = "solution-explanation";
+                    const hasExplanationText = q.explanation?.trim();
+                    const hasExplanationImage = q.explanationImage;
+                    if (hasExplanationText) {
+                        explanationDiv.innerHTML = `<strong>ব্যাখ্যা:</strong> ${q.explanation}`;
+                    } else if (hasExplanationImage) {
+                        explanationDiv.classList.add("image-only");
+                        explanationDiv.innerHTML = "";
+                    } else {
+                        explanationDiv.innerHTML = `<strong>ব্যাখ্যা:</strong> ব্যাখ্যা উপলব্ধ নয়`;
+                    }
+                    if (hasExplanationImage) {
+                        const explanationImg = document.createElement("img");
+                        explanationImg.src = q.explanationImage;
+                        explanationImg.className = "explanation-image";
+                        explanationImg.alt = `Explanation diagram for question ${idx + 1}`;
+                        explanationImg.loading = "lazy";
+                        explanationImg.onerror = () => (explanationImg.style.display = "none");
+                        explanationDiv.appendChild(explanationImg);
+                    }
+                    questionDiv.appendChild(explanationDiv);
                 }
 
-                label.appendChild(radioInput);
-                if (opt?.trim()) {
-                    label.appendChild(document.createTextNode(" " + opt));
-                }
-                if (q.optionImages && q.optionImages[optIdx]) {
-                    const optionImg = document.createElement("img");
-                    optionImg.src = q.optionImages[optIdx];
-                    optionImg.className = "option-image";
-                    optionImg.alt = `Option ${optIdx + 1} diagram`;
-                    optionImg.loading = "lazy";
-                    optionImg.onerror = () => (optionImg.style.display = "none");
-                    label.appendChild(optionImg);
-                }
-                questionDiv.appendChild(label);
+                examForm.appendChild(questionDiv);
             });
 
-            if (isReview) {
-                const explanationDiv = document.createElement("div");
-                explanationDiv.className = "solution-explanation";
-                const hasExplanationText = q.explanation?.trim();
-                const hasExplanationImage = q.explanationImage;
-                if (hasExplanationText) {
-                    explanationDiv.innerHTML = `<strong>ব্যাখ্যা:</strong> ${q.explanation}`;
-                } else if (hasExplanationImage) {
-                    explanationDiv.classList.add("image-only");
-                    explanationDiv.innerHTML = "";
-                } else {
-                    explanationDiv.innerHTML = `<strong>ব্যাখ্যা:</strong> ব্যাখ্যা উপলব্ধ নয়`;
-                }
-                if (hasExplanationImage) {
-                    const explanationImg = document.createElement("img");
-                    explanationImg.src = q.explanationImage;
-                    explanationImg.className = "explanation-image";
-                    explanationImg.alt = `Explanation diagram for question ${idx + 1}`;
-                    explanationImg.loading = "lazy";
-                    explanationImg.onerror = () => (explanationImg.style.display = "none");
-                    explanationDiv.appendChild(explanationImg);
-                }
-                questionDiv.appendChild(explanationDiv);
-            }
-
-            examForm.appendChild(questionDiv);
-        }
-
-        function setupQuestionNavigation() {
-            document.getElementById("questionIndex").textContent = `প্রশ্ন: ${currentQuestionIndex + 1} / ${questions.length}`;
-            updateNavigationButtons();
-        }
-
-        function navigateQuestion(direction) {
-            currentQuestionIndex += direction;
-            if (currentQuestionIndex < 0) currentQuestionIndex = 0;
-            if (currentQuestionIndex >= questions.length) currentQuestionIndex = questions.length - 1;
-            renderQuiz(questions);
-            document.getElementById("questionIndex").textContent = `প্রশ্ন: ${currentQuestionIndex + 1} / ${questions.length}`;
-            updateNavigationButtons();
-        }
-
-        function updateNavigationButtons() {
-            document.getElementById("prevQuestion").disabled = currentQuestionIndex === 0;
-            document.getElementById("nextQuestion").disabled = currentQuestionIndex === questions.length - 1;
+            if (!isReview && !timerInterval) startTimer();
         }
 
         function startTimer() {
@@ -795,20 +737,40 @@
                         data: [correct, incorrect, skipped],
                         backgroundColor: [gradientCorrect, gradientIncorrect, gradientSkipped],
                         borderColor: '#fff',
-                        borderWidth: 2
+                        borderWidth: 2,
+                        shadowOffsetX: 3,
+                        shadowOffsetY: 3,
+                        shadowBlur: 10,
+                        shadowColor: 'rgba(0, 0, 0, 0.2)'
                     }]
                 },
                 options: {
                     responsive: true,
                     maintainAspectRatio: true,
+                    animation: {
+                        animateScale: true,
+                        animateRotate: true,
+                        duration: 1500,
+                        easing: 'easeOutQuart'
+                    },
                     plugins: {
                         legend: {
                             position: 'bottom',
                             labels: {
                                 font: { size: 14, family: "'Hind Siliguri', sans-serif" },
-                                padding: 15,
+                                padding: 20,
+                                usePointStyle: true,
+                                pointStyle: 'circle',
                                 color: getComputedStyle(document.documentElement).getPropertyValue('--text-color').trim()
                             }
+                        },
+                        tooltip: {
+                            enabled: true,
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleFont: { size: 14 },
+                            bodyFont: { size: 12 },
+                            padding: 10,
+                            cornerRadius: 8
                         },
                         datalabels: {
                             formatter: (value, context) => {
@@ -816,10 +778,11 @@
                                 return `${percentage}%`;
                             },
                             color: '#fff',
-                            font: { size: 12, weight: 'bold' }
+                            font: { size: 14, weight: 'bold' },
+                            textShadow: '0 0 5px rgba(0, 0, 0, 0.5)'
                         }
                     },
-                    layout: { padding: 10 }
+                    layout: { padding: 20 }
                 },
                 plugins: [ChartDataLabels]
             });
@@ -836,27 +799,58 @@
             let wrongAnswers = 0;
             let skippedAnswers = 0;
             const questionDivs = document.querySelectorAll(".question-card");
-            const totalQuestions = questions.length;
+            const totalQuestions = questionDivs.length;
 
-            questions.forEach((q, idx) => {
-                const correctAnswer = q.correctOption;
-                const selectedOption = userAnswers["q" + idx];
+            questionDivs.forEach((qDiv, idx) => {
+                const correctAnswer = qDiv.dataset.answer;
+                const selectedOption = qDiv.querySelector("input[type='radio']:checked");
 
                 if (selectedOption) {
-                    if (selectedOption === correctAnswer) {
+                    if (selectedOption.value === correctAnswer) {
                         score += examData.marksPerQuestion;
                         correctAnswers++;
+                        selectedOption.parentElement.classList.add("correct");
                     } else {
                         wrongAnswers++;
                         score -= examData.negativeMark || 0;
+                        selectedOption.parentElement.classList.add("incorrect");
                     }
                 } else {
                     wrongAnswers++;
                     skippedAnswers++;
                 }
-            });
 
-            renderQuiz(questions, true, userAnswers);
+                qDiv.querySelectorAll(".option-label").forEach(label => {
+                    if (label.querySelector("input").value === correctAnswer) {
+                        label.classList.add("correct");
+                    }
+                });
+
+                const explanation = questions[idx].explanation;
+                const explanationImage = questions[idx].explanationImage;
+                const explanationDiv = document.createElement("div");
+                explanationDiv.className = "solution-explanation";
+                const hasExplanationText = explanation?.trim();
+                const hasExplanationImage = explanationImage;
+                if (hasExplanationText) {
+                    explanationDiv.innerHTML = `<strong>ব্যাখ্যা:</strong> ${explanation}`;
+                } else if (hasExplanationImage) {
+                    explanationDiv.classList.add("image-only");
+                    explanationDiv.innerHTML = "";
+                } else {
+                    explanationDiv.innerHTML = `<strong>ব্যাখ্যা:</strong> ব্যাখ্যা উপলব্ধ নয়`;
+                }
+                if (hasExplanationImage) {
+                    const explanationImg = document.createElement("img");
+                    explanationImg.src = explanationImage;
+                    explanationImg.className = "explanation-image";
+                    explanationImg.alt = `Explanation diagram for question ${idx + 1}`;
+                    explanationImg.loading = "lazy";
+                    explanationImg.onerror = () => (explanationImg.style.display = "none");
+                    explanationDiv.appendChild(explanationImg);
+                }
+                qDiv.appendChild(explanationDiv);
+            });
 
             document.getElementById("scoreDisplay").style.display = "block";
             document.getElementById("scoreDisplay").innerHTML = `আপনার স্কোর: ${score} / ${totalQuestions * examData.marksPerQuestion}`;
@@ -872,7 +866,6 @@
             document.getElementById("submitContainer").style.display = "none";
             document.getElementById("backToDashboardContainer").style.display = "block";
             document.getElementById("timer").style.pointerEvents = "none";
-            document.getElementById("questionNav").style.display = "none";
 
             localStorage.removeItem(startTimeKey);
             localStorage.removeItem(answersKey);
@@ -891,7 +884,7 @@
                 Toastify({
                     text: `পরীক্ষা সম্পন্ন! আপনার স্কোর: ${score}`,
                     duration: 5000,
-                    style: { background: "#007bff" }
+                    style: { background: "#6b48ff" }
                 }).showToast();
             } catch (error) {
                 console.error("Error submitting quiz:", error);
@@ -912,7 +905,7 @@
             const correctAnswers = resultData.correctAnswers;
             const totalQuestions = questions.length;
             const wrongAnswers = totalQuestions - correctAnswers;
-            const skippedAnswers = Object.keys(resultData.answers || {}).filter(key => !key.includes('_locked')).length < totalQuestions ? totalQuestions - Object.keys(resultData.answers || {}).filter(key => !key.includes('_locked')).length : 0;
+            const skippedAnswers = wrongAnswers - (resultData.totalQuestions - resultData.correctAnswers);
 
             document.getElementById("scoreDisplay").style.display = "block";
             document.getElementById("scoreDisplay").innerHTML = `আপনার স্কোর: ${resultData.score} / ${questions.length * examData.marksPerQuestion}`;
@@ -925,7 +918,6 @@
             createPieChart(correctAnswers, wrongAnswers - skippedAnswers, skippedAnswers);
             document.getElementById("submitContainer").style.display = "none";
             document.getElementById("backToDashboardContainer").style.display = "block";
-            document.getElementById("questionNav").style.display = "none";
         }
 
         document.getElementById("submitBtn").addEventListener("click", () => {
@@ -971,4 +963,4 @@
         document.addEventListener("DOMContentLoaded", loadExam);
     </script>
 </body>
-</html>
+    </html>
