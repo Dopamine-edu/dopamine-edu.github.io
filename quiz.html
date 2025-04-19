@@ -192,6 +192,8 @@
             box-shadow: var(--shadow);
             margin-bottom: 20px;
             min-height: 100px;
+            max-width: 800px;
+            margin: 0 auto 20px;
         }
 
         .question-card p {
@@ -202,12 +204,13 @@
         .option-label {
             display: flex;
             align-items: center;
-            padding: 5px;
+            padding: 10px;
             border-radius: 5px;
+            border: 1px solid var(--border-color);
             transition: background 0.3s;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
             cursor: pointer;
-            height: 80px; /* Fixed height for option placeholder */
+            height: 80px;
         }
 
         .option-label:hover { background: var(--border-color); }
@@ -248,11 +251,11 @@
             border-radius: 5px;
             border-left: 4px solid var(--primary-color);
             font-size: 0.9rem;
-            min-height: 50px;
+            min-height: auto;
         }
 
         .solution-explanation.image-only {
-            height: 200px; /* Fixed height for image-only explanations */
+            height: 200px;
             padding: 0;
         }
 
@@ -265,24 +268,24 @@
         }
 
         .question-image {
-            width: 100%;
-            max-width: none;
+            width: auto;
+            max-width: 100%;
+            max-height: 400px;
             margin: 5px 0;
         }
 
         .option-image {
             height: 100%;
             width: auto;
-            max-width: 120px; /* Prevent overly wide images */
+            max-width: 100px;
             margin-left: 5px;
             object-fit: contain;
         }
 
         .explanation-image {
             width: 100%;
-            height: 100%;
-            max-width: none;
-            max-height: none;
+            height: auto;
+            max-height: 200px;
             object-fit: contain;
             margin: 0;
         }
@@ -341,12 +344,15 @@
             .navbar { padding: 0.8rem; }
             .theme-toggle, .menu-btn { font-size: 1.2rem; padding: 0.3rem; }
             #examNameDisplay { font-size: 1.4rem; }
-            .option-label { padding: 4px; height: 60px; }
+            .option-label { padding: 8px; height: 60px; margin-bottom: 8px; }
             .solution-explanation.image-only { height: 150px; }
             .question-card label { font-size: 0.9rem; }
             .solution-explanation { font-size: 0.8rem; padding: 8px; }
             .chart-container { max-width: 300px; }
-            .option-image { max-width: 100px; }
+            .question-image { max-height: 300px; }
+            .option-image { max-width: 80px; }
+            .explanation-image { max-height: 150px; }
+            .question-card { max-width: 100%; }
         }
     </style>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
