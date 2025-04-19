@@ -1,78 +1,98 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dopamine - Dashboard</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>ডোপামিন - Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <style>
+        @import url('https://fonts.googleapis.com/css?family=Hind+Siliguri');
+
         :root {
-            --primary-color: #667eea;
-            --secondary-color: #764ba2;
-            --bg-color: #f5f7fb;
-            --text-color: #2d3748;
-            --card-bg: #ffffff;
-            --nav-bg: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --shadow: 0 2px 10px rgba(0,0,0,0.1);
+            --bg-color: #f5f5f5;
+            --text-color: #333;
+            --card-bg: #fff;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --border-color: #ddd;
+            --primary-color: #6b48ff;
+            --hover-color: #5a3de6;
+            --secondary-text-color: #666;
+            --skeleton-bg: #e0e0e0;
+            --glow-color: rgba(107, 72, 255, 0.3); /* Subtle glow with transparency */
         }
 
         [data-theme="dark"] {
             --bg-color: #1a1a1a;
-            --text-color: #ffffff;
+            --text-color: #e0e0e0;
             --card-bg: #2d2d2d;
-            --nav-bg: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
-            --shadow: 0 2px 10px rgba(255,255,255,0.1);
+            --shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
+            --border-color: #444;
+            --secondary-text-color: #b0b0b0;
+            --skeleton-bg: #404040;
+            --glow-color: rgba(139, 109, 255, 0.3); /* Subtle glow for dark mode */
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-            transition: background-color 0.3s, color 0.3s;
+            font-family: 'Hind Siliguri', sans-serif;
+            transition: background-color 0.3s, color 0.3s, border-color 0.3s;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            min-height: 100vh;
             display: flex;
             flex-direction: column;
+            min-height: 100vh;
+            background: var(--bg-color);
+            padding: 0.5rem;
         }
 
         .navbar {
-            background: var(--nav-bg);
-            color: white;
+            background: var(--card-bg);
+            padding: 1rem;
+            border-radius: 15px;
             box-shadow: var(--shadow);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: relative;
+            margin-bottom: 1rem;
+            position: sticky;
+            top: 0;
             z-index: 100;
-            width: 100%;
-            padding: 1rem 2rem;
         }
 
         .nav-left {
             display: flex;
             align-items: center;
-            gap: 1.5rem;
+            gap: 1rem;
+        }
+
+        .nav-left img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
         }
 
         .website-name {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
+            color: var(--text-color);
             font-weight: 700;
-            letter-spacing: 1px;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
         .theme-toggle {
             background: none;
             border: none;
-            color: white;
+            color: var(--primary-color);
             cursor: pointer;
+            font-size: 1.5rem;
             padding: 0.5rem;
-            border-radius: 50%;
             transition: transform 0.3s;
         }
 
@@ -87,10 +107,10 @@
         .menu-btn {
             background: none;
             border: none;
-            color: white;
+            color: var(--primary-color);
             cursor: pointer;
+            font-size: 1.5rem;
             padding: 0.5rem;
-            border-radius: 50%;
             transition: transform 0.3s;
         }
 
@@ -112,6 +132,42 @@
 
         .menu-dropdown.show {
             display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .user-info {
+            text-align: center;
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin: 0 auto;
+            cursor: pointer;
+            overflow: hidden;
+            border: 2px solid var(--primary-color);
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .user-name {
+            margin-top: 0.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--text-color);
+            cursor: pointer;
         }
 
         .menu-item {
@@ -125,58 +181,53 @@
         }
 
         .menu-item:hover {
-            background: rgba(255,255,255,0.1);
+            background: var(--border-color);
             padding-left: 2rem;
         }
 
         .greeting-section {
-            padding: 3rem 2rem 1rem;
+            padding: 2rem 1rem;
             text-align: center;
-            position: relative;
-            z-index: 1;
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            margin-bottom: 1rem;
         }
 
         .greeting {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
             color: var(--text-color);
+            margin-bottom: 0.5rem;
         }
 
         .sub-greeting {
-            color: var(--text-color);
-            opacity: 0.8;
-            font-size: 1.1rem;
+            font-size: 1rem;
+            color: var(--secondary-text-color);
         }
 
         .cards-container {
             flex: 1;
-            padding: 2rem;
+            padding: 1rem;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 1.2rem;
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-            padding-bottom: 8rem;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            padding-bottom: 6rem;
         }
 
         .card {
             background: var(--card-bg);
             border-radius: 15px;
-            padding: 1.5rem;
+            padding: 1rem;
             text-align: center;
-            transition: transform 0.3s;
             box-shadow: var(--shadow);
             cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.1);
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            min-height: 150px;
+            min-height: 120px;
+            transition: transform 0.3s;
             position: relative;
-            overflow: hidden;
         }
 
         .card:hover {
@@ -184,15 +235,26 @@
         }
 
         .card-icon {
-            font-size: 2.2rem;
+            font-size: 2rem;
             color: var(--primary-color);
-            margin-bottom: 0.8rem;
+            margin-bottom: 0.5rem;
         }
 
         .card-title {
             color: var(--text-color);
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: 500;
+        }
+
+        .card.glowing {
+            box-shadow: 0 0 8px var(--glow-color);
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 8px var(--glow-color); }
+            50% { box-shadow: 0 0 12px var(--glow-color); }
+            100% { box-shadow: 0 0 8px var(--glow-color); }
         }
 
         .bottom-nav {
@@ -204,7 +266,7 @@
             padding: 1rem;
             display: none;
             justify-content: space-around;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
             z-index: 100;
         }
 
@@ -221,49 +283,15 @@
             margin-bottom: 0.3rem;
         }
 
+        .nav-item.active {
+            color: var(--primary-color);
+        }
+
         .nav-item:hover {
             color: var(--primary-color);
         }
 
-        @media (max-width: 768px) {
-            .cards-container {
-                grid-template-columns: 1fr 1fr;
-                padding: 1rem;
-                gap: 1rem;
-                padding-bottom: 6rem;
-            }
-
-            .card {
-                padding: 1rem;
-                min-height: 120px;
-            }
-
-            .card-icon {
-                font-size: 1.8rem;
-            }
-
-            .card-title {
-                font-size: 0.9rem;
-            }
-
-            .bottom-nav {
-                display: flex;
-            }
-
-            .navbar {
-                padding: 1rem;
-            }
-
-            .website-name {
-                font-size: 1.5rem;
-            }
-
-            .theme-toggle {
-                padding: 0.3rem;
-            }
-        }
-
-        /* Loading Animation Styles */
+        /* Skeleton Loader Styles */
         .loading-container {
             position: fixed;
             top: 0;
@@ -271,250 +299,342 @@
             width: 100%;
             height: 100%;
             background: var(--bg-color);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
             z-index: 1000;
+            padding: 0.5rem;
         }
 
-        .book-loader {
-            width: 100px;
-            height: 100px;
+        .skeleton {
             position: relative;
-            perspective: 200px;
+            overflow: hidden;
+            background-color: var(--skeleton-bg);
         }
 
-        .book-page {
-            width: 50%;
-            height: 100%;
+        .skeleton::after {
+            content: '';
             position: absolute;
-            left: 50%;
-            background: var(--primary-color);
-            transform-origin: left;
-            animation: flip 1.2s infinite ease-in-out;
-            border-radius: 0 5px 5px 0;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            animation: shimmer 1.5s infinite;
         }
 
-        .book-page:nth-child(1) {
-            animation-delay: 0s;
-        }
-        .book-page:nth-child(2) {
-            animation-delay: 0.2s;
-        }
-        .book-page:nth-child(3) {
-            animation-delay: 0.4s;
-        }
-        .book-page:nth-child(4) {
-            animation-delay: 0.6s;
-        }
-        .book-page:nth-child(5) {
-            animation-delay: 0.8s;
+        @keyframes shimmer {
+            100% { left: 100%; }
         }
 
-        @keyframes flip {
-            0%, 100% {
-                transform: rotateY(0deg);
-            }
-            50% {
-                transform: rotateY(-180deg);
-            }
-        }
-
-        .loading-text {
-            margin-top: 2rem;
-            font-size: 1.2rem;
-            color: var(--text-color);
-            text-align: center;
-        }
-
-        .loading-text span {
-            display: inline-block;
-            animation: bounce 1s infinite;
-        }
-
-        .loading-text span:nth-child(1) { animation-delay: 0.1s; }
-        .loading-text span:nth-child(2) { animation-delay: 0.2s; }
-        .loading-text span:nth-child(3) { animation-delay: 0.3s; }
-        .loading-text span:nth-child(4) { animation-delay: 0.4s; }
-        .loading-text span:nth-child(5) { animation-delay: 0.5s; }
-        .loading-text span:nth-child(6) { animation-delay: 0.6s; }
-        .loading-text span:nth-child(7) { animation-delay: 0.7s; }
-
-        @keyframes bounce {
-            0%, 100% {
-                transform: translateY(0);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
-        }
-
-        /* Progress Bar Styles */
-        .progress-card {
-            background: var(--card-bg);
+        /* Skeleton Component Styles */
+        .skeleton-navbar {
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
             border-radius: 15px;
-            padding: 1.5rem;
-            box-shadow: var(--shadow);
+            background: var(--card-bg);
+        }
+
+        .skeleton-nav-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .skeleton-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .skeleton-website-name {
+            width: 120px;
+            height: 24px;
+            border-radius: 4px;
+        }
+
+        .skeleton-nav-right {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .skeleton-theme-toggle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
+
+        .skeleton-menu-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
+
+        .skeleton-greeting {
+            padding: 2rem 1rem;
+            margin-bottom: 1rem;
+            border-radius: 15px;
+            background: var(--card-bg);
+        }
+
+        .skeleton-greeting-line {
+            width: 60%;
+            height: 24px;
+            margin: 0 auto 0.5rem;
+            border-radius: 4px;
+        }
+
+        .skeleton-sub-greeting-line {
+            width: 40%;
+            height: 16px;
+            margin: 0 auto;
+            border-radius: 4px;
+        }
+
+        .skeleton-cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            padding: 1rem;
+        }
+
+        .skeleton-card {
+            padding: 1rem;
+            min-height: 120px;
+            border-radius: 15px;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            min-height: 150px;
-            position: relative;
-            overflow: hidden;
+            gap: 0.5rem;
+            background: var(--card-bg);
         }
 
-        .progress-bar-container {
+        .skeleton-card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .skeleton-card-title {
             width: 80%;
-            background: #eee;
-            border-radius: 10px;
-            height: 10px;
-            overflow: hidden;
-            margin-top: 0.8rem;
+            height: 16px;
+            border-radius: 4px;
         }
 
-        .progress-fill {
-            background: var(--primary-color);
-            height: 100%;
-            width: 0;
-            transition: width 0.3s;
+        .skeleton-bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem;
+            display: none;
+            justify-content: space-around;
+            background: var(--card-bg);
         }
 
-        .progress-percentage {
-            margin-top: 0.5rem;
-            font-size: 0.9rem;
-            color: var(--text-color);
+        .skeleton-nav-item {
+            width: 50px;
+            height: 24px;
+            border-radius: 4px;
         }
 
-        [data-theme="dark"] .progress-bar-container {
-            background: #444;
+        @media (max-width: 768px) {
+            .cards-container {
+                grid-template-columns: repeat(2, 1fr);
+                padding: 0.5rem;
+                gap: 0.8rem;
+                padding-bottom: 5rem;
+            }
+            .card {
+                padding: 0.8rem;
+                min-height: 100px;
+            }
+            .card-icon {
+                font-size: 1.5rem;
+            }
+            .card-title {
+                font-size: 0.8rem;
+            }
+            .bottom-nav {
+                display: flex;
+            }
+            .navbar {
+                padding: 0.8rem;
+            }
+            .nav-left img {
+                width: 30px;
+                height: 30px;
+            }
+            .website-name {
+                font-size: 1.2rem;
+            }
+            .theme-toggle,
+            .menu-btn {
+                font-size: 1.2rem;
+                padding: 0.3rem;
+            }
+            .greeting-section {
+                padding: 1.5rem 0.8rem;
+            }
+            .greeting {
+                font-size: 1.2rem;
+            }
+            .sub-greeting {
+                font-size: 0.9rem;
+            }
+            
+            /* Skeleton mobile styles */
+            .skeleton-bottom-nav { display: flex; }
+            .skeleton-card { min-height: 100px; }
+            .skeleton-card-icon { width: 30px; height: 30px; }
+            .skeleton-card-title { width: 70%; height: 14px; }
+            .skeleton-navbar { padding: 0.8rem; }
+            .skeleton-logo { width: 30px; height: 30px; }
+            .skeleton-website-name { width: 100px; height: 20px; }
+            .skeleton-greeting { padding: 1.5rem 0.8rem; }
+            .skeleton-greeting-line { height: 20px; }
+            .skeleton-sub-greeting-line { height: 14px; }
         }
     </style>
 </head>
 <body>
+    <!-- Skeleton Loader -->
     <div class="loading-container" id="loading">
-        <div class="book-loader">
-            <div class="book-page"></div>
-            <div class="book-page"></div>
-            <div class="book-page"></div>
-            <div class="book-page"></div>
-            <div class="book-page"></div>
+        <nav class="skeleton-navbar">
+            <div class="skeleton-nav-left">
+                <div class="skeleton-logo skeleton"></div>
+                <div class="skeleton-website-name skeleton"></div>
+            </div>
+            <div class="skeleton-nav-right">
+                <div class="skeleton-theme-toggle skeleton"></div>
+                <div class="skeleton-menu-btn skeleton"></div>
+            </div>
+        </nav>
+
+        <div class="skeleton-greeting">
+            <div class="skeleton-greeting-line skeleton"></div>
+            <div class="skeleton-sub-greeting-line skeleton"></div>
         </div>
-        <div class="loading-text">
-            <span>L</span>
-            <span>o</span>
-            <span>a</span>
-            <span>d</span>
-            <span>i</span>
-            <span>n</span>
-            <span>g</span>
+
+        <div class="skeleton-cards-container">
+            <div class="skeleton-card"><div class="skeleton-card-icon skeleton"></div><div class="skeleton-card-title skeleton"></div></div>
+            <div class="skeleton-card"><div class="skeleton-card-icon skeleton"></div><div class="skeleton-card-title skeleton"></div></div>
+            <div class="skeleton-card"><div class="skeleton-card-icon skeleton"></div><div class="skeleton-card-title skeleton"></div></div>
+            <div class="skeleton-card"><div class="skeleton-card-icon skeleton"></div><div class="skeleton-card-title skeleton"></div></div>
+            <div class="skeleton-card"><div class="skeleton-card-icon skeleton"></div><div class="skeleton-card-title skeleton"></div></div>
+            <div class="skeleton-card"><div class="skeleton-card-icon skeleton"></div><div class="skeleton-card-title skeleton"></div></div>
+            <div class="skeleton-card"><div class="skeleton-card-icon skeleton"></div><div class="skeleton-card-title skeleton"></div></div>
+        </div>
+
+        <div class="skeleton-bottom-nav">
+            <div class="skeleton-nav-item skeleton"></div>
+            <div class="skeleton-nav-item skeleton"></div>
+            <div class="skeleton-nav-item skeleton"></div>
         </div>
     </div>
 
-    <nav class="navbar">
-        <div class="nav-left">
-            <button class="theme-toggle" onclick="toggleTheme()">
-                <i class="material-icons" id="themeIcon">brightness_4</i>
-            </button>
-            <h1 class="website-name">Dopamine</h1>
+    <!-- Actual Content -->
+    <div id="content" style="display: none;">
+        <nav class="navbar">
+            <div class="nav-left">
+                <img src="logo.png" alt="ডোপামিন Logo">
+                <h1 class="website-name">ডোপামিন</h1>
+            </div>
+            <div class="nav-right">
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                </button>
+                <div class="menu-container">
+                    <button class="menu-btn" onclick="toggleMenu(event)">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="menu-dropdown" id="menuDropdown">
+                        <div class="user-info" onclick="window.location.href='https://dopamine-edu.github.io/profile.html'">
+                            <div class="user-avatar">
+                                <img id="userAvatar" src="https://cdn-icons-png.flaticon.com/512/4333/4333609.png" alt="Avatar">
+                            </div>
+                            <div class="user-name" id="userFullName">লোড হচ্ছে...</div>
+                        </div>
+                        <a href="https://dopamine-edu.github.io/courses.html" class="menu-item">
+                            <i class="fas fa-book"></i>
+                            কোর্স
+                        </a>
+                        <a href="#" class="menu-item">
+                            <i class="fab fa-facebook"></i>
+                            ফেসবুক গ্রুপ
+                        </a>
+                        <a href="#" class="menu-item">
+                            <i class="fab fa-telegram"></i>
+                            টেলিগ্রাম গ্রুপ
+                        </a>
+                        <a href="#" class="menu-item" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            লগআউট
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="greeting-section">
+            <h1 class="greeting">হ্যালো, <span id="lastName">ব্যবহারকারী</span>!</h1>
+            <p class="sub-greeting">কেমন চলছে আপনার পড়াশোনা?</p>
         </div>
-        <div class="menu-container">
-            <button class="menu-btn" onclick="toggleMenu(event)">
-                <i class="material-icons">menu</i>
-            </button>
-            <div class="menu-dropdown" id="menuDropdown">
-                <a href="#" class="menu-item">
-                    <i class="material-icons">dashboard</i>
-                    Dashboard
-                </a>
-                <a href="profile.html" class="menu-item">
-                    <i class="material-icons">person</i>
-                    Profile
-                </a>
-                <a href="courses.html" class="menu-item">
-                    <i class="material-icons">library_books</i>
-                    Courses
-                </a>
-                <a href="#" class="menu-item">
-                    <i class="material-icons">group</i>
-                    Facebook Group
-                </a>
-                <a href="#" class="menu-item">
-                    <i class="material-icons">send</i>
-                    Telegram Group
-                </a>
-                <a href="#" class="menu-item" onclick="logout()">
-                    <i class="material-icons">logout</i>
-                    Logout
-                </a>
+
+        <div class="cards-container">
+            <div class="card" onclick="window.location.href='https://dopamine-edu.github.io/studyplanner.html'">
+                <i class="fas fa-tasks card-icon"></i>
+                <h3 class="card-title">স্টাডি প্ল্যানার</h3>
+            </div>
+            <div class="card glowing" onclick="window.location.href='https://dopamine-edu.github.io/gst.html'">
+                <i class="fas fa-graduation-cap card-icon"></i>
+                <h3 class="card-title">GST গুচ্ছ প্রস্তুতি</h3>
+            </div>
+            <div class="card" onclick="window.location.href='https://dopamine-edu.github.io/courses.html'">
+                <i class="fas fa-book card-icon"></i>
+                <h3 class="card-title">কোর্স</h3>
+            </div>
+            <div class="card" onclick="window.location.href='https://dopamine-edu.github.io/customexam.html'">
+                <i class="fas fa-cogs card-icon"></i>
+                <h3 class="card-title">কাস্টম পরীক্ষা</h3>
+            </div>
+            <div class="card">
+                <i class="fas fa-file-pdf card-icon"></i>
+                <h3 class="card-title">পিডিএফ বই</h3>
+            </div>
+            <div class="card">
+                <i class="fas fa-robot card-icon"></i>
+                <h3 class="card-title">পরীক্ষা বট</h3>
+            </div>
+            <div class="card">
+                <i class="fas fa-gamepad card-icon"></i>
+                <h3 class="card-title">কুইজ ব্যাটল</h3>
+            </div>
+            <div class="card">
+                <i class="fas fa-chart-line card-icon"></i>
+                <h3 class="card-title">পারফরম্যান্স</h3>
             </div>
         </div>
-    </nav>
 
-    <div class="greeting-section">
-        <h1 class="greeting">Hello, <span id="lastName">User</span>!</h1>
-        <p class="sub-greeting">কেমন চলছে আপনার পড়াশোনা?</p>
+        <nav class="bottom-nav">
+            <a href="https://dopamine-edu.github.io/dashboard.html" class="nav-item active">
+                <i class="fas fa-tachometer-alt"></i>
+                ড্যাশবোর্ড
+            </a>
+            <a href="https://dopamine-edu.github.io/courses.html" class="nav-item">
+                <i class="fas fa-book"></i>
+                কোর্স
+            </a>
+            <a href="https://dopamine-edu.github.io/profile.html" class="nav-item">
+                <i class="fas fa-user"></i>
+                প্রোফাইল
+            </a>
+        </nav>
     </div>
-
-    <div class="cards-container">
-        <div class="card" onclick="window.location.href='studyplanner.html'">
-            <i class="material-icons card-icon">assignment</i>
-            <h3 class="card-title">Study Planner</h3>
-        </div>
-        <div class="card" onclick="window.location.href='courses.html'">
-            <i class="material-icons card-icon">library_books</i>
-            <h3 class="card-title">Courses</h3>
-        </div>
-        <div class="card" onclick="window.location.href='customexam.html'">
-            <i class="material-icons card-icon">tune</i>
-            <h3 class="card-title">Custom Exam</h3>
-        </div>
-        <div class="card">
-            <i class="material-icons card-icon">picture_as_pdf</i>
-            <h3 class="card-title">PDF Books</h3>
-        </div>
-        <div class="card">
-            <i class="material-icons card-icon">smart_toy</i>
-            <h3 class="card-title">Exam Bot</h3>
-        </div>
-        <div class="card">
-            <i class="material-icons card-icon">sports_esports</i>
-            <h3 class="card-title">Quiz Battle</h3>
-        </div>
-        <div class="card">
-            <i class="material-icons card-icon">assessment</i>
-            <h3 class="card-title">Performance</h3>
-        </div>
-        <div class="progress-card">
-            <i class="material-icons card-icon">trending_up</i>
-            <h3 class="card-title">Study Progress</h3>
-            <div class="progress-bar-container">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-            <div class="progress-percentage" id="progressPercentage">0% Completed</div>
-        </div>
-    </div>
-
-    <nav class="bottom-nav">
-        <a href="dashboard.html" class="nav-item">
-            <i class="material-icons">dashboard</i>
-            Dashboard
-        </a>
-        <a href="courses.html" class="nav-item">
-            <i class="material-icons">library_books</i>
-            Courses
-        </a>
-        <a href="profile.html" class="nav-item">
-            <i class="material-icons">person</i>
-            Profile
-        </a>
-    </nav>
 
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
-
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
@@ -529,78 +649,107 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        const loading = document.getElementById('loading');
-
-        function hideLoading() {
-            loading.style.display = 'none';
-        }
+        const CACHE_KEY = 'userProfileData';
+        const CACHE_EXPIRATION = 24 * 60 * 60 * 1000;
 
         let isDark = localStorage.getItem('theme') === 'dark';
+
+        if (isDark) {
+            document.body.setAttribute('data-theme', 'dark');
+            document.getElementById('themeIcon').classList.replace('fa-moon', 'fa-sun');
+        }
+
         function toggleTheme() {
             isDark = !isDark;
             document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
-            document.getElementById('themeIcon').textContent = isDark ? 'brightness_7' : 'brightness_4';
+            document.getElementById('themeIcon').classList.toggle('fa-moon');
+            document.getElementById('themeIcon').classList.toggle('fa-sun');
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
         }
 
         function toggleMenu(event) {
             event.stopPropagation();
-            const menu = document.getElementById('menuDropdown');
-            menu.classList.toggle('show');
+            document.getElementById('menuDropdown').classList.toggle('show');
+        }
+
+        function getCachedUserData() {
+            const cached = localStorage.getItem(CACHE_KEY);
+            if (cached) {
+                try {
+                    const cacheData = JSON.parse(cached);
+                    if (Date.now() - cacheData.timestamp < CACHE_EXPIRATION) {
+                        return cacheData.data;
+                    } else {
+                        localStorage.removeItem(CACHE_KEY);
+                    }
+                } catch (e) {
+                    console.error('Error parsing cached user data:', e);
+                    localStorage.removeItem(CACHE_KEY);
+                }
+            }
+            return null;
+        }
+
+        function setCachedUserData(userData) {
+            const cacheData = {
+                timestamp: Date.now(),
+                data: userData
+            };
+            try {
+                localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
+            } catch (e) {
+                console.error('Error setting cache:', e);
+            }
         }
 
         auth.onAuthStateChanged(async user => {
+            const loading = document.getElementById('loading');
+            const content = document.getElementById('content');
+            
             if (user) {
-                try {
-                    loading.style.display = 'flex';
-
-                    const userDoc = await db.collection('users').doc(user.uid).get();
-                    if (userDoc.exists) {
-                        const fullName = userDoc.data().fullName || 'User';
-                        document.getElementById('lastName').textContent = fullName.split(' ').pop();
+                let userData = getCachedUserData();
+                if (userData) {
+                    populateUserData(userData);
+                    loading.style.display = 'none';
+                    content.style.display = 'block';
+                } else {
+                    try {
+                        const userDoc = await db.collection('users').doc(user.uid).get();
+                        if (userDoc.exists) {
+                            userData = userDoc.data();
+                            userData.email = user.email;
+                            setCachedUserData(userData);
+                            populateUserData(userData);
+                            loading.style.display = 'none';
+                            content.style.display = 'block';
+                        } else {
+                            alert('ব্যবহারকারীর তথ্য পাওয়া যায়নি।');
+                            window.location.href = 'https://dopamine-edu.github.io/auth.html';
+                        }
+                    } catch (error) {
+                        alert('ব্যবহারকারীর তথ্য লোড করতে ব্যর্থ হয়েছে: ' + error.message);
+                        window.location.href = 'https://dopamine-edu.github.io/auth.html';
                     }
-
-                    const studyDoc = await db.collection('studyPlans').doc(user.uid).get();
-                    if (studyDoc.exists) {
-                        const data = studyDoc.data();
-                        const completedChapters = data.completedChapters || {};
-                        const selectedSubjects = data.selectedSubjects || [];
-
-                        let totalChapters = 0;
-                        let completedCount = 0;
-                        const subjects = {
-                            "Botany": 11, "Zoology": 11, "Physics 1st": 8, "Physics 2nd": 7,
-                            "Chemistry 1st": 4, "Chemistry 2nd": 4, "Higher Math 1st": 6,
-                            "Higher Math 2nd": 6, "English": 0, "Bangla": 0
-                        };
-
-                        selectedSubjects.forEach(subject => {
-                            totalChapters += subjects[subject] || 0;
-                            for (let i = 0; i < (subjects[subject] || 0); i++) {
-                                if (completedChapters[`${subject}-${i}`]) {
-                                    completedCount++;
-                                }
-                            }
-                        });
-
-                        const progress = totalChapters > 0 ? (completedCount / totalChapters) * 100 : 0;
-                        document.getElementById('progressFill').style.width = `${progress}%`;
-                        document.getElementById('progressPercentage').textContent = `${Math.round(progress)}% Completed`;
-                    }
-
-                    hideLoading();
-                } catch (error) {
-                    console.error('Error:', error);
-                    hideLoading();
                 }
             } else {
-                window.location.href = 'auth.html';
+                window.location.href = 'https://dopamine-edu.github.io/auth.html';
             }
         });
 
+        function populateUserData(userData) {
+            const fullName = userData.fullName || 'ব্যবহারকারী';
+            document.getElementById('userFullName').textContent = fullName;
+            document.getElementById('lastName').textContent = fullName.split(' ').pop();
+            if (userData.avatar) {
+                document.getElementById('userAvatar').src = userData.avatar;
+            }
+        }
+
         function logout() {
             auth.signOut().then(() => {
-                window.location.href = 'auth.html';
+                localStorage.removeItem(CACHE_KEY);
+                localStorage.removeItem('theme');
+                window.location.href = 'https://dopamine-edu.github.io/auth.html';
             }).catch(error => alert(error.message));
         }
 
@@ -609,44 +758,6 @@
                 document.getElementById('menuDropdown').classList.remove('show');
             }
         });
-
-        document.querySelectorAll('.card').forEach(card => {
-            card.addEventListener('click', (e) => {
-                const ripple = document.createElement('div');
-                ripple.style.cssText = `
-                    position: absolute;
-                    background: rgba(255,255,255,0.4);
-                    border-radius: 50%;
-                    transform: scale(0);
-                    animation: ripple 0.6s linear;
-                `;
-                
-                const rect = card.getBoundingClientRect();
-                const size = Math.max(rect.width, rect.height);
-                ripple.style.width = ripple.style.height = size + 'px';
-                ripple.style.left = e.clientX - rect.left - size/2 + 'px';
-                ripple.style.top = e.clientY - rect.top - size/2 + 'px';
-                
-                card.appendChild(ripple);
-                setTimeout(() => ripple.remove(), 600);
-            });
-        });
-
-        const style = document.createElement('style');
-        style.textContent = `
-            @keyframes ripple {
-                to { 
-                    transform: scale(2); 
-                    opacity: 0; 
-                }
-            }
-        `;
-        document.head.appendChild(style);
-
-        if (isDark) {
-            document.body.setAttribute('data-theme', 'dark');
-            document.getElementById('themeIcon').textContent = 'brightness_7';
-        }
     </script>
 </body>
 </html>
