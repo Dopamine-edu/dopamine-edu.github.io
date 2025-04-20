@@ -66,6 +66,92 @@
             color: #ff9800;
         }
         
+        /* Settings Form Styles */
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        .form-control {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            padding: 0.5rem;
+            color: var(--text-color);
+            width: 100%;
+        }
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 5px rgba(107, 72, 255, 0.3);
+            outline: none;
+        }
+        .select-wrapper {
+            position: relative;
+        }
+        .select-wrapper::after {
+            content: "▼";
+            font-size: 0.8rem;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: var(--secondary-text-color);
+        }
+        select.form-control {
+            appearance: none;
+            padding-right: 30px;
+        }
+        .custom-time-input {
+            display: none;
+            margin-top: 0.5rem;
+        }
+        
+        /* Summary Section */
+        .summary-section {
+            background: rgba(0,0,0,0.05);
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1.5rem 0;
+        }
+        [data-theme="dark"] .summary-section {
+            background: rgba(255,255,255,0.05);
+        }
+        .summary-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.3rem;
+        }
+        .summary-label {
+            color: var(--secondary-text-color);
+        }
+        .summary-value {
+            font-weight: 600;
+        }
+        
+        /* Button Styles */
+        .btn-primary {
+            background-color: var(--primary-color);
+            border: none;
+            color: #fff;
+            padding: 0.75rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+        .btn-primary:hover {
+            background-color: var(--hover-color);
+        }
+        
+        /* Subject Selection Styles */
         .subject-box { border: 1px solid var(--border-color); border-radius: 10px; margin-bottom: 0.5rem; background: var(--card-bg); box-shadow: var(--shadow); }
         .subject-header { display: flex; align-items: center; justify-content: space-between; padding: 0.8rem; cursor: pointer; }
         .subject-header:hover { background: var(--border-color); }
@@ -82,11 +168,7 @@
         .chapter-box .form-check-input:checked { background-color: var(--primary-color); border-color: var(--primary-color); }
         .chapter-name { flex-grow: 1; font-size: 0.9rem; }
         .chapter-question-count { color: #fff; background: #ff9800; padding: 0.2rem 0.5rem; border-radius: 12px; font-size: 0.9rem; }
-        .settings-box { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 10px; padding: 1rem; box-shadow: var(--shadow); }
-        .settings-box .form-control { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 5px; padding: 0.5rem; color: var(--text-color); }
-        .settings-box .form-control:focus { border-color: var(--primary-color); box-shadow: 0 0 5px rgba(107, 72, 255, 0.3); outline: none; }
-        .btn-primary { background-color: var(--primary-color); border: none; color: #fff; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; width: 100%; }
-        .btn-primary:hover { background-color: var(--hover-color); }
+        
         .loading-spinner { display: none; text-align: center; padding: 1rem; color: var(--primary-color); }
         
         /* Responsive layout */
@@ -153,25 +235,51 @@
                 <div class="col-md-6 form-group">
                     <div class="card settings-card">
                         <h2 class="card-title">পরীক্ষা সেটিংস</h2>
-                        <div class="settings-box">
+                        <div class="settings-content">
                             <div class="form-group">
-                                <label for="numQuestions">প্রশ্নের সংখ্যা (সর্বোচ্চ ১০০):</label>
-                                <input type="number" id="numQuestions" class="form-control" min="1" max="100" required placeholder="০০ থেকে ১০০" />
+                                <label for="numQuestions" class="form-label">প্রশ্নের সংখ্যা</label>
+                                <input type="number" id="numQuestions" class="form-control" min="1" required placeholder="প্রশ্ন সংখ্যা লিখুন" />
                             </div>
+                            
                             <div class="form-group">
-                                <label for="timeInput">সময় (মিনিটে):</label>
-                                <input type="number" id="timeInput" class="form-control" min="1" required placeholder="১৫ মিনিট" />
+                                <label for="timeSelect" class="form-label">সময় (মিনিট)</label>
+                                <div class="select-wrapper">
+                                    <select id="timeSelect" class="form-control">
+                                        <option value="10">১০ মিনিট</option>
+                                        <option value="20">২০ মিনিট</option>
+                                        <option value="30">৩০ মিনিট</option>
+                                        <option value="60">৬০ মিনিট</option>
+                                        <option value="custom">কাস্টম সময়</option>
+                                    </select>
+                                </div>
+                                <div id="customTimeInput" class="custom-time-input">
+                                    <input type="number" id="customTime" class="form-control" min="1" placeholder="কাস্টম মিনিট লিখুন" />
+                                </div>
                             </div>
+                            
                             <div class="form-group">
-                                <label for="marksPerQuestion">প্রতি প্রশ্নে নম্বর:</label>
-                                <input type="number" id="marksPerQuestion" class="form-control" min="1" required placeholder="১ নম্বর" value="1" />
+                                <label for="negativeMarking" class="form-label">নেগেটিভ মার্কিং (প্রতি ভুল উত্তরে)</label>
+                                <input type="number" id="negativeMarking" class="form-control" min="0" step="0.01" value="0" placeholder="০" />
                             </div>
-                            <div class="form-group">
-                                <label for="negativeMarking">নেগেটিভ নম্বর:</label>
-                                <input type="number" id="negativeMarking" class="form-control" min="0" step="0.01" required placeholder="০ নম্বর" value="0" />
+                            
+                            <div class="summary-section">
+                                <div class="summary-title">সেটিংস সামারি</div>
+                                <div class="summary-item">
+                                    <span class="summary-label">মোট প্রশ্ন:</span>
+                                    <span id="summaryQuestions" class="summary-value">০</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">সময়:</span>
+                                    <span id="summaryTime" class="summary-value">০ মিনিট</span>
+                                </div>
+                                <div class="summary-item">
+                                    <span class="summary-label">নেগেটিভ মার্কিং:</span>
+                                    <span id="summaryNegative" class="summary-value">০</span>
+                                </div>
                             </div>
+                            
+                            <button type="submit" class="btn-primary">পরীক্ষা শুরু</button>
                         </div>
-                        <button type="submit" class="btn-primary mt-3">পরীক্ষা শুরু</button>
                     </div>
                 </div>
             </div>
@@ -273,6 +381,47 @@
             "English": [],
             "Bangla": []
         };
+
+        // Time selection handler
+        document.getElementById('timeSelect').addEventListener('change', function() {
+            const customTimeInput = document.getElementById('customTimeInput');
+            if (this.value === 'custom') {
+                customTimeInput.style.display = 'block';
+            } else {
+                customTimeInput.style.display = 'none';
+                updateSummary();
+            }
+        });
+
+        // Update summary when inputs change
+        document.getElementById('numQuestions').addEventListener('input', updateSummary);
+        document.getElementById('timeSelect').addEventListener('change', updateSummary);
+        document.getElementById('customTime').addEventListener('input', updateSummary);
+        document.getElementById('negativeMarking').addEventListener('input', updateSummary);
+
+        function updateSummary() {
+            const numQuestions = document.getElementById('numQuestions').value || '0';
+            const timeSelect = document.getElementById('timeSelect');
+            const customTime = document.getElementById('customTime').value;
+            const negativeMarking = document.getElementById('negativeMarking').value || '0';
+            
+            // Update questions
+            document.getElementById('summaryQuestions').textContent = numQuestions;
+            
+            // Update time
+            let timeDisplay;
+            if (timeSelect.value === 'custom' && customTime) {
+                timeDisplay = `${customTime} মিনিট`;
+            } else if (timeSelect.value !== 'custom') {
+                timeDisplay = `${timeSelect.options[timeSelect.selectedIndex].text}`;
+            } else {
+                timeDisplay = '০ মিনিট';
+            }
+            document.getElementById('summaryTime').textContent = timeDisplay;
+            
+            // Update negative marking
+            document.getElementById('summaryNegative').textContent = negativeMarking;
+        }
 
         function sanitizeFileName(name) {
             return name.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9\u0980-\u09FF-]/g, '');
@@ -389,17 +538,23 @@
                 const subject = chapterBox.dataset.subject;
                 selectedChapters.push({ subject, chapter: originalChapter });
             });
+            
             const numQuestions = parseInt(document.getElementById("numQuestions").value);
-            const time = parseInt(document.getElementById("timeInput").value);
-            const marksPerQuestion = parseFloat(document.getElementById("marksPerQuestion").value);
+            const timeSelect = document.getElementById("timeSelect");
+            let time;
+            if (timeSelect.value === 'custom') {
+                time = parseInt(document.getElementById("customTime").value);
+            } else {
+                time = parseInt(timeSelect.value);
+            }
             const negativeMarking = parseFloat(document.getElementById("negativeMarking").value);
 
             if (selectedChapters.length === 0) {
                 Toastify({ text: "অন্তত একটি অধ্যায় নির্বাচন করুন!", duration: 3000, style: { background: "#dc3545" } }).showToast();
                 return;
             }
-            if (!numQuestions || numQuestions > 100 || !time || !marksPerQuestion || marksPerQuestion <= 0 || negativeMarking < 0) {
-                Toastify({ text: "সব ক্ষেত্র সঠিকভাবে পূরণ করুন (প্রশ্ন ≤ ১০০, নম্বর > ০, নেগেটিভ নম্বর ≥ ০)।", duration: 3000, style: { background: "#dc3545" } }).showToast();
+            if (!numQuestions || numQuestions <= 0 || !time || time <= 0 || isNaN(negativeMarking) || negativeMarking < 0) {
+                Toastify({ text: "সব ক্ষেত্র সঠিকভাবে পূরণ করুন (প্রশ্ন > ০, সময় > ০, নেগেটিভ নম্বর ≥ ০)।", duration: 3000, style: { background: "#dc3545" } }).showToast();
                 return;
             }
 
@@ -426,7 +581,7 @@
                 const examDocRef = await db.collection("exams").add({
                     title: `কাস্টম পরীক্ষা - ${chaptersList.map(ch => ch.replace(/^Chapter \d+:\s*/, '')).join(", ")}`,
                     duration: time,
-                    marksPerQuestion: marksPerQuestion,
+                    marksPerQuestion: 1, // Default 1 mark per question
                     negativeMark: negativeMarking,
                     lastDate: null,
                     questions: selectedQuestions,
@@ -470,7 +625,10 @@
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.menu-container')) document.getElementById('menuDropdown').classList.remove('show');
         });
-        document.addEventListener("DOMContentLoaded", populateSubjects);
+        document.addEventListener("DOMContentLoaded", function() {
+            populateSubjects();
+            updateSummary();
+        });
     </script>
 </body>
 </html>
