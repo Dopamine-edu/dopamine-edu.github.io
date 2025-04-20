@@ -188,14 +188,7 @@
             border-radius: 10px; 
             margin-bottom: 0.5rem; 
             background: var(--card-bg); 
-            box-shadow: var(--shadow); 
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease;
-        }
-        .subject-box.loaded {
-            opacity: 1;
-            transform: translateY(0);
+            box-shadow: var(--shadow);
         }
         .subject-header { display: flex; align-items: center; justify-content: space-between; padding: 0.8rem; cursor: pointer; }
         .subject-header:hover { background: var(--border-color); }
@@ -213,40 +206,11 @@
         .chapter-name { flex-grow: 1; font-size: 0.9rem; }
         .chapter-question-count { color: #fff; background: #ff9800; padding: 0.2rem 0.5rem; border-radius: 12px; font-size: 0.9rem; }
         
-        /* Loading Animation */
         .loading-spinner { 
             display: none; 
             text-align: center; 
             padding: 1rem; 
             color: var(--primary-color);
-        }
-        .subject-loading {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100px;
-        }
-        .loading-dot {
-            width: 10px;
-            height: 10px;
-            margin: 0 5px;
-            background-color: var(--primary-color);
-            border-radius: 50%;
-            display: inline-block;
-            animation: bounce 1.4s infinite ease-in-out both;
-        }
-        .loading-dot:nth-child(1) {
-            animation-delay: -0.32s;
-        }
-        .loading-dot:nth-child(2) {
-            animation-delay: -0.16s;
-        }
-        @keyframes bounce {
-            0%, 80%, 100% { 
-                transform: scale(0);
-            } 40% { 
-                transform: scale(1.0);
-            }
         }
         
         /* Responsive layout */
@@ -303,13 +267,7 @@
                 <div class="col-md-6 form-group">
                     <div class="card subject-card">
                         <h2 class="card-title">বিষয় নির্বাচন</h2>
-                        <div id="subjectSelection">
-                            <div class="subject-loading">
-                                <div class="loading-dot"></div>
-                                <div class="loading-dot"></div>
-                                <div class="loading-dot"></div>
-                            </div>
-                        </div>
+                        <div id="subjectSelection"></div>
                     </div>
                 </div>
                 <div class="col-md-6 form-group">
@@ -665,13 +623,7 @@
             const questionCounts = {};
             const chapterQuestionCounts = {};
             
-            const subjectSelection = document.getElementById('subjectSelection');
-            subjectSelection.innerHTML = '<div class="subject-loading"><div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div></div>';
-            
-            const subjectKeys = Object.keys(subjects);
-            
-            for (let i = 0; i < subjectKeys.length; i++) {
-                const subject = subjectKeys[i];
+            for (const subject in subjects) {
                 let subjectCount = 0;
                 const chapters = subjects[subject];
                 const chapterCounts = [];
@@ -685,23 +637,6 @@
                 
                 questionCounts[subject] = subjectCount;
                 chapterQuestionCounts[subject] = chapterCounts;
-                
-                // Add subject box with animation
-                if (subjects[subject].length > 0) {
-                    const subjectBox = createSubjectBox(subject, questionCounts[subject], chapterQuestionCounts[subject]);
-                    
-                    // Remove loading animation if it's the first subject
-                    if (i === 0) {
-                        subjectSelection.innerHTML = '';
-                    }
-                    
-                    subjectSelection.appendChild(subjectBox);
-                    
-                    // Trigger animation
-                    setTimeout(() => {
-                        subjectBox.classList.add('loaded');
-                    }, 100 * i);
-                }
             }
             
             return { questionCounts, chapterQuestionCounts };
@@ -755,6 +690,15 @@
         async function populateSubjects() {
             try {
                 const { questionCounts, chapterQuestionCounts } = await fetchQuestionCounts();
+                const subjectSelection = document.getElementById('subjectSelection');
+                subjectSelection.innerHTML = '';
+                
+                for (const subject in subjects) {
+                    if (subjects[subject].length > 0) {
+                        const subjectBox = createSubjectBox(subject, questionCounts[subject], chapterQuestionCounts[subject]);
+                        subjectSelection.appendChild(subjectBox);
+                    }
+                }
             } catch (error) {
                 console.error("Error populating subjects:", error);
                 Toastify({ text: "বিষয়গুলো লোড করতে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
@@ -775,8 +719,8 @@
             let numQuestions;
             const questionDropdown = document.getElementById('questionDropdownToggle').querySelector('span').textContent;
             if (questionDropdown.includes('কাস্টম')) {
-                numQuestions = parseInt(document.getElementById
-                                                    } else {
+                numQuestions = parseInt(document.getElementById("numQuestions").value);
+            } else {
                 numQuestions = parseInt(questionDropdown.match(/\d+/)[0]);
             }
 
