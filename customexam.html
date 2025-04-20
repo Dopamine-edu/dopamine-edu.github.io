@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ডোপামিন - কাস্টম পরীক্ষা</title>
+    <title>Custom Exam</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" rel="stylesheet">
     <style>
@@ -33,7 +33,7 @@
         @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
         .menu-item { padding: 1rem 1.5rem; color: var(--text-color); text-decoration: none; display: flex; align-items: center; gap: 1rem; transition: all 0.3s; }
         .menu-item:hover { background: var(--border-color); padding-left: 2rem; }
-        .container { flex: 1; padding: 1rem; max-width: 1200px; margin: 0 auto; }
+        .container { flex: 1; padding: 1rem; max-width: 1200px; margin: 0 auto; width: 100%; }
         .form-group { margin-bottom: 1rem; }
         h2 { font-size: 1.5rem; color: var(--primary-color); margin-bottom: 0.5rem; }
         .subject-box { border: 1px solid var(--border-color); border-radius: 10px; margin-bottom: 0.5rem; background: var(--card-bg); box-shadow: var(--shadow); }
@@ -58,13 +58,20 @@
         .btn-primary { background-color: var(--primary-color); border: none; color: #fff; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; transition: background-color 0.3s; width: 100%; }
         .btn-primary:hover { background-color: var(--hover-color); }
         .loading-spinner { display: none; text-align: center; padding: 1rem; color: var(--primary-color); }
-        @media (max-width: 768px) {
+        
+        /* Responsive layout */
+        .row { display: flex; flex-wrap: wrap; margin: 0 -0.5rem; }
+        .col-md-6 { padding: 0 0.5rem; flex: 0 0 100%; max-width: 100%; }
+        
+        @media (min-width: 768px) {
+            .col-md-6 { flex: 0 0 50%; max-width: 50%; }
+        }
+        
+        @media (max-width: 767px) {
             .navbar { padding: 0.8rem; }
             .nav-left img { width: 30px; height: 30px; }
             .website-name { font-size: 1.2rem; }
             .back-to-dashboard, .theme-toggle, .menu-btn { font-size: 1.2rem; padding: 0.3rem; }
-            .row { flex-direction: column; }
-            .col-md-6 { width: 100%; }
             .subject-box, .chapter-box { font-size: 0.9rem; }
             .question-count, .chapter-question-count { font-size: 0.8rem; }
         }
@@ -199,6 +206,7 @@
                 "Chapter 10: সেমিকন্ডাক্টর ও ইলেকট্রনিক্স"
             ],
             "Chemistry 1st": [
+                "Chapter 01: ল্যাবরেটরির নিরাপদ ব্যবহার",
                 "Chapter 02: গুণগত রসায়ন",
                 "Chapter 03: মৌলের পর্যায়বৃত্ত ধর্ম",
                 "Chapter 04: রাসায়নিক পরিবর্তন",
@@ -430,4 +438,4 @@
         document.addEventListener("DOMContentLoaded", populateSubjects);
     </script>
 </body>
-</html>
+    </html>
