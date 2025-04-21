@@ -448,7 +448,6 @@
             "Bangla": []
         };
 
-        // Initialize dropdown functionality
         function initDropdowns() {
             // Question dropdown
             const questionDropdownToggle = document.getElementById('questionDropdownToggle');
@@ -469,11 +468,11 @@
                     const text = this.textContent;
                     
                     if (value === 'custom') {
-                        numQuestionsInput.style.display = 'block';
+                        numQuestionsInput.classList.add('show');
                         numQuestionsInput.focus();
                         questionSelectedValue.textContent = text;
                     } else {
-                        numQuestionsInput.style.display = 'none';
+                        numQuestionsInput.classList.remove('show');
                         questionSelectedValue.textContent = text;
                         numQuestionsInput.value = value;
                     }
@@ -509,11 +508,11 @@
                     const text = this.textContent;
                     
                     if (value === 'custom') {
-                        customTimeInput.style.display = 'block';
+                        customTimeInput.classList.add('show');
                         customTimeInput.focus();
                         timeSelectedValue.textContent = text;
                     } else {
-                        customTimeInput.style.display = 'none';
+                        customTimeInput.classList.remove('show');
                         timeSelectedValue.textContent = text;
                         customTimeInput.value = value;
                     }
@@ -549,11 +548,11 @@
                     const text = this.textContent;
                     
                     if (value === 'custom') {
-                        negativeMarkingInput.style.display = 'block';
+                        negativeMarkingInput.classList.add('show');
                         negativeMarkingInput.focus();
                         negativeSelectedValue.textContent = text;
                     } else {
-                        negativeMarkingInput.style.display = 'none';
+                        negativeMarkingInput.classList.remove('show');
                         negativeSelectedValue.textContent = text;
                         negativeMarkingInput.value = value;
                     }
@@ -578,7 +577,6 @@
             });
         }
 
-        // Update summary when inputs change
         function updateSummary() {
             // Questions
             const numQuestions = document.getElementById('numQuestions').value || '0';
@@ -685,7 +683,9 @@
             arrow.classList.toggle('active');
         }
 
-        function toggleChapter(checkbox) {}
+        function toggleChapter(checkbox) {
+            // Just to satisfy the onclick handler
+        }
 
         async function populateSubjects() {
             try {
@@ -755,41 +755,76 @@
             loadingDiv.style.display = "block";
 
             try {
-                const allQuestions = [];
+                // First collect all question data from selected chapters
+                const allQuestionsWithData = [];
                 for (const { subject, chapter } of selectedChapters) {
-                    const chapterQuestions = await loadQuestionsFromJSON(subject, chapter);
-                    chapterQuestions.forEach((q, index) => {
-                        allQuestions.push({ id: index, subject, chapter });
+                    const questions = await loadQuestionsFromJSON(subject, chapter);
+                    questions.forEach(q => {
+                        allQuestionsWithData.push({
+                            ...q,
+                            subject,
+                            chapter
+                        });
                     });
                 }
-                if (allQuestions.length === 0) throw new Error("নির্বাচিত অধ্যায়গুলোর জন্য কোনো প্রশ্ন পাওয়া যায়নি।");
-                if (allQuestions.length < numQuestions) {
-                    Toastify({ text: `মাত্র ${allQuestions.length}টি প্রশ্ন পাওয়া গেছে, সবগুলো ব্যবহার করা হচ্ছে।`, duration: 3000, style: { background: "#ff9800" } }).showToast();
+
+                if (allQuestionsWithData.length === 0) {
+                    throw new Error("নির্বাচিত অধ্যায়গুলোর জন্য কোনো প্রশ্ন পাওয়া যায়নি।");
                 }
 
-                const selectedQuestions = allQuestions.sort(() => 0.5 - Math.random()).slice(0, Math.min(numQuestions, allQuestions.length));
-                const subjectsList = [...new Set(selectedChapters.map(item => item.subject))];
-                const chaptersList = selectedChapters.map(item => item.chapter);
+                if (allQuestionsWithData.length < numQuestions) {
+                    Toastify({ 
+                        text: `মাত্র ${allQuestionsWithData.length}টি প্রশ্ন পাওয়া গেছে, সবগুলো ব্যবহার করা হচ্ছে।`, 
+                        duration: 3000, 
+                        style: { background: "#ff9800" } 
+                    }).showToast();
+                    numQuestions = allQuestionsWithData.length;
+                }
 
+                // Shuffle and select questions
+                const shuffledQuestions = [...allQuestionsWithData].sort(() => 0.5 - Math.random());
+                const selectedQuestions = shuffledQuestions.slice(0, numQuestions);
+
+                // Create exam in Firestore
                 const examDocRef = await db.collection("exams").add({
-                    title: `কাস্টম পরীক্ষা - ${chaptersList.map(ch => ch.replace(/^Chapter \d+:\s*/, '')).join(", ")}`,
+                    title: `কাস্টম পরীক্ষা - ${new Date().toLocaleString()}`,
+                    description: selectedChapters.map(c => `${c.subject} - ${c.chapter.replace(/^Chapter \d+:\s*/, '')}`).join(", "),
                     duration: time,
-                    marksPerQuestion: 1, // Default 1 mark per question
+                    marksPerQuestion: 1,
                     negativeMark: negativeMarking,
                     lastDate: null,
-                    questions: selectedQuestions,
-                    subjects: subjectsList,
-                    chapters: chaptersList,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    questions: selectedQuestions.map(q => ({
+                        id: q.id || Math.random().toString(36).substring(2),
+                        question: q.question,
+                        options: q.options,
+                        correctAnswer: q.correctAnswer,
+                        explanation: q.explanation || "",
+                        subject: q.subject,
+                        chapter: q.chapter
+                    })),
+                    subjects: [...new Set(selectedChapters.map(c => c.subject))],
+                    chapters: selectedChapters.map(c => c.chapter),
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    isCustomExam: true
                 });
 
                 loadingDiv.style.display = "none";
-                Toastify({ text: "কাস্টম পরীক্ষা সফলভাবে তৈরি হয়েছে!", duration: 3000, style: { background: "#6b48ff" } }).showToast();
+                Toastify({ 
+                    text: "কাস্টম পরীক্ষা সফলভাবে তৈরি হয়েছে!", 
+                    duration: 3000, 
+                    style: { background: "#6b48ff" } 
+                }).showToast();
+                
+                // Redirect to exam page with the new exam ID
                 window.location.href = `quiz.html?examId=${examDocRef.id}`;
             } catch (error) {
                 loadingDiv.style.display = "none";
                 console.error("কাস্টম পরীক্ষা তৈরিতে ত্রুটি:", error);
-                Toastify({ text: "পরীক্ষা তৈরিতে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
+                Toastify({ 
+                    text: "পরীক্ষা তৈরিতে ত্রুটি: " + error.message, 
+                    duration: 3000, 
+                    style: { background: "#dc3545" } 
+                }).showToast();
             }
         });
 
