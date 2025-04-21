@@ -36,7 +36,7 @@
         .menu-item { padding: 1rem 1.5rem; color: var(--text-color); text-decoration: none; display: flex; align-items: center; gap: 1rem; transition: all 0.3s; }
         .menu-item:hover { background: var(--border-color); padding-left: 2rem; }
         .container { flex: 1; padding: 1rem; max-width: 1200px; margin: 0 auto; width: 100%; }
-        .form-group { margin-bottom: 1rem; position: relative; }
+        .form-group { margin-bottom: 1rem; }
         
         /* Card Styles */
         .card {
@@ -85,57 +85,26 @@
             box-shadow: 0 0 5px rgba(107, 72, 255, 0.3);
             outline: none;
         }
-        
-        /* Dropdown Styles */
-        .dropdown-wrapper {
+        .select-wrapper {
             position: relative;
         }
-        .dropdown-toggle {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.5rem;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .dropdown-menu {
+        .select-wrapper::after {
+            content: "▼";
+            font-size: 0.8rem;
             position: absolute;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 5px;
-            box-shadow: var(--shadow);
-            z-index: 10;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: var(--secondary-text-color);
+        }
+        select.form-control {
+            appearance: none;
+            padding-right: 30px;
+        }
+        .custom-time-input {
             display: none;
-            max-height: 200px;
-            overflow-y: auto;
-        }
-        .dropdown-menu.show {
-            display: block;
-            animation: fadeIn 0.2s ease-out;
-        }
-        .dropdown-item {
-            padding: 0.5rem;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        .dropdown-item:hover {
-            background-color: var(--border-color);
-        }
-        .dropdown-item.active {
-            background-color: var(--primary-color);
-            color: white;
-        }
-        .custom-input {
             margin-top: 0.5rem;
-            display: none;
-        }
-        .custom-input.show {
-            display: block;
         }
         
         /* Summary Section */
@@ -183,13 +152,7 @@
         }
         
         /* Subject Selection Styles */
-        .subject-box { 
-            border: 1px solid var(--border-color); 
-            border-radius: 10px; 
-            margin-bottom: 0.5rem; 
-            background: var(--card-bg); 
-            box-shadow: var(--shadow);
-        }
+        .subject-box { border: 1px solid var(--border-color); border-radius: 10px; margin-bottom: 0.5rem; background: var(--card-bg); box-shadow: var(--shadow); }
         .subject-header { display: flex; align-items: center; justify-content: space-between; padding: 0.8rem; cursor: pointer; }
         .subject-header:hover { background: var(--border-color); }
         .subject-header .form-check-input { margin-right: 0.5rem; width: 20px; height: 20px; border: 2px solid var(--border-color); cursor: pointer; }
@@ -206,12 +169,7 @@
         .chapter-name { flex-grow: 1; font-size: 0.9rem; }
         .chapter-question-count { color: #fff; background: #ff9800; padding: 0.2rem 0.5rem; border-radius: 12px; font-size: 0.9rem; }
         
-        .loading-spinner { 
-            display: none; 
-            text-align: center; 
-            padding: 1rem; 
-            color: var(--primary-color);
-        }
+        .loading-spinner { display: none; text-align: center; padding: 1rem; color: var(--primary-color); }
         
         /* Responsive layout */
         .row { display: flex; flex-wrap: wrap; margin: 0 -0.5rem; }
@@ -231,6 +189,10 @@
             .card { padding: 1rem; }
         }
     </style>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </head>
 <body>
     <nav class="navbar">
@@ -275,53 +237,29 @@
                         <h2 class="card-title">পরীক্ষা সেটিংস</h2>
                         <div class="settings-content">
                             <div class="form-group">
-                                <label class="form-label">প্রশ্নের সংখ্যা</label>
-                                <div class="dropdown-wrapper">
-                                    <div class="dropdown-toggle" id="questionDropdownToggle">
-                                        <span id="questionSelectedValue">প্রশ্ন সংখ্যা নির্বাচন করুন</span>
-                                        <i class="fas fa-chevron-down"></i>
-                                    </div>
-                                    <div class="dropdown-menu" id="questionDropdown">
-                                        <div class="dropdown-item" data-value="20">২০টি</div>
-                                        <div class="dropdown-item" data-value="30">৩০টি</div>
-                                        <div class="dropdown-item" data-value="50">৫০টি</div>
-                                        <div class="dropdown-item" data-value="custom">কাস্টম সংখ্যা</div>
-                                    </div>
-                                </div>
-                                <input type="number" id="numQuestions" class="form-control custom-input" min="1" placeholder="প্রশ্ন সংখ্যা লিখুন" />
+                                <label for="numQuestions" class="form-label">প্রশ্নের সংখ্যা</label>
+                                <input type="number" id="numQuestions" class="form-control" min="1" required placeholder="প্রশ্ন সংখ্যা লিখুন" />
                             </div>
                             
                             <div class="form-group">
-                                <label class="form-label">সময় (মিনিট)</label>
-                                <div class="dropdown-wrapper">
-                                    <div class="dropdown-toggle" id="timeDropdownToggle">
-                                        <span id="timeSelectedValue">সময় নির্বাচন করুন</span>
-                                        <i class="fas fa-chevron-down"></i>
-                                    </div>
-                                    <div class="dropdown-menu" id="timeDropdown">
-                                        <div class="dropdown-item" data-value="10">১০ মিনিট</div>
-                                        <div class="dropdown-item" data-value="20">২০ মিনিট</div>
-                                        <div class="dropdown-item" data-value="30">৩০ মিনিট</div>
-                                        <div class="dropdown-item" data-value="60">৬০ মিনিট</div>
-                                        <div class="dropdown-item" data-value="custom">কাস্টম সময়</div>
-                                    </div>
+                                <label for="timeSelect" class="form-label">সময় (মিনিট)</label>
+                                <div class="select-wrapper">
+                                    <select id="timeSelect" class="form-control">
+                                        <option value="10">১০ মিনিট</option>
+                                        <option value="20">২০ মিনিট</option>
+                                        <option value="30">৩০ মিনিট</option>
+                                        <option value="60">৬০ মিনিট</option>
+                                        <option value="custom">কাস্টম সময়</option>
+                                    </select>
                                 </div>
-                                <input type="number" id="customTime" class="form-control custom-input" min="1" placeholder="কাস্টম মিনিট লিখুন" />
+                                <div id="customTimeInput" class="custom-time-input">
+                                    <input type="number" id="customTime" class="form-control" min="1" placeholder="কাস্টম মিনিট লিখুন" />
+                                </div>
                             </div>
                             
                             <div class="form-group">
-                                <label class="form-label">নেগেটিভ মার্কিং (প্রতি ভুল উত্তরে)</label>
-                                <div class="dropdown-wrapper">
-                                    <div class="dropdown-toggle" id="negativeDropdownToggle">
-                                        <span id="negativeSelectedValue">নেগেটিভ মার্কিং নির্বাচন করুন</span>
-                                        <i class="fas fa-chevron-down"></i>
-                                    </div>
-                                    <div class="dropdown-menu" id="negativeDropdown">
-                                        <div class="dropdown-item" data-value="0.25">০.২৫</div>
-                                        <div class="dropdown-item" data-value="custom">কাস্টম</div>
-                                    </div>
-                                </div>
-                                <input type="number" id="negativeMarking" class="form-control custom-input" min="0" step="0.01" placeholder="নেগেটিভ মার্কিং লিখুন" />
+                                <label for="negativeMarking" class="form-label">নেগেটিভ মার্কিং (প্রতি ভুল উত্তরে)</label>
+                                <input type="number" id="negativeMarking" class="form-control" min="0" step="0.01" value="0" placeholder="০" />
                             </div>
                             
                             <div class="summary-section">
@@ -347,10 +285,6 @@
             </div>
         </form>
     </div>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
@@ -448,147 +382,44 @@
             "Bangla": []
         };
 
-        function initDropdowns() {
-            // Question dropdown
-            const questionDropdownToggle = document.getElementById('questionDropdownToggle');
-            const questionDropdown = document.getElementById('questionDropdown');
-            const questionSelectedValue = document.getElementById('questionSelectedValue');
-            const numQuestionsInput = document.getElementById('numQuestions');
-            
-            questionDropdownToggle.addEventListener('click', function(e) {
-                e.stopPropagation();
-                questionDropdown.classList.toggle('show');
-                document.getElementById('timeDropdown').classList.remove('show');
-                document.getElementById('negativeDropdown').classList.remove('show');
-            });
-            
-            questionDropdown.querySelectorAll('.dropdown-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    const value = this.getAttribute('data-value');
-                    const text = this.textContent;
-                    
-                    if (value === 'custom') {
-                        numQuestionsInput.classList.add('show');
-                        numQuestionsInput.focus();
-                        questionSelectedValue.textContent = text;
-                    } else {
-                        numQuestionsInput.classList.remove('show');
-                        questionSelectedValue.textContent = text;
-                        numQuestionsInput.value = value;
-                    }
-                    
-                    questionDropdown.classList.remove('show');
-                    updateSummary();
-                });
-            });
-            
-            numQuestionsInput.addEventListener('input', function() {
-                if (this.value) {
-                    questionSelectedValue.textContent = `${this.value}টি`;
-                }
+        // Time selection handler
+        document.getElementById('timeSelect').addEventListener('change', function() {
+            const customTimeInput = document.getElementById('customTimeInput');
+            if (this.value === 'custom') {
+                customTimeInput.style.display = 'block';
+            } else {
+                customTimeInput.style.display = 'none';
                 updateSummary();
-            });
-            
-            // Time dropdown
-            const timeDropdownToggle = document.getElementById('timeDropdownToggle');
-            const timeDropdown = document.getElementById('timeDropdown');
-            const timeSelectedValue = document.getElementById('timeSelectedValue');
-            const customTimeInput = document.getElementById('customTime');
-            
-            timeDropdownToggle.addEventListener('click', function(e) {
-                e.stopPropagation();
-                timeDropdown.classList.toggle('show');
-                document.getElementById('questionDropdown').classList.remove('show');
-                document.getElementById('negativeDropdown').classList.remove('show');
-            });
-            
-            timeDropdown.querySelectorAll('.dropdown-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    const value = this.getAttribute('data-value');
-                    const text = this.textContent;
-                    
-                    if (value === 'custom') {
-                        customTimeInput.classList.add('show');
-                        customTimeInput.focus();
-                        timeSelectedValue.textContent = text;
-                    } else {
-                        customTimeInput.classList.remove('show');
-                        timeSelectedValue.textContent = text;
-                        customTimeInput.value = value;
-                    }
-                    
-                    timeDropdown.classList.remove('show');
-                    updateSummary();
-                });
-            });
-            
-            customTimeInput.addEventListener('input', function() {
-                if (this.value) {
-                    timeSelectedValue.textContent = `${this.value} মিনিট`;
-                }
-                updateSummary();
-            });
-            
-            // Negative marking dropdown
-            const negativeDropdownToggle = document.getElementById('negativeDropdownToggle');
-            const negativeDropdown = document.getElementById('negativeDropdown');
-            const negativeSelectedValue = document.getElementById('negativeSelectedValue');
-            const negativeMarkingInput = document.getElementById('negativeMarking');
-            
-            negativeDropdownToggle.addEventListener('click', function(e) {
-                e.stopPropagation();
-                negativeDropdown.classList.toggle('show');
-                document.getElementById('questionDropdown').classList.remove('show');
-                document.getElementById('timeDropdown').classList.remove('show');
-            });
-            
-            negativeDropdown.querySelectorAll('.dropdown-item').forEach(item => {
-                item.addEventListener('click', function() {
-                    const value = this.getAttribute('data-value');
-                    const text = this.textContent;
-                    
-                    if (value === 'custom') {
-                        negativeMarkingInput.classList.add('show');
-                        negativeMarkingInput.focus();
-                        negativeSelectedValue.textContent = text;
-                    } else {
-                        negativeMarkingInput.classList.remove('show');
-                        negativeSelectedValue.textContent = text;
-                        negativeMarkingInput.value = value;
-                    }
-                    
-                    negativeDropdown.classList.remove('show');
-                    updateSummary();
-                });
-            });
-            
-            negativeMarkingInput.addEventListener('input', function() {
-                if (this.value) {
-                    negativeSelectedValue.textContent = this.value;
-                }
-                updateSummary();
-            });
-            
-            // Close dropdowns when clicking outside
-            document.addEventListener('click', function() {
-                questionDropdown.classList.remove('show');
-                timeDropdown.classList.remove('show');
-                negativeDropdown.classList.remove('show');
-            });
-        }
+            }
+        });
+
+        // Update summary when inputs change
+        document.getElementById('numQuestions').addEventListener('input', updateSummary);
+        document.getElementById('timeSelect').addEventListener('change', updateSummary);
+        document.getElementById('customTime').addEventListener('input', updateSummary);
+        document.getElementById('negativeMarking').addEventListener('input', updateSummary);
 
         function updateSummary() {
-            // Questions
             const numQuestions = document.getElementById('numQuestions').value || '0';
+            const timeSelect = document.getElementById('timeSelect');
+            const customTime = document.getElementById('customTime').value;
+            const negativeMarking = document.getElementById('negativeMarking').value || '0';
+            
+            // Update questions
             document.getElementById('summaryQuestions').textContent = numQuestions;
             
-            // Time
-            const timeDropdown = document.getElementById('timeDropdownToggle');
-            const timeText = timeDropdown.querySelector('span').textContent;
-            document.getElementById('summaryTime').textContent = timeText.includes('নির্বাচন') ? '০ মিনিট' : timeText;
+            // Update time
+            let timeDisplay;
+            if (timeSelect.value === 'custom' && customTime) {
+                timeDisplay = `${customTime} মিনিট`;
+            } else if (timeSelect.value !== 'custom') {
+                timeDisplay = `${timeSelect.options[timeSelect.selectedIndex].text}`;
+            } else {
+                timeDisplay = '০ মিনিট';
+            }
+            document.getElementById('summaryTime').textContent = timeDisplay;
             
-            // Negative marking
-            const negativeMarking = document.getElementById('negativeMarking').value || '0';
+            // Update negative marking
             document.getElementById('summaryNegative').textContent = negativeMarking;
         }
 
@@ -620,23 +451,19 @@
         async function fetchQuestionCounts() {
             const questionCounts = {};
             const chapterQuestionCounts = {};
-            
             for (const subject in subjects) {
                 let subjectCount = 0;
                 const chapters = subjects[subject];
                 const chapterCounts = [];
-                
                 for (const chapter of chapters) {
                     const questions = await loadQuestionsFromJSON(subject, chapter);
                     const count = questions.length;
                     subjectCount += count;
                     chapterCounts.push(count);
                 }
-                
                 questionCounts[subject] = subjectCount;
                 chapterQuestionCounts[subject] = chapterCounts;
             }
-            
             return { questionCounts, chapterQuestionCounts };
         }
 
@@ -683,16 +510,13 @@
             arrow.classList.toggle('active');
         }
 
-        function toggleChapter(checkbox) {
-            // Just to satisfy the onclick handler
-        }
+        function toggleChapter(checkbox) {}
 
         async function populateSubjects() {
             try {
                 const { questionCounts, chapterQuestionCounts } = await fetchQuestionCounts();
                 const subjectSelection = document.getElementById('subjectSelection');
                 subjectSelection.innerHTML = '';
-                
                 for (const subject in subjects) {
                     if (subjects[subject].length > 0) {
                         const subjectBox = createSubjectBox(subject, questionCounts[subject], chapterQuestionCounts[subject]);
@@ -715,32 +539,15 @@
                 selectedChapters.push({ subject, chapter: originalChapter });
             });
             
-            // Get question count
-            let numQuestions;
-            const questionDropdown = document.getElementById('questionDropdownToggle').querySelector('span').textContent;
-            if (questionDropdown.includes('কাস্টম')) {
-                numQuestions = parseInt(document.getElementById("numQuestions").value);
-            } else {
-                numQuestions = parseInt(questionDropdown.match(/\d+/)[0]);
-            }
-
-            // Get time
+            const numQuestions = parseInt(document.getElementById("numQuestions").value);
+            const timeSelect = document.getElementById("timeSelect");
             let time;
-            const timeDropdown = document.getElementById('timeDropdownToggle').querySelector('span').textContent;
-            if (timeDropdown.includes('কাস্টম')) {
+            if (timeSelect.value === 'custom') {
                 time = parseInt(document.getElementById("customTime").value);
             } else {
-                time = parseInt(timeDropdown.match(/\d+/)[0]);
+                time = parseInt(timeSelect.value);
             }
-
-            // Get negative marking
-            let negativeMarking;
-            const negativeDropdown = document.getElementById('negativeDropdownToggle').querySelector('span').textContent;
-            if (negativeDropdown.includes('কাস্টম')) {
-                negativeMarking = parseFloat(document.getElementById("negativeMarking").value);
-            } else {
-                negativeMarking = parseFloat(negativeDropdown);
-            }
+            const negativeMarking = parseFloat(document.getElementById("negativeMarking").value);
 
             if (selectedChapters.length === 0) {
                 Toastify({ text: "অন্তত একটি অধ্যায় নির্বাচন করুন!", duration: 3000, style: { background: "#dc3545" } }).showToast();
@@ -755,76 +562,41 @@
             loadingDiv.style.display = "block";
 
             try {
-                // First collect all question data from selected chapters
-                const allQuestionsWithData = [];
+                const allQuestions = [];
                 for (const { subject, chapter } of selectedChapters) {
-                    const questions = await loadQuestionsFromJSON(subject, chapter);
-                    questions.forEach(q => {
-                        allQuestionsWithData.push({
-                            ...q,
-                            subject,
-                            chapter
-                        });
+                    const chapterQuestions = await loadQuestionsFromJSON(subject, chapter);
+                    chapterQuestions.forEach((q, index) => {
+                        allQuestions.push({ id: index, subject, chapter });
                     });
                 }
-
-                if (allQuestionsWithData.length === 0) {
-                    throw new Error("নির্বাচিত অধ্যায়গুলোর জন্য কোনো প্রশ্ন পাওয়া যায়নি।");
+                if (allQuestions.length === 0) throw new Error("নির্বাচিত অধ্যায়গুলোর জন্য কোনো প্রশ্ন পাওয়া যায়নি।");
+                if (allQuestions.length < numQuestions) {
+                    Toastify({ text: `মাত্র ${allQuestions.length}টি প্রশ্ন পাওয়া গেছে, সবগুলো ব্যবহার করা হচ্ছে।`, duration: 3000, style: { background: "#ff9800" } }).showToast();
                 }
 
-                if (allQuestionsWithData.length < numQuestions) {
-                    Toastify({ 
-                        text: `মাত্র ${allQuestionsWithData.length}টি প্রশ্ন পাওয়া গেছে, সবগুলো ব্যবহার করা হচ্ছে।`, 
-                        duration: 3000, 
-                        style: { background: "#ff9800" } 
-                    }).showToast();
-                    numQuestions = allQuestionsWithData.length;
-                }
+                const selectedQuestions = allQuestions.sort(() => 0.5 - Math.random()).slice(0, Math.min(numQuestions, allQuestions.length));
+                const subjectsList = [...new Set(selectedChapters.map(item => item.subject))];
+                const chaptersList = selectedChapters.map(item => item.chapter);
 
-                // Shuffle and select questions
-                const shuffledQuestions = [...allQuestionsWithData].sort(() => 0.5 - Math.random());
-                const selectedQuestions = shuffledQuestions.slice(0, numQuestions);
-
-                // Create exam in Firestore
                 const examDocRef = await db.collection("exams").add({
-                    title: `কাস্টম পরীক্ষা - ${new Date().toLocaleString()}`,
-                    description: selectedChapters.map(c => `${c.subject} - ${c.chapter.replace(/^Chapter \d+:\s*/, '')}`).join(", "),
+                    title: `কাস্টম পরীক্ষা - ${chaptersList.map(ch => ch.replace(/^Chapter \d+:\s*/, '')).join(", ")}`,
                     duration: time,
-                    marksPerQuestion: 1,
+                    marksPerQuestion: 1, // Default 1 mark per question
                     negativeMark: negativeMarking,
                     lastDate: null,
-                    questions: selectedQuestions.map(q => ({
-                        id: q.id || Math.random().toString(36).substring(2),
-                        question: q.question,
-                        options: q.options,
-                        correctAnswer: q.correctAnswer,
-                        explanation: q.explanation || "",
-                        subject: q.subject,
-                        chapter: q.chapter
-                    })),
-                    subjects: [...new Set(selectedChapters.map(c => c.subject))],
-                    chapters: selectedChapters.map(c => c.chapter),
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                    isCustomExam: true
+                    questions: selectedQuestions,
+                    subjects: subjectsList,
+                    chapters: chaptersList,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
 
                 loadingDiv.style.display = "none";
-                Toastify({ 
-                    text: "কাস্টম পরীক্ষা সফলভাবে তৈরি হয়েছে!", 
-                    duration: 3000, 
-                    style: { background: "#6b48ff" } 
-                }).showToast();
-                
-                // Redirect to exam page with the new exam ID
+                Toastify({ text: "কাস্টম পরীক্ষা সফলভাবে তৈরি হয়েছে!", duration: 3000, style: { background: "#6b48ff" } }).showToast();
                 window.location.href = `quiz.html?examId=${examDocRef.id}`;
             } catch (error) {
                 loadingDiv.style.display = "none";
                 console.error("কাস্টম পরীক্ষা তৈরিতে ত্রুটি:", error);
-                Toastify({ 
-                    text: "পরীক্ষা তৈরিতে ত্রুটি: " + error.message, 
-                    duration: 3000, 
-                    style: { background: "#dc3545" } 
-                }).showToast();
+                Toastify({ text: "পরীক্ষা তৈরিতে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
             }
         });
 
@@ -852,17 +624,11 @@
         }
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.menu-container')) document.getElementById('menuDropdown').classList.remove('show');
-            if (!e.target.closest('.dropdown-wrapper')) {
-                document.querySelectorAll('.dropdown-menu').forEach(menu => {
-                    menu.classList.remove('show');
-                });
-            }
         });
         document.addEventListener("DOMContentLoaded", function() {
-            initDropdowns();
             populateSubjects();
             updateSummary();
         });
     </script>
 </body>
-</html>
+    </html>
