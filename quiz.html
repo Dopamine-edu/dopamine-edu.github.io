@@ -23,13 +23,17 @@
             --card-bg: #fff;
             --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             --border-color: #ddd;
-            --primary-color: #6b48ff;
-            --hover-color: #5a3de6;
             --secondary-text-color: #666;
             --correct-bg: #d4edda;
             --correct-border: #28a745;
             --incorrect-bg: #f8d7da;
             --incorrect-border: #dc3545;
+            --purple-box: #9810fa;
+            --blue-box: #2b7fff;
+            --green-box: #00c950;
+            --orange-btn: #F97316;
+            --light-purple: #c084fc; /* Lighter purple for question number */
+            --answered-border: #00c950; /* Green outline for answered questions */
         }
 
         [data-theme="dark"] {
@@ -43,6 +47,12 @@
             --correct-border: #4caf50;
             --incorrect-bg: #d32f2f;
             --incorrect-border: #f44336;
+            --purple-box: #7C3AED;
+            --blue-box: #2563EB;
+            --green-box: #16A34A;
+            --orange-btn: #EA580C;
+            --light-purple: #A855F7;
+            --answered-border: #16A34A;
         }
 
         * {
@@ -62,32 +72,48 @@
         }
 
         .navbar {
-            background: var(--card-bg);
-            padding: 1rem;
-            border-radius: 15px;
-            box-shadow: var(--shadow);
+            padding: 0.5rem 1rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 1rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
         }
 
         .nav-left {
             display: flex;
-            align-items: center;
-            gap: 1rem;
+            flex-direction: column;
+            gap: 0.5rem;
         }
 
-        #timer {
-            background: var(--card-bg);
-            padding: 10px;
-            border-radius: 5px;
+        .exam-title {
+            font-size: 1.5rem;
             font-weight: bold;
-            box-shadow: var(--shadow);
-            color: var(--primary-color);
+            color: var(--purple-box);
+            margin-bottom: 0.5rem;
+        }
+
+        .subject-box {
+            background: var(--purple-box);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+
+        .questions-box {
+            background: var(--blue-box);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+
+        .timer-box {
+            background: var(--green-box);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
         }
 
         .nav-right {
@@ -96,56 +122,66 @@
             gap: 1rem;
         }
 
-        .theme-toggle, .menu-btn {
+        .theme-toggle {
             background: none;
             border: none;
-            color: var(--primary-color);
+            color: var(--text-color);
             cursor: pointer;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             padding: 0.5rem;
             transition: transform 0.3s;
         }
 
         .theme-toggle:hover { transform: scale(1.1); }
-        .menu-btn:hover { transform: rotate(90deg); }
 
-        .menu-container { position: relative; }
-
-        .menu-dropdown {
-            position: absolute;
-            right: 0;
-            top: 3rem;
+        .sticky-bar {
+            position: sticky;
+            top: 0;
             background: var(--card-bg);
-            border-radius: 10px;
+            padding: 0.5rem 1rem;
             box-shadow: var(--shadow);
-            display: none;
-            min-width: 200px;
-            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 99;
+            margin-bottom: 1rem;
         }
 
-        .menu-dropdown.show {
-            display: block;
-            animation: fadeIn 0.3s ease-out;
+        .sticky-bar .answered-count {
+            font-size: 0.9rem;
+            font-weight: bold;
+            background: var(--blue-box);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 8px;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .menu-item {
-            padding: 1rem 1.5rem;
-            color: var(--text-color);
-            text-decoration: none;
+        .sticky-bar .timer {
+            font-size: 0.9rem;
+            font-weight: bold;
             display: flex;
             align-items: center;
-            gap: 1rem;
-            transition: all 0.3s;
+            gap: 0.3rem;
         }
 
-        .menu-item:hover {
-            background: var(--border-color);
-            padding-left: 2rem;
+        .sticky-bar .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-next {
+            background: none;
+            border: 1px solid var(--border-color);
+            padding: 0.3rem 0.8rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
+        }
+
+        .btn-next:hover {
+            background-color: var(--purple-box);
+            color: white;
         }
 
         .container {
@@ -157,24 +193,30 @@
 
         .header { margin-bottom: 20px; }
 
-        #examNameDisplay {
-            font-size: 1.8rem;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: var(--text-color);
+        .progress-container {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
         }
 
-        .progress-container { margin-bottom: 20px; }
         .progress {
-            height: 20px;
+            height: 8px;
             background-color: var(--border-color);
-            border-radius: 10px;
+            border-radius: 8px;
             overflow: hidden;
+            flex-grow: 1;
         }
+
         .progress-bar {
-            background-color: var(--primary-color);
+            background-color: var(--purple-box);
             height: 100%;
             transition: width 0.3s ease-in-out;
+        }
+
+        .progress-text {
+            font-size: 0.85rem;
+            color: var(--secondary-text-color);
         }
 
         #scoreDisplay {
@@ -191,52 +233,87 @@
             border-radius: 8px;
             box-shadow: var(--shadow);
             margin-bottom: 20px;
-            min-height: 100px;
+            transition: border 0.3s;
         }
 
-        .question-card p {
-            margin-bottom: 10px;
-            min-height: 20px;
+        .question-card.answered {
+            border: 2px solid var(--answered-border);
+        }
+
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .question-number {
+            background: var(--light-purple);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .chapter-box {
+            background: var(--blue-box);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-size: 0.75rem; /* Reduced font size */
+        }
+
+        .question-text {
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
         }
 
         .option-label {
             display: flex;
             align-items: center;
-            padding: 5px;
-            border-radius: 5px;
-            transition: background 0.3s;
-            margin-bottom: 5px;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            margin-bottom: 10px;
             cursor: pointer;
-            height: 80px; /* Fixed height for option placeholder */
+            font-size: 0.9rem;
+            transition: background 0.3s;
         }
 
         .option-label:hover { background: var(--border-color); }
 
+        .option-prefix {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-size: 0.9rem;
+        }
+
         input[type="radio"] {
-            -webkit-appearance: none;
-            appearance: none;
-            margin-right: 8px;
-            border: 2px solid var(--border-color);
-            border-radius: 50%;
-            width: 16px;
-            height: 16px;
-            position: relative;
-            cursor: pointer;
-            vertical-align: middle;
+            display: none;
         }
 
-        input[type="radio"]:checked::after {
-            content: "";
-            position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 8px;
-            height: 8px;
-            background: var(--primary-color);
-            border-radius: 50%;
+        input[type="radio"]:checked + .option-prefix {
+            background: var(--purple-box);
+            color: white;
+            border-color: var(--purple-box);
         }
 
-        input[type="radio"]:disabled { cursor: not-allowed; opacity: 1; }
+        input[type="radio"]:disabled + .option-prefix {
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
 
         .correct { background-color: var(--correct-bg); border: 2px solid var(--correct-border); }
         .incorrect { background-color: var(--incorrect-bg); border: 2px solid var(--incorrect-border); }
@@ -245,14 +322,14 @@
             margin-top: 10px;
             padding: 10px;
             background: var(--border-color);
-            border-radius: 5px;
-            border-left: 4px solid var(--primary-color);
+            border-radius: 8px;
+            border-left: 4px solid var(--purple-box);
             font-size: 0.9rem;
             min-height: 50px;
         }
 
         .solution-explanation.image-only {
-            height: 200px; /* Fixed height for image-only explanations */
+            height: 200px;
             padding: 0;
         }
 
@@ -260,7 +337,7 @@
         .option-image,
         .explanation-image {
             height: auto;
-            border-radius: 5px;
+            border-radius: 8px;
             box-shadow: var(--shadow);
         }
 
@@ -273,7 +350,7 @@
         .option-image {
             height: 100%;
             width: auto;
-            max-width: 120px; /* Prevent overly wide images */
+            max-width: 120px;
             margin-left: 5px;
             object-fit: contain;
         }
@@ -291,7 +368,7 @@
             margin-top: 10px;
             padding: 15px;
             background: var(--card-bg);
-            border-radius: 5px;
+            border-radius: 8px;
             box-shadow: var(--shadow);
             display: none;
         }
@@ -304,29 +381,29 @@
             display: none;
             padding: 1.5rem;
             background: var(--card-bg);
-            border-radius: 15px;
+            border-radius: 8px;
             box-shadow: var(--shadow);
         }
 
         .btn-primary {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
+            background-color: var(--orange-btn);
+            border-color: var(--orange-btn);
             color: #fff;
             padding: 0.5rem 1rem;
-            border-radius: 5px;
+            border-radius: 8px;
             transition: background-color 0.3s;
         }
 
         .btn-primary:hover {
-            background-color: var(--hover-color);
-            border-color: var(--hover-color);
+            background-color: #EA580C;
+            border-color: #EA580C;
         }
 
         .loading-spinner {
             display: none;
             text-align: center;
             padding: 20px;
-            color: var(--primary-color);
+            color: var(--purple-box);
         }
 
         .expired-message {
@@ -338,15 +415,33 @@
         }
 
         @media (max-width: 768px) {
-            .navbar { padding: 0.8rem; }
-            .theme-toggle, .menu-btn { font-size: 1.2rem; padding: 0.3rem; }
-            #examNameDisplay { font-size: 1.4rem; }
-            .option-label { padding: 4px; height: 60px; }
-            .solution-explanation.image-only { height: 150px; }
-            .question-card label { font-size: 0.9rem; }
-            .solution-explanation { font-size: 0.8rem; padding: 8px; }
+            .navbar { padding: 0.5rem; }
+            .exam-title { font-size: 1.5rem; }
+            .subject-box, .questions-box, .timer-box { font-size: 0.85rem; padding: 0.3rem 0.8rem; }
+            .theme-toggle { font-size: 1.2rem; padding: 0.5rem; }
+            .sticky-bar { padding: 0.5rem; }
+            .sticky-bar .answered-count, .sticky-bar .timer { font-size: 0.9rem; }
+            .btn-next { font-size: 0.9rem; padding: 0.3rem 0.8rem; }
+            .question-text { font-size: 1rem; }
+            .option-label { font-size: 0.9rem; padding: 10px; }
+            .solution-explanation { font-size: 0.9rem; padding: 10px; }
             .chart-container { max-width: 300px; }
             .option-image { max-width: 100px; }
+        }
+
+        @media (min-width: 769px) {
+            .navbar { padding: 1rem; }
+            .exam-title { font-size: 2rem; }
+            .subject-box, .questions-box, .timer-box { font-size: 1rem; padding: 0.5rem 1rem; }
+            .theme-toggle { font-size: 1.5rem; padding: 0.5rem; }
+            .sticky-bar { padding: 0.8rem 1rem; }
+            .sticky-bar .answered-count, .sticky-bar .timer { font-size: 1.1rem; }
+            .btn-next { font-size: 1rem; padding: 0.5rem 1rem; }
+            .question-text { font-size: 1.2rem; }
+            .option-label { font-size: 1rem; padding: 12px; }
+            .solution-explanation { font-size: 1rem; padding: 12px; }
+            .question-number { width: 40px; height: 40px; font-size: 1rem; }
+            .option-prefix { width: 40px; height: 40px; font-size: 1rem; }
         }
     </style>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -355,38 +450,38 @@
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-left">
-            <div id="timer">সময়: ০০:০০</div>
-        </div>
-        <div class="nav-right">
-            <button class="theme-toggle" onclick="toggleTheme()">
-                <i class="fas fa-moon" id="themeIcon"></i>
-            </button>
-            <div class="menu-container">
-                <button class="menu-btn" onclick="toggleMenu(event)">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <div class="menu-dropdown" id="menuDropdown">
-                    <a href="https://dopamine-edu.github.io/courses.html" class="menu-item">
-                        <i class="fas fa-book"></i> কোর্স
-                    </a>
-                    <a href="#" class="menu-item" onclick="logout()">
-                        <i class="fas fa-sign-out-alt"></i> লগআউট
-                    </a>
+    <div class="container">
+        <nav class="navbar">
+            <div class="nav-left">
+                <div class="exam-title" id="examNameDisplay">ডোপামিন এমসিকিউ</div>
+                <div class="d-flex flex-wrap gap-2">
+                    <span class="subject-box" id="subjectDisplay">লোড হচ্ছে...</span>
+                    <span class="questions-box" id="questionsCount">০ প্রশ্ন</span>
+                    <span class="timer-box" id="timer">০০ মিনিট</span>
                 </div>
             </div>
-        </div>
-    </nav>
+            <div class="nav-right">
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                </button>
+            </div>
+        </nav>
 
-    <div class="container">
+        <div class="sticky-bar" id="stickyBar">
+            <span class="answered-count" id="answeredCount">০/০</span>
+            <span class="timer" id="stickyTimer"><i class="fas fa-clock"></i> ৫৯:০০ বাকি</span>
+            <div class="action-buttons">
+                <button class="btn-next" id="nextBtn">পরবর্তী প্রশ্ন</button>
+            </div>
+        </div>
+
         <div class="header">
-            <div id="examNameDisplay">লোড হচ্ছে...</div>
             <div class="progress-container">
+                <span class="progress-text">অগ্রগতি</span>
                 <div class="progress">
                     <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
-                <div id="progressText" class="text-center mt-2"></div>
+                <span class="progress-text" id="progressPercentage">০%</span>
             </div>
             <div id="scoreDisplay"></div>
             <div id="statsContainer" class="stats-container"></div>
@@ -394,6 +489,7 @@
                 <canvas id="resultChart"></canvas>
             </div>
         </div>
+
         <div id="loading" class="loading-spinner">পরীক্ষা লোড হচ্ছে...</div>
         <div id="expiredMessage" class="expired-message"></div>
         <form id="examForm"></form>
@@ -427,6 +523,7 @@
         let userAnswers = {};
         let timerInterval;
         let submitted = false;
+        let currentQuestionIndex = 0;
         const urlParams = new URLSearchParams(window.location.search);
         const examId = urlParams.get('examId');
         const answersKey = "examAnswers_" + examId;
@@ -449,18 +546,15 @@
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 const data = await response.json();
-                // Validate JSON structure
                 data.forEach((q, idx) => {
                     if (!q.options || q.options.length === 0 || !q.correctOption) {
                         console.warn(`Invalid question at index ${idx} in ${filePath}: Missing options or correctOption`);
                         throw new Error(`Invalid question at index ${idx}`);
                     }
-                    // Ensure optionImages array matches options length
                     if (q.optionImages && q.optionImages.length !== q.options.length) {
                         console.warn(`optionImages length mismatch for question ${idx} in ${filePath}`);
                         q.optionImages = q.options.map(() => null);
                     }
-                    // Handle empty question text
                     if (!q.question && !q.questionImage) {
                         console.warn(`Question at index ${idx} in ${filePath} has no text or image`);
                         q.question = `প্রশ্ন ${idx + 1}`;
@@ -505,6 +599,7 @@
                     document.getElementById("expiredMessage").textContent = "এই পরীক্ষার সময় শেষ হয়ে গেছে। আপনি অংশ নিতে পারবেন না।";
                     document.getElementById("examForm").style.display = "none";
                     document.getElementById("submitContainer").style.display = "none";
+                    document.getElementById("stickyBar").style.display = "none";
                     loadingDiv.style.display = "none";
                     return;
                 }
@@ -517,7 +612,7 @@
                             ...chapterQuestions[q.id],
                             id: `${q.subject}-${q.chapter}-${q.id}`,
                             subject: q.subject,
-                            chapter: q.chapter
+                            chapter: q.chapter.replace(/^Chapter \d+:\s*/, '')
                         });
                     }
                 }
@@ -526,7 +621,11 @@
 
                 userAnswers = JSON.parse(localStorage.getItem(answersKey)) || {};
 
-                document.getElementById("examNameDisplay").textContent = examData.title;
+                const subjects = [...new Set(questions.map(q => q.subject))].join(", ");
+                document.getElementById("subjectDisplay").textContent = subjects || "অজানা বিষয়";
+                document.getElementById("questionsCount").textContent = `${questions.length} প্রশ্ন`;
+                document.getElementById("timer").textContent = `${examData.duration} মিনিট`;
+                document.getElementById("answeredCount").textContent = `০/${questions.length}`;
                 updateProgress();
                 renderQuiz(questions);
             } catch (error) {
@@ -557,7 +656,7 @@
                         ...chapterQuestions[q.id],
                         id: `${q.subject}-${q.chapter}-${q.id}`,
                         subject: q.subject,
-                        chapter: q.chapter
+                        chapter: q.chapter.replace(/^Chapter \d+:\s*/, '')
                     });
                 }
             }
@@ -575,7 +674,8 @@
             const progressPercentage = (answeredQuestions / totalQuestions) * 100;
             document.getElementById("progressBar").style.width = `${progressPercentage}%`;
             document.getElementById("progressBar").setAttribute("aria-valuenow", progressPercentage);
-            document.getElementById("progressText").textContent = `প্রশ্ন: ${answeredQuestions} / ${totalQuestions}`;
+            document.getElementById("progressPercentage").textContent = `${Math.round(progressPercentage)}%`;
+            document.getElementById("answeredCount").textContent = `${answeredQuestions}/${totalQuestions}`;
         }
 
         function renderQuiz(questions, isReview = false, previousAnswers = {}) {
@@ -586,20 +686,30 @@
                 const questionDiv = document.createElement("div");
                 questionDiv.className = "question-card";
                 questionDiv.dataset.answer = q.correctOption;
+                questionDiv.dataset.index = idx;
 
-                // Render question text and/or image
-                let questionHTML = "";
-                if (q.question?.trim()) {
-                    questionHTML += `<p class="fw-bold mb-3">${idx + 1}. ${q.question}</p>`;
-                } else {
-                    questionHTML += `<p class="fw-bold mb-3">${idx + 1}.</p>`;
+                if (userAnswers["q" + idx] && userAnswers["q" + idx + "_locked"]) {
+                    questionDiv.classList.add("answered");
                 }
+
+                const questionHeader = `
+                    <div class="question-header">
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="question-number">${idx + 1}</span>
+                            <span class="chapter-box">${q.chapter}</span>
+                        </div>
+                    </div>
+                `;
+
+                let questionHTML = `
+                    ${questionHeader}
+                    <p class="question-text">${q.question || ''}</p>
+                `;
                 if (q.questionImage) {
                     questionHTML += `<img src="${q.questionImage}" class="question-image" alt="Question ${idx + 1} diagram" loading="lazy" onerror="this.style.display='none'">`;
                 }
                 questionDiv.innerHTML = questionHTML;
 
-                // Render options with images
                 q.options.forEach((opt, optIdx) => {
                     const label = document.createElement("label");
                     label.className = "option-label";
@@ -637,16 +747,20 @@
                                 radioInput.checked = true;
                                 localStorage.setItem(answersKey, JSON.stringify(userAnswers));
                                 updateProgress();
+                                document.querySelector(`.question-card[data-index="${idx}"]`).classList.add("answered");
                             }
                         });
                     }
 
+                    const optionPrefix = document.createElement("span");
+                    optionPrefix.className = "option-prefix";
+                    optionPrefix.textContent = String.fromCharCode(2453 + optIdx); // Bengali alphabet (ক, খ, গ, ঘ)
+
                     label.appendChild(radioInput);
-                    // Only append text if present
+                    label.appendChild(optionPrefix);
                     if (opt?.trim()) {
                         label.appendChild(document.createTextNode(" " + opt));
                     }
-                    // Render option image if present
                     if (q.optionImages && q.optionImages[optIdx]) {
                         const optionImg = document.createElement("img");
                         optionImg.src = q.optionImages[optIdx];
@@ -659,7 +773,6 @@
                     questionDiv.appendChild(label);
                 });
 
-                // Render explanation with image in review mode
                 if (isReview) {
                     const explanationDiv = document.createElement("div");
                     explanationDiv.className = "solution-explanation";
@@ -693,6 +806,7 @@
 
         function startTimer() {
             const timerElement = document.getElementById("timer");
+            const stickyTimerElement = document.getElementById("stickyTimer");
             let storedStart = parseInt(localStorage.getItem(startTimeKey)) || Date.now();
             localStorage.setItem(startTimeKey, storedStart);
             const examDurationMs = examData.duration * 60 * 1000;
@@ -706,13 +820,23 @@
                 } else {
                     const minutes = Math.floor(remainingMs / 60000);
                     const seconds = Math.floor((remainingMs % 60000) / 1000);
-                    timerElement.textContent = `সময়: ${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+                    timerElement.textContent = `${minutes} মিনিট`;
+                    stickyTimerElement.innerHTML = `<i class="fas fa-clock"></i> ${minutes}:${seconds.toString().padStart(2, "0")} বাকি`;
                 }
             }
 
             updateTimer();
             timerInterval = setInterval(updateTimer, 1000);
         }
+
+        document.getElementById("nextBtn").addEventListener("click", () => {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                document.querySelectorAll(".question-card")[currentQuestionIndex].scrollIntoView({ behavior: "smooth" });
+            } else {
+                if (confirm("আপনি কি আপনার উত্তর জমা দিতে নিশ্চিত?")) submitQuiz();
+            }
+        });
 
         function createGradient(ctx, colorStart, colorEnd) {
             const gradient = ctx.createLinearGradient(0, 0, 0, 400);
@@ -842,7 +966,7 @@
                 }
                 if (hasExplanationImage) {
                     const explanationImg = document.createElement("img");
-                    explanationImg.src = explanationImage;
+                    explanationImg.src = q.explanationImage;
                     explanationImg.className = "explanation-image";
                     explanationImg.alt = `Explanation diagram for question ${idx + 1}`;
                     explanationImg.loading = "lazy";
@@ -864,8 +988,8 @@
             createPieChart(correctAnswers, wrongAnswers - skippedAnswers, skippedAnswers);
 
             document.getElementById("submitContainer").style.display = "none";
+            document.getElementById("stickyBar").style.display = "none";
             document.getElementById("backToDashboardContainer").style.display = "block";
-            document.getElementById("timer").style.pointerEvents = "none";
 
             localStorage.removeItem(startTimeKey);
             localStorage.removeItem(answersKey);
@@ -884,7 +1008,7 @@
                 Toastify({
                     text: `পরীক্ষা সম্পন্ন! আপনার স্কোর: ${score}`,
                     duration: 5000,
-                    style: { background: "#6b48ff" }
+                    style: { background: "#9810fa" }
                 }).showToast();
             } catch (error) {
                 console.error("Error submitting quiz:", error);
@@ -897,8 +1021,7 @@
         }
 
         function displayReviewMode(questions, resultData) {
-            const timer = document.getElementById("timer");
-            timer.style.display = "none";
+            document.getElementById("stickyBar").style.display = "none";
 
             renderQuiz(questions, true, resultData.answers || {});
 
@@ -942,25 +1065,7 @@
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
         }
 
-        function toggleMenu(event) {
-            event.stopPropagation();
-            document.getElementById('menuDropdown').classList.toggle('show');
-        }
-
-        function logout() {
-            auth.signOut().then(() => {
-                localStorage.removeItem('theme');
-                window.location.href = 'https://dopamine-edu.github.io/auth.html';
-            }).catch(error => alert(error.message));
-        }
-
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.menu-container')) {
-                document.getElementById('menuDropdown').classList.remove('show');
-            }
-        });
-
         document.addEventListener("DOMContentLoaded", loadExam);
     </script>
 </body>
-    </html>
+</html>
