@@ -1,1 +1,2015 @@
-[]
+[
+  {
+    "question": "আন্তর্জাতিকভাবে রসায়নবিদ দ্বারা স্বীকৃত সবুল রসায়নের মূলনীতি কয়টি?",
+    "options": [
+      "৩০",
+      "১২",
+      "৩৪",
+      "১৫"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "গ্রিন কেমিস্ট্রির ১২টি নীতির মধ্যে নিচের কোনটি সঠিক নয়?",
+    "options": [
+      "বর্জ্য পদার্থ রোধকরণ",
+      "সর্বোত্তম এটম ইকোন্যামি",
+      "শ্রমিকদের স্বাস্থ্য সেবা",
+      "দুর্ঘটনা প্রতিরোধ"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "গ্রিন দ্রাবক কোনটি?",
+    "options": [
+      "কঠিন CO₂",
+      "CO₂(g)",
+      "31.1°C এর নিচের তাপমাত্রায় CO₂",
+      "72.8°C তাপমাত্রায় CO₂"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "ফ্রিয়ন এর সংকেত কোনটি?",
+    "options": [
+      "CF₄",
+      "CF₃Cl",
+      "CF₂Cl₂",
+      "CHF₃"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি একমুখী বিক্রিয়ার শর্ত?",
+    "options": [
+      "বিক্রিয়া বন্ধ পাত্রে সংঘটিত হওয়া",
+      "অধঃক্ষেপ সংঘটিত হওয়া",
+      "বিক্রিয়ার অসম্পূর্ণতা",
+      "বিক্রিয়া সাম্যাবস্থা বিরাজ করা"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "প্রতিক্রিয়ার অ্যাক্টিভেশন শক্তি নির্ধারণে কোনটি কার্যত সহায়ক হবে?",
+    "options": [
+      "Concentration of reactant",
+      "Nature of reactant",
+      "Temperature",
+      "Collision rate"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "তাপমাত্রার সাথে বিক্রিয়ার হারের সম্পর্ক কিরূপ?",
+    "options": [
+      "ব্যস্তানুপাতিক",
+      "সমানুপাতিক",
+      "পরাবৃত্তীয়",
+      "অধিবৃত্তীয়"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি বিক্রিয়া হারের একক?",
+    "options": [
+      "mol L⁻¹s⁻¹",
+      "mol L⁻²s⁻¹",
+      "mol⁻¹L⁻¹s⁻¹",
+      "mol L⁻¹s⁻²"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "তাপোৎপাদী বিক্রিয়ায়-",
+    "options": [
+      "অভ্যন্তরীণ শক্তির বৃদ্ধি ঘটে",
+      "অভ্যন্তরীণ শক্তির হ্রাস ঘটে",
+      "অভ্যন্তরীণ শক্তি অপরিবর্তিত থাকে",
+      "তাপ উৎপাদী বিক্রিয়ার সাথে অভ্যন্তরীণ শক্তির কোনো সম্পর্ক নেই"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "বিভিন্ন বিক্রিয়ার সক্রিয়ণ শক্তি দেয়া হলো। কোন বিক্রিয়াটির গতির হার সর্বোচ্চ?",
+    "options": [
+      "1.32 kJ mol⁻¹",
+      "2.31 kJ mol⁻¹",
+      "1.02 kJ mol⁻¹",
+      "0.5 × 10⁻³ kJ mol⁻¹"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "বিক্রিয়ার বেগ হ্রাসের জন্য কোন তথ্যটি সঠিক?",
+    "options": [
+      "বিক্রিয়কের ঘনমাত্রা বৃদ্ধি",
+      "তাপমাত্রা বৃদ্ধি",
+      "সক্রিয়ণ শক্তি বৃদ্ধি",
+      "বিক্রিয়কের পৃষ্ঠতল বৃদ্ধি"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "বিক্রিয়ার হারের উপর প্রভাব বিস্তারকারী নিম্নের কোন নিয়ামকটি সঠিক নয়?",
+    "options": [
+      "উচ্চ তাপমাত্রা",
+      "নিম্ন চাপ",
+      "প্রভাবক",
+      "আলোর অনুপস্থিতি"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নিম্নের কোনটি প্রথম ক্রম বিক্রিয়ার জন্য সঠিক?",
+    "options": [
+      "আপেক্ষিক বিক্রিয়ার হারের একক 'ঘনমাত্রা⁻¹ সময়⁻¹' যেমন, L mol⁻¹s⁻¹",
+      "আপেক্ষিক বিক্রিয়ার হার k = 1/t . x/(a(a-x))",
+      "t₁/₂ ঘনমাত্রার প্রাথমিক মানের উপর নির্ভর করে না",
+      "সময়ের সাথে ঘনমাত্রা সরলরৈখিকভাবে বৃদ্ধি পায়"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "আলোর প্রভাবে যে বিক্রিয়াটি সংঘটিত হয়-",
+    "options": [
+      "H₂ + Cl₂ → 2HCl",
+      "H₂ + I₂ → 2HI",
+      "H₂ + P₂ → 2HP",
+      "H₂ + Br₂ → 2HBr"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোন বিক্রিয়ার হার সবচেয়ে বেশি?",
+    "options": [
+      "CH₄ + Cl₂ → CH₃Cl + HCl",
+      "Na⁺ + Cl⁻ → NaCl",
+      "Mg + O₂ → MgO",
+      "CuSO₄.5H₂O → CuSO₄ + 5H₂O"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "NO₂(g) + CO(g) → NO(g) + CO₂(g) এক্ষেত্রে -dc/dt  এর ° বিক্রিয়াটির ক্রম কত?",
+    "options": [
+      "0",
+      "1.0",
+      "1.5",
+      "2.0"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কোন বিক্রিয়ার আপেক্ষিক বেগ ধ্রুবক নিম্নের কোনটির পরিমাপক?",
+    "options": [
+      "বিক্রিয়ক ঘনমাত্রা",
+      "বিক্রিয়ার গতির হার",
+      "উভয়ের",
+      "কোনোটিই নয়"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কোন বিক্রিয়াটির সক্রিয়ণ শক্তি সবচেয়ে কম?",
+    "options": [
+      "Fe + O₂ + H₂O → Fe₂O₃.3H₂O (মরিচা)",
+      "NaCl + NaOH → NaCl + H₂O",
+      "N₂ + 3H₂ → 2NH₃",
+      "AlCl₃ + 3H₂O → Al(OH)₃ + HCl"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি প্রথম ক্রম বিক্রিয়ার জন্য প্রযোজ্য?",
+    "options": [
+      "k এর একক s⁻¹",
+      "k এর একক Lmol⁻¹s⁻¹",
+      "k এর একক s",
+      "k এর একক L²mol⁻²s⁻¹"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "দ্বিতীয় ক্রম বিক্রিয়ার হার ধ্রুবকের একক কী?",
+    "options": [
+      "molL⁻¹s⁻¹",
+      "s⁻¹",
+      "LMol⁻¹s⁻¹",
+      "molL⁻¹"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "একটি রাসায়নিক বিক্রিয়ার গতির হার কোনটি?",
+    "options": [
+      "−d[A]/dt",
+      "d[A]/dt",
+      "−d[P]/dt",
+      "d[P]/dt"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "প্রথম ক্রমের বিক্রিয়ার হার ধ্রুবকের মান নিচের কোনটির ওপর নির্ভরশীল নয়?",
+    "options": [
+      "তাপমাত্রা",
+      "বিক্রিয়ার অর্থায়",
+      "প্রভাবক",
+      "বিক্রিয়কের ঘনমাত্রা"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "কোন বিক্রিয়ার অপেক্ষিক বেগ ধ্রুবক নিম্নের কোনটির পরিমাপক?",
+    "options": [
+      "বিক্রিয়ক ঘনমাত্রা",
+      "বিক্রিয়ার গতির হার",
+      "উৎপন্ন",
+      "কোনোটিই নয়"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "C₁₂H₂₂O₁₁ + H₂O → C₆H₁₂O₆ + C₆H₁₂O₆ বিক্রিয়াতে প্রভাবক হিসেবে কাজ করে কোনটি?",
+    "options": [
+      "নিকেল",
+      "কপার",
+      "খনিজ অম্ল",
+      "লোহা"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "CH₄ + H₂O → CO + 3H₂ বিক্রিয়ায় কোন প্রভাবকটি ব্যবহৃত হয়েছে?",
+    "options": [
+      "K₂O",
+      "Ni",
+      "Mo",
+      "Al₂O₃"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি ঋণাত্মক প্রভাবক (negative catalyst)?",
+    "options": [
+      "SO3",
+      "Glycerin",
+      "SO2",
+      "Na"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "অনুঘটকের বৈশিষ্ট্য নয় কোনটি?",
+    "options": [
+      "বিক্রিয়া শেষে মোট ভরের কোনরূপ পরিবর্তন হয় না",
+      "অনুঘটক বিক্রিয়া দ্রুত বা ধীর করতে পারে",
+      "বিক্রিয়ার গতিকে প্রভাবিত করার জন্য সামান্য পরিমাণ প্রয়োজন",
+      "কোন নির্দিষ্ট বিক্রিয়ার জন্য প্রতাবকও নির্দিষ্ট"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "বিক্রিয়ার প্রভাবকের বৈশিষ্ট্য নয় কোনটি?",
+    "options": [
+      "বিক্রিয়া শেষে মোট ভরের অথবা গঠনের কোনরূপ পরিবর্তন হয় না",
+      "প্রভাবক বিক্রিয়া আরম্ভ বা বন্ধ করতে পারে",
+      "বিক্রিয়ার গতিকে প্রভাবিত করার জন্য সামান্য পরিমাণ প্রভাবকই যথেষ্ট",
+      "কোন নির্দিষ্ট বিক্রিয়ার জন্য প্রভাবকও নির্দিষ্ট"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি প্রভাবক বিষ?",
+    "options": [
+      "CuO",
+      "Al₂O₃",
+      "Ag₂O₃",
+      "Ni"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "COOH │ COOH + H₂SO₄ + KMnO₄ → K₂SO₄ + MnSO₄ + CO₂ + H₂O; বিক্রিয়ায় Mn²⁺ একটি -",
+    "options": [
+      "ধনাত্মক প্রভাবক",
+      "স্ব-প্রভাবক",
+      "ঋণাত্মক প্রভাবক",
+      "আবিষ্ট প্রভাবক"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "হেবার বস্ পদ্ধতিতে NH₃ শিল্পোৎপাদনে প্রভাবক হিসাবে কোনটি ব্যবহৃত হয়?",
+    "options": [
+      "Mo",
+      "Fe",
+      "Ni",
+      "V"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "অম্লীয় KMnO₄ এবং অক্সালিক এসিড দ্রবণের রিডক্স বিক্রিয়ায় কোনটি অটো প্রভাবক হিসেবে কাজ করে?",
+    "options": [
+      "MnO₄⁻",
+      "Mn²⁺",
+      "CrO₄²⁻",
+      "K⁺"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "ক্লোরোফরমের জারণে বিষাক্ত ফসজিন গ্যাস উৎপাদনের ঋণাত্মক প্রভাবক হিসাবে কাজ করে-",
+    "options": [
+      "গ্লিসারিন",
+      "অ্যালকোহল",
+      "MnO₂",
+      "আয়োডিন"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "CO₂ + H₂SO₄ + KMnO₄ → K₂SO₄ + MnSO₄ + CO₂ + H₂O; বিক্রিয়ায় Mn²⁺ একটি",
+    "options": [
+      "ধনাত্মক প্রভাবক",
+      "স্ব-প্রভাবক",
+      "ঋণাত্মক প্রভাবক",
+      "অ্যবিষ্ট প্রভাবক"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "প্রভাবক রাসায়নিক বিক্রিয়ার কোন বিষয়টি পরিবর্তন করে?",
+    "options": [
+      "সক্রিয়ণ শক্তি",
+      "উৎপাদের স্থিতিশক্তি",
+      "বিক্রিয়কের স্থিতিশক্তি",
+      "বিক্রিয়া তাপ"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "অম্লীয় KMnO₄ এবং অক্সালিক এসিড দ্রবণের রিডক্স বিক্রিয়ার কোনটি অটো প্রভাবক হিসেবে কাজ করে?",
+    "options": [
+      "MnO₄⁻",
+      "Mn²⁺",
+      "CrO₄²⁻",
+      "K⁺"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "স্পর্শ পদ্ধতিতে H₂SO₄ উৎপাদনে নিচের কোন প্রভাবক ব্যবহৃত হয়?",
+    "options": [
+      "Fe",
+      "Ni",
+      "Al₂O₃",
+      "V₂O₅"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "ঈষ্টে উপস্থিত কোন এনজাইমের প্রভাবে গ্লুকোজ হতে ইথানল উৎপন্ন হয়?",
+    "options": [
+      "ইনভারটেজ",
+      "ইউরিয়েজ",
+      "অ্যামাইলেজ",
+      "জাইমেজ"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "ঈস্ট থেকে নিঃসৃত প্রাণহীন, অদানাদার নাইট্রোজেনযুক্ত জটিল জৈব পদার্থকে কী বলা হয়?",
+    "options": [
+      "প্রভাবক",
+      "এনজাইম",
+      "বিবর্ধক",
+      "অণুজীব"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "H2NCONH2 + H2O → 2NH3 + CO₂ বিক্রিয়ায় কোন জৈব প্রভাবকটি ব্যবহৃত হয়েছে?",
+    "options": [
+      "অক্সিজিনেজ",
+      "অ্যানহাইড্রেস",
+      "জাইমেস",
+      "ইউরিয়েজ"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নিম্নের কোনটি এনজাইমের সঠিক কাজের সাথে সংশ্লিষ্ট নয়?",
+    "options": [
+      "তাপ",
+      "চাপ",
+      "pH",
+      "সময়"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "একটি আবদ্ধ পাত্রে হাইড্রোজেন ও গাঢ় বেগুনি বর্ণের আয়োডিন নিম্নের কত তাপমাত্রায় (°C) রেখে দিলে হাইড্রোজেন আয়োডাইড উৎপন্ন হয়?",
+    "options": [
+      "450",
+      "550",
+      "350",
+      "250"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "সাম্যাবস্থায় পৌঁছার পর 1 মোল CH3COOH এসিড ও 1 মোল C2H5OH বিক্রিয়া করে নিম্নের কত মোল CH3COOC2H5 উৎপাদন করে?",
+    "options": [
+      "0.676",
+      "0.766",
+      "0.67",
+      "0.667"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি সাম্যাবস্থার বৈশিষ্ট্য নয়?",
+    "options": [
+      "সাম্যের স্থায়িত্ব",
+      "উভয় দিক থেকে সুগম্যতা",
+      "বিক্রিয়ার হার",
+      "বিক্রিয়ার অসম্পূর্ণতা"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "2AB2 + B2= 2AB3; ∆H = +192.46k) বিক্রিয়াটিতে সর্বোচ্চ উৎপাদনের শর্ত কোনটি?",
+    "options": [
+      "উচ্চতাপমাত্রা ও উচ্চচাপ",
+      "নিম্নতাপমাত্রা ও উচ্চচাপ",
+      "উচ্চতাপমাত্রা ও নিম্নচাপ",
+      "নিম্নতাপমাত্রা ও নিম্নচাপ"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "2SO2(g) + O2(g)=2SO3(g) + 44.8 kcal; এ বিক্রিয়াটিতে তাপমাত্রা বাড়ালে কীরূপ পরিবর্তন ঘটে?",
+    "options": [
+      "SO3 এর উৎপাদন হ্রাস পায়",
+      "বিক্রিয়াটি সম্মুখমুখী হয়",
+      "তরল SO3 উৎপন্ন হয়",
+      "O₂ এর পরিমাণ হ্রাস পায়"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিম্নের কোন কোন বিক্রিয়ার সাম্যাবস্থার উপর চাপের প্রভাব নেই?",
+    "options": [
+      "N₂O₄(g)= 2NO₂(g)",
+      "CH3COOH(aq)= CH3COO⁻(aq) + H+(aq)",
+      "2SO2(g) + O2(g)=2SO3(g)",
+      "CaCO3(s)= CaO (s) + CO₂(g)"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "N₂(g)+0₂(g) = 2NO(g), ∆H = 180 kJ এ বিক্রিয়াটির সাম্যাবস্থায় তাপমাত্রা বৃদ্ধি করলে সাম্যাবস্থার অবস্থান কোন দিকে স্থানান্তরিত হয়?",
+    "options": [
+      "ডানে",
+      "বামে",
+      "স্থির থাকে",
+      "তাপমাত্রা পরিবর্তনের সঙ্গে সাম্যাবস্থার কোন সম্পর্ক নেই"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিম্নের বিক্রিয়ায় NH₃ কে উচ্চ চাপ প্রয়োগে তরল করা হলে সাম্যাবস্থার অবস্থান কোন দিকে স্থানান্তরিত হয়?",
+    "options": [
+      "কোনো দিকে নয়",
+      "বামে",
+      "ডানে",
+      "সম্পর্ক নেই"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিম্নের বিক্রিয়ায় উপাদান 'D' এর ঘনমাত্রা বৃদ্ধি করলে সাম্যাবস্থা কোন দিকে স্থানান্তরিত হয়? A(aq)+B(aq)= C(aq) + D(aq)",
+    "options": [
+      "ডানে",
+      "স্থির থাকে",
+      "বামে",
+      "সম্পর্ক নেই"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিম্নের উভমুখী বিক্রিয়ায় চাপের প্রভাব কী? A(s)+B₂(g)= D₂(g)",
+    "options": [
+      "চাপের প্রভাব নেই",
+      "সাম্যাবস্থা ডানে স্থানান্তর হয়",
+      "সাম্যাবস্থা বামে স্থানান্তরিত হয়",
+      "সাম্যাবস্থা বিলুপ্ত হয়"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "N2(g) + 3H2(g) = 2NH3(g); ∆H = -92 kJmol-1 এ বিক্রিয়ায় তাপমাত্রা বৃদ্ধি করলে NH₃ উৎপাদন কীভাবে প্রভাবিত হবে?",
+    "options": [
+      "increase",
+      "decrease",
+      "remain same",
+      "none of these"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিম্নের বিক্রিয়াটির জন্য সাম্যাবস্থার উপর তাপমাত্রা ও চাপের বৃদ্ধির প্রভাব উল্লেখ কর। 2A(g)+B(g) = C(g) + 2D(g) ∆H = -xk",
+    "options": [
+      "প্রভাব নেই",
+      "সাম্যাবস্থা ডানে স্থানান্তরিত হয়",
+      "সাম্যাবস্থা বামে স্থানান্তরিত হয়",
+      "সাম্যাবস্থা বিলুপ্ত হয়"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "স্পর্শ পদ্ধতিতে অত্যানুকূল চাপ কত?",
+    "options": [
+      "2 atm",
+      "200 atm",
+      "450 atm",
+      "550 atm"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "রাসায়নিক সাম্যাবস্থার বৈশিষ্ট্য কোনটি?",
+    "options": [
+      "বিক্রিয়ার সমাপ্তি",
+      "বিক্রিয়ার একমুখীতা",
+      "প্রভাবকের প্রয়োজনীয়তা",
+      "সাম্যের স্থিতিশীলতা"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "তাপমাত্রা বৃদ্ধি করলে নিম্নের বিক্রিয়া অনুসারে SO₃ এর উৎপাদনের উপর কী প্রভাব পড়বে? 2SO2(g)+02(g)=2SO3(g); ∆H = -192.46 kJ",
+    "options": [
+      "উৎপাদন বৃদ্ধি পায়",
+      "উৎপাদন হ্রাস পায়",
+      "কোন প্রভাব নেই",
+      "অত্যানুকূল তাপমাত্রায় উৎপাদন বৃদ্ধি পায়"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "সাম্যধ্রুবকের ক্ষেত্রে প্রযোজ্য নয় কোনটি?",
+    "options": [
+      "(a) শুধুমাত্র উভমুখী বিক্রিয়ার ক্ষেত্রে প্রযোজ্য",
+      "(b) তাপমাত্রার পরিবর্তনে পরিবর্তন হয়",
+      "(c) চাপের পরিবর্তনের পরিবর্তন হয় না",
+      "(d) বিক্রিয়ার গতি সম্পর্কে ধারণা দেয়"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "A+B 3D বিক্রিয়াটিতে Kp এবং K. এর সম্পর্কের সমীকরণ কোনটি?",
+    "options": [
+      "(a) Kp = K(RT)-1",
+      "(b) K = K,(RT)",
+      "(c) Kp = K(RT)",
+      "(d) K = K,(RT)2"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "N2(g) + 3H2(g) = 2NH3(g)/A2(g) + 3B2(g) = 2AB3(g) বিক্রিয়াটিতে Kp ও K এর মধ্যে সম্পর্ক কোনটি?",
+    "options": [
+      "Kp = Kc (RT)2",
+      "Kp = K(RT)",
+      "Kp = Ke (RT)-2",
+      "K = K, (RT)"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "CaCO3(s) = CaO(s) + CO2(g); বিক্রিয়াটির K. এর রাশিমালা কোনটি?",
+    "options": [
+      "Kc = [CaO]/[CaCO3]",
+      "K = ([CaO]x[CO2])/[CaCO3]",
+      "Kc = [CO2]",
+      "K = [CaO]"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "COCl2(g)CO(g) + Cl2(g) বিক্রিয়াটির K,- এর একক কোনটি?",
+    "options": [
+      "এককবিহীন",
+      "atm²",
+      "atm-1",
+      "atm-2"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোন নিয়ামক দ্বারা বিক্রিয়ার সাম্যধ্রুবক ও বিক্রিয়ার হার ধ্রুবক উভয়েই প্রভাবিত হয়?",
+    "options": [
+      "প্রভাবক",
+      "তাপমাত্রা",
+      "চাপমাত্রা",
+      "সবকয়টি"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন বিক্রিয়ার সাম্যাবস্থায় K, ও K. এর মান সমান হবে?",
+    "options": [
+      "PCl5 PCl3 + Cl2",
+      "2SO2+02 2SO3",
+      "N2+3H22NH,",
+      "H₂ + I2 = 2HI"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "সাম্যাঙ্কের উপর কোন নিয়ামকের প্রভাব রয়েছে?",
+    "options": [
+      "তাপমাত্রা",
+      "চাপ",
+      "ঘনমাত্রা",
+      "তাপমাত্রা ও চাপ"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "চাপের একক atm হলে নিম্নের বিক্রিয়ায় K, এর একক কী? COCl₂(g) CO(g) + Cl2(g)",
+    "options": [
+      "atm-¹",
+      "atm",
+      "atm²",
+      "একক নেই"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "ভর ক্রিয়ার সূত্রের উদ্ভাবক কে?",
+    "options": [
+      "হেস",
+      "অসওয়াল্ড",
+      "ল্যাপ্লাস",
+      "গুল্ডবার্গ"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন বিক্রিয়ার K, এর একক atm²?",
+    "options": [
+      "H2(g) +12(g)=2HI(g)",
+      "2NO2(g) = N₂O₄(g)",
+      "2NH3(g) N₂(g) + 3H2(g)",
+      "CH₄(g) + H₂O(g) CO(g)+3H2(g)"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কীসের পরিবর্তনের ফলে সামা ধ্রুবকের মান পরিবর্তিত হয়?",
+    "options": [
+      "তাপমাত্রা",
+      "ঘনমাত্রা",
+      "আয়তন",
+      "প্রভাবক"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোন ক্ষেত্রে বিক্রিয়া ডান দিকে যায়?",
+    "options": [
+      "Qc < Kc",
+      "Qc > Kc",
+      "Qc = Kc",
+      "Qc = 1, K = 1"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোন বিক্রিয়ার জন্য K = KpRT?",
+    "options": [
+      "2SO2(g) + O2(g)2SO3(g)",
+      "PCl5(g) ⇌ PCl3(g) + Cl2(g)",
+      "COCI₂(g) ⇌ CO(g) + Cl2(g)",
+      "N2O4(g) ⇌ 2NO2(g)"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন বিক্রিয়াটির Кр = K?",
+    "options": [
+      "CO(g) + H₂O(g) ⇌ CO₂(g) + H₂(g)",
+      "N2O4(g) ⇌ 2NO2(g)",
+      "2N205(g) ⇌ 4NO2(g) + O2(g)",
+      "2NO(g) + 02 ⇌ 2NO2(g)"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "N2(g) + 3H2(g) ⇌ 2NH3 (g) কীসে বিক্রিয়াটির সাম্যাঙ্ক পরিবর্তিত হয়?",
+    "options": [
+      "চাপ বৃদ্ধিতে",
+      "উৎপাদ বৃদ্ধিতে",
+      "বিক্রিয়ক বৃদ্ধিতে",
+      "তাপমাত্রা বৃদ্ধিতে"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "X+Y⇌Z এর সাম্যধ্রুবক A এবং Z⇌X + Y এর সাম্যধ্রুবক B হলে কোন সমীকরণটি সঠিক?",
+    "options": [
+      "B = 1/A",
+      "B = 1/√A",
+      "B = A",
+      "B-1 = A"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "25°C উষ্ণতায় পানির আয়নিক গুণফল কত?",
+    "options": [
+      "1.0 x 10-7",
+      "1.0 x 10-14",
+      "1.0 x 1014",
+      "1.0 x 107"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "বিশুদ্ধ পানির pH কত?",
+    "options": [
+      "8",
+      "6",
+      "5",
+      "7"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "25°C তাপমাত্রায় বিশুদ্ধ পানির pH কত?",
+    "options": [
+      "0 (শূন্য)",
+      "> 7",
+      "7",
+      "< 7"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "K w হলো মূলত কোনটি?",
+    "options": [
+      "সাম্যাঙ্ক ধ্রুবক",
+      "দ্রাব্যতা গুণাঙ্ক",
+      "হার ধ্রুবক",
+      "পানির আয়নিক গুণফল"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "298 K তাপমাত্রায় K w এর মান-",
+    "options": [
+      "10-14",
+      "10-7",
+      "10+7",
+      "10+14"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "বিশুদ্ধ পানির POH কত?",
+    "options": [
+      "14",
+      "7",
+      "1.4",
+      "0.7"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "পানির আয়নিক গুণফল (Kw) এর একক কোনটি?",
+    "options": [
+      "(a) mol 1-1",
+      "(b) mol2L-2",
+      "(c) mol-212",
+      "(d) mol2L2"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "মৃদু তড়িৎ বিশ্লেষ্যের বিয়োজন মাত্রা ও ঘনমাত্রার মধ্যে সম্পর্ক কী?",
+    "options": [
+      "(a) বিয়োজন মাত্রা ঘনমাত্রার সমানুপাতিক",
+      "(b) বিয়োজন মাত্রা ঘনমাত্রার বর্গমূলের সমানুপাতিক",
+      "(c) বিয়োজন মাত্রা ঘনমাত্রার ব্যস্তানুপাতিক",
+      "(d) বিয়োজন মাত্রা ঘনমাত্রার বর্গমূলের ব্যস্তানুপাতিক"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি তীব্র এসিড নয়?",
+    "options": [
+      "CH3COOH",
+      "HCI",
+      "HNO3",
+      "H2SO4"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি সবচেয়ে শক্তিশালী এসিড?",
+    "options": [
+      "BrCH2COOH",
+      "H2FSbF6",
+      "ICH2COOH",
+      "ClCH2COOH"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি অধিক শক্তিশালী ক্ষার?",
+    "options": [
+      "NaOH",
+      "KOH",
+      "Ca(OH)2",
+      "NH4OH"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "এসিডের তীব্রতা নির্ভর করে কোনটির উপর?",
+    "options": [
+      "Ka",
+      "Kb",
+      "Kc",
+      "সবকটি"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন এসিডের Kₐ = 5.5 × 10⁻²?",
+    "options": [
+      "ডাইক্লোরো অ্যাসিটিক",
+      "ফরমিক",
+      "অ্যাসিটিক",
+      "বেনজয়িক"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি অধিক তীব্র বা শক্তিশালী এসিড?",
+    "options": [
+      "HNO₃",
+      "H₃PO₄",
+      "HClO₄",
+      "H₂SO₄"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি দুর্বলতম এসিড?",
+    "options": [
+      "HMnO₄",
+      "H₂SO₄",
+      "HClO₄",
+      "HNO₃"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি অনুবন্ধী অম্ল-ক্ষারক যুগল?",
+    "options": [
+      "HCl, NaOH",
+      "H₃O⁺, H₂O",
+      "O₂, H₂O",
+      "H⁺, Cl⁻"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "H3PO2 এর ক্ষারকত্ব কত?",
+    "options": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "Al₂O₃ এর অম্লত্ব নিচের কোনটি সঠিক?",
+    "options": [
+      "2",
+      "3",
+      "5",
+      "6"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি উভধর্মী যৌগ?",
+    "options": [
+      "NH3",
+      "HCl",
+      "H₂O",
+      "H2SO4"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি  ট HCI এসিডের বিয়োজন ধ্রুবক ( (25°C - এ)?",
+    "options": [
+      "2.5 x 107",
+      "3.0 x 10-2",
+      "1.4 x 10-2",
+      "7.3 x 10-3"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "সবচেয়ে দুর্বল এসিড কোনটি?",
+    "options": [
+      "H3BO3",
+      "HNO3",
+      "H3PO3",
+      "HCIO2"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "SO₂-এর ক্ষারকত্ব কত?",
+    "options": [
+      "2",
+      "3",
+      "4",
+      "5"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন এসিডটি সবচেয়ে বেশি তীব্র এসিড হবে?",
+    "options": [
+      "H2SeO3",
+      "H2SO4",
+      "HC104",
+      "HIO4"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "Fe2O3 এর অম্লত্ব কত?",
+    "options": [
+      "2",
+      "3",
+      "6",
+      "4"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "H2O এর অনুবন্ধী এসিড কী?",
+    "options": [
+      "H₃O+",
+      "HCl",
+      "-OH",
+      "Cl-"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "H₂O এর অনুবন্ধী ক্ষারক কী?",
+    "options": [
+      "H3O+",
+      "HCl",
+      "OH-",
+      "Cl-"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "CaO এর অম্লত্ব কত?",
+    "options": [
+      "1.0",
+      "2.0",
+      "4.0",
+      "6.0"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "০H⁻ এর অনুবন্ধী এসিড কোনটি?",
+    "options": [
+      "H3O+",
+      "H₂O",
+      "02-",
+      "Oz"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "M₂O₃ অক্সাইডটির ক্ষারকত্ব কত?",
+    "options": [
+      "2",
+      "4",
+      "6",
+      "8"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি দ্রবণে বেশি পরিমাণে বিয়োজিত হবে?",
+    "options": [
+      "HBrO4",
+      "HCIO₄",
+      "H₂SO₄",
+      "HNO3"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "HSO₄ এর ক্ষেত্রে কোনটি সঠিক?",
+    "options": [
+      "এর অনুবন্ধী ক্ষার SO²⁻₄",
+      "এর অনুবন্ধী ক্ষার H₂SO₄",
+      "এর অনুবন্ধী অম্ল H₃O⁺",
+      "এর অনুবন্ধী অম্ল SO⁻₄"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "হাইড্রাসিডসমূহের তীব্রতা কিসের উপর নির্ভর করে?",
+    "options": [
+      "কেন্দ্রীয় পরমাণুর জারণ সংখ্যা",
+      "কেন্দ্রীয় পরমাণুর চার্জ ঘনত্ব",
+      "অ্যানায়নের আকার",
+      "ক্যাটায়নের আকার"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি সর্বাধিক তীব্র/শক্তিশালী এসিড?",
+    "options": [
+      "HCl",
+      "HBr",
+      "HF",
+      "HI"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "HCO₃ এর অনুবন্ধী ক্ষারক কোনটি?",
+    "options": [
+      "H₂CO₃",
+      "CO²⁻₃",
+      "CO₂",
+      "H⁺"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "এসিডিটির তীব্রতার সঠিক ক্রম কোনটি?",
+    "options": [
+      "H₂SO₄ > H₃PO₄ > HCIO > HBrO₄",
+      "HCIO₄ > HBrO₄ > H₂SO₄ > H₃PO₄",
+      "H₃PO₄ > H₂SO₄ > HBrO₄ > HCIO₄",
+      "HBrO₄ > HCIO₄ > H₃PO₄ > H₂SO₄"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি শক্তিশালী এসিড?",
+    "options": [
+      "HNO₂",
+      "HNO₃",
+      "H₂SO₃",
+      "H₂SO₄"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন এসিডের তীব্রতা বেশি?",
+    "options": [
+      "H₂CO₃",
+      "HNO₃",
+      "H₂SO₄",
+      "HCIO₄"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "অক্সি এসিডসমূহের কোনটির তীব্রতা বেশি?",
+    "options": [
+      "HNO₃",
+      "HCIO₃",
+      "H₂SO₃",
+      "H₃PO₄"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "এক ক্ষারকীয় এসিড কোনটি?",
+    "options": [
+      "H₂CO₃",
+      "H₂PO₃",
+      "H₂SO₃",
+      "H₃BO₃"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "Al₂O₃ এর ক্ষারকত্ব কত?",
+    "options": [
+      "2",
+      "3",
+      "4",
+      "1"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন এসিডের kₐ এর মান সবচেয়ে বেশি?",
+    "options": [
+      "H₂SO₄",
+      "HBrO₄",
+      "HNO₃",
+      "HCIO₄"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "ক্ষারীয় বাফার দ্রবণ তৈরি করতে কোন জোড়াটি ব্যবহার করা হয়?",
+    "options": [
+      "CH3COOH and CH3COONa",
+      "NaOH and NaCl",
+      "Na2SO4 and H2SO4",
+      "NH4Cl and NH4OH"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "অম্লধর্মী মাটির pH বাড়াতে কোন রাসায়নিক ব্যবহার করা হয়?",
+    "options": [
+      "ফসফেট সার (টি.এস.পি)",
+      "CaCO3",
+      "KNO3",
+      "NH4NO3"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "মাটির pH বৃদ্ধি করতে কোনটি ব্যবহৃত হয়?",
+    "options": [
+      "NH4NO3",
+      "(NH4)3HPO4",
+      "CaO",
+      "KNO3"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন দ্রবণের pH সর্বাধিক?",
+    "options": [
+      "0.01 M HCl",
+      "0.01 M HNO3",
+      "0.01 M H2SO4",
+      "0.01 M H2CO3"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "মানবদেহের রক্তে কোন বাফার দ্রবণ (buffer solution) থাকে?",
+    "options": [
+      "NaHCO3 and H₂CO₃",
+      "NH4Cl and NH4OH",
+      "CH3COONa and CH3COOH",
+      "Na2HPO4 and H3PO4"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "ক্ষারীয় মাটির pH কমাতে নিচের কোনটি ব্যবহৃত হয়?",
+    "options": [
+      "KNO3",
+      "NaOH",
+      "CaO",
+      "Ca(OH)2"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন দ্রব্যটি, pH = 7.4 দ্রবণে যোগ করলে এর p মান কমবে?",
+    "options": [
+      "C2H6OH",
+      "C3H6O",
+      "CH3COOH",
+      "C6H6"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোনো রোগীর রক্তের pH 6.90, এ অবস্থাকে কী বলে?",
+    "options": [
+      "অ্যালকালোসিস",
+      "এসিডোসিস",
+      "হাইড্রোসিস",
+      "অ্যালকালিমিয়া"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কোন দ্রবণে সামান্য অম্ল বা ক্ষার যোগ করলে pH এর মান পরিবর্তন হয় না?",
+    "options": [
+      "ফেনফথ্যালিন দ্রবণ",
+      "ঘন দ্রবণ",
+      "বাফার দ্রবণ",
+      "মোলার দ্রবণ"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "মানবদেহের রক্তে কোন বাফারটি pH নিয়ন্ত্রণ করে না?",
+    "options": [
+      "বাইকার্বনেট বাফার",
+      "প্রোটিন বাফার",
+      "ফসফেট বাফার",
+      "অ্যাসিটেট বাফার"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "pH সম্পর্কে নিম্নের কোনটি সঠিক?",
+    "options": [
+      "pH = 7 হলে দ্রবণটি নিরপেক্ষ",
+      "pH = 7 হলে দ্রবণটি ক্ষারকীয়",
+      "pH < 7 হলে দ্রবণটি ক্ষারীয়",
+      "pH > 7 হলে দ্রবণটি অম্লীয়"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "pH এর মাত্রা নিচের কোনটির উপরে হলে মাটির উর্বরতা বিনষ্ট হয়?",
+    "options": [
+      "6.5",
+      "7.5",
+      "9.5",
+      "8.5"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "অম্লীয় বাফার দ্রবণের pH নির্ণয়ের সমীকরণ হলো কোনাট?",
+    "options": [
+      "(a) pH = pK + log [লবণ] [অম্ল]",
+      "(b) pH = pK + log [অম্ল] [লবণ]",
+      "(c) pH = pKlog [লবণ] []",
+      "(d) pH = pK-log [লবণ] [লবণ)"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "অম্লীয় বাফার দ্রবণের pH নির্ণয়ের সমীকরণ হলো কোনাট?",
+    "options": [
+      "(a) pH = pK + log [লবণ] [অম্ল]",
+      "(b) pH = pK + log [অম্ল] [লবণ]",
+      "(c) pH = pKlog [লবণ] []",
+      "(d) pH = pK-log [লবণ] [লবণ)"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন জলীয় দ্রবণটির pH মান সবচেয়ে বেশি?",
+    "options": [
+      "(a) 0.1 M NH3",
+      "(b) 0.1 M NaOH",
+      "(c) 0.1M NH4Cl",
+      "(d) 0.1 M CH3COONa"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি সঠিক নয়?",
+    "options": [
+      "(a) 10-2M HCI দ্রবণের pH = 2",
+      "(b) 0.01 M Na₂CO₃ দ্রবণের pH 7 থেকে বেশি",
+      "(c) 0.01M NaOH দ্রবণের pH = 12",
+      "(d) 10° M HCI দ্রবণের pH = 9"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "দুর্বল এসিড HX ও NaOH এর বিক্রিয়া, HX(aq) + NaOH(aq) → NaX (aq) + H₂O; এক্ষেত্রে NaX এর জলীয় দ্রবণে সম্ভাব্য pH হবে কোনটি?",
+    "options": [
+      "(a) 5.5",
+      "(b) 7.0",
+      "(c) 8.5",
+      "(d) 3.0"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "রক্তের বাইকার্বনেট বাফারের pH মান 7.4 হলে ঐ বাফারে বাইকার্বনেট ও কার্বনিক এসিডের অনুপাত কত?",
+    "options": [
+      "(a) 1:10",
+      "(b) 2:5",
+      "(c) 1:25",
+      "(d) 20:1"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটির জলীয় দ্রবণে হাইড্রোনিয়াম আয়নের ঘনমাত্রা সর্বাধিক?",
+    "options": [
+      "(a) HCl(pH = 1)",
+      "(b) HA (pH = 0.1)",
+      "(c) H₂SO₄(pH = 4)",
+      "(d) HNO3 (pH = 1.5)"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি বাফার দ্রবণ?",
+    "options": [
+      "(a) দুধ",
+      "(b) মধু",
+      "(c) রক্ত",
+      "(d) সেলাইন দ্রবণ"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "বিশুদ্ধ পানিতে এক ফোটা HCI যোগ করলে ঐ দ্রবণের ক্ষেত্রে কোনটি হবে?",
+    "options": [
+      "(a) pH = 7",
+      "(b) pH > 7",
+      "(c) pH< 7",
+      "(d) pOH < 7"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি ক্ষারকীয় বাফার দ্রবণ?",
+    "options": [
+      "(a) NaOH ও CH3COOH (অতিরিক্ত)",
+      "(b) NH₂OH (অতিরিক্ত) ও HCI",
+      "(c) HCI ও NaOH (অতিরিক্ত)",
+      "(d) NH4OH ও CH3COOH (অতিরিক্ত)"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন এসিড দ্রবণটির pH মান কম?",
+    "options": [
+      "(a) 0.5 M",
+      "(b) 0.05 M",
+      "(c) 0.005 M",
+      "(d) 0.0005 M"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন জলীয় দ্রবণটির pH মান সবচেয়ে বেশি?",
+    "options": [
+      "(a) 0.1 M NH3",
+      "(b) 0.1 M NaOH",
+      "(c) 0.1M NH4Cl",
+      "(d) 0.1 M CH3COONa"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি সঠিক নয়?",
+    "options": [
+      "(a) 10-2M HCI দ্রবণের pH = 2",
+      "(b) 0.01 M Na₂CO₃ দ্রবণের pH 7 থেকে বেশি",
+      "(c) 0.01M NaOH দ্রবণের pH = 12",
+      "(d) 10° M HCI দ্রবণের pH = 9"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "দুর্বল এসিড HX ও NaOH এর বিক্রিয়া, HX(aq) + NaOH(aq) → NaX (aq) + H₂O; এক্ষেত্রে NaX এর জলীয় দ্রবণে সম্ভাব্য pH হবে কোনটি?",
+    "options": [
+      "(a) 5.5",
+      "(b) 7.0",
+      "(c) 8.5",
+      "(d) 3.0"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "রক্তের বাইকার্বনেট বাফারের pH মান 7.4 হলে ঐ বাফারে বাইকার্বনেট ও কার্বনিক এসিডের অনুপাত কত?",
+    "options": [
+      "(a) 1:10",
+      "(b) 2:5",
+      "(c) 1:25",
+      "(d) 20:1"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটির জলীয় দ্রবণে হাইড্রোনিয়াম আয়নের ঘনমাত্রা সর্বাধিক?",
+    "options": [
+      "(a) HCl(pH = 1)",
+      "(b) HA (pH = 0.1)",
+      "(c) H₂SO₄(pH = 4)",
+      "(d) HNO3 (pH = 1.5)"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি বাফার দ্রবণ?",
+    "options": [
+      "(a) দুধ",
+      "(b) মধু",
+      "(c) রক্ত",
+      "(d) সেলাইন দ্রবণ"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "বিশুদ্ধ পানিতে এক ফোটা HCI যোগ করলে ঐ দ্রবণের ক্ষেত্রে কোনটি হবে?",
+    "options": [
+      "(a) pH = 7",
+      "(b) pH > 7",
+      "(c) pH< 7",
+      "(d) pOH < 7"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি ক্ষারকীয় বাফার দ্রবণ?",
+    "options": [
+      "(a) NaOH ও CH3COOH (অতিরিক্ত)",
+      "(b) NH₂OH (অতিরিক্ত) ও HCI",
+      "(c) HCI ও NaOH (অতিরিক্ত)",
+      "(d) NH4OH ও CH3COOH (অতিরিক্ত)"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন এসিড দ্রবণটির pH মান কম?",
+    "options": [
+      "(a) 0.5 M",
+      "(b) 0.05 M",
+      "(c) 0.005 M",
+      "(d) 0.0005 M"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোন স্থানের মাটির pH = 11 হলে সে মাটিতে ফসল ফলানোর জন্য নিচের কোনটি প্রয়োগ করতে হবে?",
+    "options": [
+      "TSP",
+      "চুন",
+      "ডলোমাইট",
+      "(NH4)2CO3"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "A দ্রবণের pH → 5, B দ্রবণের pH → 8, B দ্রবণ অপেক্ষা A দ্রবণ কতগুণ বেশি অম্লীয়?",
+    "options": [
+      "100",
+      "1000",
+      "10000",
+      "1000000"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "বাফার দ্রবণের কৌশলের সাথে সম্পর্কিত নিচের কোনটি?",
+    "options": [
+      "লা-শাতেলিয়ার নীতি",
+      "আরহেনিয়াস সমীকরণ",
+      "অসওয়াল্ড লঘুকরণ নীতি",
+      "ফাজানের নীতি"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন দ্রবণের pH মান বেশি?",
+    "options": [
+      "10-2M HCI",
+      "5 x 10-2M H2SO4",
+      "10-1M NaOH",
+      "10-4M Na2CO3"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি বাফার দ্রবণ হিসাবে কাজ করবে?",
+    "options": [
+      "HF(aq) + NaF",
+      "CH3COOH + CH3COONa",
+      "HCOOH + CH3COONa",
+      "NH4OH + (NH4)2CO3"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "অ্যাসিডোসিস মানুষের কোন কোষকে দুর্বল করে ফেলে?",
+    "options": [
+      "রক্তকোষ",
+      "স্নায়ুকোষ",
+      "চোখের কোষ",
+      "আবরণী কোষ"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি অম্লীয় বাফার নয়?",
+    "options": [
+      "H3PO4 + Na2HPO4",
+      "HS⁻ + Na2S",
+      "CO₃²⁻ + HCO₃⁻",
+      "CH3COOH + CH3COONa"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোন লবণটির জলীয় দ্রবণের pH > 7?",
+    "options": [
+      "NaCl",
+      "FeCl3",
+      "Na₂CO₃",
+      "NH₄Cl"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোন সিস্টেমটি প্রশম?",
+    "options": [
+      "চুনের পানি",
+      "NaCl(aq)",
+      "CuSO4(aq)",
+      "রক্ত"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি বাফার দ্রবণ?",
+    "options": [
+      "10 cm³ 01. M HCOOH + 10 cm³ 0.1 M NaOH",
+      "10 cm³ 0.1 M HCI + 10 cm³ 0.08 M NaOH",
+      "15 cm³ 0.1 M CH3COOH+10 cm³ 0.01 M NaOH",
+      "10 cm³ 0.1 M CH3COOH+15 cm³ 0.1 M NaOH"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি ক্ষারীয় বাফার?",
+    "options": [
+      "HS + Na2S",
+      "Na2CO3 + HCO",
+      "H₂PO + Na2HPO4",
+      "H₂S+S2-"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "HCOOH + HCOONa বাফার সিস্টেমটির pH পরিসর কোনটি হতে পারে?",
+    "options": [
+      "3.7-5.2",
+      "7.0-8.0",
+      "8.5-10",
+      "9.1-10.83"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "রক্তের pH কত হলে অ্যাসিডোসিস হয়?",
+    "options": [
+      "<6.8",
+      ">7.8",
+      "6.8-7.8",
+      "7.0"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "আমাদের শরীরের কোন অংশে ক্ষারীয় pH বিরাজ করে?",
+    "options": [
+      "ত্বক",
+      "পাকস্থলী",
+      "ক্ষুদ্রান্ত্র",
+      "মুখের লালা"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোন প্রক্রিয়াটি তাপোৎপাদী?",
+    "options": [
+      "বাষ্পীভবন",
+      "বন্ধন বিযোজন",
+      "গলন",
+      "ঘনীভবন"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "শক্তিশালী অম্ল ও ক্ষারকের প্রশমন বিক্রিয়ায় প্রতি মোল পানি উৎপন্ন হতে যে তাপ উৎপন্ন হয় তার মান হলো:",
+    "options": [
+      "65.35 kJ",
+      "273.15 kJ",
+      "70.0 kJ",
+      "57.34 kJ"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "পানির গলন তাপ কিত?",
+    "options": [
+      "+60 kjmol⁻¹",
+      "+6 kjmol⁻¹",
+      "-60 kjmol⁻¹",
+      "-6 kJmol⁻¹"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "ভিন্ন লবণের দুটি লঘু দ্রবণ একত্রে মিশ্রিত করা হলো। এদের মধ্যে কোনো রাসায়নিক বিক্রিয়া হলো না। এ ক্ষেত্রে কোনটি সঠিক?",
+    "options": [
+      "তাপমাত্রা ৫০% বাড়ে",
+      "তাপমাত্রা ৭৫% বাড়ে",
+      "তাপমাত্রার পরিবর্তন হয় না",
+      "তাপমাত্রা ৫০% কমে"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "অক্সিজেনের পরমাণুকরণ তাপ (kJ/mol) নিম্নের কোনটি?",
+    "options": [
+      "+249.2",
+      "+106.0",
+      "+218.0",
+      "+112.0"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "CaCO₃ CaO + CO₂ এই বিক্রিয়ায় নিম্নের কত ডিগ্রি (°C) সেন্টিগ্রেড তাপমাত্রা প্রয়োজন হয়?",
+    "options": [
+      "450",
+      "650",
+      "550",
+      "350"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "রাসায়নিক বিক্রিয়ায় কখন ΔΗ ΔΕ হয়?",
+    "options": [
+      "তাপমাত্রা স্থির হলে",
+      "আয়তন স্থির হলে",
+      "চাপ স্থির হলে",
+      "মোল সংখ্যা সমান হলে"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটির মান সর্বদা ঋণাত্মক?",
+    "options": [
+      "দহন তাপ",
+      "বিক্রিয়া তাপ",
+      "সংগঠন তাপ",
+      "দ্রবণ তাপ"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোন পরিবর্তনটি তাপোৎপাদী?",
+    "options": [
+      "H2O(l) → H2O(g)",
+      "H₂O(g) → H2O(l)",
+      "H2O(s) → H2O(l)",
+      "H2O(s) H₂O(g)"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "তীব্র এসিড ও তীব্র ক্ষারকের প্রশমন তাপ কত?",
+    "options": [
+      "-57.34 kJ/mol",
+      "-55.26 kJ/mol",
+      "-66.8 kJ/mol",
+      "-12.6 kJ/mol"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "NaOH এর সাথে নিচের কোন এসিডটির প্রশমন তাপ সর্বাধিক?",
+    "options": [
+      "HNO3",
+      "HF",
+      "HCI",
+      "H2SO4"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটির বিক্রিয়া তাপ অধিক?",
+    "options": [
+      "(NaOH + CH3COOH)",
+      "(NaOH + HCI)",
+      "(NaOH + HF)",
+      "(NaOH + HNO3)"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন প্রশমন বিক্রিয়ায় প্রশমন তাপ সবচেয়ে কম?",
+    "options": [
+      "(HCI + NaOH)",
+      "(CH3COOH + NaOH)",
+      "(HF + NaOH)",
+      "(HCOOH + NH4OH)"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "Cl(g) + e → CI; AH = -362 kJ mol⁻¹; ∆H কে বলা যায়-",
+    "options": [
+      "সক্রিয়ণ শক্তি",
+      "সংগঠন তাপ",
+      "বিক্রিয়া তাপ",
+      "ইলেকট্রন আসক্তি"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "গঠন বিক্রিয়া একটি-",
+    "options": [
+      "তাপ উৎপাদী প্রক্রিয়া",
+      "তাপহারী প্রক্রিয়া",
+      "তাপের কোনো পরিবর্তন ঘটে না",
+      "কখনও কখনও তাপ উৎপাদী, কখনও তাপহারী"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "বিয়োজন বিক্রিয়ায়-",
+    "options": [
+      "তাপ শোষিত হয়",
+      "তাপ নির্গত হয়",
+      "তাপের কোনো পরিবর্তন ঘটে না",
+      "তাপের কোন সম্পর্ক নেই"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "1mol C2H5OH- এর পূর্ণ দহনে কত মোল CO₂ উৎপন্ন হয়?",
+    "options": [
+      "1 mol",
+      "2 mol",
+      "3 mol",
+      "4 mol"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিম্নের কোন তাপ রাসায়নিক সমীকরণ সঠিক?",
+    "options": [
+      "H2O(l) = H2(g)+½O2(g) ΔΗ° = -285.58 kJ mol-1",
+      "C(s) + O2(g) = CO2(g) AH°=-393.5 kJ mol-1",
+      "H2O(l) = H2O(vap) ΔΗ° = -40.7 kJ mol-¹",
+      "H2O(s) = H2O(1) ΔΗ° = -6.7 kJ mol-¹"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিম্নের ডান পার্শ্বের কোন মানটি পরমাণুকরণ তাপ?",
+    "options": [
+      "H20(l) = H2(g)+ ½O2(g): ΔΗ° = + 285.58 kJ mol-1",
+      "½ Cl2(g) = Cl(g): AH° = +121.1 kJ mol-1",
+      "CH4 (l) = CH3(g) + Η; ΔΗ° = +427 kJ mol-1",
+      "½ H2(g) = H(g): ΔΗ° = -218 kJ mol-1"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "½H2(g)+½Cl2(g) → HCI(g); AH° = -92.3 kJ/mol HCl(g)→½H2(g)+½Cl2(g) এর ∆H° হবে -",
+    "options": [
+      "+92.3 kJ/mol",
+      "-92.3 kJ/mol",
+      "0.0 kJ/mol",
+      "186.6 kJ/mol"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "বন্ধন বিয়োজন শক্তির মান সর্বাধিক কোনটির?",
+    "options": [
+      "F2",
+      "Cl₂",
+      "Br₂",
+      "I₂"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "পানির বাষ্পীভবন এনথালপি কত?",
+    "options": [
+      "+20.6 kJ/mol",
+      "+40.6 kJ/mol",
+      "-20.6 kJ/mol",
+      "-40.6 kJ/mol"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "CH3COOH(aq) + NH4OH(aq) → CH3COONH4(aq) + H₂O (1) বিক্রিয়াটির প্রশমন তাপের মান kJ এককে কত?",
+    "options": [
+      "-68.0",
+      "-57.3",
+      "-55.2",
+      "-50.4"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  }
+]
