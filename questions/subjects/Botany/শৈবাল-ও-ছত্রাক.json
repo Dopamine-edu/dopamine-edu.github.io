@@ -1,1 +1,1168 @@
-[]
+[
+  {
+    "question": "অগ্নিশৈবাল (Fire Alge) নামে পরিচিত নিচের কোনটি?",
+    "options": [
+      "Euglenophyt",
+      "Pyrrophyt",
+      "Chrysophyt",
+      "Pheophyt"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি বাদামী শৈবালের (Phophytসঞ্চিত খাদ্য নয়?",
+    "options": [
+      "ম্যানিটল",
+      "স্টার্চ",
+      "ল্যামিনারিন",
+      "এলগিন"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "এককোষী নিশ্চল শৈবাল কোনটি?",
+    "options": [
+      "Nviul",
+      "Volvox",
+      "Hyroityon",
+      "Chlorell"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি পাতা সদৃশ শৈবাল?",
+    "options": [
+      "Ulothrix",
+      "Chlorell",
+      "Chr",
+      "Ulv"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "পাথরের গায়ে জন্মায় যে শৈবাল তাকে কী বলে?",
+    "options": [
+      "হ্যালোফাইট",
+      "লিখোফাইট",
+      "এপিফাইট",
+      "জেরোফাইট"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি লোহিত শৈবাল?",
+    "options": [
+      "Spirogyr",
+      "Nviul",
+      "Polysiphoni",
+      "Frgilri"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি শৈবালের অযৌন জনন?",
+    "options": [
+      "হরমোগোনিয়া",
+      "খণ্ডায়ন",
+      "বাডিং",
+      "জুস্পোর"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি ডায়াটম?",
+    "options": [
+      "Spirogyr",
+      "Nviul",
+      "Polysiphoni",
+      "Volvox"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কেল্প ফরেস্ট গঠনকারী শৈবাল কোনটি?",
+    "options": [
+      "Spirogyr",
+      "Mroystis",
+      "Volvox",
+      "Polysiphoni"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "ডেনড্রয়েড গঠন বিশিষ্ট শৈবাল কোনটি?",
+    "options": [
+      "Chr",
+      "Prsinolus",
+      "Spirogyr",
+      "Polysiphoni"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "একটি পূর্ণাঙ্গ ডায়াটমের সিলিকাময় কোষপ্রাচীরকে কী বলে?",
+    "options": [
+      "পেরিপ্লাস্ট",
+      "পাইরিনয়েড",
+      "ভলিউটিন",
+      "ফুস্টিউল"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "শৈবালের লাল বর্ণের জন্য দায়ী কোন পদার্থ?",
+    "options": [
+      "ফিওফাইসিন",
+      "ফিউকোজ্যাশ্বিন",
+      "ফাইকোইরিথ্রিন",
+      "ফাইকোসায়ানিন"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "শৈবালের বাদামী বর্ণের জন্য দায়ী কোন পদার্থ?",
+    "options": [
+      "ফিওফাইসিন",
+      "ফিউকোজ্যাশ্বিন",
+      "ফাইকোইরিথ্রিন",
+      "ফাইকোসায়ানিন"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "হলুদ-সোনালি শৈবালের সঞ্চিত খাদ্য কী?",
+    "options": [
+      "ল্যামিনারিন",
+      "ভলিউটিন",
+      "ফ্লোরিডিয়ান স্টার্চ",
+      "স্টার্চ"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "লাল বর্ণের শৈবালের সঞ্চিত খাদ্য কী?",
+    "options": [
+      "ল্যামিনারিন",
+      "ভলিউটিন",
+      "ফ্লোরিডিয়ান স্টার্চ",
+      "স্টার্চ"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "হরমোগোনিয়া দ্বারা অঙ্গজ জনন ঘটায় কোনটি?",
+    "options": [
+      "Ulothrix",
+      "Nosto",
+      "Spirogyr",
+      "Gloeops"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কোন শৈবালে হিপনোস্পোর সৃষ্টি হয়?",
+    "options": [
+      "Ulothrix",
+      "Nosto",
+      "Vuheri",
+      "Gloeops"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "বহু ফ্ল্যাজেলাযুক্ত জ্যুওস্পোর সৃষ্টি হয় কোন শৈবালে?",
+    "options": [
+      "Chlmyomons",
+      "Oeogonium",
+      "Vuheri",
+      "Spirogyr"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "রামি ও ত্যুমবো শৈবাল কোন কাজে ব্যবহৃত হয়?",
+    "options": [
+      "জৈব সার",
+      "মানুষের খাদ্য",
+      "ওষুধ",
+      "মাছের খাদ্য"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "পামেলা দশা দেখা যায় কোন শৈবালে?",
+    "options": [
+      "Chlmyomons",
+      "Nosto",
+      "Vuheri",
+      "Spirogyr"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "পর্ব ও মধ্যপর্ববিশিষ্ট শৈবাল কোনটি?",
+    "options": [
+      "Ulothrix",
+      "Chlorell",
+      "Chr",
+      "Volvox"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "ক্লোরোফিল বিশিষ্ট থ্যালোফাইটিক উদ্ভিদগোষ্ঠীকে কী বলে?",
+    "options": [
+      "ব্যাকটেরিয়া",
+      "ছত্রাক",
+      "হাইড্রোফাইট",
+      "শৈবাল"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি সায়ানোব্যাকটেরিয়ার সঞ্চিত খাদ্য?",
+    "options": [
+      "স্টার্চ",
+      "গ্লাইকোজেন",
+      "লিপিড",
+      "তেল বিন্দু"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "Etorpus এ কোন ধরনের অযৌন রেণু দেখা যায়?",
+    "options": [
+      "জুস্পোর",
+      "হিপ্লোস্পোর",
+      "অটোম্পোর",
+      "অ্যাকিনিটি"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটিতে পুরু সিথ দেখা যায়?",
+    "options": [
+      "Gloeotrihe",
+      "Mirospor",
+      "Etorpus",
+      "Peistrum"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "জনন কোষের ভিত্তিতে যৌন জনন কত প্রকার?",
+    "options": [
+      "দুই",
+      "তিন",
+      "চার",
+      "পাঁচ"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি থেকে অ্যাগার-অ্যাগার পাওয়া যায়?",
+    "options": [
+      "সবুজ শৈবাল",
+      "অগ্নি শৈবাল",
+      "বাদামী শৈবাল",
+      "লোহিত শৈবাল"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "Chlmyomons এর ক্লোরোপ্লাস্ট কোন ধরনের?",
+    "options": [
+      "জালিকাকার",
+      "সর্পিলাকার",
+      "পেয়ালাকৃতির",
+      "তারকাকার"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি এককোষী শৈবাল?",
+    "options": [
+      "Chr",
+      "Nviul",
+      "Zygnem",
+      "Chetophor"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "সবুজ শৈবালে কোন খাদ্য সঞ্চিত থাকে?",
+    "options": [
+      "স্টার্চ",
+      "সায়ানোফাইসিন স্টার্চ",
+      "ফ্লোরিডিয়ান স্টার্চ",
+      "ল্যামিনারিন স্টার্চ"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "সচল ও কলোনী গঠনকারী শৈবাল কোনটি?",
+    "options": [
+      "Euglen",
+      "Volvox",
+      "Chlorell",
+      "Azototer"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "Ulothrix এর যৌন জননে কোষের প্রোটোপ্লাস্ট কতগুলো খণ্ডে বিভক্ত হয়?",
+    "options": [
+      "- ১০টি",
+      "১৬ - ৬৪ টি",
+      "৭০ - ০টি",
+      "১০০ - ১৬০টি"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "একটি গ্যামিট থেকে পূর্ণাঙ্গ Ulothrix তৈরির প্রক্রিয়া কোনটি?",
+    "options": [
+      "অ্যাপোস্পোরি",
+      "পার্থেনোজেনেসিস",
+      "অ্যাপোগ্যামি",
+      "ডিপ্লয়েড পার্থেনোজেনেসিস"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "আংটি আকৃতির ক্লোরোপ্লাস্ট পাওয়া যায় নিচের কোনটিতে?",
+    "options": [
+      "Spirogyr",
+      "Oeogonium",
+      "Volvox",
+      "Ulothrix"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি সঠিক?",
+    "options": [
+      "Chlorellহলো এককোষী, সচল শৈবাল",
+      "Agrius আলুর বিলম্বিত ধ্বসা রোগ সৃষ্টি করে",
+      "Ulothrix এর জাইগোট ৪-ফ্ল্যাজেলাবিশিষ্ট",
+      "Peniillium কনিডিয়ার দ্বারা যৌন জনন ঘটায়"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "Ulothrix এর যৌন জননে কোষের প্রোটোপ্লাস্ট কতগুলো খণ্ডে বিভক্ত হয়?",
+    "options": [
+      "- ১০টি",
+      "১৬ - ৬৪ টি",
+      "৭০ - ০টি",
+      "১০০ - ১৬০টি"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "Ulothrix এর জাইগোট কতটি ফ্ল্যাজেলা নিয়ে গঠিত?",
+    "options": [
+      "দুটি",
+      "চারটি",
+      "আটটি",
+      "ষোলটি"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "একটি গ্যামিট থেকে পূর্ণাঙ্গ Ulothrix তৈরির প্রক্রিয়া কোনটি?",
+    "options": [
+      "অ্যাপোস্পোরি",
+      "পার্থেনোজেনেসিস",
+      "অ্যাপোগ্যামি",
+      "ডিপ্লয়েড পার্থেনোজেনেসিস"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "আংটি আকৃতির ক্লোরোপ্লাস্ট পাওয়া যায় নিচের কোনটিতে?",
+    "options": [
+      "Spirogyr",
+      "Oeogonium",
+      "Volvox",
+      "Ulothrix"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি সঠিক?",
+    "options": [
+      "Chlorellহলো এককোষী, সচল শৈবাল",
+      "Agrius আলুর বিলম্বিত ধ্বসা রোগ সৃষ্টি করে",
+      "Ulothrix এর জাইগোট ৪-ফ্ল্যাজেলাবিশিষ্ট",
+      "Peniillium কনিডিয়ার দ্বারা যৌন জনন ঘটায়"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোন উদ্ভিদের ক্লোরোপ্লাস্টে পাইরিনয়েড থাকে?",
+    "options": [
+      "Nosto",
+      "Ulothrix",
+      "Rii",
+      "Cys"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "Ulothrix sp. এ কোন প্রকার গ্যামিটের মিল?",
+    "options": [
+      "আইসোগ্যামাস",
+      "অ্যানাইসোগ্যামাস",
+      "উগ্যামাস",
+      "গ্যামিটোজেনেসিস"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "ফল, রুটি এবং অন্যান্য খাদ্যের উপরে কোন ছত্রাক জন্মায়?",
+    "options": [
+      "মুগুর ছত্রাক",
+      "ডিম্ব ছত্রাক",
+      "থলি ছত্রাক",
+      "জাইগোট ছত্রাক"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "একশত গ্রাম মাশরুমে কত গ্রাম শর্করা থাকে?",
+    "options": [
+      "8-9 grms",
+      "2-4 grms",
+      "5-6 grms",
+      "4-5 grms"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "ছত্রাকের বৈশিষ্ট্য কোনটি?",
+    "options": [
+      "বৃদ্ধি ও পুষ্টিতে আলোর প্রয়োজন হয়।",
+      "দেহ মূল, কাণ্ড ও পাতায় বিভক্ত",
+      "দেহে সঞ্চিত খাদ্য থাকে না",
+      "যৌন ও অযৌন উপায়ে বংশবৃদ্ধি করে"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "ছত্রাক কোষ প্রাচীরের প্রধান উপাদান কোনটি?",
+    "options": [
+      "Chitin",
+      "Cellulose",
+      "Glyogen",
+      "Strh"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "পরজীবী ছত্রাক যে বিশেষ হাইফার মাধ্যমে পোষক দেহ থেকে খাদ্য শোষণ করে তাকে বলে/ পরজীবী ছত্রাকের চোষকের অঙ্গ কোনটি?",
+    "options": [
+      "রাইজোমফ",
+      "মাইসেলিয়াম",
+      "হস্টোরিয়াম",
+      "মাইকোরাইজা"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "বর্ণাধার নেই, এমন উদ্ভিদ হলো-",
+    "options": [
+      "ছত্রাক",
+      "ব্যাকটেরিয়া",
+      "শৈবাল",
+      "মস"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "ছত্রাকের সঞ্চিত খাদ্য-",
+    "options": [
+      "সেলুলোজ",
+      "চর্বি ও প্রোটিন",
+      "গ্লাইকোজেন ও সেলুলোজ",
+      "গ্লাইকোজেন ও তৈল বিন্দু"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "কোন ছত্রাকে Coenoytiমাইসেলিয়াম থাকে?",
+    "options": [
+      "Peniillium",
+      "Agrius",
+      "Aspergillus",
+      "Muor"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "ছত্রাকের সঞ্চিত খাবার কী?",
+    "options": [
+      "স্টার্চ",
+      "প্রোটিন",
+      "গ্লাইকোজেন",
+      "লিপিড"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "ছত্রাকের কোষ প্রাচীরের প্রধান উপাদান কোনটি?",
+    "options": [
+      "কাইটিন",
+      "সেলুলোজ",
+      "স্টার্চ",
+      "গ্লাইকোজেন"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোন ছত্রাকটি জলজ?",
+    "options": [
+      "Sprolegni",
+      "Rhizopus",
+      "Aspergilus",
+      "Cerospor"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোন ছত্রাক অন্ধকারে আলোক বিচ্ছুরণ ঘটায়?",
+    "options": [
+      "Notilu",
+      "Rhizopus",
+      "Muor",
+      "Agrius"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "পুষ্টির উপর ভিত্তি করে অধিক সাদৃশ্যপূর্ণ জোড় কোনটি?",
+    "options": [
+      "ছত্রাক ও ব্যাকটেরিয়া",
+      "ভাইরাস ও ব্যাকটেরিয়া",
+      "শৈবাল ও ব্যাকটেরিয়া",
+      "শৈবাল ও ছত্রাক"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "আলুর বিলম্বিত ধ্বসা রোগে কোনটি ব্যবহার করা হয়?",
+    "options": [
+      "১% বোর্দো মিশ্রণ",
+      "১% বার্গেন্ডি মিশ্রণ",
+      "৩% সোডিয়াম",
+      "৩% ম্যাগেনেসিয়াম"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোন উদ্ভিদের সঞ্চিত খাদ্য গ্লাইকোজেন?",
+    "options": [
+      "মস",
+      "ফার্ন",
+      "শৈবাল",
+      "ছত্রাক"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "ছত্রাকের যৌন জননের ধাপ কয়টি?",
+    "options": [
+      "২",
+      "৩",
+      "8",
+      "৫"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "ছত্রাকের কনিডিয়ার সঞ্চিত বস্তু কী?",
+    "options": [
+      "সেলুলোজ",
+      "গ্লাইকোজেন",
+      "তেলবিন্দু",
+      "স্টার্চ"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "বায়ুবাহিত ছত্রাকের রেণু কী সৃষ্টি করে?",
+    "options": [
+      "অ্যালার্জি",
+      "দাঁদ",
+      "শ্বাসনালির প্রদাহ",
+      "কিডনির রোগ"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কীসের সাহায্যে ছত্রাকের উস্পোরের অঙ্কুরোদগম ঘটে?",
+    "options": [
+      "প্রোটোপ্লাস্ট",
+      "জার্মনালি",
+      "কনিডিওফোর",
+      "চলরেণু"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "বাডিং এর সময় ছত্রাকের মাতৃকোষের নিউক্লিয়াসটি কোন প্রক্রিয়ায় বিভক্ত হয়?",
+    "options": [
+      "মায়োসিস",
+      "দ্বিবিভাজন",
+      "অ্যামাইটোসিস",
+      "মাইটোসিস"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "ছত্রাকের অণুসূত্রগুলো পরস্পরের সাথে জড়াজড়ি অবস্থায় যে ছত্রাকদেহ গঠন করে তাকে কী বলে?। ছত্রাকের অণুসূত্রগুলো একত্রে যে দেহ গঠন করে তাকে কী বলে?",
+    "options": [
+      "হোল্ডফাস্ট",
+      "মাইসেলিয়াম",
+      "হাইফি",
+      "সিনোসাইট"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি ছত্রাকের যৌন জনন প্রক্রিয়া?",
+    "options": [
+      "কনিডিয়া সৃষ্টি",
+      "জ্যুওস্পোর সৃষ্টি",
+      "কোরকোদগম",
+      "প্লাজমোগ্যামি"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি অয়ডিয়া সৃষ্টির মাধ্যমে অযৌন জনন ঘটায়?",
+    "options": [
+      "Rhizopus",
+      "Aspergillus",
+      "Peniillium",
+      "Sprolegni"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "প্রন্থপ্রাচীরবিহীন বহুনিউক্লিয়াসযুক্ত ছত্রাকের মাইসেলিয়ামকে কী বলে?",
+    "options": [
+      "হাইফা",
+      "রাইজয়েড",
+      "ডোম",
+      "সিনোসাইট"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "ছত্রাকের জট পাকানোর অবস্থাকে কী বলে?",
+    "options": [
+      "হাইফা",
+      "মাইসেলিয়াম",
+      "রাইজয়েড",
+      "হস্টোরিয়াম"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কোন ছত্রাকে মুগুর আকৃতির আণুবীক্ষণিক জনন অঙ্গ ব্যাসিডিয়াম থাকে?",
+    "options": [
+      "Cni",
+      "Rhizopus",
+      "Agrius",
+      "Muor"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোন ছত্রাকে মুগুর আকৃতির আণুবীক্ষণিক জনন অঙ্গ ব্যাসিডিয়াম থাকে?",
+    "options": [
+      "Cni",
+      "Rhizopus",
+      "Agrius",
+      "Muor"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "মাশরুম নিচের কোন শ্রেণির অন্তর্ভুক্ত?",
+    "options": [
+      "Asomyetes",
+      "Bsiiomyetes",
+      "Deuteromyetes",
+      "Zygomyetes"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "Agrius এর সঞ্চিত খাদ্য কোনটি?",
+    "options": [
+      "স্টার্চ",
+      "সেলুলোজ",
+      "তৈল বিন্দু",
+      "গ্লাইকোজেন"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "অ্যাগারিকাস এর জনন অংশ কোনটি?",
+    "options": [
+      "মাইসেলিয়াম",
+      "ফ্রুট বডি",
+      "হাইফি",
+      "রাইজোমফ"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি Agrius এর ফ্রুটবডির অংশ?",
+    "options": [
+      "ইন্ডুসিয়াম",
+      "অ্যানুলাস",
+      "স্টোমিয়াম",
+      "রাইজোমফ"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "Agrius-এর বায়বীয় অংশকে কী বলে?/Agrius এর ফ্রুটবডির নাম কী?",
+    "options": [
+      "পাইলিয়াস",
+      "মাইসেলিয়াম",
+      "ব্যাসিডিওকার্প",
+      "ল্যামিলা"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি বিষাক্ত Agrius?",
+    "options": [
+      "A. xnthoermus",
+      "A. itorquis",
+      "A. mpestris",
+      "A. runnesens"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "অ্যাগারিকাস এর জনন দেহ কোনটি?",
+    "options": [
+      "মাইসেলিয়াম",
+      "(চ) ফ্রুটবডি",
+      "রাইজয়েড",
+      "রাইজোমর্ফ"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "মাশরুমের মধ্যে নিম্নের কোন উপাদানটি অনুপস্থিত?",
+    "options": [
+      "প্রথম শ্রেণির আমিষ",
+      "স্টেরল জাতীয় চর্বি",
+      "পলিস্যাকারাইড জাতীয় শর্করা",
+      "পেপটাইডোগ্লাইকান"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "Agrius এর ছাতার মত অংশের নাম কী?",
+    "options": [
+      "মাইসেলিয়াম",
+      "স্টাইপ",
+      "রাইজোমফ",
+      "পাইলিয়াস"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "Agrius-এর প্রতিটি ব্যাসিডিয়াম থেকে কতটি ব্যাসিডিওস্পোর উৎপন্ন হয়?",
+    "options": [
+      "১",
+      "২",
+      "8",
+      ""
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন অংশে Agrius এর ব্যাসিডিয়াম উৎপন্ন হয়?",
+    "options": [
+      "স্টাইপ",
+      "অ্যানুলাস",
+      "পাইলিয়াস",
+      "গিল"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "কোন উদ্ভিদ ব্যাসিডিওস্পোর তৈরি করে?",
+    "options": [
+      "Pteris sp.",
+      "Peniillium sp.",
+      "Agrius sp.",
+      "Riisp."
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "মাইসেলিয়ামের প্রতিটি শাখাকে কী বলে?",
+    "options": [
+      "স্টাইপ",
+      "হাইফা",
+      "ফ্রুটবডি",
+      "গিল"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "সবচেয়ে সরল প্রকৃতির লাইকেন হলো- ফোলিওজ লাইকেন লেপ্রোজ লাইকেন",
+    "options": [
+      "ফোলিওজ লাইকেন",
+      "ফ্রুটিকোজ লাইকেন",
+      "লেপ্রোজ লাইকেন",
+      "ক্রাস্টোজ লাইকেন"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন স্তরটি সংক্ষিপ্ত? ঊর্ধ্ব কর্টেক্স মেডুলা",
+    "options": [
+      "ঊর্ধ্ব কর্টেক্স",
+      "শৈবাল স্তর",
+      "মেডুলা",
+      "নিম্ন কর্টেক্স"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি ফ্রুটিকোজ লাইকেন? CloniPhysi",
+    "options": [
+      "Cloni",
+      "Lenor",
+      "Physi",
+      "Permeli"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "পাহাড়ের ঢালে বসবাসকারী লাইকেনের ঘন আস্তরণ কী মস নামে পরিচিত? রেইনডিয়ার প্রবাল",
+    "options": [
+      "রেইনডিয়ার",
+      "তুন্দ্রা",
+      "প্রবাল",
+      "ট্রপিক্যাল"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "আকর্ষণীয় ও ঝুলন্ত লাইকেন কোনটি? ক্রাসটোজ ফোলিয়োজ",
+    "options": [
+      "ক্রাসটোজ",
+      "ফ্রুটিকোজ",
+      "ফোলিয়োজ",
+      "লেপ্রোজ"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "শাখা-প্রশাখাবিশিষ্ট আকর্ষনীয় লাইকেনকে কী বলে? লেপ্রোজ ফ্রুটিকোজ",
+    "options": [
+      "লেপ্রোজ",
+      "ফোলিয়োজ",
+      "ফ্রুটিকোজ",
+      "ক্রাসটোজ"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "বায়ু দূষণ বৃদ্ধি পেলে নিচের কোন উদ্ভিদটি দূষক পদার্থ শোষণ করে নিয়ে মরে যায়? শৈবাল লাইকেন",
+    "options": [
+      "শৈবাল",
+      "ছত্রাক",
+      "লাইকেন",
+      "ফার্ন"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "লাইকেন কোনটির সহাবস্থান? শৈবাল-মস মস-ছত্রাক",
+    "options": [
+      "শৈবাল-মস",
+      "ছত্রাক-শৈবাল",
+      "মস-ছত্রাক",
+      "শৈবাল-ফার্ন"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "লাইকেনে শৈবাল ও ছত্রাক এর সম্পর্ককে কী বলে? মৃতজীবিতা পরজীবিতা",
+    "options": [
+      "মৃতজীবিতা",
+      "মিথোজীবিতা",
+      "পরজীবিতা",
+      "স্বভোজিতা"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "শৈবাল ও ছত্রাক সম্মিলিতভাবে নিচের কোনটি তৈরি করে? টেরিডোফাইটা ব্যাকটেরিয়া",
+    "options": [
+      "টেরিডোফাইটা",
+      "ব্রায়োফাইটা",
+      "ব্যাকটেরিয়া",
+      "লাইকেন"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "গোল আলুর বিলম্বিত ধ্বসা রোগ সৃষ্টি করে-নিচের কোনটি আলুর বিলম্বিত ধ্বসা রোগের প্যাথোজেন?",
+    "options": [
+      "Alternrisp",
+      "Phytophthorsp",
+      "Trihophyton sp",
+      "Prmelisp"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "সাইক্লোস্পোরিন ওষুধ তৈরি করা হয় কোন ছত্রাক থেকে?",
+    "options": [
+      "Tolypoluiumffet",
+      "Peniillium/ery",
+      "Agrius",
+      "Gierell"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "লাইকেন থেকে পাওয়া যায়-",
+    "options": [
+      "অ্যাসিটিক অ্যাসিড",
+      "উসনিক অ্যাসিড",
+      "পামিটিক অ্যাসিড",
+      "অ্যাসপারটিক অ্যাসিড"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "জলাতঙ্কের ঔষধ হিসেবে ব্যবহৃত হয় কোনটি?",
+    "options": [
+      "Cloni",
+      "Clostriium",
+      "Peltiger",
+      "Azototer"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোন ছত্রাক খাদ্য হিসাবে ব্যবহার হয়? [MAI: 22-281",
+    "options": [
+      "Muor pusillus",
+      "Aspergillus flvus",
+      "Agrius ompestris",
+      "Shromyes"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "অ্যাথলেট'স ফুট (Athlete's foot) এর কারণ কী?",
+    "options": [
+      "ছত্রাক ও ভাইরাসের সংক্রমণ",
+      "ভাইরাস ও ব্যাকটেরিয়ার সংক্রমণ",
+      "আঘাতজনিত ক্ষত",
+      "ছত্রাক ও ব্যাকটেরিয়ার সংক্রমণ"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি চিনিকে আলকোহলে রূপান্তরিত করে? ",
+    "options": [
+      "স্পাইরোগাইরা",
+      "ইউপ্লেনা",
+      "পেনিসিলিয়াম",
+      "স্যাকারোমাইসেস"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "আলুর বিলম্বিত ধ্বসা রোগ সৃষ্টিকারী জীবাণু হলো- ",
+    "options": [
+      "Peniillium",
+      "Muor",
+      "Phytophthor",
+      "Rhizopus"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "শৈবাল বিষয়ে কোনটি সঠিক?",
+    "options": [
+      "লোহিত শৈবাল কোরাল প্রাচীর গঠন করে",
+      "সবুজ এবং লাল শৈবাল মিলিত হয়ে লাইকেন গঠন করে",
+      "ডায়টমে ফিউকোজেনথিন নামক রঞ্জক থাকে",
+      "সোনালী-হলুদ শৈবাল জলজ বাস্তুতন্ত্র নষ্ট করে"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোন শৈবাল থেকে গবেষকগণ ন্যানোফিল্টার তৈরি করেছেন?",
+    "options": [
+      "Srgssum",
+      "Grilri",
+      "Pithophor",
+      "Spirulin"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "ডায়াটম বিষয়ে কোনটি সঠিক?",
+    "options": [
+      "সবুজ বর্ণের হয়",
+      "জলজ বাস্তুতন্ত্রের উৎপাদক",
+      "সামুদ্রিক শ্যাওলা (moss) হিসাবে পরিচিত",
+      "ঔষুধি গুণ আছে"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "শৈবাল বিষয়ে কোনটি সঠিক?",
+    "options": [
+      "মাইটোটিক কোষ বিভাজন",
+      "কোষপ্রাচীর লিপিড ও প্রোটিন দ্বারা গঠিত",
+      "স্বভোজী",
+      "আদিকোষী জীব"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "শ্যাওলাগুলোর (alge) অযৌন প্রজনন কোনটি দ্বারা সম্পন্ন হয়?",
+    "options": [
+      "Rhizoi",
+      "Frgmenttion",
+      "Tuer",
+      "Spore"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "\"ফ্ল্যাজেলাযুক্ত স্পোর\" কী নামে অবহিত?",
+    "options": [
+      "Aplnospore",
+      "Resting spore",
+      "Zoospore",
+      "Hypnospore"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  }
+]

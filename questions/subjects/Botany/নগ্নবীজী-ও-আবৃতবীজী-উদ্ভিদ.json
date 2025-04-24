@@ -1,1 +1,904 @@
-[]
+[
+  {
+    "question": "নিম্নের কোন বৃক্ষটি gymnosperms?",
+    "options": [
+      "Sequoia gigantea",
+      "Zea mays",
+      "Solanum melongena",
+      "Nymphaea nouchali"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "বাংলাদেশে প্রাকৃতিকভাবে জন্মানো নগ্নবীজী উদ্ভিদ প্রজাতির সংখ্যা কত?",
+    "options": [
+      "5 টি",
+      "10 টি",
+      "৪ টি",
+      "15 টি"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "পৃথিবীর সবচেয়ে বয়স্ক উদ্ভিদ কোনটি?",
+    "options": [
+      "কোস্ট রেডউড",
+      "সেকুয়া",
+      "ব্রিসলকোন পাইন",
+      "ইউক্যালিপটাস"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "পৃথিবীর সবচেয়ে উঁচু ও বড় উদ্ভিদ কোনটি?",
+    "options": [
+      "কোস্ট রেডউড",
+      "সেকুয়া",
+      "ব্রিসলকোন পাইন",
+      "ইউক্যালিপটাস"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "পৃথিবীর সবচেয়ে প্রাচীন বীজযুক্ত উদ্ভিদ কোনটি?",
+    "options": [
+      "Pinus longaeva",
+      "Cycas indica",
+      "Ginkgo biloba",
+      "Cycas pectinata"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নগ্নবীজী কিন্তু দ্বিনিষেক ঘটে কোনটিতে?",
+    "options": [
+      "Ephedra",
+      "Cycas",
+      "Pinus",
+      "Gnetum"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন উদ্ভিদের জাইলেমে ভেসেল উপস্থিত?",
+    "options": [
+      "Gnetum",
+      "Pinus",
+      "Cycas",
+      "Ginkgo"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নগ্নবীজী উদ্ভিদে কীসের মাধ্যমে পরাগায়ন ঘটে?",
+    "options": [
+      "প্রাণী",
+      "পতঙ্গ",
+      "বাতাস",
+      "পানি"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নগ্নবীজী উদ্ভিদের কোনটি অনুপস্থিত?",
+    "options": [
+      "ফল",
+      "পাতা",
+      "বীজ",
+      "মূল"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "বর্তমানে কতটি গণের নগ্নবীজী উদ্ভিদ পাওয়া যায়?",
+    "options": [
+      "৫৩",
+      "৬৩",
+      "৭৩",
+      "৮৩"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "পৃথিবীর সবচেয়ে উঁচু বৃক্ষটি কোন শ্রেণির?",
+    "options": [
+      "আবৃতবীজী",
+      "ছত্রাক",
+      "শৈবাল",
+      "নগ্নবীজী"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "জীবন্ত উদ্ভিদের মধ্যে সবচেয়ে প্রাচীন কোনটি?",
+    "options": [
+      "কার্পাস",
+      "ইউক্যালিপটাস",
+      "আকাশমনি",
+      "রেডউড"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "কোন উদ্ভিদটি বিলুপ্তির আশংকায় রয়েছে?",
+    "options": [
+      "Gnetum oblongum",
+      "Cycas revoluta",
+      "Podocarpus neriifolius",
+      "Mangifera indica"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিষেকের পূর্বে কোনটিতে সস্য উৎপন্ন হয়?",
+    "options": [
+      "মসে",
+      "ফার্নে",
+      "জিমনোস্পার্মে",
+      "এনজিওস্পার্মে"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নগ্নবীজী উদ্ভিদের-",
+    "options": [
+      "গর্ভাশয় নেই কিন্তু গর্ভমুণ্ড আছে",
+      "শ্বাস ডিপ্লয়েড",
+      "সাধারণত আর্কিগোনিয়া সৃষ্টি হয়",
+      "ফ্লোয়েম টিস্যুতে সঙ্গীকোষ থাকে"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নগ্নবীজী উদ্ভিদে নিচের কোনটি অনুপস্থিত?",
+    "options": [
+      "স্পোরোফিল",
+      "গর্ভাশয়",
+      "ডিম্বক",
+      "সস্য"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "Cycas এর কোন প্রজাতির পাতা চর্মরোগ উপশমে ব্যবহৃত হয়?",
+    "options": [
+      "Cycas circinalis",
+      "Cycas indica",
+      "Cycas pectinata",
+      "Cycas revoluta"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "'Cycas' উদ্ভিদের সস্য নিচের কোন ধরনের?",
+    "options": [
+      "হ্যাপ্লয়েড",
+      "ট্রিপ্লয়েড",
+      "পলিপ্লয়েড",
+      "ডিপ্লয়েড"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "Cycas উদ্ভিদের সস্য কোন ধরনের?",
+    "options": [
+      "হ্যাপ্লয়েড",
+      "ডিপ্লয়েড",
+      "ট্রিপ্লয়েড",
+      "টেট্রাপ্লয়েড"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি সাইকাস (Cycas) উদ্ভিদের বৈশিষ্ট্য?",
+    "options": [
+      "কান্ড শাখা-প্রশাখা যুক্ত",
+      "গ্যামেটোফাইট বিদ্যমান",
+      "সমরেণু প্রসু",
+      "পক্ষল যৌগিকপত্র বিশিষ্ট"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "Cycas উদ্ভিদের শুক্রাণু কীরূপ?",
+    "options": [
+      "এক ফ্ল্যাজেলাযুক্ত",
+      "দ্বি-ফ্ল্যাজেলাযুক্ত",
+      "বহু-ফ্ল্যাজেলাযুক্ত",
+      "ফ্ল্যাজেলাবিহীন"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন উদ্ভিদে কোরালয়েড মূল বিদ্যমান?",
+    "options": [
+      "Urena lobata",
+      "Cycas pectinata",
+      "Cynodon dactylon",
+      "Bambusa bambos"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "সাইকাসের মেগাস্পোরোফিলের দৈর্ঘ্য কত?",
+    "options": [
+      "১৫-২০ সেমি",
+      "২৫-৩০ সেমি",
+      "৩৫-৪০ সেমি",
+      "০৫-১০ সেমি"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোন যুগে সাইকাস উদ্ভিদের ব্যাপক বিস্তৃতি ঘটেছিলো?",
+    "options": [
+      "জুরাসিক",
+      "মোসোজোয়িক",
+      "সিনোজোয়িক",
+      "টারসিয়ারি"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "লাইটিকো-বডিগ রোগটি কোন উদ্ভিদজাত খাদ্য ভক্ষণের সাথে সম্পৃক্ত?",
+    "options": [
+      "আলু",
+      "সাইকাস",
+      "ধান",
+      "পিয়াজ"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কোরালয়েড মূলে বাস করে কোনটি?",
+    "options": [
+      "Anabaena",
+      "Ulothrix",
+      "Clostridium",
+      "Navicula"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "Cycas-এর স্ট্রোবিলাস বা স্টামিনেট বা কোন গঠিত হয় কিসের দ্বারা?",
+    "options": [
+      "শঙ্কপত্র",
+      "পুংরেণুপত্র",
+      "পর্ণপত্র",
+      "স্ত্রীরেণুপত্র"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কোন প্রজাতির Cycas চট্টগ্রামের পাহাড়ি অঞ্চলে দেখা যায়?",
+    "options": [
+      "Cycas pectinata",
+      "Podocarpus neriifolius",
+      "Gnetum montenum",
+      "Cycas revoluta"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "Cycas-এর পুংস্ট্রোবিলাস এর দৈর্ঘ্য কত?",
+    "options": [
+      "প্রায় ৫০ সেমি",
+      "প্রায় ১০০ সেমি",
+      "প্রায় ৭০ সেমি",
+      "প্রায় ১৫০ সেমি"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "Cycas-এর ডিম্বাণু সৃষ্টি হয় কোন অংশ থেকে-",
+    "options": [
+      "ট্যামিনেট",
+      "আর্কিগোনিয়াম",
+      "ডিম্বক",
+      "অ্যান্থেরিডিয়াম"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "Cycas উদ্ভিদের প্রধান দেহটি কোন ধরনের?",
+    "options": [
+      "হ্যাপ্লয়েড",
+      "ডিপ্লয়েড",
+      "ট্রিপ্লয়েড",
+      "পলিপ্লয়েড"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "স্পোরাঞ্জিয়া একত্রিত হয়ে কী গঠন করে?",
+    "options": [
+      "স্পোর",
+      "স্ট্রোবিলাস",
+      "সোরাস",
+      "মেগাস্পোর"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোন উদ্ভিদের যৌন জননে মেগাম্পোর ও মাইক্রোস্পোর তৈরি হয়?",
+    "options": [
+      "শৈবাল",
+      "ছত্রাক",
+      "সাইকাস",
+      "টেরিস"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "Cycas এর শুক্রাণুর আকৃতি কীরূপ?",
+    "options": [
+      "বেলনাকার",
+      "মোচাকৃতির",
+      "লাটিমাকৃতির",
+      "পেয়ালাকৃতির"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিmম্নের কোন উদ্ভিদে মিথোজীবিতা লক্ষ্য করা যায়?",
+    "options": [
+      "Hibiscus rosa-sinesis",
+      "Cycas pectinata",
+      "Oryza sativa",
+      "Riccia discolor"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "পাম ফার্ন বলা হয় কোন উদ্ভিদকে?",
+    "options": [
+      "Thuja",
+      "Pteris",
+      "Gnetum",
+      "Cycas"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "সাইকাসের পাতা কয় ধরনের?",
+    "options": [
+      "১",
+      "২",
+      "৩",
+      "8"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "উদ্ভিদকুলের মধ্যে সর্ববৃহৎ শুক্রাণু কোন উদ্ভিদে?",
+    "options": [
+      "Riccia",
+      "Gnetum",
+      "Cycas",
+      "Pteris"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "Cycas-এর ডিম্বাণু তৈরির সঠিক ধারাক্রম কোনটি?",
+    "options": [
+      "ডিম্বক → স্ত্রীরেণু মাতৃকোষ → স্ত্রীরেণু → ডিম্বাণু",
+      "ডিম্বক → আর্কিগোনিয়াম → স্ত্রীরেণু → ডিম্বাণু",
+      "ডিম্বক → স্ত্রীরেণু মাতৃকোষ → স্ত্রীরেণু → আর্কিগোনিয়াম → ডিম্বাণু",
+      "আর্কিগোনিয়াম → ডিম্বক → স্ত্রীরেণু → ডিম্বাণু"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটিকে জীবন্ত জীবাশ্ম বলা হয়?",
+    "options": [
+      "Cycas",
+      "Moss",
+      "Fungi",
+      "Fern"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "Cycas এর মূল দেহ কোন ধরনের?",
+    "options": [
+      "গ্যামেটোফাইটিক",
+      "স্পোরোফাইটিক",
+      "থ্যালোফাইটিক",
+      "ব্রায়োফাইটিক"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি Cycas এর বৈশিষ্ট্য?",
+    "options": [
+      "সমরেণুপ্রসূতা",
+      "যৌগিকপত্র",
+      "ট্রিপ্লয়েড সস্য",
+      "গ্যামেটোফাইটিক"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন উদ্ভিদে ফুল হয় কিন্তু ফল হয় না?",
+    "options": [
+      "Ulothrix sp.",
+      "Riccia sp.",
+      "Pteris sp.",
+      "Cycas sp."
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "Cycas এর শুক্রাণুর ক্ষেত্রে প্রযোজ্য কোনটি?",
+    "options": [
+      "বৃহৎ ও ফ্লাজেলাবিহীন",
+      "ক্ষুদ্র ও ফ্লাজেলাযুক্ত",
+      "বৃহৎ ও বহু ফ্লাজেলাযুক্ত",
+      "বৃহৎ ও ১টি ফ্লাজেলা"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "Cycas উদ্ভিদের কোন অঙ্গটি সাপের ফণার ন্যায়?",
+    "options": [
+      "মেগাস্পোরোফিল",
+      "মাইক্রোস্পোরোফিল",
+      "স্ট্রোবিলাস",
+      "কোরালয়েড মূল"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "Cycas-এর সস্যে ক্রোমোজোম সেট সংখ্যা হলো-",
+    "options": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "Cycas-এর বৈশিষ্ট্য কোনটি?",
+    "options": [
+      "কোরালয়েড মূল",
+      "ট্রিপ্লয়েড সস্য",
+      "ফল হয়",
+      "দ্বি-নিষেক ঘটে"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "Cycas উদ্ভিদের স্ত্রী জননাঙ্গ কী নামে পরিচিত?",
+    "options": [
+      "মাইক্রোস্পোরোফিল",
+      "মেগাস্পোরোফিল",
+      "স্ট্রোবিলাস",
+      "সোরাস"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিম্নের কোন উদ্ভিদ হতে এরারুট বা বার্লি উৎপন্ন হয়?",
+    "options": [
+      "Cycas pectinata",
+      "Cycas circinalis",
+      "Cycas revoluta",
+      "Cycas beddomei"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিষেকের পূর্বে কোনটিতে সস্য উৎপন্ন হয়?",
+    "options": [
+      "মসে",
+      "ফার্নে",
+      "জিমনোস্পার্মে",
+      "এনজিওস্পার্মে"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "বিশ্বের সবচেয়ে ক্ষুদ্রতম আবৃতবীজী উদ্ভিদ কোনটি?",
+    "options": [
+      "Eucalyptus",
+      "Wolffia",
+      "Pisttia",
+      "Azolla"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন বাক্যটি সঠিক?",
+    "options": [
+      "বেরির উদাহরণ হলো টমেটো",
+      "কাঁঠাল একটি সরল ফল",
+      "আতা একটি যৌগিক ফল",
+      "সিলিকুয়ার উদাহরণ হলো ধনে"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "বাল্ব থেকে নিম্নের কোন উদ্ভিদ জন্মায়?",
+    "options": [
+      "পেঁয়াজ",
+      "আদা",
+      "আলু",
+      "আখ"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটিতে ইস্ত্রিকেট পুষ্পপত্র বিন্যাস পাওয়া যায়?",
+    "options": [
+      "পেয়ারা (Psidium guajava)",
+      "কালকাসুন্দা (Cassia sophera)",
+      "সরিষা (Brassica napus)",
+      "জবা (Hibiscus rosa-sinensis)"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "প্রান্তস্পর্শী পুষ্পপত্রবিন্যাসের উদাহরণ কোনটি?",
+    "options": [
+      "জবা ফুল",
+      "কৃষ্ণচূড়া ফুল",
+      "বাবলা ফুল",
+      "কালকাসুন্দা ফুল"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "প্রকৃত ফল (True fruit) নয় কোনটি?",
+    "options": [
+      "লিচু",
+      "আম",
+      "কাল জাম",
+      "আপেল"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন উদ্ভিদে অস্থানিক মূল পাওয়া যায়?",
+    "options": [
+      "অর্কড",
+      "সন্ধ্যামালতি",
+      "অশ্বথ",
+      "অপরিজিতা"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি গর্ভশীর্ষ পুষ্প?",
+    "options": [
+      "জবা",
+      "বেগুন",
+      "অতসী",
+      "কুমড়া"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "স্প্যাডিক্স পাওয়া যায় নিচের কোন উদ্ভিদে?",
+    "options": [
+      "কচু",
+      "সরিষা",
+      "মুক্তাঝুরিaration",
+      "রজনীগন্ধা"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "ক্যারিয়পসিস ধরনের ফল পাওয়া যায়-",
+    "options": [
+      "শশা ও লাউ",
+      "আম ও নারকেল",
+      "কমলা ও লেবু",
+      "ধান ও গম"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "বাংলাদেশে প্রাপ্ত আবৃতবীজী উদ্ভিদের গোত্রের সংখ্যা কত?",
+    "options": [
+      "১০০",
+      "১৫০",
+      "২০০",
+      "২৫০"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "বহুপক্ষল যৌগিক পাতার উদাহরণ কোনটি?",
+    "options": [
+      "সজিনা",
+      "শিম",
+      "ধনিয়া",
+      "জবা"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "ভ্যাক্সিলারি এস্টিভেশন দেখা যায় কোন উদ্ভিদে?",
+    "options": [
+      "পেয়ারা",
+      "মটর",
+      "বাবলা",
+      "জবা"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "টেপাল কার অংশ?",
+    "options": [
+      "দলমণ্ডল",
+      "পুষ্পপুট",
+      "বৃতি",
+      "উপবৃতি"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "বেরি জাতীয় ফল কোনটি?",
+    "options": [
+      "টমেটো",
+      "শিম",
+      "মটর",
+      "পাট"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "পাতায় বোঁটা না থাকলে তাকে কী বলে?",
+    "options": [
+      "সেসাইল",
+      "পিটিওলেট",
+      "সেপাল",
+      "পিটিওলেট"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "শীর্ষদেশীয় (Apical) অমরা বিন্যাসের উদাহরণ কোনটি?",
+    "options": [
+      "লাল পাতা",
+      "শাপলা",
+      "জবা",
+      "সরিষা"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোন উদ্ভিদের ফুল অধিগর্ভ?",
+    "options": [
+      "পেয়ারা",
+      "ডালিম",
+      "কুমড়া",
+      "ঢেঁড়স"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "আবৃতবীজী উদ্ভিদের সস্যকলা-",
+    "options": [
+      "হ্যাপ্লয়েড",
+      "ট্রিপ্লয়েড",
+      "ডিপ্লয়েড",
+      "টেট্রাপ্লয়েড"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "লিগিউম হলো এক ধরনের-",
+    "options": [
+      "ফল",
+      "উপবৃতি",
+      "পুষ্পবিন্যাস",
+      "এন্টিভেশন"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি বেরি ফল?",
+    "options": [
+      "কলা",
+      "ধান",
+      "আনারস",
+      "আতা"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "টুইস্টেড ও ভালভেট এস্টিভেশন দেখা যায় কোন উদ্ভিদে?",
+    "options": [
+      "ধান",
+      "গম",
+      "জবা",
+      "পেয়ারা"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "ধুতুরা ফুলের অমরা বিন্যাস কোন ধরনের?",
+    "options": [
+      "অক্ষীয়",
+      "মূলীয়",
+      "গাত্রীয়",
+      "বহুপ্রান্তীয়"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "জবা ফুলের পাঁপড়ির পুষ্পপত্রবিন্যাস কোন ধরনের?",
+    "options": [
+      "ওপেন",
+      "ভালভেট",
+      "টুইস্টেড",
+      "ইমব্রিকেট"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "মালভেসী গোত্রের পরাগধানী ও পরাগরেণুর বৈশিষ্ট্য নিম্নের কোনটি?",
+    "options": [
+      "একপ্রকোষ্ঠী, বৃক্কাকার এবং কণ্টকিত",
+      "একপ্রকোষ্ঠী, হৃৎপিণ্ডকার এবং কণ্টকিত",
+      "বহুপ্রকোষ্ঠী, হৃৎপিণ্ডকার এবং কণ্টকবিহীন",
+      "বহুপ্রকোষ্ঠী, বৃক্কাকার এবং কণ্টকিত"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোন গোত্রের উদ্ভিদের পরাগরেণু বৃহৎ এবং কণ্টকিত?",
+    "options": [
+      "Poaceae",
+      "Malvaceae",
+      "Liliaceae",
+      "Solanaceae"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "উপবৃতিকে কোন চিহ্ন দ্বারা প্রকাশ করা হয়?",
+    "options": [
+      "K",
+      "EP",
+      "CK",
+      "EK"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "জবা ফুলের বৈশিষ্ট্য কোনটি?",
+    "options": [
+      "উপপত্রযুক্ত",
+      "একপ্রতিসম",
+      "গর্তকটি",
+      "মূলীয় অমরাবিন্যাস"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কার্পাস তুলার বৈজ্ঞানিক নাম কী?",
+    "options": [
+      "Abelmoschus esculentus",
+      "Gossypium herbaceum",
+      "Hibiscus cannabinus",
+      "Thespesia populnea"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "Malvaceae গোত্রের দলের পুষ্পপত্রবিন্যাস কোন ধরনের?",
+    "options": [
+      "ওপেন",
+      "ভালভেট",
+      "ইমব্রিকেটে",
+      "টুইস্টেড"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন উদ্ভিদটি পরিবারগতভাবে পৃথক?",
+    "options": [
+      "Saccharum officinarum",
+      "Hibiscus cannabinus",
+      "Triticum aestivum",
+      "Hordeum vulgare"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "Malvaceae গোত্রের শনাক্তকারী বৈশিষ্ট্য কোনটি?",
+    "options": [
+      "উদ্ভিদের কচি অংশ মিউসিলেজপূর্ণ",
+      "মুক্তপার্শ্বীয় উপপত্র অনুপস্থিত",
+      "পরাগরেণু ক্ষুদ্র এবং কণ্টকিত",
+      "পুষ্পবিন্যাস স্পাইকলেট"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  }
+]
