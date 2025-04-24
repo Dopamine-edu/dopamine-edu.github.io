@@ -1,1 +1,1465 @@
-[]
+[
+  {
+    "question": "পরীক্ষাগারে নিচের কোন দ্রবণটির ব্যবহার সবচেয়ে বেশি হয়?",
+    "options": [
+      "নরমাল দ্রবণ",
+      "মোলার দ্রবণ",
+      "মোলাল দ্রবণ",
+      "ফরমাল দ্রবণ"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "একটি ডেসিমোলার দ্রবণের ঘনমাত্রা কত?",
+    "options": [
+      "1M",
+      "0.1 M",
+      "0.5 M",
+      "0.001M"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "বেকিং সোডার রাসায়নিক ফর্মুলা কোনটি?",
+    "options": [
+      "Na₂CO₃",
+      "NaOH",
+      "NaHCO₃",
+      "Na₂CO₃.10H₂O"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "ইলেকট্রন ত্যাগ বা গ্রহণের ফলে পরমাণুতে সৃষ্ট ধনাত্মক বা ঋণাত্মক চার্জের সংখ্যাটি ঐ মৌলের কী?",
+    "options": [
+      "অ্যাটমিক সংখ্যা",
+      "জারণ সংখ্যা",
+      "বিজারণ-সংখ্যা",
+      "টাইট্রেশন সংখ্যা"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "এক মোল পানি বলতে কী বোঝায়?",
+    "options": [
+      "18.02",
+      "18.02 g পানি",
+      "18.02 g",
+      "18 g পানি"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "পরমাণুর ভরের ক্ষুদ্রতম একক কী?",
+    "options": [
+      "mole",
+      "Na",
+      "1 amu",
+      "p"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "1.008 g হাইড্রোজেনে কয়টি পরমাণু থাকে?",
+    "options": [
+      "6.01 × 10²²",
+      "6.02 × 10²³",
+      "6.022 × 10²³",
+      "6.022 × 10⁻²³"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "-273°C এ N₂ এর মোলার আয়তন কত dm³?",
+    "options": [
+      "0",
+      "6.023",
+      "22.4",
+      "48.789"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি milk of lime?",
+    "options": [
+      "NaOH. CaO",
+      "Ca(OH)₂ + পানি",
+      "CaCO₃",
+      "CaO"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "প্রমাণ দ্রবণ কোনটি?",
+    "options": [
+      "1.0M Na₂CO₃",
+      "1.0g H₂SO₄",
+      "1.0 mL H₂SO₄",
+      "1.0 mol H₂SO₄"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি তাপমাত্রার উপর নির্ভরশীল?",
+    "options": [
+      "মিলিগ্রাম/কেজি",
+      "মিলিমোল/লিটার",
+      "মাইক্রোগ্রাম/কেজি",
+      "মাইক্রোগ্রাম/মিলিগ্রাম"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "5 g Na₂CO₃ গুঁড়াকে 100g দ্রাবকে দ্রবীভূত করে দ্রবণ তৈরি করা হলে ঐ দ্রবণের ঘনমাত্রা কীভাবে প্রকাশ করা হয়?",
+    "options": [
+      "% (w/v)",
+      "% (v/w)",
+      "% (w/w)",
+      "% (v/v)"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "বিশুদ্ধ পানির molL⁻¹ ঘনমাত্রা কত?",
+    "options": [
+      "35.5",
+      "10.0",
+      "55.5",
+      "18.0"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "SATP-তে গ্যাসের মোলার আয়তন কত?",
+    "options": [
+      "22.4 L",
+      "22.8 L",
+      "24.4 L",
+      "24.8 L"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "1 ppm = কত?",
+    "options": [
+      "1mg/L",
+      "1mg/mL",
+      "1µg/L",
+      "100µg/L"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "মোল কী?",
+    "options": [
+      "6.023 × 10²³ অণু",
+      "2 × 6.023 × 10²³ পরমাণু",
+      "NTP তে 11.2L গ্যাস",
+      "14 g নাইট্রোজেন"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "6.023 × 10²³ টি CO₂ অণুর NTP-তে আয়তন-",
+    "options": [
+      "22.4 L",
+      "2.24 L",
+      "0.224 L",
+      "22.4 m³"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটিতে বেশি পরমাণু আছে?",
+    "options": [
+      "1.10 g H atom",
+      "14.7 g Cr",
+      "2.0 g He",
+      "7.0 g N atom"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "প্রমাণ তাপমাত্রা ও চাপে (STP) কোন গ্যাসের 1.0 গ্রাম সবচেয়ে বেশি আয়তন দখল করে?",
+    "options": [
+      "N₂",
+      "H₂",
+      "O₂",
+      "Ar"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "10 mL 0.1M HCl দ্রবণে 5 mL 0.1 M NaOH যোগ করলে মিশ্র দ্রবণে কোন আয়নগুলো থাকবে?",
+    "options": [
+      "OH⁺, Cl⁻, Na⁺",
+      "OH⁻, Cl⁻, H⁺",
+      "H⁺, Cl⁻, Na⁺",
+      "H⁺, Na⁺, Cl⁻, OH⁻"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "দ্রবণের ঘনমাত্রা লঘুকরণের মূলভিত্তি হলো-",
+    "options": [
+      "দ্রবের ভর",
+      "দ্রাবকের আয়তন",
+      "দ্রবণের আয়তন",
+      "দ্রবের মোল সংখ্যা"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি তাপমাত্রার উপর নির্ভরশীল?",
+    "options": [
+      "মোলালিটি",
+      "মোল ভগ্নাংশ",
+      "শতকরা ভর (w/w)",
+      "মোলারিটি"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "সমআয়তন IM KOH এবং IM H₂SO₄ দ্রবণের প্রকৃতি কী হবে?",
+    "options": [
+      "ক্ষারীয়",
+      "অম্লীয়",
+      "উভধর্মী",
+      "নিরপেক্ষ"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের 2% (w/v) জলীয় দ্রবণগুলোর কোনটির স্ফুটনাঙ্ক সবচেয়ে বেশি?",
+    "options": [
+      "NaCl",
+      "KCl",
+      "RbCl",
+      "NaBr"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "সবুজ ভিট্রিয়লের সঠিক সংকেত কোনটি?",
+    "options": [
+      "Fe(II) সালফেট ও Fe(II) সালফাইড মিশ্রণ",
+      "CuSO₄ এর সঙ্গে 5 অণু পানি",
+      "CuSO₄ এর সঙ্গে 7 অণু পানি",
+      "Fe(II) সালফেট এর সঙ্গে 7 অণু পানি"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "কোন পদার্থের প্রমাণ দ্রবণের (standard solution) ঘনমাত্রা সময়ের সাথে পরিবর্তিত হয়?",
+    "options": [
+      "Na₂CO₃",
+      "K₂Cr₂O₇",
+      "KMnO₄",
+      "Na₂C₂O₄"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "প্রাইমারি স্ট্যান্ডার্ড পদার্থ হচ্ছে-",
+    "options": [
+      "KMnO₄",
+      "NaOH",
+      "K₂Cr₂O₇",
+      "Na₂S₂O₃"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি প্রাইমারি স্ট্যান্ডার্ড পদার্থ?",
+    "options": [
+      "Na₂CO₃",
+      "Na₂S₂O₃",
+      "H₂SO₄",
+      "KMnO₄"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি সেকেন্ডারি স্ট্যান্ডার্ড পদার্থ?",
+    "options": [
+      "Na₂CO₃",
+      "H₂C₂O₄.2H₂O",
+      "HNO₃",
+      "K₂Cr₂O₇"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটির প্রমাণ দ্রবণ প্রস্তুত করলে দীর্ঘদিন দ্রবণের ঘনমাত্রা অপরিবর্তিত থাকে?/ বায়ুতে অপরিবর্তিত থাকে কোনটি?/ কোনটি প্রাইমারি স্ট্যান্ডার্ড পদার্থ?",
+    "options": [
+      "NaOH",
+      "KMnO₄",
+      "Na₂C₂O₄",
+      "H₂SO₄"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "টাইট্রেশন বিক্রিয়ায় কোন যৌগ দিয়ে প্রমাণ দ্রবণ তৈরি করা যায় না?",
+    "options": [
+      "KMnO₄",
+      "Na₂CO₃",
+      "K₂Cr₂O₇",
+      "H₂C₂O₄.2H₂O"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "তীব্র এসিড ও মৃদু ক্ষার টাইট্রেশনের জন্য উপযুক্ত নির্দেশক কোনটি?",
+    "options": [
+      "phenolphthalein",
+      "thymol blue",
+      "litmus",
+      "methyl orange"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "সমআয়তনের 0.1M NaOH এবং 0.1M H₂SO₄ মিশ্রণের প্রকৃতি কিরূপ হবে?",
+    "options": [
+      "উভধর্মী",
+      "নিরপেক্ষ",
+      "অম্লীয়",
+      "ক্ষারীয়"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোন দ্রবণে নীল লিটমাস লালে রূপান্তরিত হয়?",
+    "options": [
+      "Acid",
+      "Alkali",
+      "Base",
+      "Salt"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "অম্লীয় মাধ্যমে ফেনল রেড কী বর্ণ ধারণ করে?",
+    "options": [
+      "নীল",
+      "লাল",
+      "বেগুনি",
+      "হলুদ"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "মৃদু এসিড ও সবল ক্ষারের টাইট্রেশনে ব্যবহৃত নির্দেশক কোনটি?",
+    "options": [
+      "লিটমাস",
+      "ফেনলফথ্যালিন",
+      "মিথাইল অরেঞ্জ",
+      "মিথাইল রেড"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি সত্য নয়?",
+    "options": [
+      "লিটমাস অম্লীয় মাধ্যমে লাল বর্ণ ধারণ করে",
+      "মিথাইল রেড অম্লীয় মাধ্যমে লাল বর্ণ ধারণ করে",
+      "ফেনল রেড অম্লীয় মাধ্যমে লাল বর্ণ ধারণ করে",
+      "থাইমল ব্লু অম্লীয় মাধ্যমে লাল বর্ণ ধারণ করে"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "তীব্র এসিড ও তীব্র ক্ষারের টাইট্রেশন নির্দেশক হিসেবে ব্যবহার উপযোগী কোনটি?",
+    "options": [
+      "মিথাইল অরেঞ্জ",
+      "মিথাইল রেড",
+      "ফেনলফথ্যালিন",
+      "সবকয়টি"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "ক্ষারীয় দ্রবণে মিথাইল অরেঞ্জ নির্দেশক যোগ করলে নিম্নের কোন রং দেখা যাবে?",
+    "options": [
+      "গোলাপি",
+      "লাল",
+      "বেগুনি",
+      "blank"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি pH-এর পরিবর্তনের সাথে রং পরিবর্তন করে না?",
+    "options": [
+      "ফেনল রেড",
+      "নিউট্রাল রেড",
+      "ব্রোমসালফথেলিন",
+      "মিথাইল ভায়োলেট"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিম্নের কোনটি ফেনল রেড-এর বর্ণ পরিবর্তনে pH এর পরিসর?",
+    "options": [
+      "6.8~8.4",
+      "8.3~10.0",
+      "3.8~5.4",
+      "3.1~4.4"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "অম্লীয় মাধ্যমে নিম্নের কোন নির্দেশকটি হলুদ?",
+    "options": [
+      "মিথাইল অরেঞ্জ",
+      "মিথাইল রেড",
+      "ফেনলফথ্যালিন",
+      "BLANK"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন বিক্রিয়ায় অম্লীয় মূলকের সংযোজন হয়েছে?",
+    "options": [
+      "HgCl₂(s) + Hg(l) → Hg₂Cl₂(s)",
+      "2Na + Cl₂→ 2NaCl(s)",
+      "4HCl(aq) + MnO₂(s)→ MnCl₂(aq) + Cl₂(g) + 2H₂O(l)",
+      "Zn(s) + H₂SO₄(aq) → ZnSO₄(aq) + H₂(g)"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "সবল এসিড ও দুর্বল ক্ষারের টাইট্রেশনে প্রশমন বিন্দুতে pH হয় কত?",
+    "options": [
+      "7.0",
+      "8.8",
+      "5.27",
+      "6.11"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "অম্ল-ক্ষার দ্রবণের টাইট্রেশনের সমাপ্তি বিন্দুতে ফেনলফথ্যালিন নির্দেশকের বর্ণ পরিবর্তনের pH সীমা কত?",
+    "options": [
+      "3.1-5.6",
+      "5.8-7.5",
+      "8.3-10",
+      "8.5-12"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "প্রমাণ KMnO₄ দ্রবণের সাহায্যে আয়রন (II) আয়নের পরিমাণ নির্দ্ধারণে নির্দেশক হিসাবে কোনটি কাজ করে?",
+    "options": [
+      "পটাসিয়াম পারম্যাঙ্গানেট",
+      "মিথাইল অরেঞ্জ",
+      "ফেনলফথ্যালিন",
+      "আয়রন (II) দ্রবণ"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "জারক ও বিজারকের মোল সংখ্যা x ও y, আয়তন Vo ও VR এবং ঘনমাত্রা Mo ও MR হলে জারণ-বিজারণ টাইট্রেশনের মূল সমীকরণ কোনটি?",
+    "options": [
+      "x V₀ MR = y VR Mo",
+      "y V₀ Mo = x VR MR",
+      "x V₀Mo = y VR MR",
+      "y V₀ MR = X VR Mo"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "মিথাইল অরেঞ্জের বর্ণ পরিবর্তনের pH পরিসর কত?/ এসিড-ক্ষার টাইট্রেশনে শেষ বিন্দুতে মিথাইল অরেঞ্জের বর্ণ পরিবর্তনের pH পরিসর কোনটি?",
+    "options": [
+      "3.0-5.0",
+      "6.0-8.0",
+      "8.0-10.0",
+      "10.0-12.0"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "শক্তিশালী এসিড ও দুর্বল ক্ষারের টাইট্রেশনে নির্দেশকরূপে ব্যবহৃত হয় কোনটি?",
+    "options": [
+      "থাইমল ব্লু",
+      "ফেনলফথ্যালিন",
+      "মিথাইল অরেঞ্জ",
+      "মিথাইল রেড, ফেনলফথ্যালিন"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "ইথানোয়িক এসিড ও NaOH দ্রবণের টাইট্রেশনে উপযুক্ত নির্দেশক কোনটি?",
+    "options": [
+      "মিথাইল রেড",
+      "মিথাইল অরেঞ্জ",
+      "ফেনলফথ্যালিন",
+      "মিথাইল ইয়েলো"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "Fe₂O₃ এর অম্লত্ব কত?",
+    "options": [
+      "4",
+      "5",
+      "6",
+      "7"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "মিথাইল অরেঞ্জ-এর বর্ণ পরিবর্তনের pH রেঞ্জ কত?",
+    "options": [
+      "8.2-9.8",
+      "4.2-6.3",
+      "3.1-4.4",
+      "6.0-7.6"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "FeCl₃ এর জলীয় দ্রবণ-",
+    "options": [
+      "অম্লীয়",
+      "ক্ষারীয়",
+      "প্রম",
+      "কোনোটিই নয়"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "তীব্র এসিড-মৃদু ক্ষারের প্রশমনে শেষ বিন্দুতে প্রাপ্ত দ্রবণের প্রকৃতি কীরূপ?",
+    "options": [
+      "অম্লীয়",
+      "ক্ষারীয়",
+      "প্রম",
+      "বাফার দ্রবণ"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "টাইট্রেশনের শেষ বিন্দুতে pH-পরিবর্তনের পরিসর যদি 8-10 হয় তবে কোন নির্দেশক উপযুক্ত?",
+    "options": [
+      "মিথাইল অরেঞ্জ",
+      "মিথাইল রেড",
+      "ফেনলফথ্যালিন",
+      "লিটমাস"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "Na₂CO₃ এবং HCl প্রশমনের জন্য উপযুক্ত নির্দেশক কী?",
+    "options": [
+      "মিথাইল অরেঞ্জ",
+      "লিটমাস",
+      "ফেনলফথ্যালিন",
+      "মিথাইল রেড"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "মিথাইল অরেঞ্জ অম্লীয় দ্রবণে কোন বর্ণ দেয়?",
+    "options": [
+      "লাল",
+      "কমলা",
+      "হলুদ",
+      "গোলাপি"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "মিথাইল রেড ক্ষারীয় মাধ্যমে কোন বর্ণ করে?",
+    "options": [
+      "বেগুনি",
+      "হলুদ",
+      "নীল",
+      "লাল"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "মৃদু এসিড ও মৃদু ক্ষারকের টাইট্রেশনে উপযুক্ত নির্দেশক কী।",
+    "options": [
+      "ফেনলফথ্যালিন",
+      "মিথাইল রেড",
+      "কোনো উপযুক্ত নির্দেশক নেই",
+      "মিথাইল অরেঞ্জ"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নির্দেশকের সাহায্যে কোন এসিড ক্ষারক টাইট্রেশনের শেষবিন্দু সঠিকভাবে নির্দেশ করা যায় না?",
+    "options": [
+      "মৃদু এসি৬-মৃদু ক্ষারক",
+      "মৃদু এসিড-তীব্র ক্ষারক",
+      "তীব্র এসিড-মৃদু ক্ষারক",
+      "তীব্র এসিড-তীব্র ক্ষারক"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "সবচেয়ে তীব্র এসিডের pKa মান কত?",
+    "options": [
+      "1.0",
+      "2",
+      "3",
+      "4"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "বিশুদ্ধ পানির pH কত?",
+    "options": [
+      "8.5",
+      "7.5",
+      "7.0",
+      "6.5"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "HBr দ্রবণে ফেনলফথ্যালিন কী বর্ণ ধারণ করে?",
+    "options": [
+      "লাল",
+      "হলুদ",
+      "গোলাপী",
+      "বর্ণহীন"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটিতে যোজনী ও জারণ মান উভয়ই শূন্য?",
+    "options": [
+      "CH₂Cl",
+      "MgO",
+      "Ne",
+      "FeO"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের বিক্রিয়াটিতে বিজারক কোনটি? CuSO₄ + KI → Cu₂I₂ + I₂ + K₂SO₄",
+    "options": [
+      "Cu²⁺",
+      "I₂",
+      "I⁻",
+      "K⁺"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "Ca(OCl)Cl যৌগে Cl এর oxidation number কত?",
+    "options": [
+      "-1, -1",
+      "+1, -2",
+      "+1, -1",
+      "-1, +2"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি গ্যাসীয় বিজারক পদার্থ?",
+    "options": [
+      "SO₂",
+      "Oxalic acid",
+      "Ferrous salt (FeSO₄)",
+      "Hydrobromic acid (HBr)"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি 'Oxidation-reduction reaction'?",
+    "options": [
+      "NaCl + AgNO₃ → NaNO₃ + AgCl",
+      "2H₂S + SO₂ → 2H₂O + 3S",
+      "CaCO₃→ CaO + CO₂",
+      "HF + KOH→ KF + H₂O"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি 'Gaseous oxidizing agent'?",
+    "options": [
+      "H₂O₂",
+      "KMnO₄",
+      "H₂SO₄",
+      "O₃"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি জারক ও বিজারক উভয় হিসাবেই কাজ করে?",
+    "options": [
+      "Ammonia",
+      "Nitrogen peroxide",
+      "Nitric acid",
+      "Nitrous acid"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি জারক ও বিজারক উভয় রূপে কাজ করে?",
+    "options": [
+      "KI",
+      "H₂C₂O₄",
+      "Na₂S₂O₃",
+      "H₂O₂"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি সবচেয়ে শক্তিশালী বিজারক?",
+    "options": [
+      "Al",
+      "Zn",
+      "Fe",
+      "Li"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটির জারণ ক্ষমতা সবচেয়ে বেশি?",
+    "options": [
+      "F₂",
+      "Cl₂",
+      "I₂",
+      "Br₂"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিম্নের কোনটি জারক নয়?",
+    "options": [
+      "MnO₂",
+      "CO",
+      "I₂",
+      "H₂O₂"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিম্নের কোন বিক্রিয়ায় তড়িৎ ঋণাত্মক মূলক অপসারিত হয়েছে?",
+    "options": [
+      "CuO(s) + C(s) → Cu(s) + CO(g)",
+      "Cl₂(g) + 2Na(s) → 2NaCl(g)",
+      "CuSO₄(aq) + Zn(s) → Cu(s) + ZnSO₄(aq)",
+      "2FeCl₃(aq) + SnCl₂(aq) → 2FeCl₂(aq) + SnCl₄"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন যৌগে কেন্দ্রীয় পরমাণুর O.N. শূন্য হয়েছে?",
+    "options": [
+      "Fe₃O₄",
+      "CHCl₃",
+      "CH₂Cl₂",
+      "CH₂O₂"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন যৌগে কেন্দ্রীয় পরমাণুর যোজনী ও O.N. এর সংখ্যা সমান হয়েছে?",
+    "options": [
+      "CH₂Cl₂",
+      "CCl₄",
+      "C₂H₆",
+      "CH₂O₂"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "ক্ষারীয় MnO₄⁻ আয়ন ও C₂O₄²⁻ আয়নের রিডক্স বিক্রিয়ায় উভয়ের মোলার অনুপাত কত?",
+    "options": [
+      "2:3",
+      "3:2",
+      "1:3",
+      "2:1"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "K₂Cr₂O₇ ও FeSO₄ এর রিডক্স বিক্রিয়ার জারক ও বিজারকের মোল অনুপাত কোনটি?",
+    "options": [
+      "1:6",
+      "6: 1",
+      "7: 1",
+      "7: 6"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "অম্লীয় Cr₂O₇²⁻ আয়ন ও C₂O₄²⁻ আয়নের রিডক্স বিক্রিয়ায় Cr₂O₇²⁻ ও C₂O₄²⁻ এর মোল অনুপাত কোনটি?",
+    "options": [
+      "1:2",
+      "2:3",
+      "1:3",
+      "3:2"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি জারক ও বিজারক উভয়রূপে কাজ করে?",
+    "options": [
+      "Fe³⁺",
+      "Fe²⁺",
+      "Sn⁴⁺",
+      "Hg²⁺"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "অম্লীয় KMnO₄ দ্বারা রিডক্স বিক্রিয়ায় Fe²⁺ আয়ন কী হিসাবে কাজ করে?",
+    "options": [
+      "নির্দেশক",
+      "দর্শক আয়ন",
+      "জারক",
+      "বিজারক"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি বিজারক?",
+    "options": [
+      "Fe₂(SO₄)₃",
+      "K₂Cr₂O₇",
+      "KI",
+      "I₂"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন বিক্রিয়াটিকে জারণ-বিজারণ বিক্রিয়া হিসেবে গণ্য করা যেতে পারে?",
+    "options": [
+      "Cu²⁺ + 4NH₃ = [Cu(NH₃)₄]²⁺",
+      "NH₃ + H⁺ = NH₄⁺",
+      "Ca²⁺ + F⁻ = CaF₂",
+      "Cl₂ + OH⁻ → Cl⁻ + ClO⁻ + H₂O"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "বিক্রিয়াকালে অম্লীয় মাধ্যমে K₂Cr₂O₇ কতটি ইলেকট্রন গ্রহণ করে?",
+    "options": [
+      "4",
+      "5",
+      "6",
+      "7"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "1O⁵ + 5I⁻ + 6H⁺ → 3I₂ + 3H₂O; এখানে জারণ ঘটে কার?",
+    "options": [
+      "1O⁵",
+      "I⁻",
+      "H⁺",
+      "1O⁵ ও 3I⁻ উভয়ের"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "অম্লীয় মাধ্যমে KMnO₄ কয়টি ইলেকট্রন গ্রহণ করে?",
+    "options": [
+      "3",
+      "4",
+      "5",
+      "6"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "ক্ষারীয় মাধ্যমে KMnO₄ কয়টি ইলেকট্রন গ্রহণ করে?",
+    "options": [
+      "3টি",
+      "4টি",
+      "5টি",
+      "6টি"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "SnCl₂ + 2HgCl₂ = SnCl₄ + 2HgCl – এ বিক্রিয়ায় কোনটি জারিত হয়েছে?",
+    "options": [
+      "Sn²⁺",
+      "Hg²⁺",
+      "Cl⁻",
+      "Sn⁴⁺"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "MnO₄⁻ + C₂O₄²⁻ + H⁺ → Mn²⁺ + CO₂ + H₂O; এ বিক্রিয়াটিতে জারক ও বিজারকের মোল সংখ্যার অনুপাত কত?",
+    "options": [
+      "1 : 5",
+      "2 : 5",
+      "5 : 2",
+      "1 : 6"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটিতে Cl এর জারণ সংখ্যা সর্বাধিক?",
+    "options": [
+      "HClO",
+      "HClO₂",
+      "HClO₃",
+      "HClO₄"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "Br₂ + NaOH(conc) → BrO₃⁻ + Na⁺ + H₂O; এ বিক্রিয়ায় Br এর জারণ সংখ্যার কী পরিবর্তন হয়?",
+    "options": [
+      "0 থেকে +5",
+      "0 থেকে -3",
+      "+1 থেকে +5",
+      "-1 থেকে+5"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "NaOH + Cl₂ → NaCl + NaClO + H₂O, এটি কী ধরনের বিক্রিয়া?",
+    "options": [
+      "ক্লোরিনেশন",
+      "সংযোজন",
+      "ডিসপ্রোপোরশন",
+      "সংশ্লেষণ"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি বিজারক?",
+    "options": [
+      "বেনজোয়িক এসিড",
+      "মিথানোয়িক এসিড",
+      "ইথানোয়িক এসিড",
+      "ক্লোরো ইথানোয়িক এসিড"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "KMnO₄ + H₂SO₄ + FeC₂O₄ → উৎপাদ; এ বিক্রিয়ায় সমতাযুক্ত সমীকরণে জারক ও বিজারকের মোল অনুপাত কত?",
+    "options": [
+      "2 : 5",
+      "2 : 6",
+      "3 : 5",
+      "3 : 6"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি জারণ-বিজারণ বিক্রিয়া নয়?",
+    "options": [
+      "2Na + Cl₂ → 2NaCl",
+      "SnCl₂ + FeCl₃ → SnCl₄ + FeCl₂",
+      "Cu + HNO₃ → Cu(NO₃)₂ + NO + H₂O",
+      "NaCl + AgNO₃ → AgCl + NaNO₃"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "H₂S → S + 2H⁺; S এর জারণ সংখ্যার কী পরিবর্তন ঘটে?",
+    "options": [
+      "-2 → 0",
+      "+2 → 0",
+      "0 → -2",
+      "+3 → 0"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "KI + X → I₂ এ বিক্রিয়ায় X কী?",
+    "options": [
+      "জারক",
+      "বিজারক",
+      "উভয়ই",
+      "কোনটিই নয়"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "PbO₂ → Pb²⁺ এক্ষেত্রে PbO₂ এর কী পরিবর্তন ঘটে?",
+    "options": [
+      "জারণ",
+      "বিজারণ",
+      "জারণ-বিজারণ কোনোটিই নয়",
+      "উভয়ই একত্রে ঘটে"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "C₂O₄²⁻ → CO₂ এ বিক্রিয়ায় C₂O₄²⁻ আয়ন সম্পর্কে কোনটি সঠিক?",
+    "options": [
+      "বিজারিত হয়",
+      "ইলেকট্রন ত্যাগ করে",
+      "ইলেকট্রন গ্রহণ করে",
+      "অক্সিজেন ত্যাগ করে"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "IO₃⁻ + 5I⁻ + 6H⁺ → 3I₂ + 3H₂O; এখানে IO₃⁻, I⁻ এবং I₂ এ আয়োডিনের জারণ সংখ্যা যথাক্রমে কত কত?",
+    "options": [
+      "-1, +1, 0",
+      "+5, -1, 0",
+      "+7, -1, 0",
+      "+3, 0, -1"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "2KMnO₄ + 8H₂SO₄ + 10FeSO₄ = K₂SO₄ + 2MnSO₄ + 5Fe₂(SO₄)₃ + 8H₂O উপরের বিক্রিয়ায় কত মোল ইলেকট্রন আদান-প্রদান হয়েছে?",
+    "options": [
+      "1",
+      "3",
+      "6",
+      "10"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "2KMnO₄ + 8H₂SO₄ + 10FeSO₄ = K₂SO₄ + 2MnSO₄ + 5Fe₂(SO₄)₃ + 8H₂O উপরের বিক্রিয়াটিতে H₂SO₄ এর ভূমিকা কোনটি?",
+    "options": [
+      "জারক",
+      "বিজারক",
+      "অক্সীয় মাধ্যম",
+      "নিরুদক"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "2KMnO₄ + 8H₂SO₄ + 10FeSO₄ = K₂SO₄ + 2MnSO₄ + 5Fe₂(SO₄)₃ + 8H₂O উপরের বিক্রিয়ায় Mn এর জারণ সংখ্যা কত হ্রাস পায়?",
+    "options": [
+      "+5",
+      "+2",
+      "+1",
+      "-1"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি জারক ও বিজারক উভয়রূপে ক্রিয়া করে?",
+    "options": [
+      "Cu²⁺",
+      "Sn²⁺",
+      "Ag⁺",
+      "Fe³⁺"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "BaMnF₄ এবং Li₂MgFeF₆ যৌগদ্বয়ে Mn ও Fe এর জারণ সংখ্যার ক্রম কোনটি?",
+    "options": [
+      "+2, +2",
+      "+5, +2",
+      "+4, +3",
+      "+5, +3"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "2KNO₃ → 2KNO₂ + O₂: এ বিক্রিয়াটিতে জারিত ও বিজারিত মৌল যথাক্রমে কী কী?",
+    "options": [
+      "N, O",
+      "O, N",
+      "K, O",
+      "N, K"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিম্নলিখিত জারণ-বিজারণ বিক্রিয়ার উৎপাদসমূহ কী?",
+    "options": [
+      "K₂SO₄, Fe₂(SO₄)₃, H₂O",
+      "K₂SO₄, Cr₂(SO₄)₃, H₂O",
+      "Cr₂(SO₄)₃, Fe₂(SO₄)₃, H₂O",
+      "K₂SO₄, Cr₂(SO₄)₃, Fe₂(SO₄)₃, H₂O"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "N এর সর্বোচ্চ জারণ অবস্থান নিচের কোনটিতে?",
+    "options": [
+      "N₂O₅",
+      "[NH₄]⁺",
+      "NO₂",
+      "NO₂⁻"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "থায়োসালফেট আয়ন ও আয়োডিনের রিডক্স বিক্রিয়ায় নিচের কোনটি উৎপন্ন হয়?",
+    "options": [
+      "SO₃²⁻",
+      "S₄O₆²⁻",
+      "SO₄²⁻",
+      "S₂O₃²⁻"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "³⁻ আয়নে Fe এর জারণ সংখ্যা কত?",
+    "options": [
+      "0",
+      "+2",
+      "+3",
+      "-3"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন জোড়াটি জারক ও বিজারকের উদাহরণ?",
+    "options": [
+      "KMnO₄, K₂Cr₂O₇",
+      "Na₂C₂O₄, KMnO₄",
+      "CuSO₄, K₂Cr₂O₇",
+      "KMnO₄, KI"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "CuSO₄ + KI → CuI₂ + I₂ + 2K₂SO₄; এ বিক্রিয়ার ক্ষেত্রে কোনটি সঠিক?",
+    "options": [
+      "Cu²⁺ আয়ন জারিত হয়েছে",
+      "I⁻ আয়ন জারিত হয়েছে",
+      "I⁻ আয়ন বিজারিত হয়েছে",
+      "Cu²⁺ আয়ন বিজারক"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "অম্লীয় মাধ্যমে ½ মোল KMnO₄ কত মোল ফেরাস সালফেটকে জারিত করতে পারবে?",
+    "options": [
+      "10",
+      "6",
+      "5",
+      "2.5"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "Na₂S₂O₃ + I₂ → Na₂S₄O₆ + NaI এই বিক্রিয়ায় কোনটি দর্শক আয়ন?",
+    "options": [
+      "Na⁺",
+      "I₂",
+      "I⁻",
+      "S₂O₃²⁻"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি জারণ-বিজারণ বিক্রিয়া?",
+    "options": [
+      "HCl(aq) + NaOH(aq) → NaCl(aq) + H₂O(l)",
+      "Na₂SO₄(aq) + BaCl₂(aq) → BaSO₄(s) + 2NaCl(aq)",
+      "Zn(s) + H₂SO₄(aq) → ZnSO₄(aq) + H₂(g)",
+      "AlCl₃(s) + H₂O(l) → Al(OH)₃(s) + 3HCl(aq)"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি জারক পদার্থ?",
+    "options": [
+      "Cl⁻",
+      "Fe",
+      "Na",
+      "Mg²⁺"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "কোন বিক্রিয়াটি জারণ-বিজারণ নয়?",
+    "options": [
+      "2H₂O₂ → 2H₂O + O₂",
+      "CO₂ + C → 2CO",
+      "CaCO₃ → CaO + CO₂",
+      "Fe₂O₃ + 3CO → 2Fe + 3CO₂"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "Br₂ + OH⁻ → BrO₃⁻ এ বিক্রিয়ায় Br এর জারণসংখ্যার কী পরিবর্তন ঘটে?",
+    "options": [
+      "0 থেকে +5",
+      "0 থেকে -3",
+      "+1 থেকে +5",
+      "-1 থেকে +5"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "সোডিয়াম টেট্রাথায়োনেটে কেন্দ্রীয় পরমাণুর জারণ সংখ্যা কত?",
+    "options": [
+      "+2.0",
+      "+2.5",
+      "+3.5",
+      "+4.0"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "পারক্লোরিক এসিডের কেন্দ্রীয় পরমাণুর জারণ সংখ্যা কত?",
+    "options": [
+      "+1",
+      "+3",
+      "+5",
+      "+7"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "কোন যৌগের অণুতে নাইট্রোজেন সর্বোচ্চ জারণ অবস্থা প্রদর্শন করেছে?",
+    "options": [
+      "NH₂OH",
+      "N₂H₄",
+      "NH₃",
+      "N₃H"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "প্রশম মাধ্যমে KMnO₄ কোনটিতে পরিণত হয়?",
+    "options": [
+      "MnSO₄",
+      "MnO",
+      "MnS",
+      "MnO₂"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "CH₂Cl₂ যৌগ C পরমাণুর জারণ সংখ্যা কত?",
+    "options": [
+      "+4",
+      "+2",
+      "-2",
+      "0"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "মোলার শোষণ সহগ এর একক কোনটি?",
+    "options": [
+      "L mol⁻¹cm⁻¹",
+      "molL⁻¹cm⁻¹",
+      "L mol⁻¹m⁻¹",
+      "L mol cm⁻¹"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "বিয়ার-ল্যাম্বার্ট সূত্র কোন মোলার দ্রবণের ক্ষেত্রে অধিক প্রযোজ্য?",
+    "options": [
+      "0.01M",
+      "0.1M",
+      "0.5M",
+      "1.0M"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "A = Ecl মতে নিচের কোনটি সঠিক?",
+    "options": [
+      "A = শোষণাঙ্ক",
+      "ε = দ্রবণের ঘনমাত্রা",
+      "l = সেলের পুরুত্ব",
+      "c = শোষণ"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটির বেলায় সচল মাধ্যমরূপে হিলিয়াম ব্যবহৃত হয়?",
+    "options": [
+      "TLC",
+      "HPLC",
+      "GLPC",
+      "CC"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "HPLC এর পূর্ণরূপ কোনটি?",
+    "options": [
+      "High Pressure Liquid Chromatography",
+      "High Performance Liquid Chromatography",
+      "High power Liquid Chromatography",
+      "High Plant Liquid Chromatography"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "HPLC তে সচল মাধ্যম হিসেবে কী ব্যবহৃত হয়?",
+    "options": [
+      "N₂ গ্যাস",
+      "মিথানল ও পানি",
+      "অ্যালুমিনা জেল",
+      "সিলিকা জেল"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "গ্যাস ক্রোমাটোগ্রাফিতে ব্যবহারযোগ্য বাহক গ্যাস কোনটি?",
+    "options": [
+      "O₂",
+      "Cl₂",
+      "N₂",
+      "H₂"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "ক্রোমাটোগ্রাফির ক্ষেত্রে কোনটি সঠিক?",
+    "options": [
+      "একাধিক সচল দশা থাকতেই হয়",
+      "দুটি সচল দশা ও তিনটি স্থির দশা থাকে",
+      "স্থির দশা থাকার প্রয়োজন নেই",
+      "কমপক্ষে ১টি করে সচল ও স্থির দশা থাকে"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "GC এর ক্ষেত্রে বাহক গ্যাস নয় কোনটি?",
+    "options": [
+      "He",
+      "N₂",
+      "O₂",
+      "CO₂"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  }
+]

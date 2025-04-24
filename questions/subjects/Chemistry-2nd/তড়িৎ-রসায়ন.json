@@ -1,1 +1,1696 @@
-[]
+[
+  {
+    "question": "চিনি ও গ্লুকোজ এর দ্রবণ হলো-",
+    "options": [
+      "তড়িৎ বিশ্লেষ্য",
+      "ইলেকট্রনীয় পরিবাহী",
+      "তড়িৎ অবিশ্লেষ্য",
+      "অধাতব পরিবাহী"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "সেমিকন্ডাক্টররূপে কোন মৌলটি ব্যবহৃত হয়?",
+    "options": [
+      "Cu",
+      "Al",
+      "Zn",
+      "Ge"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "ইলেকট্রনীয় তড়িৎ পরিবাহী কোনটি?",
+    "options": [
+      "FeSO₄ দ্রবণ",
+      "NaCl (গলিত)",
+      "Cu ধাতু",
+      "H⁺(aq)"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "তাপমাত্রা বৃদ্ধিতে পরিবাহিতা হ্রাস পায় কোন ক্ষেত্রে?",
+    "options": [
+      "ধাতুতে",
+      "লবণের দ্রবণে",
+      "এসিড দ্রবণে",
+      "গলিত লবণে"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "ইলেকট্রোলাইটিক তড়িৎ পরিবাহী কোনটি?",
+    "options": [
+      "Feso₄(aq)",
+      "Fe",
+      "Cu",
+      "NaCl (কঠিন)"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিম্নের কোনটি তীব্র তড়িৎ বিশ্লেষ্য?",
+    "options": [
+      "Nacl (গলিত)",
+      "NH₄OH",
+      "CH₃COOH(aq)",
+      "Cu"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "মৃদু তড়িৎ বিশ্লেষ্য চিহ্নিত কর-",
+    "options": [
+      "H₂SO₄(aq)",
+      "HCl(aq)",
+      "Na₂SO₄(aq)",
+      "CH₃COOH(aq)"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি তড়িৎ অবিশ্লেষ্য?",
+    "options": [
+      "HF",
+      "H₂SO₄",
+      "C₂H₅OH",
+      "H₃PO₄ দ্রবণ"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি সবল তড়িৎবিশ্লেষ্য?",
+    "options": [
+      "NaCl দ্রবণ",
+      "HF দ্রবণ",
+      "CH₃COOH দ্রবণ",
+      "C₁₂H₂₂O₁₁ দ্রবণ"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি সুপরিবাহী নয়?",
+    "options": [
+      "কপার",
+      "কার্বন",
+      "সিলভার",
+      "অ্যালুমিনিয়াম"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "SI পদ্ধতিতে পরিবাহিতার একক কোনটি?",
+    "options": [
+      "S.",
+      "ohm⁻¹",
+      "mho",
+      "Ω⁻¹"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "আপেক্ষিক পরিবাহিতার সূত্র কোনটি?",
+    "options": [
+      "L = R⁻¹",
+      "κ = 1/ρ",
+      "R = ρ",
+      "R = 1/A"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "তুল্য পরিবাহিতার সূত্র কোনটি?",
+    "options": [
+      "κ = ρ⁻¹",
+      "L = R⁻¹",
+      "Λ = (κ × 1000 cm³)/C",
+      "Λ = κ × V"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "মোলার পরিবাহিতার সূত্র কোনটি?",
+    "options": [
+      "A = (κ × 1000 cm³)/C",
+      "A = (κ × 1000 cm²)/C",
+      "A = (κ × 1000 cm³)/C",
+      "Aₘ = (κ × 1000 cm³)/C"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "CGS এককে তুল্য পরিবাহিতার একক কোনটি?",
+    "options": [
+      "ohm⁻¹•cm²(g.eqv)⁻¹",
+      "sm⁻¹•(g.eqv)⁻¹",
+      "ohm⁻¹•cm² mol⁻¹",
+      "ohm⁻¹•(g.eqv)⁻¹"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "CGS পদ্ধতিতে মোলার পরিবাহিতার একক কী?",
+    "options": [
+      "Ohm⁻¹•cm² (g.eqv)⁻¹",
+      "Ohm⁻¹•cm⁻² mol⁻¹",
+      "Ohm⁻¹•mol⁻¹",
+      "Ohm⁻¹•cm² mol⁻¹"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "NaCl এর জলীয় দ্রবণের তড়িৎ বিশ্লেষণে কোনটি উৎপন্ন হয় না?",
+    "options": [
+      "Na",
+      "Cl₂",
+      "H₂",
+      "NaOH"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি সবল তড়িৎ বিশ্লেষ্য?",
+    "options": [
+      "KOH",
+      "HF",
+      "C₁₂H₂₂O₁₁",
+      "C₂H₅OH"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোন কোষে তড়িৎ শক্তিকে রাসায়নিক শক্তিতে রূপান্তরিত করা হয়?",
+    "options": [
+      "তড়িৎ বিশ্লেষ্য কোষ",
+      "গ্যালভানিক কোষ",
+      "জ্বালানি কোষ",
+      "ডেনিয়েল কোষ"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "লোহাকে মরিচা পড়া থেকে রক্ষার জন্য কোন ধাতুর প্রলেপ দেয়া হয়?",
+    "options": [
+      "Zn",
+      "Pb",
+      "Hg",
+      "Ti"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "ধাতু ক্ষয়প্রাপ্ত হয় কোন ধরনের বিক্রিয়া দ্বারা?",
+    "options": [
+      "জারণ-বিজারণ",
+      "প্রশমন",
+      "পলিমারকরণ",
+      "কোনটিই নয়"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিম্নের কোনটি তীব্র তড়িৎ বিশ্লেষ্য?",
+    "options": [
+      "অ্যালকোহল",
+      "খাদ্য লবণের জলীয় দ্রবণ",
+      "খাদ্য চিনির জলীয় দ্রবণ",
+      "অ্যামোনিয়ার জলীয় দ্রবণ"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "খাদ্য লবণের জলীয় দ্রবণকে তড়িৎ বিশ্লেষণ করলে অ্যানোডে একটি বর্ণহীন গ্যাস বিমুক্ত হয়। গ্যাসটি কী?",
+    "options": [
+      "হাইড্রোজেন",
+      "স্টীম",
+      "অক্সিজেন",
+      "ক্লোরিন"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নিম্নের কোনটি একটি তড়িৎ বিশ্লেষ্য পদার্থ?",
+    "options": [
+      "একটি এসিড বা ক্ষার",
+      "একটি জলীয় দ্রবণ",
+      "একটি তরল",
+      "একটি কঠিন পদার্থের গলিত রূপ"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "গলিত লেড ক্রোমাইটের মধ্য দিয়ে তড়িৎ প্রবাহ ঘটে নিম্নের কোনটির দ্বারা?",
+    "options": [
+      "মুক্ত ইলেকট্রন দ্বারা",
+      "সঞ্চরণশীল আয়ন দ্বারা",
+      "সঞ্চরণশীল পরমাণু দ্বারা",
+      "লেড পরমাণু দ্বারা"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "আপেক্ষিক পরিবাহিতার একক কোনটি?",
+    "options": [
+      "ভোল্ট",
+      "ওহম⁻¹ সেমি⁻¹",
+      "ওহম",
+      "অ্যাম্পিয়ার"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "গলিত সোডিয়াম ক্লোরাইডের মধ্যে তড়িৎ চালনা করলে ক্যাথোডে কোনটি জমা হবে?",
+    "options": [
+      "সোডিয়াম ধাতু",
+      "হাইড্রোজেন গ্যাস",
+      "সোডিয়াম হাইড্রক্সাইড",
+      "ক্লোরিন গ্যাস"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "ব্রাইনকে তড়িৎ বিশ্লেষণ করলে কী উৎপন্ন হয়?",
+    "options": [
+      "NaCl",
+      "NaOH",
+      "NaO",
+      "NaHCO₃"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "তড়িৎ প্রবাহ মূলত কোনটিকে বোঝায়?",
+    "options": [
+      "প্রোটনের প্রবাহ",
+      "ইলেকট্রনের প্রবাহ",
+      "আয়নিক প্রবাহ",
+      "গ্যাসের প্রবাহ"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি তীব্র তড়িৎ বিশ্লেষ্য পদার্থ?",
+    "options": [
+      "বিশুদ্ধ পানি",
+      "CH₃COOH",
+      "সুক্রোজ",
+      "H₂SO₄ দ্রবণ"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "খাদ্য লবণের জলীয় দ্রবণকে তড়িৎ বিশ্লেষণ করলে ক্যাথোডে কোন গ্যাসটি মুক্ত হয়?",
+    "options": [
+      "O₂",
+      "N₂",
+      "Cl₂",
+      "H₂"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "গলিত NaCl এর তড়িৎ পরিবাহিতার কারণ কী?",
+    "options": [
+      "মুক্ত ইলেকট্রন",
+      "মুক্ত পরমাণু",
+      "মুক্ত আয়ন",
+      "মুক্ত অণু"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন লবণের জলীয় দ্রবণের তড়িৎ পরিবাহিতা সবচেয়ে বেশি?",
+    "options": [
+      "AgF",
+      "AgCl",
+      "AgBr",
+      "AgI"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি তড়িৎ বিশ্লেষ্য নয়?",
+    "options": [
+      "CH₃COOH",
+      "NH₄Cl",
+      "CCl₄",
+      "CaCl₂"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "এক ফ্যারাডে বলতে কী বোঝায়?",
+    "options": [
+      "96500 টি e⁻",
+      "96500 টি e⁻ এর চার্জ",
+      "6.022 × 10²³ টি e⁻ এর চার্জ",
+      "Nᴀ সংখ্যক ইলেকট্রন"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "1 মোল ইলেকট্রন কোনটি?",
+    "options": [
+      "1 ফ্যারাডে",
+      "1C",
+      "1.62 C",
+      "1.602 × 10⁻¹⁹ C"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "Zn এর তড়িৎ রাসায়নিক তুল্যাঙ্ক কত?",
+    "options": [
+      "3.390 × 10⁻⁴ gC⁻¹",
+      "3.30 × 10⁻⁴ gC⁻¹",
+      "3.29 × 10⁻⁴ gC⁻¹",
+      "3.22 × 10⁻⁴ gC⁻¹"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "তড়িৎ রাসায়নিক তুল্যাঙ্ক কোনটির সবচেয়ে বেশি?",
+    "options": [
+      "Ag",
+      "Cu",
+      "Fe",
+      "Cr"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "1F বিদ্যুৎ দ্বারা কোন ধাতুর আয়ন ক্যাথোডে অধিক পরিমাণে সঞ্চিত হবে?",
+    "options": [
+      "Zn",
+      "Al",
+      "K",
+      "Ca"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "বিগলিত NaCl, MgCl₂, AlCl₃ ও SnCl₄ এর ভেতর দিয়ে 1F বিদ্যুৎ চালনা করলে ক্যাথোডে কোন ধাতুর মোলসংখ্যা সর্বাধিক জমা হবে?",
+    "options": [
+      "Na",
+      "Mg",
+      "Al",
+      "Sn"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "গলিত লবণে একই পরিমাণ তড়িৎ চালনা করলে ক্যাথোডে কোন ধাতুর সর্বোচ্চ সংখ্যক মোল বিমুক্ত হয়?",
+    "options": [
+      "Na",
+      "Mg",
+      "Al",
+      "Sn"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "অ্যালুমিনিয়ামের তড়িৎ রাসায়নিক তুল্যাংক কত?",
+    "options": [
+      "2.8 × 10⁻⁵ gC⁻¹",
+      "9.33 × 10⁻⁵ gC⁻¹",
+      "1.4 × 10⁻⁴ gC⁻¹",
+      "2.8 × 10⁻⁴ gC⁻¹"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "1 ফ্যারাডে সমান-",
+    "options": [
+      "96500 কুলম্ব",
+      "95600 কুলম্ব",
+      "96500 এম্পিয়ার",
+      "9650 কুলম্ব"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "Cu এর তড়িৎ রাসায়নিক তুল্যাঙ্ক কত?",
+    "options": [
+      "13.2 × 10⁻⁴",
+      "13.29 × 10⁻⁴",
+      "13.29 × 10⁻⁴",
+      "কোনটিই নয়"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "1 মোল ইলেকট্রনের মোট চার্জ কত?",
+    "options": [
+      "1.602 × 10⁻¹⁹ কুলম্ব",
+      "1.602 × 10⁻¹⁹ × 6.22 × 10²³ কুলম্ব",
+      "6.022 × 10²³ কুলম্ব",
+      "196500 কুলম্ব"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কোন ধাতুকে অক্সাইড আকরিক থেকে নিষ্কাশনের জন্য C – বিজারণ সম্ভব নয়, তড়িৎ বিশ্লেষণ প্রয়োজন পড়ে?",
+    "options": [
+      "Al",
+      "Cu",
+      "Fe",
+      "Zn"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "সক্রিয়তা সিরিজে কোনটির অবস্থান ওপরে?",
+    "options": [
+      "Pb",
+      "Cu",
+      "Ag",
+      "Ca"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "সক্রিয়তা সিরিজ মতে নিচের কোনটি সঠিক?",
+    "options": [
+      "Al > Ni",
+      "Zn > Mg",
+      "Fe > Na",
+      "Cu > Sn"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "তড়িৎ বিশ্লেষণকালে কোনটি আগে চার্জযুক্ত হবে?",
+    "options": [
+      "Cu²⁺",
+      "H⁺",
+      "Pb²⁺",
+      "Na⁺"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "তড়িৎ বিশ্লেষণকালে নিচের কোন আয়নটি আগে চার্জমুক্ত হয়?",
+    "options": [
+      "Br⁻",
+      "NO₃⁻",
+      "OH⁻",
+      "Cl⁻"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের সবচেয়ে কম সক্রিয় ধাতু কোনটি?",
+    "options": [
+      "গোল্ড",
+      "প্লাটিনাম",
+      "সিলভার",
+      "ক্রোমিয়াম"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "সক্রিয়তা সিরিজে কোন মৌলটি সবার উপরে অবস্থিত?",
+    "options": [
+      "Al",
+      "Mg",
+      "Pb",
+      "Ag"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন মৌলটি তুঁতের দ্রবণ থেকে Cu কে অধঃক্ষিপ্ত করে?",
+    "options": [
+      "Ag",
+      "Fe",
+      "Cl",
+      "Pt"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "NaCl ও KCI দ্রবণকে তড়িৎ বিশ্লেষণ করলে ক্যাথোডে কোনটি আগে বিজারিত হয়?",
+    "options": [
+      "Na⁺",
+      "K⁺",
+      "Na⁺, K⁺",
+      "কোনটিই নয়"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "Cl⁻, I⁻ এর দ্রবণে তড়িৎ প্রবাহিত করলে অ্যানোডে কোনটি বিমুক্ত হয়?",
+    "options": [
+      "Cl₂",
+      "I₂",
+      "Cl₂, I₂",
+      "কোনটিই নয়"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "তামার পাত্রে নিচের কোন দ্রবণটি নিরাপদে রাখা যাবে?",
+    "options": [
+      "AgNO₃",
+      "FeSO₄",
+      "HgSO₄ (লঘু)",
+      "Cl₂ পানি"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন ধাতুগুলো এসিড থেকে হাইড্রোজেন প্রতিস্থাপন করে?",
+    "options": [
+      "Zn/Zn²⁺ E° = +0.76 V",
+      "Ag/Ag⁺ E° = -0.80 V",
+      "Cu/Cu²⁺ E° = -0.34 V",
+      "Au/Au³⁺ E° = -1.498 V"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি সবচেয়ে কম সক্রিয় ধাতু?",
+    "options": [
+      "ম্যাগনেসিয়াম",
+      "অ্যালুমিনিয়াম",
+      "আয়রন",
+      "মারকারি"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "বিজারণ বিভবের মানের ক্রম অনুসারে কোনটি সঠিক?",
+    "options": [
+      "Na⁺ < Mg²⁺ > Al³⁺",
+      "Na⁺ > Mg²⁺ > Al³⁺",
+      "Mg²⁺ < Na⁺ > Al³⁺",
+      "Al³⁺ > Mg²⁺ > Na⁺"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "কোন আয়নটি সহজে চার্জমুক্ত হবে?",
+    "options": [
+      "Cu²⁺",
+      "H⁺",
+      "Au⁺",
+      "Ag⁺"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "সাধারণ তাপমাত্রায় পানি (H₂O) থেকে H₂ প্রতিস্থাপন করতে পারে কোন ধাতু?",
+    "options": [
+      "Ca",
+      "Mg",
+      "Zn",
+      "Pb"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "Li, Na, Zn ও Cu এর প্রমাণ জারণ বিভব যথাক্রমে +3.04V, +2.71V, +0.76V ও -0.34V হলে তড়িৎ বিশ্লেষণের সময় কোন আয়নটি সর্বপ্রথম চার্জমুক্ত হবে?",
+    "options": [
+      "Cu²⁺",
+      "Zn²⁺",
+      "Na⁺",
+      "Li⁺"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোন মৌলটি HCI এসিড থেকে H কে প্রতিস্থাপন করতে পারে?",
+    "options": [
+      "Cu",
+      "Sn",
+      "Hg",
+      "Ag"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "সবচেয়ে বেশি তড়িৎ ধনাত্মক মৌল কোনটি?",
+    "options": [
+      "Al",
+      "K",
+      "Mg",
+      "Ca"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি শক্তিশালী বিজারক?",
+    "options": [
+      "Na",
+      "Li",
+      "K",
+      "Ag"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "তামার প্রমাণ বিজারণ বিভব কত?",
+    "options": [
+      "+0.34V",
+      "+0.80V",
+      "+1.30V",
+      "+1.36V"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "জিঙ্কের প্রমাণ জারণ বিভব কোনটি?",
+    "options": [
+      "-0.76V",
+      "+0.76V",
+      "-0.74V",
+      "+0.74V"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "অ্যানোড তড়িৎদ্বারে কী ঘটে?",
+    "options": [
+      "ধাতব আয়নের আগমন",
+      "ধাতব আয়নের নির্গমণ",
+      "বিজারণ",
+      "জারণ"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "লবণ সেতুতে নিচের কোন লবণটি ব্যবহৃত হয়?",
+    "options": [
+      "CaCl₂",
+      "CuCl₂",
+      "KCl",
+      "Al₂(SO₄)₃"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন তড়িৎদ্বার জারণ অর্ধকোষ। জারণ প্রক্রিয়া বোঝায়?",
+    "options": [
+      "Zn²⁺/Zn",
+      "Zn/Zn²⁺",
+      "Cu²⁺/Cu",
+      "H⁺/H₂, Pt"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "Pt, H₂/H⁺(E° = 0.0V) এর সাথে ক্যাথোড হিসেবে ব্যবহৃত হয় কোনটি?",
+    "options": [
+      "Zp³⁺/Zn",
+      "Mg²⁺/Mg",
+      "Cu²⁺/Cu",
+      "Fe²⁺/Fe"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন তড়িৎদ্বার বিজারণ প্রক্রিয়া বোঝায়?",
+    "options": [
+      "Fe/Fe²⁺",
+      "Cu²⁺/Cu",
+      "Zn/Zn²⁺",
+      "Pt. H₂/H⁺"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "অ্যানোডরূপী Zn/Zn²⁺(E° = +0.76V) এর সাথে নিচের কোনটিকে ক্যাথোডরূপে ব্যবহার করা যাবে?",
+    "options": [
+      "Co/Co²⁺(E³ = +0.28)",
+      "Mg/Mg²⁺(E=+2.36)",
+      "Ca/Ca²⁺(E = +2.87)",
+      "Al³⁺/Al(E=-1.66)"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "প্রমাণ হাইড্রোজেন তড়িৎদ্বারের বিভবের মান কত?",
+    "options": [
+      "+1.00 V",
+      "-1.34 V",
+      "0.0 V",
+      "+0.76 V"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "প্রমাণ H₂ তড়িৎদ্বারে এসিড দ্রবণের ঘনমাত্রা থাকে-",
+    "options": [
+      "1.0M",
+      "0.1M",
+      "0.01M",
+      "0.001M"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "লবণ সেতুতে নিচের কোনটির দ্রবণ ব্যবহার করা যায়?",
+    "options": [
+      "KNO₃",
+      "KNO₂",
+      "KMnO₄",
+      "K₂Cr₂O₇"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "Zn(s)|Zn²⁺(aq)||Cu²⁺(aq)|Cu(s); কোষটির ক্যাথোডে কোন বিক্রিয়াটি ঘটে?",
+    "options": [
+      "Zn → Zn²⁺ + 2e⁻",
+      "Cu²⁺ + 2e⁻ → Cu",
+      "Zn²⁺ + 2e⁻ → Zn",
+      "Cu → Cu²⁺ + 2e⁻"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কোষের emf নির্ণয়ের সূত্র কোনটি?",
+    "options": [
+      "Ecell = Eanode(ox) + Ecathode(ox)",
+      "Ecell = Eanode(ox) + Ecathode(red)",
+      "Ecell = Eanode(ox) - Eanode(red)",
+      "Ecell = Eanode(red) - Ecathode(ox)"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "E°Zn/Zn2+ = 0.76V, E°H/H+ = 0.0V, তড়িৎদ্বার দ্বারা গঠিত তড়িৎ কোষের কোষ-সংকেত কোনটি?",
+    "options": [
+      "Zn(s)/Zn²⁺(aq)||H⁺(aq)/H₂, Pt",
+      "Zn(s)/Zn²⁺(aq)||H⁺(aq)/H₂, (atm), Pt",
+      "Pt, (1 atm)H₂/H⁺(aq)||Zn²⁺(aq)/Zn(s)",
+      "Pt/H₂/H⁺(aq)||Zn²⁺(aq)/Zn(s)"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন কোষ ডায়াগ্রাম সঠিক?/ ইলেকট্রোক্যামিক্যাল সেল নোটেশনের ক্ষেত্রে নিচের কোনটি সঠিক?",
+    "options": [
+      "Zn²⁺(aq)/Zn (s) ||Cu(s)/Cu²⁺(aq)",
+      "Zn(s)/Zn²⁺(aq)||Cu²⁺(aq)/Cu(s)",
+      "Zn²⁺(aq)/Zn(s)||Cu²⁺(aq)/Cu(s)",
+      "Zn²⁺/Zn(s)||Cu²⁺(aq)/Cu²⁺(aq)"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি জারণ বিজারণ অর্ধকোষ?",
+    "options": [
+      "Pt, Cl₂/Cl⁻",
+      "Ag, AgCl(s)/Cl⁻",
+      "Na - Hg/Na⁺",
+      "Pt, Fe²⁺/Fe³⁺"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "Cu/Cu²⁺এর সাথে কোনটি ক্যাথোড হিসাবে উপযুক্ত?",
+    "options": [
+      "Zn²⁺/Zn",
+      "Ag⁺/Ag",
+      "Pb/Pb²⁺",
+      "Pt, H₂/H⁺"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "E°Cu/Cu²+ = -0.34V, E°Fe/Fe2+ = +0.44 V হলে কোনটি সঠিক?",
+    "options": [
+      "তামার পাত্রে FeSO₄ দ্রবণ রাখা যায়",
+      "FeSO₄ তামার পাত্রে রাখলে তামার পাত্র ক্ষয় হয়ে যায়",
+      "লৌহ পাত্রে তুঁতের দ্রবণ বহন করা যায়",
+      "Cu/Cu²⁺||Fe²⁺/Fe কার্যকর সেল"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "E°Na+/Na = -2.71V, E°K+/K = -2.93 V হলে কোনটি অধিক শক্তিশালী বিজারক?",
+    "options": [
+      "Na",
+      "K",
+      "উভয়ই",
+      "বিজারক নয়"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "Pt, H₂/H⁺ (E° = 0.0V) এর সঙ্গে ক্যাথোড হিসেবে ব্যবহৃত হয় কোনটি?",
+    "options": [
+      "Zn²⁺/Zn E° = -0.76 V",
+      "Ag⁺/Ag E° = 0.80 V",
+      "Mg/Mg²⁺ E° = +2.37 V",
+      "Fe²⁺/Fe E°=-0.44 V"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "Zn/Zn²⁺ (E° = +0.76V) এর সঙ্গে নিম্নের কোনটিকে ক্যাথোড হিসেবে নির্বাচন করা যায়?",
+    "options": [
+      "Mg/Mg²⁺ E° = +2.37 V",
+      "Fe/Fe²⁺ E° = +0.44 V",
+      "Na/Na⁺ E° = +2.71 V",
+      "Ca/Ca²⁺ E° = 2.87 V"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "সেল বিক্রিয়া স্বতঃস্ফূর্তভাবে ঘটতে হলে সেল বিভবের মান হতে হয়-",
+    "options": [
+      "ধনাত্মক",
+      "ঋণাত্মক",
+      "কোন সম্পর্ক নেই",
+      "ধনাত্মক ও ঋণাত্মক উভয়ই"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "Fe/Fe²⁺ অ্যানোড হলে, একটি গ্যালভানিক কোষে কোনটি ক্যাথোড হিসেবে ব্যবহার করা যাবে?",
+    "options": [
+      "Zn/Zn²⁺",
+      "Mg/Mg²⁺",
+      "Al/Al³⁺",
+      "Au/Au³⁺"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "Aⁿ⁺ (aq) + B(s) → A(s) + Bⁿ⁺(aq); এই কোষ বিক্রিয়ার আলোকে নার্নস্ট সমীকরণ কোনটি?",
+    "options": [
+      "Ecell = E°cell - RT/nF ln[Aⁿ⁺]/[Bⁿ⁺]",
+      "Ecell = E°cell - RT/nF ln[Bⁿ⁺]/[Aⁿ⁺]",
+      "Ecell = E°cell - (2.303 RT)/F log[Aⁿ⁺]/[Bⁿ⁺]",
+      "Ecell = E°cell - (2.303 RT)/F log[Bⁿ⁺]/[Aⁿ⁺]"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "H₂(g) + Cu²⁺ (aq) → 2H⁺(aq) + Cu(s), E°cell = +0.34 V. উপরোক্ত কোষ বিক্রিয়াটিতে অ্যানোডের জারণ বিক্রিয়া কোনটি?",
+    "options": [
+      "Cu²⁺ + 2e⁻ → Cu",
+      "Cu → Cu²⁺ + 2e⁻",
+      "H₂ → 2H⁺ + 2e⁻",
+      "2H⁺ + 2e⁻ → H₂"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি গ্যালভানিক সেল, Zn(s)/Zn²⁺(aq) || Cu²⁺(aq)/Cu(s) এর বিভব বাড়ায়?",
+    "options": [
+      "increase in [Zn²⁺]",
+      "increase in [Cu²⁺]",
+      "increase in [Zn²⁺] and Cu²⁺ equally",
+      "increase in [Zn²⁺] and decrease in [Cu²⁺]"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "25°C এ K ধাতুর প্রমাণ বিজারণ বিভব K⁺/K কত?",
+    "options": [
+      "+2.92 V",
+      "-2.92 V",
+      "+2.87 V",
+      "+2.78 V"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি জারণ-বিজারণ অর্ধকোষ?",
+    "options": [
+      "Pt, Cl₂/Cl⁻",
+      "Hg, Hg₂SO₄/SO₄²⁻",
+      "Au, Sn²⁺/Sn⁴⁺",
+      "Ni/Ni²⁺"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি জারণ-বিজারণ তড়িৎদ্বার?",
+    "options": [
+      "Sn⁴⁺/Sn²⁺, Pt",
+      "Zn²⁺/Zn",
+      "H⁺(aq)/H₂(g), Pt",
+      "Na/Na⁺"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "তড়িৎ রাসায়নিক কোষের সল্ট ব্রিজে কোন লবণের সম্পৃক্ত জলীয় দ্রবণটি উৎকৃষ্ট? নিচের কোনটি লবণ সেতুতে উৎকৃষ্ট?",
+    "options": [
+      "KNO₃",
+      "KI",
+      "KBr",
+      "KCl"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি জারণ অর্ধকোষ?",
+    "options": [
+      "Pt, Cl₂/Cl⁻",
+      "Cl⁻/Hg₂Cl₂, Hg",
+      "H⁺/H₂, Pt",
+      "Fe³⁺, Fe²⁺/Pt"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "যে তড়িৎদ্বার-এ জারণ ঘটে তাকে বলা হয়-",
+    "options": [
+      "ক্যাথোড",
+      "অ্যানোড",
+      "ধনাত্মক তড়িৎদ্বার",
+      "কোনোটিই নয়"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "অ্যানায়ন গঠিত হয়, যখন-",
+    "options": [
+      "ধাতুর পরমাণু ইলেকট্রন গ্রহণ করে",
+      "ধাতুর পরমাণু ইলেকট্রন ত্যাগ করে",
+      "অধাতুর পরমাণু ইলেকট্রন গ্রহণ করে",
+      "অধাতুর পরমাণু ইলেকট্রন ত্যাগ করে"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "তড়িৎ বিশ্লেষণ প্রক্রিয়ায় ক্যাথোডে কোন ধরনের বিক্রিয়া ঘটে?",
+    "options": [
+      "বিজারণ",
+      "জারণ",
+      "জারণ-বিজারণ",
+      "অপসারণ বিক্রিয়া"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি পরিবেশবান্ধব?",
+    "options": [
+      "ফুয়েল সেল",
+      "লেড-সঞ্চায়ক ব্যাটারি",
+      "ক্যাডমিয়াম ব্যাটারি",
+      "লিথিয়াম-আয়ন ব্যাটারি"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "লবণ সেতুতে তড়িৎ বিশ্লেষ্যরূপে ব্যবহৃত হয় কোনটি?",
+    "options": [
+      "KCl, KNO₃, NH₄Cl",
+      "KCl, K₂SO₄, Na₂SO₄",
+      "KCl, NH₄Cl, Na₂CO₃",
+      "KCl, NH₄Cl, NaNO₃"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "ক্যালোমেল কোনটি?",
+    "options": [
+      "HgCl₂",
+      "Hg₂Cl₂",
+      "HgF₂",
+      "Hg₂I₂"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "Pt, H₂/H⁺ অর্ধকোষটি কী প্রকারের অর্ধকোষ হবে?",
+    "options": [
+      "অধাতব অর্ধকোষ",
+      "গ্যাস অর্ধকোষ",
+      "জারণ অর্ধকোষ",
+      "জারণ-বিজারণ অর্ধকোষ"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "প্রমাণ হাইড্রোজেন তড়িৎদ্বার নিচের কোনটির সাথে ক্যাথোড হিসেবে কাজ করে?",
+    "options": [
+      "Zn(s)/Zn²⁺(aq)",
+      "Ag(s)/Ag⁺(aq)",
+      "Cu(s)/Cu²⁺(aq)",
+      "Au(s)/Au³⁺(aq)"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি প্রাইমারি নির্দেশক তড়িৎদ্বার?",
+    "options": [
+      "ক্যালোমেল",
+      "গ্যাস তড়িৎদ্বার",
+      "হাইড্রোজেন",
+      "জারণ-বিজারণ"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি জারণ-বিজারণ অর্ধকোষ বা ইলেকট্রোড?",
+    "options": [
+      "Pt, Cl₂/Cl⁻",
+      "Ag, AgCl(s)/Cl⁻",
+      "Na, Hg/Na⁺",
+      "Pt, Fe²⁺(aq)/Fe³⁺(aq)"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "গ্যাস ইলেকট্রোডে কোন ধাতু যুগল ব্যবহার করা হয়?",
+    "options": [
+      "Hg, Au",
+      "Hg, Pt",
+      "Pt, Au",
+      "Pt, V"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিম্নের কোনটি ধাতু-ধাতব আয়ন তড়িৎদ্বার?",
+    "options": [
+      "Ag(s), AgCl(s)/NaCl(aq)",
+      "Hg(l). Hg₂Cl₂(s)/KCl(aq)",
+      "Ag(s)/AgNO₃(aq)",
+      "Pt(s), Fe²⁺(aq)/Fe³⁺(aq)"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি মুখ্য অনির্দেশক তড়িৎদ্বার?",
+    "options": [
+      "প্রমাণ H₂ তড়িৎদ্বার",
+      "ক্যালোমেল তড়িৎদ্বার",
+      "গ্লাস তড়িৎদ্বার",
+      "ক্যাডমিয়াম তড়িৎদ্বার"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "মুখ্য নির্দেশক তড়িৎদ্বার হিসেবে ব্যবহৃত হয় কোনটি?",
+    "options": [
+      "প্রমাণ H₂ তড়িৎদ্বার",
+      "ক্যালোমেল তড়িৎদ্বার",
+      "গ্লাস তড়িৎদ্বার",
+      "ক্যাডমিয়াম তড়িৎদ্বার"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোণ তড়িৎদ্বারটি প্রমাণ H-গ্যাস তড়িৎদ্বারের সঙ্গে ক্যাথোড হিসেবে ব্যবহার করা যায়?",
+    "options": [
+      "Fe/Fe²⁺",
+      "Hg, Hg₂Cl₂/Cl⁻",
+      "Hg, Hg₂Cl₂/Cl⁻",
+      "Pb/Pb²⁺"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "ক্যালোমেল তড়িৎদ্বার কোনটি?",
+    "options": [
+      "Hg, Hg₂Cl₂/Cl⁻",
+      "Ag, AgCl/Cl⁻",
+      "Cd, CdSO₄/SO₄⁻",
+      "Hg, Hg₂SO₄/SO₄⁻"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নির্দেশক তড়িৎদ্বার কত প্রকার?",
+    "options": [
+      "এক",
+      "দুই",
+      "তিন",
+      "পাঁচ"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "অর্ধ কোষগুলোর মধ্যে কোনটি অ্যানোড হিসাবে ক্রিয়া করবে?",
+    "options": [
+      "Zn/Zn²⁺",
+      "Mg/Mg²⁺",
+      "Fe/Fe²⁺",
+      "Cu/Cu²⁺"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "Na - Hg/Na⁺ অর্ধকোষটি কোন ধরনের অর্ধকোষ?",
+    "options": [
+      "ধাতু-ধাতুর আয়ন",
+      "গ্যাস-অর্ধকোষ",
+      "জারণ-বিজারণ অর্ধকোষ",
+      "ধাতু অ্যামালগাম-ধাতুর আয়ন"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "ক্যালোমেলে কোন ধাতু থাকে?",
+    "options": [
+      "তামা",
+      "দস্তা",
+      "নিকেল",
+      "পারদ"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "তড়িৎদ্বারগুলোর মধ্যে কোনটি অ্যানোড হিসেবে কাজ করে?",
+    "options": [
+      "Zn²⁺(aq)/Zn(s)",
+      "Fe²⁺(aq)/Fe(s)",
+      "Ag⁺(aq)/Ag(s)",
+      "H⁺(aq)/H₂(g), Pt"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "তড়িৎ রাসায়নিক কোষ দ্বারা সর্বোচ্চ কৃত কাজের মান কত?",
+    "options": [
+      "nFE কোষ",
+      "-nFE কোষ",
+      "RT ln K",
+      "0"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "শুল্ক কোষের অ্যানোড কোনটি?",
+    "options": [
+      "NH₄Cl",
+      "MnO₂",
+      "Zn",
+      "C-দণ্ড"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "ডেনিয়েল সেল তৈরিতে অ্যানোডরূপে ব্যবহৃত তড়িৎদ্বার হলো কোনটি?",
+    "options": [
+      "Zn(s)/Zn²⁺(aq)",
+      "Fe²⁺(aq)/Fe",
+      "Zn(s)/Zn⁺(aq)",
+      "Cu²⁺(aq)/Cu(s)"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "শুল্ক কোষের বিভব মান (emf) কত?",
+    "options": [
+      "+0.34V",
+      "+0.76V",
+      "+1.00V",
+      "+1.5V"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি শুষ্ক কোষে ক্যাথোড হিসাবে ব্যবহৃত হয়?",
+    "options": [
+      "জিঙ্ক",
+      "MnO₂",
+      "কার্বন দণ্ড",
+      "NH₄Cl"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "LiCoO₂= 'A' + xLi⁺ + xe⁻; 'A' যৌগে Co এর জারণ মান কত?",
+    "options": [
+      "+4",
+      "+3",
+      "+2",
+      "+1"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কিছুদিন ব্যবহার করলে ড্রাইসেল ব্যাটারি থেকে এক ধরনের তরল পদার্থ বেরিয়ে আসে কেন?",
+    "options": [
+      "বায়ুতে এর পাত্র ক্ষয় হয় বলে",
+      "ব্যাটারির অ্যানোড জারিত হয় বলে",
+      "ভেতরে কোন এসিড উৎপন্ন হয়ে সেল পাত্র ক্ষয় হয় বলে",
+      "ব্যাটারির দস্তার পাত্রটি খুব হালকা বলে"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "তড়িৎদ্বারগুলোর মধ্যে কোনটি অ্যানোড হিসেবে কাজ করে?",
+    "options": [
+      "Zn²⁺(aq)/Zn(s)",
+      "Fe²⁺aq)/Fe(s)",
+      "Ag⁺ (aq)/Ag(s)",
+      "H⁺(aq)/H₂(g), Pt"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "Fe/Fe²⁺ অ্যানোড হলে, একটি গ্যালভানিক কোষে কোনটি ক্যাথোড হিসেবে ব্যবহার করা যাবে?",
+    "options": [
+      "Zn/Zn²⁺",
+      "Mg/Mg²⁺",
+      "Al/ Al³⁺",
+      "Au/Au³⁺"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "ডেনিয়েল সেলের তড়িৎ প্রবাহের দিক কোনটি?",
+    "options": [
+      "Zn → Cu",
+      "Cu → Zn",
+      "Na→ Cu",
+      "Nz→ Zn"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "ডেনিয়েল কোষে ব্যবহৃত ইলেকট্রোড দুটি হলো-",
+    "options": [
+      "Cu ও Pt",
+      "Cu ও Hg",
+      "Zn ও Cu",
+      "Cd ও Pt"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটিতে বিদ্যুৎ শক্তি উৎপন্ন হয় না?",
+    "options": [
+      "তড়িৎ বিশ্লেষ্য কোষ",
+      "লেড সঞ্চয়ক কোষ",
+      "লিথিয়াম আয়ন ব্যাটারি",
+      "গ্যালভানিক কোষ"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি শুল্ক কোষে ক্যাথোড হিসেবে ব্যবহৃত হয়?",
+    "options": [
+      "গ্রাফাইট দন্ড",
+      "প্লাটিনাম দন্ড",
+      "মারকারি",
+      "কপার"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "A, B, C এবং D এর বিজারণ বিভব যথাক্রমে -0.5V, 0.3V, -0.6V এবং -0.83V নিচের কোনটি অধিক সক্রিয়?",
+    "options": [
+      "A",
+      "B",
+      "C",
+      "D"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "Zn এবং Cu এর প্রমাণ বিজারণ বিভব যথাক্রমে-0.76V এবং +0.34V | Cu + Zn² Cu²⁺ + Zn; বিক্রিয়ায় E°cell এর মান কত?",
+    "options": [
+      "-0.101 V",
+      "-1.10 V",
+      "+0.101 V",
+      "+1.1 V"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "ডেনিয়েল সেলের তড়িৎচালক বল কত?",
+    "options": [
+      "1.5 V",
+      "1.1 V",
+      "2.1 V",
+      "1.8 V"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "হার্ট পেসমেকার রূপে কোনটি ব্যবহৃত হয়?",
+    "options": [
+      "লিথিয়াম ব্যাটারি",
+      "লিথিয়াম আয়ন ব্যাটারি",
+      "লিথিয়াম SVO ব্যাটারি",
+      "H₂ ফুয়েল সেল"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "লেড সঞ্চয়ী কোষে কোনটি তড়িৎ বিশ্লেষ্য হিসেবে ব্যবহৃত হয়?",
+    "options": [
+      "H₂SO₄",
+      "PbSO₄",
+      "PbO",
+      "PbO₂"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "লেড সঞ্চয়ী কোষে ব্যবহৃত H₂SO₄ এর আপেক্ষিক গুরুত্ব কত?",
+    "options": [
+      "1.25",
+      "1.20",
+      "1.15",
+      "1.10"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "লেড স্টোরেজ ব্যাটারির অভ্যন্তরীণ রোধ কত ওহম?",
+    "options": [
+      "0.80 ohm",
+      "0.50 ohm",
+      "0.02 ohm",
+      "0.001 ohm"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "মোটর গাড়িতে ব্যবহৃত লেড সঞ্চায়ক কোষে মাঝে মাঝে পানি দেওয়া হয় কেন?",
+    "options": [
+      "কোষ শীতল রাখার জন্য",
+      "দ্রবণের pH সঠিক রাখার জন্য",
+      "কোষের কার্যক্ষমতা ঠিক রাখতে",
+      "H₂SO₄, এর আপেক্ষিক গুরুত্ব সঠিক রাখতে"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "স্টোরেজ ব্যাটারির মাধ্যমে কোন ভারী ধাতুটি খাদ্য-শৃঙ্খলে প্রবেশ করে?",
+    "options": [
+      "Cd",
+      "As",
+      "Pb",
+      "Cr"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি লেড স্টোরেজ ব্যাটারির সংকেত বা কোষ ডায়াগ্রাম?",
+    "options": [
+      "Pb/Pb²⁺||Cu²⁺/Cu",
+      "Pb, PbSO₄/H₂SO₄(aq)/PbO₂, Pb",
+      "Zn/Zn²⁺||Pb²⁺/Pb",
+      "Pb/Pb²⁺||H⁺/H₂"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি রিচার্জ করা যায়?",
+    "options": [
+      "লিথিয়াম ব্যাটারি/ Lithium battery",
+      "লিথিয়াম-আয়ন ব্যাটারি/ Lithium ion battery",
+      "শুষ্ক কোষ/Dry cell",
+      "ক্ষারীয় ফুয়েল সেল/ক্ষারীয় কোষ (Alkali cell)"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "লেড স্টোরেজ সেলে কোনটি বিজারিত হয়?",
+    "options": [
+      "Pb",
+      "PbO",
+      "PbSO₄",
+      "PbO₂"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "লিথিয়াম আয়ন ব্যাটারিতে অ্যানোড হিসেবে কোনটি ব্যবহৃত হয়?",
+    "options": [
+      "লিথিয়াম",
+      "কার্বন",
+      "ধাতব অক্সাইড",
+      "প্লাটিনাম"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "PbO₂ কে দ্রবীভূত করতে নিচের কোনটি ব্যবহার করা যাবে?",
+    "options": [
+      "HCl",
+      "H₂SO₄",
+      "HNO₃",
+      "H₂O"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "H₂ ফুয়েল সেলে অ্যানোড ও ক্যাথোডরূপে নিচের কোনটি ব্যবহৃত হয়?",
+    "options": [
+      "Ni",
+      "Ag",
+      "Pt",
+      "গ্রাফাইট"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "H₂-ফুয়েল সেলের emf কত?",
+    "options": [
+      "0.76V",
+      "1.10V",
+      "1.23V",
+      "2.03V"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "ফুয়েল সেলের ক্যাথোডে জ্বালানি হিসেবে ব্যবহৃত গ্যাস কোনটি?",
+    "options": [
+      "H₂ গ্যাস",
+      "ওয়াটার গ্যাস",
+      "O₂ গ্যাস",
+      "CO₂ গ্যাস"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিম্নের কোন ফুয়েল সেলে তরল ইলেকট্রোলাইট অনুপস্থিত?",
+    "options": [
+      "PEMFC",
+      "AFC",
+      "PAFC",
+      "MCFC"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি পরিবেশবান্ধব?",
+    "options": [
+      "ফুয়েল সেল",
+      "লেড-সঞ্চায়ক ব্যাটারি",
+      "ক্যাডমিয়াম ব্যাটারি",
+      "লিথিয়াম-আয়ন ব্যাটারি"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "H₂ ফুয়েল সেল-এ তড়িৎ বিশ্লেষ্য হিসেবে ব্যবহৃত হয় কোনটি?",
+    "options": [
+      "KCI দ্রবণ",
+      "KOH (aq)",
+      "ডাইইথাইল কার্বনেটে LiPF₆ এর দ্রবণ",
+      "H₂SO₄ (aq)"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "মহাশূন্যে কোন সেল ব্যবহার সুবিধাজনক?",
+    "options": [
+      "লেড স্টোরেজ সেল",
+      "H₂-ফুয়েল সেল",
+      "LIB",
+      "ড্রাইসেল"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "H ফুয়েল সেলে তড়িৎ বিশ্লেষ্যের মধ্য দিয়ে কোনটি প্রবাহিত হয়?",
+    "options": [
+      "H₂",
+      "H⁺",
+      "O₂",
+      "O²⁻"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "H₂- ফুয়েল সেলে প্রভাবক হিসেবে কোনটি ব্যবহৃত হয়?",
+    "options": [
+      "Zn",
+      "Pt",
+      "Fe",
+      "Mo"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন বিক্রিয়াটি হাইড্রোজেন ফুয়েল সেলের ক্যাথোডে ঘটে?",
+    "options": [
+      "2CO₂ + O₂ + 4e⁻ → 2CO₃²⁻",
+      "O₂ + 4H⁺ + 4e⁻ → 2H₂O",
+      "2H₂ → 4H⁺ + 2e⁻",
+      "H₂ + 2OH⁻ → 2H₂O + 2e⁻"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  }
+]

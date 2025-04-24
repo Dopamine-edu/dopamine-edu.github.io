@@ -1,1 +1,3313 @@
-[]
+[
+  {
+    "question": "কোনটি জৈব যৌগ নয়?",
+    "options": [
+      "HCN",
+      "CH₄",
+      "HCHO",
+      "CH₃OH"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোন জৈব যৌগ প্রথম পরীক্ষাগারে প্রস্তুত করা হয়?",
+    "options": [
+      "CH₃OH",
+      "CH₃COOH",
+      "CO(NH₂)₂",
+      "CH₃NH₂"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "NH₄CNO → H₂N – C – NH₂ উদ্দীপকের বিক্রিয়াটি কোন ধরনের বিক্রিয়া?",
+    "options": [
+      "সংযোজন",
+      "সমাণুকরণ",
+      "অপসারণ",
+      "প্রতিস্থাপন"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "ইউরিয়ার গঠন H₂N – CO – NH₂। এটি কী?",
+    "options": [
+      "একটি এস্টার",
+      "একটি অ্যামাইড",
+      "একটি অ্যানহাইড্রাইড",
+      "কার্বনিল যৌগ"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "উদ্ভিদ মূল দ্বারা ইউরিয়া সারকে কী অবস্থায় মাটি থেকে শোষণ করে?",
+    "options": [
+      "H₂NCONH₂",
+      "NH₄OH",
+      "NO₃⁻ লবণ",
+      "NO₂⁻ লবণ"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "জৈব যৌগ নয় কোনটি?",
+    "options": [
+      "CH₃CN",
+      "(CH₃)₂S",
+      "NaCN",
+      "CH₃NO₂"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোন বিজ্ঞানী আধুনিক জৈব রসায়নের জনক নামে পরিচিত?",
+    "options": [
+      "বার্জেলিয়াস",
+      "এমিল ফিশার",
+      "গ্রিনার্ড",
+      "ফ্রেডরিক উহলার"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "ক্যাটেনেশন ধর্ম প্রদর্শন করে কোন মৌলটি?",
+    "options": [
+      "ক্লোরিন",
+      "নাইট্রোজেন",
+      "কার্বন",
+      "অক্সিজেন"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "ফুলারিন কী?",
+    "options": [
+      "একটি পলিমারীয় যৌগ",
+      "কার্বনের ত্রিমাত্রিক রূপভেদ",
+      "C60 যৌগ",
+      "C6০ ক্যাটিনেটেড রূপভেদ"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি বিষম চাক্রিক অ্যারোমেটিক যৌগ?",
+    "options": [
+      "ইপক্সি ইথেন",
+      "সাইক্লো প্রোপেন",
+      "বেনজিন",
+      "পিরিডিন"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি বিষমচাক্রিক যৌগ?",
+    "options": [
+      "ফিউরান",
+      "বেনজিন",
+      "চাক্রিক বিউটেন",
+      "সাইক্লোহেক্সেন"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি অ্যালিফেটিক যৌগ?",
+    "options": [
+      "ইথিলিন অক্সাইড",
+      "অ্যানিলিন",
+      "টলুইন",
+      "ফেনল"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি সুষম চ্যাক্রক যোগ?",
+    "options": [
+      "ন্যাপথালিন",
+      "ফিউরান",
+      "পিরিডিন",
+      "থায়োফিন"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি ইপোক্সি যৌগ?",
+    "options": [
+      "ডাইইথাইল ইথার",
+      "ইথিলিন অক্সাইড",
+      "মিথাইল ফিনাইল ইথার",
+      "ডাইমিথাইল ইথার"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি হেটারোসাইক্লিক অ্যারোমেটিক যৌগ নয়?",
+    "options": [
+      "পাইরল",
+      "ফিউরান",
+      "থায়োফিন",
+      "ট্রাইনাইট্রো টলুইন"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের যৌগগুলোতে কার্বন-কার্বন বন্ধন দৈর্ঘ্যের বৃদ্ধির ক্রম কোনটি সঠিক? C₂H₄(X), C₂H₂(Y), C₂H₄(Z)",
+    "options": [
+      "X < Y < Z",
+      "Y < Z < X",
+      "X < Z < Y",
+      "Y < X < Z"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "CH₃CN অণুতে যথাক্রমে সিগমা (σ) ও পাই (π) বন্ধন সংখ্যা হলো-",
+    "options": [
+      "5 ও 2",
+      "4 ও 3",
+      "5 ও 3",
+      "4 ও 2"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "C-C বন্ধন দৈর্ঘ্য কোনটি সঠিক?",
+    "options": [
+      "বেনজিন < অ্যালকিন < অ্যালকেন",
+      "অ্যালকিন < বেনজিন < অ্যালকেন",
+      "অ্যালকেন < অ্যালকিন < বেনজিন",
+      "অ্যালকেন < বেনজিন < অ্যালকিন"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "CH₃−CH=CH−C≡CH এ যৌগে 5 নং কার্বন পরমাণুতে কোন ধরনের সংকরণ বিদ্যমান?",
+    "options": [
+      "sp",
+      "sp²",
+      "sp³",
+      "sp³d"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "HC≡C−CH=CH₂ যৌগটির C-C একক বন্ধনটিতে কার্বনের যে সংকরায়ন ঘটে তা হলো-",
+    "options": [
+      "sp²−sp³",
+      "sp−sp³",
+      "sp−sp²",
+      "sp² - sp²"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "C-C বন্ধন দূরত্ব কোনটির ক্ষেত্রে সবচেয়ে কম?",
+    "options": [
+      "প্রোপেন",
+      "ইথেন",
+      "ইথিন",
+      "ইথাইন"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "কোন যৌগে পাই (π) বন্ধন নেই?",
+    "options": [
+      "C₂H₆",
+      "HCHO",
+      "C₂H₂",
+      "HCN"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "জৈব যৌগের অণুসমূহ কোন ধরনের বন্ধন দ্বারা গঠিত?",
+    "options": [
+      "আয়নিক বন্ধন",
+      "সমযোজী বন্ধন",
+      "ধাতব বন্ধন",
+      "ভ্যানডার ওয়ালস বল"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন যৌগের C-পরমাণুতে sp² সংকরণ ঘটে?",
+    "options": [
+      "CH₃−CH₃",
+      "CH₃−C≡CH",
+      "CH₂CH₂CH₂OH",
+      "CH₂=CH₂"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি একই সমগোত্রীয় শ্রেণির সদস্য?",
+    "options": [
+      "ইথেন, মিথেন, প্রোপিন",
+      "ইথিন, প্রোপিন, বিউটেন",
+      "ইথেন, প্রোপেন, বিউটেন",
+      "1- হেক্সিন, 2- হেক্সিন, 3-হেক্সিন"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "অ্যালকাইল মূলকের সাধারণ সংকেত কোনটি?",
+    "options": [
+      "CₙH₂ₙ₊₂",
+      "CₙH₂ₙ₊₁",
+      "CₙH₂ₙ",
+      "CₙH₂ₙ₋₂"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "ইথানোয়িক অ্যানহাইড্রাইডের সঠিক সংকেত কোনটি?",
+    "options": [
+      "CH₃−CO−CH₂CO−CH₃",
+      "CH₃COO−COO−CH₃",
+      "CH₃COO−COCH₃",
+      "CH₃CH₂−O−CH₂CH₃"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের মূলকসমূহের মধ্যে অগ্রগণ্য মূলক কোনটি?",
+    "options": [
+      "-NH₂",
+      "-CHO",
+      "-COOH",
+      "-CO-"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "অ্যামাইডের কার্যকরী মূলকের সংকেত কোনটি?",
+    "options": [
+      "-NH₂",
+      "-NO₂",
+      "-CHO",
+      "-CONH₂"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নাইট্রাইল কার্যকরী মূলকের সংকেত কোনটি?",
+    "options": [
+      "-CNS",
+      "-NO₂",
+      "-CN",
+      "-SCN"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নির্ণয়ের কোনটি নাইট্রোসো মূলকের সংকেত?",
+    "options": [
+      "-CN",
+      "-NO₂",
+      "-NO",
+      "-NC"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোন যৌগে 'নাইট্রাইল' কার্যকরী মূলকটি বিদ্যমান?",
+    "options": [
+      "CH₃NH₂",
+      "CCl₃NO₂",
+      "CH₃CN",
+      "NH₂CNO"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটির কার্যকরী মূলক সঠিক?",
+    "options": [
+      "কিটোন -CO-",
+      "এস্টার – COOH",
+      "জৈব এসিড - COOR",
+      "অ্যালকেন নাইট্রাইল -CONH₂"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কার্যকরী মূলক −CO−O−CO− এর নাম কী?",
+    "options": [
+      "অ্যামাইড",
+      "এস্টার",
+      "এসিড অ্যানহাইড্রাইড",
+      "কার্বক্সিলমূলক"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন কার্যকরী মূলকের সক্রিয়তা সবচেয়ে বেশি?",
+    "options": [
+      "-S-H",
+      "C=O",
+      "-C≡N",
+      "-COOH"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটিতে একই সাথে অ্যালকোহল ও এসিডের কার্যকরী মূলক বিদ্যমান?",
+    "options": [
+      "অক্সালিক এসিড",
+      "ল্যাকটিক এসিড",
+      "ম্যালেয়িক এসিড",
+      "ফিউমারিক এসিড"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "মিথাইল কার্বিনলের সংকেত কোনটি?",
+    "options": [
+      "(CH₃)₃C−OH",
+      "(CH₃)₂CHOH",
+      "CH₃CH₂OH",
+      "CH₃ − OH"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "CH₃-CH₂-CH(Cl) – CHO যৌগটির IUPAC পদ্ধতিতে নাম কী?",
+    "options": [
+      "2- ক্লোরো বিউটান্যাল",
+      "3- ক্লোরো বিউটান্যাল",
+      "2- ক্লোরো বিউটানোন",
+      "3- ক্লোরো বিউটানল"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "H₂C=C(CH₃)-CH₂OH; যৌগটির IUPAC নাম কী?",
+    "options": [
+      "2- মিথাইল-2 প্রোপিন-1-অল",
+      "অ্যালাইল অ্যালকোহল",
+      "মিথাইল ভিনাইল প্রোপানল",
+      "2- মিথাইল-1-প্রোপিন-3- অল"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "CH₃CH(CH₃)-C(CH₃)₂-CH₂-CH₃; যৌগটির IUPAC নাম কোনটি?",
+    "options": [
+      "2,3,3-ট্রাই মিথাইল পেন্টেন",
+      "3,3,4- ট্রাই মিথাইল পেন্টেন",
+      "3,3- ডাইমিথাইল হেক্সেন",
+      "3- মিথাইল -2,3-ডাইমিথাইল বিউটেন"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "CH₃-CH(OH)-CH(CH₃)-CHO; এ যৌগটির IUPAC নাম কী?",
+    "options": [
+      "3-হাইড্রক্সি-2- মিথাইল বিউটান্যাল",
+      "2- হাইড্রক্সি-3- মিথাইল বিউটানল",
+      "3- হাইড্রক্সি-2- মিথাইল প্রোপান্যাল",
+      "3-হাইড্রক্সি-3- মিথাইল পেন্টান্যাল"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "যৌগটির নাম কোনটি সঠিক? CH₃ - CH - CH₃                                             |                                              CHO",
+    "options": [
+      "বিউটাইল অ্যালডিহাইড",
+      "বিউটান্যাল",
+      "2-মিথাইল প্রোপান্যাল-1",
+      "2-অ্যালডিহাইডো প্রোপেন"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "অ্যালাইল অ্যালকোহলের সংকেত কোনটি?",
+    "options": [
+      "CH₃-CH₂-CH₂-OH",
+      "CH₃CH(OH) - CH₃",
+      "H₂C=CH-CH₂-OH",
+      "CH₃-CH=CH-OH"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "IUPAC পদ্ধতিতে CH₃CH₂CH(CH₃)C (CH₃)₃ যৌগের নাম হল-",
+    "options": [
+      "Ethane di oic acid",
+      "2,2-di ethyl-3-ethyl pentane",
+      "3, 3, 5 -tri methyl hexen",
+      "2, 2, 3- tri methyl pentane"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "CH₃-CH(OH)-CH₂-CH₂ - COOH যৌগের IUPAC নিয়মে নামকরণ কোনটি সঠিক?",
+    "options": [
+      "2-হাইড্রোক্সি পেন্টানয়িক এসিড",
+      "4-হাইড্রোক্সি পেন্টানয়িক এসিড",
+      "5-কার্বক্সিল পেন্টানল -2",
+      "1-কার্বক্সিল পেস্টানল-4"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের যৌগটির IUPAC পদ্ধতিতে নাম কোনটি? CH₂ | CH₃-CH₂-C-CH-CH₂-CH₃ | CH₂-CH₃",
+    "options": [
+      "3, 4 ডাইইথাইল পেস্টিন-4",
+      "3, 3 ডাইইথাইল পেন্টিন-1",
+      "2, 3 ডাইইথাইল পেন্টিন-1",
+      "2 ইথাইল-মিথাইল বিউটিন-1"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "CH₃-CH₂-CH(CH₃)-CHO যৌগটির IUPAC নাম কী?",
+    "options": [
+      "2-মিথাইলবিউটান্যাল",
+      "3-মিথাইলবিউটান্যাল",
+      "2-মিথাইল বিউটান্যাল-1",
+      "2-মিথাইলবিউটানয়িক এসিড"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "CH₃-CH₂-CO.CH₂CH₂ যৌগটির IUPAC নাম কী?",
+    "options": [
+      "ইথক্সিইথাইল কিটোন",
+      "ইথাইল প্রপানয়েট",
+      "ইথাইল অ্যাসিটাইল ইথার",
+      "ইথাইল ইথানয়েট"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "CH₃CH(C₂H₅)CH₂-CHBrCHCICH₃ যৌগটির IUPAC নাম কী?",
+    "options": [
+      "2-ক্লোরো-3-ব্লোমো-5- ইথাইল হেক্সেন",
+      "2-ক্লোরো-3-ব্লোমো-5-মিথাইল হেপ্টেন",
+      "3-ব্রোমো-2-ক্লোরো-5-ইথাইল হেক্সেন",
+      "3-ব্রোমো-2-ক্লোরো-5-মিথাইল হেপ্টেন"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "কোন সংকেতে মেটামার সমাণু সম্ভব?",
+    "options": [
+      "C₃H₇O",
+      "C₄H₁₀O",
+      "C₄H₈O",
+      "C₄H₈O₂"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন সংকেত টটোমার সমাণু তৈরি করে?",
+    "options": [
+      "C₃H₆O",
+      "C₃H₈O",
+      "C₃H₆O₂",
+      "C₂H₆O"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "জ্যামিতিক সমাণুতার শর্ত কোনটি?",
+    "options": [
+      "প্রতিস্থাপিত অ্যালকিন",
+      "চাক্রিক অ্যারিন",
+      "হেটারো যৌগ",
+      "অ্যালকানল"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোন যৌগে দুটি কাইরাল কেন্দ্র আছে?",
+    "options": [
+      "2- হাইড্রক্সি প্রোপানোয়িক এসিড",
+      "বিউটেন-2, 3-ডাইঅল",
+      "2-মিথাইল প্রোপান-2 অল",
+      "বিউটান-2 অল"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "প্রোপানোন সাধারণত কোন ধরনের সমাণুতা প্রদর্শন করে?",
+    "options": [
+      "শিকল সমাণুতা",
+      "মেটামারিতা",
+      "টটোমারিতা",
+      "আলোক সমাণুতা"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "হেক্সিন-3 কোন প্রকারের সমাণুতা প্রদর্শন করে?",
+    "options": [
+      "সিস্-ট্রান্স সমাণুতা",
+      "আলোক সমাণুতা",
+      "কার্যকরী মূলক সমাণুতা",
+      "এনানসিওমারিজম"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "CH₂CH=CHCH₃ যৌগটি কোন ধরনের সমাণুতা প্রদর্শন করে?",
+    "options": [
+      "আলোক",
+      "কার্যকরী মূলক",
+      "চেইন",
+      "জ্যামিতিক"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন যৌগটি আলোক সক্রিয়?",
+    "options": [
+      "2-মিথাইল প্রোপানল-2",
+      "প্রোপানল-2",
+      "বিউটানল-1",
+      "বিউটানল-2"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "বিউটিন-2 প্রদর্শন করে কোনটি?",
+    "options": [
+      "আলোক সমাণুতা",
+      "কার্যকরী মূলক সমাণুতা",
+      "জ্যামিতিক সমাণুতা",
+      "টটোমারিজম"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "সর্বনিম্ন কত কার্বনবিশিষ্ট অ্যালকেন আলোক সক্রিয়তা প্রদর্শন করে?",
+    "options": [
+      "4",
+      "5",
+      "6",
+      "7"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "গ্লুকোজ অণুতে কয়টি কাইরাল কেন্দ্র বা অপ্রতিসম কার্বন আছে?",
+    "options": [
+      "৩",
+      "8",
+      "৫",
+      "৬"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "টটোমারিতা বা টটোমারিজম প্রদর্শন করে কোন যৌগটি?",
+    "options": [
+      "বিউটানোন",
+      "প্রোপিন",
+      "প্রোপানল",
+      "প্রোপানয়িক এসিড"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "H₃C - CO - CH₃ এর টটোমার নিচের কোনটি?",
+    "options": [
+      "H₂C = CH(OH) – CH₃",
+      "CH₂CH = CHOH",
+      "CH₃–C(OH) = CH₂",
+      "H₂C = CH₂-CHO"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "C₃H₆O আণবিক সংকেতের সম্ভাব্য সমাণু কয়টি?",
+    "options": [
+      "১",
+      "২",
+      "৩",
+      "8"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "C₂H₄(CH₃)Cl সংকেতযুক্ত কয়টি সমাণু সম্ভব?",
+    "options": [
+      "২",
+      "৩",
+      "8",
+      "৬"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "ডাইমিথাইল ইথার ও ইথানল পরস্পর কোন প্রকারের সমাণু?",
+    "options": [
+      "জ্যামিতিক সমাণু",
+      "অবস্থান সমাণু",
+      "কার্যকরী মূলক",
+      "টটোমারিজম"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "বেনজিন বলয়ে ২টি প্রতিস্থাপক যুক্ত থাকলে, যৌগটির কয়টি সমাণু সম্ভব?",
+    "options": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কিটো-ইনল টটোমারিতা প্রদর্শন করে কোনটি?",
+    "options": [
+      "মিথোক্সি-প্রোপেন",
+      "প্রোপানোন",
+      "প্রোপানল-1",
+      "পেন্টান-2-ওন"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি জ্যামিতিক সমাণুতা প্রদর্শন করে?",
+    "options": [
+      "ClCH = CHCl",
+      "CH₂ = CHCl",
+      "CH₂ = CH₂",
+      "Cl₂C = CH₂"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "CH₂-CH-CH-CH-CH-CHO এর কয়টি স্টেরিও সমাণু আছে?",
+    "options": [
+      "16",
+      "8",
+      "32",
+      "4"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "CH₃-CH(OH)-CH₂-CHO যৌগটি কোন ধরনের সমাণুতা দেখায়?",
+    "options": [
+      "জ্যামিতিক সমাণুতা",
+      "আলোক সমাণুতা",
+      "গাঠনিক সমাণুতা",
+      "অবস্থান সমাণুতা"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি জ্যামিতিক সমাণুতা প্রদর্শন করে?",
+    "options": [
+      "CH₃-CH=CH₂",
+      "CH₂CH₂CH=CH₂",
+      "CH₃CH=CHCH₃",
+      "CH₂=CHBr"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "আলোক সক্রিয় সমাণুতা প্রদর্শন করে না কোন যৌগটি?",
+    "options": [
+      "২- প্রোপানল",
+      "২- বিউটানল",
+      "টারটারিক এসিড",
+      "ল্যাকটিক এসিড"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন দুটি মেটামার অণু বোঝায়?",
+    "options": [
+      "CH₃OCH₂CH₂CH₃ ও CH₃CH₂OCH₂CH₃",
+      "CH₃CH₂OH ও CH₃OCH₃",
+      "CH₃CH₂OH ও CH₃CHO",
+      "CH₃CH₂OH ও CH₃OCH₂CH₂"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "C₄H₈ যৌগের কতগুলো আইসোমার গঠন সম্ভব?",
+    "options": [
+      "2",
+      "3",
+      "4",
+      "6"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন যৌগে আলোক সমাণুতা দেখাবে?",
+    "options": [
+      "H₂N-CH₂-COOH",
+      "H₂N-CH(CH₃) - COOH",
+      "CH₂-CHOH-CH₃",
+      "CH₃-CH₂-COOH"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন যৌগটি আলোক সমাণুতা প্রদর্শন করে?",
+    "options": [
+      "C₆H₁₀",
+      "C₇H₁₆",
+      "C₆H₁₄",
+      "C₈H₁₈"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "টারটারিক এসিডের কতটি আলোক সমাণু আছে?",
+    "options": [
+      "১",
+      "২",
+      "৩",
+      "৪"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "গ্লিসারালডিহাইডে কাইরাল কার্বন কয়টি?",
+    "options": [
+      "1 টি",
+      "2 টি",
+      "3 টি",
+      "4 টি"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "দুটি এনানসিওমারের সমতুল-মিশ্রণকে কী বলে?",
+    "options": [
+      "রেসিমিক মিশ্রণ",
+      "কাইরাল মিশ্রণ",
+      "মেসো যৌগ",
+      "none"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কাইরাল কার্বন থাকা সত্ত্বেও আলোক সমাণুতা প্রদর্শন করে না কোন যৌগটি?",
+    "options": [
+      "2-প্রোপানল",
+      "2-বিউটানল",
+      "মেসো-টারটারিক এসিড",
+      "ল্যাকটিক এসিড"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি জ্যামিতিক সমাণুতা প্রদর্শন করে?",
+    "options": [
+      "বিউটিন-1",
+      "1-ক্লোরো বিউটিন-1",
+      "বিউটিন-2",
+      "পেন্টিন-1"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "ন্যাপথ্যালিন যৌগে সঞ্চরণশীল Ⅱ (পাই) ইলেকট্রনের সংখ্যা কত?",
+    "options": [
+      "2",
+      "6",
+      "10",
+      "14"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "ন্যাপথ্যালিন যৌগে সঞ্চরণশীল Ⅱ (পাই) ইলেকট্রনের সংখ্যা কত?",
+    "options": [
+      "2",
+      "6",
+      "10",
+      "14"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নিম্নের কোন মূলকটি বেনজিন বলয়ে অর্থো-প্যারা নির্দেশক।",
+    "options": [
+      "-CHO",
+      "-CN",
+      "-Br",
+      "-NO₂"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি বেনজিন বলয় সক্রিয়কারী মূলক?",
+    "options": [
+      "-Cl",
+      "-CN",
+      "-CH₃",
+      "-CHO"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি বেনজিন বলয় সক্রিয়কারী মূলক?",
+    "options": [
+      "-Cl",
+      "-CN",
+      "-CH₃",
+      "-CHO"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি বেনজিন বলয়ে অর্থো-প্যারা নির্দেশক মূলক?",
+    "options": [
+      "-COOH",
+      "-CHO",
+      "-NO₂",
+      "-NHCOCH₃"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "বেনজিন বলয়ে -NO₂ মূলক থাকলে কোন কার্বনে ইলেকট্রন ঘনত্ব তুলনামূলকভাবে বেশি থাকে?",
+    "options": [
+      "2 নং",
+      "3 নং",
+      "4 নং",
+      "6 নং"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "অ্যারোমেটিক বলয় সক্রিয়কারী মূলক কোনটি?",
+    "options": [
+      "-CHO",
+      "-COOH",
+      "-NO₂",
+      "-NH₂"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন মূলকটি বেনজিন বলয়ে মেটা নির্দেশক?",
+    "options": [
+      "-NHCH₃",
+      "-SO₃H",
+      "-O-CH₃",
+      "-CH₃"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "বেনজিন চক্রে কোন গ্রুপটি অর্থো-প্যারা নির্দেশক নয়?",
+    "options": [
+      "-OH",
+      "-NH₂",
+      "-Cl",
+      "-SO₃H"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "অ্যারোমেটিক যৌগ নয় কোনাট?",
+    "options": [
+      "বেনজিন",
+      "টলুইন",
+      "কিউমিন",
+      "নাইলন"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "হাকেল তত্ত্ব অনুসারে চাক্রিক কাঠামোতে (4n+2) সংখ্যক সঞ্চরণশীল ॥ ইলেকট্রন থাকলে যৌগটি অ্যারোমেটিক। এখানে n- হলো-",
+    "options": [
+      "কার্বন সংখ্যা",
+      "চক্রের সংখ্যা",
+      "n ইলেকট্রন সংখ্যা",
+      "0, 1, 2, 3 ইত্যাদি পূর্ণ সংখ্যা"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "কোন মূলকটি বেনজিন চক্রের সক্রিয়তা বৃদ্ধি করে?",
+    "options": [
+      "-Cl, -CHO",
+      "-NH₂,-COOH",
+      "-CH₃, -OH",
+      "-CHO, -NO₂"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "হাকেল নিয়ম অনুযায়ী ফিউরান এর (4n+2)=?",
+    "options": [
+      "2",
+      "4",
+      "6",
+      "10"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোন যৌগটিতে π বন্ধন আছে?",
+    "options": [
+      "বেনজিন",
+      "ক্লোরোফরম",
+      "মিথানল",
+      "ইথেন"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "বেনজিনে বন্ধনসমূহ হলো-",
+    "options": [
+      "6σ + 13π",
+      "6σ + 6π",
+      "6σ + 3π",
+      "12σ + 3π"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন যৌগটিতে সঞ্চরণশীল π ইলেক্ট্রন আছে?",
+    "options": [
+      "C₂H₂",
+      "C₂H₆",
+      "C₆H₆",
+      "C₃H₈"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচে দেয়া নমুনায় কোনটি ইলেকট্রোফাইল?",
+    "options": [
+      "NH₃",
+      "H₂O",
+      "ROH",
+      "AlCl₃"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "Sₙ1 বিক্রিয়া কয় ধাপে ঘটে?",
+    "options": [
+      "1",
+      "2",
+      "3",
+      "4"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  }, 
+  {
+    "question": "কোনটি কার্বনিয়াম আয়ন?",
+    "options": [
+      "CH₃",
+      ":CH₃",
+      "CH₃⁺",
+      "CH₃⁻"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কার্বোনিয়াম আয়নসমূহের স্থায়িত্বের ক্রম কোনটি?",
+    "options": [
+      "CH₃⁺ > CH₂R⁺ > CHR₂⁺ > CR₃⁺",
+      "CH₃⁺ > CHR₂⁺ > CH₂R⁺ > CR₃⁺",
+      "CH₃⁺ < CH₂R⁺ < CHR₂⁺ < CR₃⁺",
+      "CH₃⁺ > CHR⁺ > CHR₂⁺ > CH₂R⁺"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কার্বানায়নের স্থায়িত্বের ক্রম কোনটি?",
+    "options": [
+      ":CH₃⁻ >: CH₂R⁻ >: CHR₂⁻ >: CR₃⁻",
+      ":CH₂R⁻ >: CH₃⁻ >: CHR₂⁻ >: CR₃⁻",
+      ":CHR₂⁻ >: CH₂R⁻ >: CR₃⁻ >: CHR₃⁻",
+      ":CH₃⁻ > CHR₂⁻ >: CH₂R⁻ >: CR₃⁻"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "হ্যালোজেনো অ্যালকেন (R-X) এ প্রতিস্থাপন বিক্রিয়ার মেকানিজম কোনটি?",
+    "options": [
+      "নিউক্লিওফিলিক",
+      "ইলেকট্রোফিলিক",
+      "জারণ-বিজারণ",
+      "ফ্রি-রেডিকেল"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "R−CH₂−Br + NaOH(aq) → উৎপাদ; বিক্রিয়াটির কৌশল কী?",
+    "options": [
+      "ইলেকট্রোফিলিক প্রতিস্থাপন",
+      "কেন্দ্রাকর্ষী প্রতিস্থাপন",
+      "অপসারণ বিক্রিয়া",
+      "সংযোজন বিক্রিয়া"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "Current question:  C₆H₆  (HNO₃,H₂SO₄) ➡️ X (,Sn/HCl )  ➡️ Y; ইলেকট্রনাকর্ষী প্রতিস্থাপন বিক্রিয়ায় নিচের কোন ক্রমটি সঠিক?",
+    "options": [
+      "Y > X > C₆H₆",
+      "X > Y > C₆H₆",
+      "Y > C₆H₆ > X",
+      "X > C₆H₆ > Y"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কার্বানায়ন কোনটি?",
+    "options": [
+      "CH₂CH₂⁺",
+      "CH₃⁻",
+      "CO",
+      "NO⁺"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি অপ্রতিসম অ্যালকিন?",
+    "options": [
+      "CH₂ = CH₂",
+      "CH₃−CH = CHCH₃",
+      "CH₂ = CH−CH₃",
+      "ClCH = CHCl"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি প্রশম ইলেকট্রোফাইল?",
+    "options": [
+      "BF₃",
+      "H₂O",
+      "NH₃",
+      "CH₃OH"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি ইলেকট্রন আকর্ষী বিকারক?",
+    "options": [
+      "CH₃",
+      "HOCl",
+      "NaHSO₃",
+      "NH₃"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "Sₙ1 বিক্রিয়া কোন ক্ষেত্রে ঘটে?",
+    "options": [
+      "RX",
+      "R−CHO",
+      "অ্যালকিন",
+      "বেনজিন চক্রে"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "CFC ওজোনস্তর ধ্বংস করে কীভাবে?",
+    "options": [
+      "ফ্রি র‍্যাডিকেল বিক্রিয়ায়",
+      "প্রতিস্থাপন বিক্রিয়ায়",
+      "ওজোনকে শোষণ করে",
+      "ওজোন অণুর ভাঙ্গনের দ্বারা"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কেন্দ্রাকর্ষী বিকারক কোনটি?",
+    "options": [
+      "BF₃",
+      "NO₂⁺",
+      "CH₃⁺",
+      "CH₃⁻"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "ফ্রি-রেডিকেলের ক্ষেত্রে নিচের কোনটি সত্য নয়?",
+    "options": [
+      "σ- বন্ধনের সমবিভাজনে সৃষ্টি হয়",
+      "σ- বন্ধনের অসম বিভাজনে সৃষ্টি হয়",
+      "অস্থায়ী হয়",
+      "প্রোটন ও ইলেকট্রন সংখ্যা সমান হয়"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি সবচেয়ে স্থায়ী কার্বোক্যাটায়ন?",
+    "options": [
+      "H₃C⁺",
+      "CH₃H₂C⁺",
+      "(CH₃)₂HC⁺",
+      "(CH₃)₃C⁺"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "অ্যারোমেটিক যৌগে সংযোজন বিক্রিয়ার পদ্ধাত কা?",
+    "options": [
+      "ইলেকট্রোফিলিক",
+      "ইলেকট্রোফিলিক ও ফ্রি-রেডিকেল",
+      "নিউক্লিওফিলিক",
+      "ফ্রি-রেডিকেল"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি নিউক্লিওফাইল?",
+    "options": [
+      "CH₃CH₂OH",
+      "FeCl₃",
+      "SO₃",
+      "BF₃"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কার্বানায়নের সুস্থিতির ক্রম কোনটি?",
+    "options": [
+      "3° > 2° > 1° কার্বানায়ন",
+      "1°>2°> 3° কার্বানায়ন",
+      "1°>3° > 2° কার্বানায়ন",
+      "2°>1°>3° কার্বানায়ন"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "সর্বাধিক স্থায়িত্বের কার্বানায়ন কোনটি?",
+    "options": [
+      "CH₃",
+      "CH₃CH₂",
+      "(CH₃)₂CH",
+      "(CH₃)₃C"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোন বিক্রিয়ায় অ্যালডিহাইড মূলক মিথিলিন মূলকে পরিণত হয়?",
+    "options": [
+      "ডিকার্বক্সিলেশনে",
+      "উর্টজ বিক্রিয়ায়",
+      "ক্লিমেনসেন বিজারণে",
+      "গ্রিগনার্ড বিকারক দ্বারা"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "CH₃-CH₂-CH₂Br + Na → M; (M) যৌগটির নাম কী?",
+    "options": [
+      "হেক্সিন",
+      "প্রোপেন",
+      "প্রোপিন",
+      "হেক্সেন"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "অ্যালকেনের সাধারণ সংকেত কোনটি?",
+    "options": [
+      "CₙHₙ",
+      "CₙH₂ₙ",
+      "CₙH₂ₙ₋₂",
+      "CₙH₂ₙ₊₂"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "জৈব এসিডের ডিকার্বক্সিলেশন বিক্রিয়ায় প্রধান উৎপাদ কোনটি?",
+    "options": [
+      "অ্যালকিন",
+      "অ্যালকাইন",
+      "অ্যালকেন",
+      "অ্যালকোহল"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "CH₃CH₂COONa + NaOH→ উৎপাদ; বিক্রিয়ায় উৎপদ কোনটি?",
+    "options": [
+      "ইথেন",
+      "প্রোপেন",
+      "বিউটেন",
+      "পেন্টেন"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "RCOONa + NaOH(CaO)→'A' + Na₂CO₃; এক্ষেত্রে A যৌগটি কী?",
+    "options": [
+      "অ্যালকিন",
+      "কার্বোক্সিলিক এসিড",
+      "অ্যালকেন",
+      "অ্যালডিহাইড"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "প্রাকৃতিক গ্যাসের প্রধান উপাদান কোনটি?",
+    "options": [
+      "C₂H₆",
+      "CH₄",
+      "C₃H₈",
+      "C₄H₁₀"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "রান্নার জন্য সিলিন্ডারে কোন গ্যাস ব্যবহৃত হয়?",
+    "options": [
+      "পেট্রোল",
+      "কেরোসিন",
+      "মিথেন ও প্রোপেন",
+      "বিউটেন ও প্রোপেন"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "কোন পদ্ধতিতে কার্বন শিকল হ্রাস করা যায়?",
+    "options": [
+      "উর্টজ বিক্রিয়া",
+      "ডিকার্বক্সিলেশন",
+      "উর্টজ-ফিটিগ বিক্রিয়া",
+      "কার্বিল অ্যামিন বিক্রিয়া"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কোন পদ্ধতিতে কার্বন শিকল বৃদ্ধি করা যায়?",
+    "options": [
+      "উর্টজ বিক্রিয়া",
+      "ক্লিমেনসন বিজারণ",
+      "ডিকার্বক্সিলেশন",
+      "রোজেনমুণ্ড বিজারণ"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "সোডালাইম কোনটি?",
+    "options": [
+      "NaOH(CaO)",
+      "CaO",
+      "NaOH",
+      "Na₂CO₃"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "ক্লিমেনসেন বিজারণ নিচের কোন পরিবর্তন ঘটায়?",
+    "options": [
+      "R−CHO→R−CH₂OH",
+      "R−CHO→R−CH₃",
+      "R−X→R−H",
+      "RCOX→R−CHO"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "C₂H₅COONa + NaOH → উৎপাদ। এ বিক্রিয়ায় উৎপাদ কী?",
+    "options": [
+      "ইথেন",
+      "প্রোপেন",
+      "বিউটেন",
+      "পেন্টেন"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "ক্লিমেনসেন বিজারণে বিজারক কোনটি?",
+    "options": [
+      "LiAlH₄ (শুষ্ক ইথার)",
+      "Ni/Pt চূর্ণ +H₂",
+      "NH₂-NH₂ এর ক্ষারীয় দ্রবণ",
+      "Zn - Hg + HCl (গাঢ়)"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি হাইড্রোকার্বন?",
+    "options": [
+      "পেট্রোল",
+      "চিনি",
+      "সেলুলোজ",
+      "পিভিসি"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "CH₃-CH₂CHO +   (Zn-Hg+HCl)  → 'Z'; 'Z' যৌগটি কী?",
+    "options": [
+      "প্রোপেন",
+      "বিউটেন",
+      "প্রোপানল",
+      "প্রপিন"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "প্রোপান্যালকে Zn - Hg ও গাঢ় HCl দ্বারা বিজারিত করলে নিচের কোন যৌগ উৎপন্ন হয়?",
+    "options": [
+      "ইথানল",
+      "প্রোপানল-১",
+      "প্রোপেন",
+      "প্রোপানয়িক এসিড"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "অ্যালকিনের নিশ্চিতকরণ পরীক্ষা কোনটি?",
+    "options": [
+      "Br₂ দ্রবণ",
+      "টলেন বিকারক",
+      "PCl₅ পরীক্ষা",
+      "নেসলার দ্রবণ"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "CH₂ = CHBr + HBr → A যৌগ; এক্ষেত্রে A যৌগ কোনটি?",
+    "options": [
+      "CH₃-CHBr₂",
+      "CH(Br)-CH(Br)",
+      "CHBr = CH₂",
+      "CH₂Br-CH₂Br"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "অসম্পৃক্ত জৈব যৌগ শনাক্তকরণে ব্যবহৃত বিকারক কোনটি?",
+    "options": [
+      "NaHCO₃ দ্রবণ",
+      "FeCl₃ দ্রবণ",
+      "Br₂ দ্রবণ",
+      "BaCl₂ দ্রবণ"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "CH₂=CH-CH₃ + HBr → CH₃-CH-CH₃ বিক্রিয়াটি কোন নীতি অনুসারে ঘটে?",
+    "options": [
+      "সায়জেফ নীতি",
+      "মার্কনিকভ এর নীতি",
+      "হাকেল তত্ত্ব",
+      "বিপরীত মার্কনিকভ নীতি"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "CH₃-CH=CH₂ + HBr → (A); এক্ষেত্রে A যৌগটির নাম কী?",
+    "options": [
+      "1- ব্রোমো প্রোপেন",
+      "প্রোপিন",
+      "2-ব্রোমো প্রোপেন",
+      "প্রোপানোন"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "CH₃CH₂CH₂Cl + KOH (alc) → B; এক্ষেত্রে B যৌগটির নাম কী?",
+    "options": [
+      "প্রোপান্যাল",
+      "প্রোপানল",
+      "প্রোপেন",
+      "প্রোপিন"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "অ্যালকাইন-1 শনাক্তকরণে ব্যবহৃত বিকারক কোনটি?",
+    "options": [
+      "[Cu(NH₃)₂]Cl",
+      "Br₂ + H₂O",
+      "ZnCl₂ + HCl",
+      "C₆H₅-MgBr"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "B + H₂O → CH₃CHO; B যৌগটির কার্বন পরমাণুর সংকরায়ণে 's' অরবিটাল চরিত্র কী পরিমাণে থাকে?",
+    "options": [
+      "25%",
+      "33%",
+      "50%",
+      "75%"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "C₂H₂(HC = CH) যৌগে কেন্দ্রীয় মৌলের জারণ মান কত?",
+    "options": [
+      "+2",
+      "-4",
+      "0",
+      "-1"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "ইথিন ও ইথাইন উভয়ই বিক্রিয়া করে নিম্নের কোন বিকারকের সঙ্গে?",
+    "options": [
+      "Br₂(CCl₄)",
+      "AgNO₃, NH₄OH",
+      "CuCl, NH₄OH",
+      "H₂O(H₂SO₄)"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "ইথাইন +H₂ → X; এক্ষেত্রে 'X' যৌগটি কী?",
+    "options": [
+      "CH₃CH₂-SO₂H",
+      "CH₂ = CH₂",
+      "CH₃-CH₃",
+      "C₆H₆"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "X যৌগ + O₃ → OHC – CHO; এক্ষেত্রে 'X' যৌগ কোনটি?",
+    "options": [
+      "ইথিন",
+      "ইথাইন",
+      "বিউটিন-1",
+      "বিউটিন-2"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কোন যৌগটি মৃদু অম্লধর্মী?",
+    "options": [
+      "RCH₂CH₂CH=CH₂",
+      "R-CH=CH₂",
+      "RCH₂-C≡CH",
+      "RCH₂CH₂-CH₃"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন যৌগটি অ্যামোনিয়াম সিলভার নাইট্রেট দ্রবণের সঙ্গে সাদা অধঃক্ষেপ দেয়?",
+    "options": [
+      "CH₃-CH=CH₂",
+      "CH₃CH₂C≡CH",
+      "CH₃-CH₂-CH₃",
+      "CH₃-C≡C-CH₃"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন যৌগটি অম্লধর্মী?",
+    "options": [
+      "বিউটাইন-2",
+      "বিউটিন-2",
+      "বিউটাইন-1",
+      "বিউটিন-1"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "আর্দ্র বাতাসের সংস্পর্শে ক্যালসিয়াম কার্বাইড কোন যৌগটি উৎপন্ন করে?",
+    "options": [
+      "ইথিন",
+      "ইথেন",
+      "ইথাইন",
+      "ইথান্যাল"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "ক্যালসিয়াম কার্বাইডের আর্দ্র বিশ্লেষণে কোনটি উৎপন্ন হয়?",
+    "options": [
+      "ইথিলিন",
+      "মিথেন",
+      "অ্যাসিটিলিন",
+      "ইথেন"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি অম্লধর্মী নয়?",
+    "options": [
+      "C₆H₅ - OH",
+      "C₆H₄-OH        CH₃",
+      "CH₃ - C ≡ CH",
+      "CH₃ - CH = CH₂"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "প্রোপাইন+ H₂→ প্রোপিন; A হলো-",
+    "options": [
+      "Ni + 180°C",
+      "Zn + গাঢ় HCI",
+      "Pd+BaSO₄",
+      "Pb + BaSO₄"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "অ্যালকাইল হ্যালাইডের Sₙ1 বিক্রিয়ার সক্রিয়তার ক্রম কোনটি?",
+    "options": [
+      "CH₃X > 1°RX > 2°RX > 3°RX",
+      "2°RX > 3°RX > 1°RX > CH₃X",
+      "1°RX > 2°RX > 3°RX > CH₃X",
+      "3°RX > 2°RX > 1°RX > CH₃X"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "হ্যালোফরম যৌগ কী?",
+    "options": [
+      "ট্রাইহ্যালো অ্যালকেন",
+      "ট্রাইহ্যালোইথেন",
+      "ট্রাইহ্যালোমিথেন",
+      "টেট্রাহ্যালোমিথেন"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "হিমায়ক তরলরূপে ব্যবহৃত হয় কোনটি?",
+    "options": [
+      "CCl₄",
+      "CF₂Cl₂",
+      "COCl₂",
+      "C₆H₆"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কীটনাশক কোনটি?",
+    "options": [
+      "ডেটল",
+      "DDT",
+      "CCl₄",
+      "ক্লোরোফরম"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "স্থানীয় চেতনানাশক নয় কোনটি?",
+    "options": [
+      "ক্লোরোফরম",
+      "ক্লোরোমিথেন",
+      "ক্লোরোইথেন",
+      "ফুথেন"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন রাসায়নিকটির ব্যবহার সঠিক?",
+    "options": [
+      "কার্বন টেট্রাক্লোরাইড- কীটনাশক",
+      "ডিডিটি পাউডার- অগ্নিনির্বাপক",
+      "গ্যামাক্সিন- চেতনানাশক",
+      "1, 1, 2- ট্রাইক্লোরোইথেন-ড্রাইওয়াশ"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "ফ্রিয়ন-12 এর সংকেত কী?",
+    "options": [
+      "CF₃Cl",
+      "CCl₃F",
+      "CCl₂F₂",
+      "F₂ClC − CClF₂"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "R−CH₂Br + KOH(aq) → উৎপাদ; বিক্রিয়াটির কৌশল কি?",
+    "options": [
+      "ইলেকট্রোফিলিক প্রতিস্থাপন",
+      "অপসারণ",
+      "কেন্দ্রাকর্ষী প্রতিস্থাপন",
+      "কেন্দ্রাকর্ষী সংযোজন"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি CFC নয়?",
+    "options": [
+      "CHCl3",
+      "CFCl₃",
+      "CF₂Cl₂",
+      "CF2Cl-CF2Cl"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "গ্রিগনার্ড বিকারক +RCHO → X যৌগ; এক্ষেত্রে X যৌগ কোনটি?",
+    "options": [
+      "১° অ্যালকোহল",
+      "২° অ্যালকোহল",
+      "৩° অ্যালকোহল",
+      "জৈব এসিড"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "গ্রিগনার্ড বিকারক কোনটি?",
+    "options": [
+      "CH₂ = CHMgI",
+      "C₆H₅Br",
+      "COCl₂",
+      "C₂H₅ONa"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "ফ্রিয়ন-11 কোনটি?",
+    "options": [
+      "CFCl₃",
+      "CF₂Cl₂",
+      "CCIF₃",
+      "CHFCl₂"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটিতে H-বন্ধন ঘটে?",
+    "options": [
+      "CH₄",
+      "CH₃OH",
+      "CH₃OCH₃",
+      "CH₃Cl"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "লুকাস বিকারক ব্যবহৃত হয় কোনটি শনাক্তকরণে?",
+    "options": [
+      "ফেনল",
+      "অ্যালকোহল",
+      "অ্যালডিহাইড",
+      "ফ্যাটি এসিড"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কাইরাল কেন্দ্রবিশিষ্ট 1° অ্যালকোহল হলো-",
+    "options": [
+      "2 - মিথাইল-2-বিউটানল",
+      "2- মিথাইল1 বিউটানল",
+      "বিউটানল - 2",
+      "3 - মিথাইল বিউটানল - 1"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কাইরাল কেন্দ্রবিশিষ্ট 2° - অ্যালকোহল হলো-",
+    "options": [
+      "2- মিথাইল-2-বিউটানল",
+      "2 - মিথাইল 1 বিউটানল",
+      "বিউটানল – 2",
+      "3 - মিথাইল বিউটানল – 1"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি টারশিয়ারি অ্যালকোহল?",
+    "options": [
+      "(CH₃)₃C-OH",
+      "(CH₃)₂CH-OH",
+      "CH₃CH₂OH",
+      "CH₂(OH)-CH₂(OH)"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোন অ্যালকোহলটি নিরুদিত হয়ে অ্যালকিন গঠন করতে পারে না?",
+    "options": [
+      "CH₃OH",
+      "CH₃CH₂OH",
+      "CH₃CH(OH)CH₃",
+      "CH₃CH₂C(OH)(CH₃)₂"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "জৈব যৌগে -OH মূলক শনাক্তকরণে নিম্নের কোন বিকারকটি ব্যবহৃত হয়?",
+    "options": [
+      "NaOH",
+      "Na ধাতু",
+      "Na₂CO₃ দ্রবণ",
+      "HCl"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "রেকটিফাইড স্পিরিট কী?",
+    "options": [
+      "৪.৪% ইথানল ও ৯৫.৬% পানি",
+      "৯৫.৬% ইথানল ও ৪.৪% পানি",
+      "৬% ইথানল ও ৯৪% পানি",
+      "৯৪% ইথানল ও ৪% পানি"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "A {PCl₅}➡️ B {Na/শুষ্ক ইথার}➡️ n-বিউটেন A,B?",
+    "options": [
+      "CH₃OH ও CH₃Cl",
+      "CH₃OH ও CH₃CH₂Cl",
+      "CH₃CH₂OH ও CH₃Cl",
+      "CH₃CH₂OH ও CH₃CH₂Cl"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন যৌগ জারিত হলে সমসংখ্যক কার্বনযুক্ত কিটোন উৎপন্ন হয়?",
+    "options": [
+      "1° অ্যালকোহল",
+      "2° অ্যালকোহল",
+      "3° অ্যালকোহল",
+      "কোনটিই নয়"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "বিউটানল-2 কে গাঢ় H₂SO₄ সহ উত্তপ্ত করলে কী পাওয়া যায়?",
+    "options": [
+      "বিউটিন-1",
+      "বিউটিন-2",
+      "বিউটানোন-2",
+      "বিউটান্যাল"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "আইসোপ্রোপাইল অ্যালকোহল কোনটি?",
+    "options": [
+      "প্রোপানল-1",
+      "2- মিথাইল প্রোপানল",
+      "প্রোপানল-2",
+      "2 - মিথাইল প্রোপানল-2"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "ফরমালডিহাইড এবং পটাসিয়াম উত্তপ্ত করা হলে কী পাওয়া যায়?",
+    "options": [
+      "Methyl alcohol",
+      "Acetylene",
+      "Methane",
+      "Ethyl formate"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "পরম অ্যালকোহল কোনটি?",
+    "options": [
+      "90% ইথাইল অ্যালকোহল",
+      "100% ইথাইল অ্যালকোহল",
+      "90% ইথাইল অ্যালকোহল+ 10% মিথাইল অ্যালকোহল",
+      "90% ইথাইল অ্যালকোহল+ 10% পানি"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কোন যৌগটি জলীয় NaOH এর সাথে বিক্রিয়া করবে না?",
+    "options": [
+      "C₂H₅OH",
+      "C₆H₅OH",
+      "C₆H₅COOH",
+      "C₂H₅COOH"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "ইথাইল আয়োডাইড ও KOH(aq) এর বিক্রিয়ায় কোনটি উৎপন্ন হয়?",
+    "options": [
+      "Ethyne",
+      "Ethene",
+      "Ethanol",
+      "Ethane"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "মুক্ত শিকল কাঠামোর গ্লুকোজ অণুতে কয়টি 2°-অ্যালকোহল মূলক আছে?",
+    "options": [
+      "3",
+      "4",
+      "5",
+      "6"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কোন পরীক্ষা দ্বারা মিথানল ও ইথানলের মধ্যে পার্থক্য করা যায়?",
+    "options": [
+      "আয়োডোফর্ম",
+      "কার্বিল-অ্যামিন",
+      "বেয়ার পরীক্ষা",
+      "লুকাস বিকারক"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "আলোক সক্রিয় অ্যালকোহল কোনটি?",
+    "options": [
+      "2-মিথাইলবিউটান-1-অল",
+      "2-মিথাইলবিউটান-2-অল",
+      "2-মিথাইলপেন্টান-3-অল",
+      "2- মিথাইলপেন্টান-2-অল"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "RMgX + CH₃COCH₃ → A  {H₂O/H⁺} → B; B যৌগটি কী?",
+    "options": [
+      "জৈব এসিড",
+      "3° অ্যালকোহল",
+      "2° অ্যালকোহল",
+      "1° অ্যালকোহল"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "ভিনাইল অ্যালকোহল কোনটি?",
+    "options": [
+      "CH₃−CH=CH−OH",
+      "CH₂=CH−OH",
+      "CH₂=CH−CH₂−OH",
+      "CH₂=C(OH)−CH₂−OH"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "R-X + R-ONa → R-O-R + NaX; এই বিক্রিয়াটির নাম কী?",
+    "options": [
+      "উর্টজ বিক্রিয়া",
+      "গ্রিগনার্ড বিক্রিয়া",
+      "উইলিয়ামসন বিক্রিয়া",
+      "ফ্রিডেল-ক্রাফট বিক্রিয়া"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "প্রাইমারি অ্যামিন শনাক্তকরণে কোন পরীক্ষা করা হয়?",
+    "options": [
+      "লিবারম্যান পরীক্ষা",
+      "FeCl₃ দ্রবণ পরীক্ষা",
+      "লুকাস বিকারক",
+      "কার্বিল অ্যামিন পরীক্ষা"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "কার্বিল অ্যামিন পরীক্ষা দ্বারা নিচের কোনটি শনাক্ত করা যায়?",
+    "options": [
+      "গ্লিসারিন",
+      "সেকেন্ডারি অ্যামিন",
+      "টারশিয়ারি অ্যামিন",
+      "ক্লোরোফরম"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "কোন যৌগটি হফম্যান ক্ষুদ্রাংশকরণ (ডিগ্রেডেশন) বিক্রিয়ায় প্রস্তুত করা হয়?",
+    "options": [
+      "R-OH",
+      "R-NH₂",
+      "R-CN",
+      "R-NO₂"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি থেকে পঁচা মাছের গন্ধ পাওয়া যায়?",
+    "options": [
+      "অ্যামাইড",
+      "ফ্যাটি এসিড",
+      "অ্যামিন",
+      "কিটোন"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কার্বিল অ্যামিন গঠন করে কোন যৌগ?",
+    "options": [
+      "অ্যানিলিন",
+      "ফেনল",
+      "টারসিয়ারি অ্যামিন",
+      "সেকেন্ডারি অ্যামিন"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "RCONH₂ + Br₂ + KOH → A + KBr + K₂CO₃ + H₂O উদ্দীপকের A যৌগটি কী?",
+    "options": [
+      "1° অ্যালকোহল",
+      "1° অ্যামিন",
+      "2° অ্যালকোহল",
+      "2° অ্যামিন"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "R₂NH + HNO₂ → 'X' যৌগ + H₂O; 'X' যৌগ কোনটি?",
+    "options": [
+      "বর্ণহীন গ্যাস",
+      "হলুদ তৈলাক্ত যৌগ",
+      "দ্রবীভূত লবণ",
+      "বর্ণহীন তরল"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন ক্রমটি অ্যামিনের ক্ষারধর্মিতার জন্য সঠিক?",
+    "options": [
+      "R₃N > R₂NH > RNH₂ > NH₃",
+      "R₂NH > R₃N > RNH₂ > NH₃",
+      "R₂NH > RNH₂ > R₃N > NH₃",
+      "R₂NH > NH₃ > R₃N > RNH₂"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোন যৌগটি কার্বিল অ্যামিন বিক্রিয়া দেয়?",
+    "options": [
+      "R₂NH",
+      "R₃N",
+      "R-NH₂",
+      "C₆H₅NH-R"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "1°, 2° ও 3° অ্যামিনের মধ্যে পার্থক্য নির্ণয় করতে ব্যবহৃত হয় কোনটি?",
+    "options": [
+      "HNO₃",
+      "Zn ও HCl",
+      "HNO₂",
+      "CHCl₃"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোন যৌগটি কার্বিল অ্যামিন পরীক্ষা দ্বারা শনাক্ত করা হয়?",
+    "options": [
+      "অ্যামাইড",
+      "1° অ্যামিন",
+      "2° অ্যামিন",
+      "3° অ্যামিন"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "সেকেন্ডারি অ্যামিনের কার্যকরীমূলক কোনটি?",
+    "options": [
+      "-NH₂",
+      "-N(H)R",
+      "-NR₂",
+      "-N⁺R₃"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "তিনটি শ্রেণির অ্যামিনের মধ্যে পার্থক্য নির্ধারণ করে কোন বিকারক?",
+    "options": [
+      "HO-NO",
+      "HO - NO₂",
+      "NH₃",
+      "-NH₂"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "বেনজামাইডের হফম্যান ক্ষুদ্রাংশকরণ বিক্রিয়ায় উৎপাদ কী?",
+    "options": [
+      "Amine",
+      "Nitrobenzene",
+      "Nitroaniline",
+      "Di-phenyl amide"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "ডায়াজোকরণ কোন ক্ষেত্রে ঘটে?",
+    "options": [
+      "CH₃NH₂",
+      "CH₃CH₂NH₂",
+      "C₆H₅ - NH₂",
+      "C₆H₅ - NHCH₃"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "অ্যালডিহাইডের নিশ্চিতকরণ পরীক্ষা কোনটি?",
+    "options": [
+      "Na সহ পরীক্ষা",
+      "2:4 DNP টেস্ট",
+      "নেসলার দ্রবণ পরীক্ষা",
+      "টলেন বিকারকসহ পরীক্ষা"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "ফরমালিন কী?",
+    "options": [
+      "40% পানি এবং 60% ইথানলের মিশ্রণ",
+      "60% পানি এবং 40% মিথান্যালের মিশ্রণ",
+      "60% মিথান্যাল এবং 40% পানির মিশ্রণ",
+      "95.6% ইথানল এবং 4.4% পানির মিশ্রণ"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কোন যৌগ অ্যালডল ঘনীভবন বিক্রিয়া দেয়?",
+    "options": [
+      "Cl₃C - CHO",
+      "HCHO",
+      "CH₃CH₂CHO",
+      "C₆H₅CHO"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি ক্যানিজারো বিক্রিয়া দেয় না?",
+    "options": [
+      "CH₃ - CHO",
+      "C₆H₅ - CHO",
+      "CH₃CCl₂CHO",
+      "(CH₃)₃C-CHO"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন যৌগটি টলেন বিকারকের সাথে সিলভার দর্পণ দেয়?",
+    "options": [
+      "প্রোপানোন",
+      "প্রোপান্যাল",
+      "প্রোপানল",
+      "প্রোপাইন"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "অ্যামোনিয়াযুক্ত AgNO₃ দ্রবণ দ্বারা নিচের কোনটি শনাক্ত করা যায়?",
+    "options": [
+      "অ্যালকিন",
+      "-OH মূলক",
+      "অ্যালডিহাইড",
+      "অ্যালকাইন"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "CH₃CHO এবং CH₃COCH₃ এর মধ্যে পার্থক্যসূচক পরীক্ষায় ব্যবহৃত হয় কোনটি?",
+    "options": [
+      "K₂Cr₂O₇, H⁺",
+      "2; 4 - DNP",
+      "[Ag(NH₃)₂]⁺",
+      "PCl₃"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "অ্যালডিহাইড মূলক শনাক্তকরণে ব্যবহৃত পরীক্ষণ কোনটি?",
+    "options": [
+      "আয়োডোফরম পরীক্ষা",
+      "ফেলিং দ্রবণ ও আয়োডোফরম পরীক্ষা",
+      "ফেলিং দ্রবণ ও টলেন বিকারক পরীক্ষা",
+      "টলেন বিকারক ও লুকাস বিকারক পরীক্ষা"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "HCHO + NaOH (গাঢ়) → উৎপাদ; এ বিক্রিয়া মতে নিচের কোনটি উৎপন্ন হবে?",
+    "options": [
+      "CH₃OH + CH₄",
+      "CH₄",
+      "CH₃OH + HCOONa",
+      "H-COOH"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "ফেলিং দ্রবণ ও টলেন বিকারক দ্বারা নিচের কোন গ্রুপের মধ্যে পার্থক্য করা যায়?",
+    "options": [
+      "অ্যালকেন ও অ্যালকাইন",
+      "মিথানল ও ইথানল",
+      "অ্যালডিহাইড ও কিটোন",
+      "1° ও 2° অ্যালকোহল"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কার্বনিল মূলকে C- পরমাণুতে কোন প্রকার হাইব্রিডাইজেশন ঘটে?",
+    "options": [
+      "sp",
+      "sp²",
+      "sp³",
+      "sp³d"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কার্বনিল মূলক শনাক্তকরণ বিকারক কোনটি?",
+    "options": [
+      "ফেহলিং দ্রবণ",
+      "টলেন বিকারক",
+      "2,4 - DNPH",
+      "LiAlH₄"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "Sₙ1 কৌশলের ক্ষেত্রে কোনটি প্রযোজ্য? R₃.C−Cl + KOH(aq) → R₃.C−OH + KCl",
+    "options": [
+      "-dc/dt ∝ [RX]",
+      "-dc/dt ∝ [OH⁻]",
+      "-dc/dt ∝ [RX][OH⁻]",
+      "-dc/dt ∝ দ্রাবকের পোলারিটি"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোন যৌগটি ক্যানিজারো বিক্রিয়া দেয়?",
+    "options": [
+      "CH₃- CHO",
+      "CH₃COCH₃",
+      "C6H5-CHO",
+      "CH₃CH₂CHO"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "CH₃CHO একটি অ্যালডিহাইড, অথচ H - COOH একটি এসিড। এ উভয় যৌগই নিচের কোন পরীক্ষাটি দেয়?",
+    "options": [
+      "লেসাইন পরীক্ষা",
+      "লুকাস বিকারক পরীক্ষা",
+      "ফেহলিং দ্রবণ পরীক্ষা",
+      "2,4 - DNPH পরীক্ষা"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "যৌগ + NaOH দ্রবণ + KI + I₂ → হলুদ অধঃক্ষেপ পরীক্ষাটির নাম কি এবং কোন মূলক শনাক্ত করা হয়?",
+    "options": [
+      "ক্যানিজারো বিক্রিয়া: বেনজালডিহাইড",
+      "ফেহলিং দ্রবণ পরীক্ষা: -CHO মূলক",
+      "আয়োডোফরম পরীক্ষা: CH₃CO - মূলক",
+      "লিটমাস পরীক্ষা: -COOH মূলক"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি ফেলিং দ্রবণের সাথে Cu₂O এর লাল অধঃক্ষেপ দেয়?",
+    "options": [
+      "ভিনেগার",
+      "ফরমালিন",
+      "গ্লিসারিন",
+      "প্রপানোন"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কোন যৌগটি কেন্দ্রাকর্ষী সংযোজন বিক্রিয়া দিবে?",
+    "options": [
+      "C₂H₄",
+      "C₂H₅ - Br",
+      "CH₃CHO",
+      "C₂H₆"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "HCHO ও CH₃CHO এর মধ্যে পার্থক্য করতে কোন পরীক্ষা করা হয়?",
+    "options": [
+      "Iodoform test",
+      "Carbylamine test",
+      "Ninhydrin test",
+      "Tollen's reagent"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন যৌগ নিউক্লিওফিলিক সংযোজন বিক্রিয়া দেয়?",
+    "options": [
+      "CH₂ = CH₂",
+      "CH ≡ CH",
+      "CH₃COOH",
+      "CH₃CHO"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "CH₃CH(OH)CH₂CHO এবং CH₃COCH₂CH₂OH এর মধ্যে পার্থক্য করার জন্য কোন বিকারক ব্যবহার করা যেতে পারে?",
+    "options": [
+      "অম্লীয় K₂Cr₂O₇",
+      "লঘু H₂SO₄",
+      "2,4-ডাইনাইট্রো ফিনাইল হাইড্রাজিন",
+      "ফেহলিং দ্রবণ"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "ক্যানিযারো বিক্রিয়ার মূল শর্ত হলো কার্বনিল যৌগের অণুতে α -হাইড্রোজেনের অনুপস্থিতি। সে প্রেক্ষিতে ক্যানিযারো বিক্রিয়া দেয় নিম্নের কোন যৌগটি?",
+    "options": [
+      "H - CHO",
+      "CH₃- CHO",
+      "CH₃- CH₂- CHO",
+      "CH₃- CO- CH₃"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি অ্যালডল ঘনীভবন বিক্রিয়া প্রদর্শন করে?",
+    "options": [
+      "ArCHO",
+      "H - CHO",
+      "CH₃ - CHO",
+      "(CH₃)₃.C-CHO"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কার্বক্সিলিক এসিড মূলক শনাক্তকরণ পরীক্ষায় ব্যবহৃত হয় কোনটি?",
+    "options": [
+      "টলেন বিকারক",
+      "লুকাস বিকারক",
+      "5% KMnO₄",
+      "5%NaHCO₃"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন বিকারকটি ইথানল ও ইথানয়িক এসিড উভয়ের সাথেই বিক্রিয়া করবে?",
+    "options": [
+      "NaOH",
+      "Na",
+      "Na₂CO₃",
+      "H⁺, K₂Cr₂O₇"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "জৈব যৌগে -COOH মূলক শনাক্তকরণে কোনটি ব্যবহৃত হয়?",
+    "options": [
+      "NaOH দ্রবণ",
+      "FeCl₃ দ্রবণ",
+      "AgNO₃ দ্রবণ",
+      "NaHCO₃ দ্রবণ"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "CH₃CN + H₂O → A + NH₃ উদ্দীপকের A যৌগটি কী?",
+    "options": [
+      "মিথানয়িক এসিড",
+      "ইথানয়িক এসিড",
+      "ইথান্যাল",
+      "ইথানল"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটিতে অ্যামাইড মূলক রয়েছে?",
+    "options": [
+      "RCOOR",
+      "RCONH₂",
+      "RNH₂",
+      "RCN"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "C₂H₅MgX ও CO₂ এর বিক্রিয়ায় উৎপন্ন যৌগের আর্দ্র বিশ্লেষণে কী উৎপন্ন হয়?",
+    "options": [
+      "প্রোপোনোয়িক এসিড",
+      "প্রোপেন",
+      "প্রোপানল",
+      "প্রোপান্যাল"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "পাইরোলিগনাস এসিডে ইথানয়িক এসিডের পরিমাণ",
+    "options": [
+      "0.1-0.5%",
+      "2-4%",
+      "8-10%",
+      "30-40%"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি মূলত একটি অ্যামাইড?",
+    "options": [
+      "অ্যাসপিরিন",
+      "প্যারাসিটামল",
+      "ডেটল",
+      "অ্যানিসোল"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "জৈব এসিড ও অ্যালকোহলের বিক্রিয়ায় সৃষ্ট যৌগে কোন কার্যকরী মূলক থাকে?",
+    "options": [
+      "-COOCO",
+      "-COR",
+      "-COOR",
+      "-OR"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "এস্টারের অম্লীয় আর্দ্র বিশ্লেষণে কী উৎপন্ন হয়?",
+    "options": [
+      "জৈব এসিড",
+      "অ্যালডিহাইড",
+      "অ্যানহাইড্রাইড",
+      "অ্যামাইড"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "এস্টারের কার্যকরী মূলক কোনটি?",
+    "options": [
+      "(CO)₂O -",
+      "-COX",
+      "-COOR",
+      "-OR"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "পাকা কলায় নিচের কোনটি থাকে?",
+    "options": [
+      "পেন্টাইল এসিটেট এস্টার",
+      "অক্সাইল এসিটেট এস্টার",
+      "বিউটাইল বিউটারেট এস্টার",
+      "বেনজাইল এসিটেট এস্টার"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "IR বর্ণালিতে কার্যকরী মূলক অঞ্চলের তরঙ্গ সংখ্যা কত?/ জৈব যৌগের কার্যকরী মূলক সমূহের IR বর্ণালিতে তরঙ্গ-সংখ্যা বা ফ্রিক্যুয়েন্সি cm⁻¹ কত হয়ে থাকে?",
+    "options": [
+      "(300 - 400)cm⁻¹",
+      "< 1000 cm⁻¹",
+      "(1000 - 4000)cm⁻¹",
+      "> 4000 cm⁻¹"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "IR বর্ণালিতে শোষণ বা নিঃসরণ ব্যান্ডটি 1715 cm⁻¹ কম্পন সংখ্যায় নিচের কোন মূলকটি শনাক্ত করা যায়?",
+    "options": [
+      "-OH",
+      "-NH₂",
+      "-C≡C-",
+      "> C = O"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "IR বর্ণালিতে > C = O (কিটোন) মূলকের বন্ধন প্রসারণের জন্য তরঙ্গ সংখ্যা কত?",
+    "options": [
+      "1701cm⁻¹",
+      "1725cm⁻¹",
+      "1760cm⁻¹",
+      "1785cm⁻¹"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নির্ণয়ের কোন অঞ্চলে IR বর্ণালির সাহায্যে কার্বনিল মূলক শনাক্তকরণ করা যায়?",
+    "options": [
+      "3300cm⁻¹-3600cm⁻¹",
+      "1660cm⁻¹ – 1860cm⁻¹",
+      "2800cm⁻¹ - 3000cm⁻¹",
+      "1100cm⁻¹ - 1400cm⁻¹"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "জৈব যৌগের কার্যকরী মূলক শনাক্তকরণে বর্ণালিমিতির সর্বোত্তম পদ্ধতি কোনটি?",
+    "options": [
+      "UV",
+      "IR",
+      "NMR",
+      "MASS"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন অঞ্চলের IR বর্ণালির সাহায্যে অ্যালকোহলিক OH মূলক শনাক্ত করা যায়?",
+    "options": [
+      "-OH বন্ধন= (3200-3600) cm⁻¹, C- O বন্ধন = 1050 cm⁻¹",
+      "-OH বন্ধন= (3600-3640) cm⁻¹, C- O বন্ধন = 1220 cm⁻¹",
+      "-OH বন্ধন= (3200-3600) cm⁻¹, C- ০ বন্ধন = 1220 cm⁻¹",
+      "-OH বন্ধন= (3600-3640) cm⁻¹, C- ০ বন্ধন = 1000-1200 cm⁻¹"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন অঞ্চলের IR বর্ণালির সাহায্যে ফেনলিক -OH মূলক শনাক্ত করা যায়?",
+    "options": [
+      "-OH বন্ধন= (3200-3600) cm⁻¹, C- ০ বন্ধন = 1050 cm⁻¹",
+      "-OH বন্ধন= (3200-3600) cm⁻¹, C- ০ বন্ধন = 1220 cm⁻¹",
+      "-OH বন্ধন= (3600-3640) cm⁻¹, C- O বন্ধন = 1050 cm⁻¹",
+      "-OH বন্ধন= (3200-3600) cm⁻¹, C- ০ বন্ধন = 3000 cm⁻¹"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোন অঞ্চলের IR বর্ণালির সাহায্যে অ্যালডিহাইড মূলক শনাক্ত করা যায়?",
+    "options": [
+      "C = 0 বন্ধন= (1700-1740) cm⁻¹, C- H বন্ধন = (2700-2900)cm⁻¹",
+      "C = 0 বন্ধন= (1700-1740) cm⁻¹, C-H = 1000 cm⁻¹",
+      "C = 0 বন্ধন= (1680-1720) cm⁻¹, C- H বন্ধন = (1000-1200)cm⁻¹",
+      "C = OH বন্ধন= (1720 1740) cm⁻¹, C-H = 1200 cm⁻¹"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "IR বর্ণালিতে-OH ও > C = O মূলকদ্বয় কোন তরঙ্গ সংখ্যায় শোষণ ব্যান্ড সৃষ্টি করে?",
+    "options": [
+      "3400-1700 cm⁻¹",
+      "2800-1700 cm⁻¹",
+      "3400-1400 cm⁻¹",
+      "2500-1000 cm⁻¹"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "জৈব যৌগে N, S, X শনাক্তকরণ পদ্ধতির নাম কী?",
+    "options": [
+      "সোডিয়াম পদ্ধতি",
+      "লেসাইন পদ্ধতি",
+      "হফম্যান পদ্ধতি",
+      "ধাতব গলন পদ্ধতি"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "IR বর্ণালিমিতি দ্বারা কার্বনিল যৌগ শনাক্তকরণে কত তরঙ্গ সংখ্যার (θ) গ্রহণযোগ্য চূড়া পাওয়া যায়?",
+    "options": [
+      "3300-3400 cm⁻¹",
+      "1100 - 1300 cm⁻¹",
+      "1705-1720 cm⁻¹",
+      "2100 - 2200 cm⁻¹"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "ফেনলের সাথে Br₂ পানি যোগ করলে কোন ধরনের অধঃক্ষেপ পড়ে?",
+    "options": [
+      "2,4,6-ট্রাই ব্রোমো ফেনলের হালকা হলুদ",
+      "ডাইফেরিক হেক্সাফিনেটের বেগুনি রং",
+      "সোডিয়াম ফিনক্সাইডের সাদা দানা",
+      "বর্ণহীন ডায়োজোনিয়াম লবণ"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "ডাউ প্রণালিতে নিচের কোন যৌগটি উৎপন্ন করা যায়?",
+    "options": [
+      "বেনজিন",
+      "ক্লোরোবেনজিন",
+      "টলুইন",
+      "ফেনল"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "ফেনল শনাক্তকরণে কোনটি ব্যবহৃত হয়?",
+    "options": [
+      "লুকাস বিকারক",
+      "FeCl₃ দ্রবণ",
+      "Na পরীক্ষা",
+      "5% KMnO₄"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কার্বলিক এসিডের অপর নাম কী?",
+    "options": [
+      "ফেনল",
+      "বেনজাইল অ্যালকোহল",
+      "ফিনাইল অ্যাসিটেট",
+      "অ্যানিলিন"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোন বিকারক ফেনলিক -OH শনাক্তকরণে ব্যবহৃত হয়?",
+    "options": [
+      "ফেরিক ক্লোরাইড",
+      "ধাতব সোডিয়াম",
+      "লুকাস বিকারক",
+      "সোডিয়াম বাইকার্বনেট"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি দ্বারা ফেনল থেকে পিকরিক এসিড প্রস্তুত করা যায়?",
+    "options": [
+      "HNO₃, H₂SO₄",
+      "H₂SO₄, 30°C - 100°C",
+      "লঘু HNO₃",
+      "গাঢ় HNO₃"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "ফেনলকে নাইট্রেশন করলে উৎপন্ন প্রধান যৌগের নাম কী?",
+    "options": [
+      "Picric acid",
+      "m-Nitrophenol",
+      "Salicylic acid",
+      "p-Nitrophenol"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "ফেনল শনাক্তকরণের পরীক্ষা কোনটি?",
+    "options": [
+      "লুকাস বিকারক পরীক্ষা",
+      "কার্বিল অ্যামিন পরীক্ষা",
+      "লিবারম্যান পরীক্ষা",
+      "স্যান্ডমেয়ার বিক্রিয়া"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি ফেনলের শনাক্তকারী পরীক্ষা নয়?",
+    "options": [
+      "ফেরিক ক্লোরাইড দ্রবণ পরীক্ষা",
+      "লিবারম্যান পরীক্ষা",
+      "অ্যাক্রোলিন পরীক্ষা",
+      "ব্রোমিন পানি পরীক্ষা"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "ফেনল ও ব্রোমিন-পানির বিক্রিয়ায় প্রধান উৎপাদ কোনটি?",
+    "options": [
+      "2, 4, 6- ট্রাইব্রোমোফেনল",
+      "2-ব্রোমোফেনল",
+      "4-ব্রোমোফেনল",
+      "2, 4-ডাইব্রোমোফেনল"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "FeCl₃ দ্রবণের সাহায্যে কোনটি শনাক্ত করা হয়?",
+    "options": [
+      "ফেনল",
+      "এস্টার",
+      "কিটোন",
+      "অ্যালডিহাইড"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "গ্লিসারিন শনাক্তকারী পরীক্ষায় যে যৌগ উৎপন্ন হয় তার নাম কী?",
+    "options": [
+      "2- প্রোপিন-1 অ্যাল",
+      "2- প্রোপাইন-1 অ্যাল",
+      "2- হাইড্রোক্সি প্রোপিন-1",
+      "2- প্রোপিন"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "অ্যাক্রোলিন পরীক্ষা দ্বারা কোনটি শনাক্ত করা যায়?",
+    "options": [
+      "ইথানল",
+      "ইথানোয়িক এসিড",
+      "গ্লিসারিন",
+      "গ্লুকোজ"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "বিশ্রী গন্ধযুক্ত অ্যাক্রোলিন উৎপন্ন হয় কোনটিতে?",
+    "options": [
+      "গ্লিসারিন + KHSO₄ কে উত্তপ্তকরণে",
+      "ইথানল + Cu(OH)₂ কে উত্তপ্তকরণে",
+      "অ্যালাইল অ্যালকোহল + KHSO₄ কে উত্তপ্তকরণে",
+      "তেল-চর্বির আর্দ্র বিশ্লেষণে"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "গ্লিসারিন এর স্ফুটনাঙ্ক 296°C. অবিশুদ্ধ গ্লিসারিনকে বিশোধনের উদ্দেশ্যে আংশিক পাতন করতে গেলে তার স্ফুটনাঙ্কে পৌঁছানোর অনেক আগেই তা তাপে বিয়োজিত হয়ে যায়। তাহলে কীভাবে গ্লিসারিন বিশোধন করা যায়?",
+    "options": [
+      "স্টিম পাতন",
+      "নিম্নচাপ পাতন",
+      "দ্রাবক নিষ্কাশন",
+      "ক্রোমাটোগ্রাফি"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটির বিস্ফোরণে detonator দরকার হয়?",
+    "options": [
+      "TNB",
+      "পিকরিক এসিড",
+      "TNT",
+      "নাইট্রোগ্লিসারিন"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "ডিনামাইট তৈরি করতে নিচের কোনটি ব্যবহৃত হয়?",
+    "options": [
+      "নাইট্রোগ্লিসারিন",
+      "নাইট্রো টলুইন",
+      "নাইট্রো বেনজিন",
+      "নাইট্রো ফেনল"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "জাহাজ ধ্বংসকারী টর্পেডো (torpedo) তৈরিতে কোনটি ব্যবহৃত হয়?",
+    "options": [
+      "নাইট্রোগ্লিসারিন",
+      "ট্রাইনাইট্রো টলুইন",
+      "নাইট্রোবেনজিন",
+      "নাইট্রোফেনল"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "হৃদরোগ angina pectoris নিবারণে কোনটি ওষুধরূপে ব্যবহৃত হয়?",
+    "options": [
+      "নাইট্রো বেনজিন",
+      "নাইট্রোগ্লিসারিন",
+      "নাইট্রো ফেনল",
+      "বেনজিন হেক্সাক্লোরাইড"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "হাতবোমা বা হ্যান্ড গ্রেনেড তৈরিতে কোনটি ব্যবহৃত হয়?",
+    "options": [
+      "নাইট্রো ফেনল",
+      "নাইট্রোগ্লিসারিন",
+      "নাইট্রো বেনজিন",
+      "টিএনটি"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "কোন তাপমাত্রা ও চাপে গ্লিসারিন অণু ভেঙ্গে যাবে না?",
+    "options": [
+      "760 mm ও 270°C",
+      "50 mm ও 210°C",
+      "2 atm ও 180°C",
+      "1.0 atm ও 310°C"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "ডেটলের মূল উপাদান কোনটি?",
+    "options": [
+      "ক্লোরোজাইলিনল",
+      "ক্লোরোবেনজিন",
+      "ক্লোরাল",
+      "বেনজিন হেক্সাক্লোরাইড"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "পাইন অয়েলে নিচের কোন উপাদানটি থাকে?",
+    "options": [
+      "ইথানল",
+      "α-টারপিনল",
+      "মিথানল",
+      "কার্বলিক এসিড"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নিচের কোনটি 'ডেটল' এর উপাদান নয়?",
+    "options": [
+      "আইসোপ্রোপাইল অ্যাকোহল",
+      "ক্যাস্টর ওয়েল",
+      "পিকরিক এসিড",
+      "সাবান"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "ডেটলের বেনজিন চক্রে কত নম্বর কার্বনে Cl রয়েছে?",
+    "options": [
+      "2",
+      "3",
+      "4",
+      "6"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "স্যালিসাইলিক এসিড  ফেনল থেকে প্রস্তুত করা হয় কোন পদ্ধতিতে?",
+    "options": [
+      "রাইমার টাইম্যান পদ্ধতি",
+      "ফ্রিডেল ক্রাফট বিক্রিয়া",
+      "উইলিয়ামসন বিক্রিয়া",
+      "কোব স্মিট বিক্রিয়া"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "A (দ্রাব্যতা ২৫), B (দ্রাব্যতা ৬২) এবং C (দ্রাব্যতা ১২) বিশিষ্ট ৩টি কঠিন পদার্থের মিশ্রণ থেকে উপাদানগুলোকে কীভাবে পৃথক করা যায়?",
+    "options": [
+      "দ্রাবক নিষ্কাশন",
+      "কেলাসন",
+      "আংশিক কেলাসন",
+      "আংশিক পাতন"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "অধিশোষণের মাত্রা এবং সচল দশায় দ্রাব্যতা হারের ভিন্নতা থাকলে কোন মিশ্রণের উপাদানগুলোকে কোন পদ্ধতিতে পরস্পর থেকে পৃথক করা যায়?",
+    "options": [
+      "দ্রাবক নিষ্কাশন",
+      "ক্রোমাটোগ্রাফি",
+      "আংশিক কেলাসন",
+      "আংশিক পতন"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "নাইলন 6 : 6 এর ক্ষেত্রে 6 ও 6 সংখ্যা দুইটি নির্দেশ করে-",
+    "options": [
+      "নাইট্রোজেন সংখ্যা",
+      "পলিমার সংখ্যা",
+      "কার্বন সংখ্যা",
+      "নাইলনের সংখ্যা"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোন যৌগ ও ফেনলের বিক্রিয়ায় ব্যাকেলাইট উৎপন্ন করা হয়?",
+    "options": [
+      "H₂O",
+      "HNO₃",
+      "H₂SO₄",
+      "HCHO"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি পলিঅ্যামাইড?",
+    "options": [
+      "নাইলন",
+      "ডেক্সন",
+      "টেফলন",
+      "PVC"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি যুত পলিমার?",
+    "options": [
+      "নাইলন",
+      "পলিএস্টার",
+      "স্টার্চ",
+      "পলিপ্রপিন"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "রেইনকোট তৈরিতে কোনটি ব্যবহৃত হয়?",
+    "options": [
+      "টেফলন",
+      "PVC",
+      "পলিস্টাইরিন",
+      "পলিথিন"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "রান্নার ফ্রাইপ্যানে কোনটির কোটিং (Coating) দেয়া হয়?",
+    "options": [
+      "পলিথিন",
+      "প্লাস্টিক",
+      "টেফলন",
+      "পলিস্টারিন"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "পালাভণাহল ক্লোরাইড (PVC) নিচের কোনটি থেকে তৈরি করা হয়?",
+    "options": [
+      "CH₂ = CH₂",
+      "CH ≡ CH",
+      "CH₃CH = CH₂",
+      "CH₃ – CH₃"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "ঘুমের ঔষধ হিসেবে ব্যবহৃত হয় কোনটি?",
+    "options": [
+      "ফরমালডিহাইড",
+      "অ্যাসিটালডিহাইড",
+      "প্যারালডিহাইড",
+      "মেটালডিহাইড"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোনটি ঘনীভবন পলিমারের উদাহরণ?",
+    "options": [
+      "পলিস্টাইরিন",
+      "পলিথিন",
+      "পলিভিনাইল ক্লোরাইড",
+      "পলিএস্টার"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "সেলুলোজে কোন বন্ধনটি বিদ্যমান?",
+    "options": [
+      "হাইড্রোজেন",
+      "α- গ্লাইকোসাইড",
+      "β- গ্লাইকোসাইড",
+      "পেপটাইড"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "অতিরিক্ত খাদ্য থেকে লিভারে সঞ্চিত শ্যগার হলো কোনটি?",
+    "options": [
+      "গ্লুকোজ",
+      "ফ্রুক্টোজ",
+      "গ্লাইকোজেন",
+      "সুক্রোজ"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "গ্লুকোজ অণুতে কার্বন সংখ্যা কত?",
+    "options": [
+      "চার",
+      "ছয়",
+      "সাত",
+      "পাঁচ"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "সেলুলোজ নিচের কোনটির পলিমার?",
+    "options": [
+      "α-D-glucose",
+      "α-D-galactose",
+      "β-D-glucose",
+      "α, β-D-glucose"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "কোন শর্করা ফেলিং দ্রবণ ও টলেন বিকারককে বিজারিত করে না?",
+    "options": [
+      "সুক্রোজ",
+      "গ্লুকোজ",
+      "ফ্রুক্টোজ",
+      "মল্টোজ"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "প্রোটিন অণুতে অ্যামাইনো এসিডের অণুসমূহ কোন বন্ধন আরা যুক্ত থাকে?",
+    "options": [
+      "গ্লাইকোসাইড বন্ধন",
+      "ধাতব বন্ধন",
+      "H-বন্ধন",
+      "পেপটাইড বন্ধন"
+    ],
+    "correctOption": "4",
+    "explanation": ""
+  },
+  {
+    "question": "এনজাইম কোন শ্রেণিভুক্ত যৌগ?",
+    "options": [
+      "ফ্যাটি এসিড",
+      "ভিটামিন",
+      "প্রোটিন",
+      "কার্বোহাইড্রেট"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "দুটি পেপটাইড শিকল কোন বন্ধন দ্বারা যুক্ত?",
+    "options": [
+      "সমযোজী",
+      "গ্লাইকোসাইড",
+      "H-বন্ধন",
+      "পেপটাইড"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "-CONH কোন শ্রেণির বন্ধন?",
+    "options": [
+      "পেপটাইড",
+      "α- গ্লাইকোসাইড",
+      "β- গ্লাইকোসাইড",
+      "এস্টার"
+    ],
+    "correctOption": "1",
+    "explanation": ""
+  },
+  {
+    "question": "দুটি পেপটাইড বন্ধন যুক্ত হয়ে কী গঠন করে?",
+    "options": [
+      "গ্লাইকোসাইড",
+      "সেলুলোজ",
+      "ট্রাইপেপটাইড",
+      "ডাইপেপটাইড"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "গ্লোবিউলার বা বর্তুলাকার প্রোটিন হলো কোনটি?",
+    "options": [
+      "প্রাইমারি গঠন",
+      "সেকেন্ডারি গঠন",
+      "টারশিয়ারি গঠন",
+      "সরল শিকল"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  },
+  {
+    "question": "DNA কী?",
+    "options": [
+      "একটি পরমাণু",
+      "বৃহৎ পলিমার",
+      "একটি অণু",
+      "ন্যানো পার্টিকেল"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "লিভার সিরোসিস ঘটাতে পারে নিচের কোনটি?",
+    "options": [
+      "টলুইন",
+      "হ্যালোজেনেটেড জৈব যৌগ",
+      "জৈব অক্সাইড",
+      "অ্যানিলিন"
+    ],
+    "correctOption": "2",
+    "explanation": ""
+  },
+  {
+    "question": "রক্তে CO₂ পরিবহনের মাধ্যম নয় কোনটি?",
+    "options": [
+      "কার্বনিক এসিড",
+      "বাইকার্বনেট যৌগ",
+      "কার্বন মনোক্সাইড",
+      "কার্বামিনোযৌগ"
+    ],
+    "correctOption": "3",
+    "explanation": ""
+  }
+]
