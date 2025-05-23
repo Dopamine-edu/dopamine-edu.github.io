@@ -229,15 +229,13 @@
 
         .question-card {
             background: var(--card-bg);
-            padding: 15px;
+            padding: 12px;
             border-radius: 8px;
             box-shadow: var(--shadow);
             margin-bottom: 20px;
-            transition: border 0.3s;
-        }
-
-        .question-card.answered {
-            border: 2px solid var(--answered-border);
+            max-width: 800px; /* Reduced width */
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .question-header {
@@ -265,7 +263,7 @@
             color: white;
             padding: 0.5rem 1rem;
             border-radius: 8px;
-            font-size: 0.75rem; /* Reduced font size */
+            font-size: 0.75rem;
         }
 
         .question-text {
@@ -670,7 +668,7 @@
 
         function updateProgress() {
             const totalQuestions = questions.length;
-            const answeredQuestions = Object.keys(userAnswers).filter(key => !key.includes("_locked")).length;
+            const answeredQuestions = Object.keys(userAnswers).length;
             const progressPercentage = (answeredQuestions / totalQuestions) * 100;
             document.getElementById("progressBar").style.width = `${progressPercentage}%`;
             document.getElementById("progressBar").setAttribute("aria-valuenow", progressPercentage);
@@ -687,10 +685,6 @@
                 questionDiv.className = "question-card";
                 questionDiv.dataset.answer = q.correctOption;
                 questionDiv.dataset.index = idx;
-
-                if (userAnswers["q" + idx] && userAnswers["q" + idx + "_locked"]) {
-                    questionDiv.classList.add("answered");
-                }
 
                 const questionHeader = `
                     <div class="question-header">
@@ -732,23 +726,15 @@
                             label.classList.add("correct");
                         }
                     } else {
-                        if (userAnswers["q" + idx] && userAnswers["q" + idx + "_locked"]) {
+                        if (userAnswers["q" + idx]) {
                             if (userAnswers["q" + idx] === radioInput.value) {
                                 radioInput.checked = true;
                             }
-                            radioInput.disabled = true;
                         }
                         radioInput.addEventListener("change", () => {
-                            if (!userAnswers["q" + idx + "_locked"]) {
-                                userAnswers["q" + idx] = radioInput.value;
-                                userAnswers["q" + idx + "_locked"] = true;
-                                const radios = document.getElementsByName("q" + idx);
-                                Array.from(radios).forEach(radio => radio.disabled = true);
-                                radioInput.checked = true;
-                                localStorage.setItem(answersKey, JSON.stringify(userAnswers));
-                                updateProgress();
-                                document.querySelector(`.question-card[data-index="${idx}"]`).classList.add("answered");
-                            }
+                            userAnswers["q" + idx] = radioInput.value;
+                            localStorage.setItem(answersKey, JSON.stringify(userAnswers));
+                            updateProgress();
                         });
                     }
 
@@ -918,6 +904,11 @@
             submitted = true;
             clearInterval(timerInterval);
 
+            // Disable all radio inputs after submission
+            document.querySelectorAll("input[type='radio']").forEach(radio => {
+                radio.disabled = true;
+            });
+
             let score = 0;
             let correctAnswers = 0;
             let wrongAnswers = 0;
@@ -935,7 +926,7 @@
                         correctAnswers++;
                         selectedOption.parentElement.classList.add("correct");
                     } else {
-                        wrongAnswers++;
+Clk                        wrongAnswers++;
                         score -= examData.negativeMark || 0;
                         selectedOption.parentElement.classList.add("incorrect");
                     }
@@ -966,7 +957,7 @@
                 }
                 if (hasExplanationImage) {
                     const explanationImg = document.createElement("img");
-                    explanationImg.src = q.explanationImage;
+                    explanationImg.src = explanationImage;
                     explanationImg.className = "explanation-image";
                     explanationImg.alt = `Explanation diagram for question ${idx + 1}`;
                     explanationImg.loading = "lazy";
