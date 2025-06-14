@@ -131,8 +131,88 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
+        // Hardcoded Subjects and Chapters
+        const subjects = {
+            "Botany": [
+                "Chapter 01: কোষ ও এর গঠন",
+                "Chapter 02: কোষ বিভাজন",
+                "Chapter 03: কোষ রসায়ন",
+                "Chapter 04: অণুজীব",
+                "Chapter 05: শৈবাল ও ছত্রাক",
+                "Chapter 06: ব্রায়োফাইটা ও টেরেডোফাইটা",
+                "Chapter 07: নগ্নবীজী ও আবৃতবীজী উদ্ভিদ",
+                "Chapter 08: টিস্যু ও টিস্যুতন্ত্র",
+                "Chapter 09: উদ্ভিদ শারীরতত্ত্ব",
+                "Chapter 10: উদ্ভিদ প্রজনন",
+                "Chapter 11: জীবপ্রযুক্তি"
+            ],
+            "Zoology": [
+                "Chapter 01: প্রাণীর বিভিন্নতা ও শ্রেণিবিন্যাস",
+                "Chapter 02: প্রাণীর পরিচিতি",
+                "Chapter 03: পরিপাক ও শোষণ",
+                "Chapter 04: রক্ত সঞ্চালন",
+                "Chapter 05: শ্বাসক্রিয়া ও শ্বসন",
+                "Chapter 06: বর্জ্য ও নিষ্কাশন",
+                "Chapter 07: চলন ও অঙ্গচালনা",
+                "Chapter 08: সমন্বয় ও নিয়ন্ত্রণ",
+                "Chapter 09: মানব জীবনের ধারাবাহিকতা",
+                "Chapter 10: মানবদেহের প্রতিরক্ষা",
+                "Chapter 11: জীনতত্ত্ব ও বিবর্তন"
+            ],
+            "Physics 1st": [
+                "Chapter 01: ভৌত জগৎ ও পরিমাপ",
+                "Chapter 02: ভেক্টর",
+                "Chapter 04: নিউটোনিয়ান বলবিদ্যা",
+                "Chapter 05: কাজ, শক্তি ও ক্ষমতা",
+                "Chapter 06: মহাকর্ষ ও অভিকর্ষ",
+                "Chapter 07: পদার্থের গাঠনিক ধর্ম",
+                "Chapter 08: পর্যাবৃত্ত গতি",
+                "Chapter 10: আদর্শ গ্যাস ও গ্যাসের গতিতত্ত্ব"
+            ],
+            "Physics 2nd": [
+                "Chapter 01: তাপগতিবিদ্যা",
+                "Chapter 02: স্থির তড়িৎ",
+                "Chapter 03: চলতড়িৎ",
+                "Chapter 07: ভৌত আলোকবিজ্ঞান",
+                "Chapter 08: আধুনিক পদার্থবিজ্ঞানের সূচনা",
+                "Chapter 09: পরমাণুর মডেল এবং নিউক্লিয়ার পদার্থবিজ্ঞান",
+                "Chapter 10: সেমিকন্ডাক্টর ও ইলেকট্রনিক্স"
+            ],
+            "Chemistry 1st": [
+                "Chapter 01: ল্যাবরেটরির নিরাপদ ব্যবহার",
+                "Chapter 02: গুণগত রসায়ন",
+                "Chapter 03: মৌলের পর্যায়বৃত্ত ধর্ম",
+                "Chapter 04: রাসায়নিক পরিবর্তন",
+                "Chapter 05: কর্মমুখী রসায়ন"
+            ],
+            "Chemistry 2nd": [
+                "Chapter 01: পরিবেশ রসায়ন",
+                "Chapter 02: জৈব রসায়ন",
+                "Chapter 03: পরিমাণগত রসায়ন",
+                "Chapter 04: তড়িৎ রসায়ন",
+                "Chapter 05: অর্থনৈতিক রসায়ন"
+            ],
+            "Higher Math 1st": [
+                "Chapter 01: ম্যাট্রিক্স ও নির্ণায়ক",
+                "Chapter 03: সরলরেখা",
+                "Chapter 04: বৃত্ত",
+                "Chapter 07: সংযুক্ত কোণের ত্রিকোণমিতিক অনুপাত",
+                "Chapter 09: অন্তরীকরণ",
+                "Chapter 10: যোগজীকরণ"
+            ],
+            "Higher Math 2nd": [
+                "Chapter 03: জটিল সংখ্যা",
+                "Chapter 04: বহুপদী ও বহুপদী সমীকরণ",
+                "Chapter 06: কণিক",
+                "Chapter 07: বিপরীত ত্রিকোণমিতিক ফাংশন ও ত্রিকোণমিতিক সমীকরণ",
+                "Chapter 08: স্থিতিবিদ্যা",
+                "Chapter 09: সমতলে বস্তুকণার গতি"
+            ],
+            "English": [],
+            "Bangla": []
+        };
+
         // Global Variables
-        let subjects = [];
         let selectedChapters = [];
         let selectedQuestions = [];
         let currentPages = {};
@@ -148,59 +228,63 @@
         const backBtn = document.getElementById('back-btn');
         const createExamBtn = document.getElementById('create-exam-btn');
 
-        // Load Subjects
-        async function loadSubjects() {
-            try {
-                const response = await fetch('./questions/subjects/subjects.json');
-                subjects = await response.json();
-                subjectSelect.innerHTML = '<option value="">সাবজেক্ট নির্বাচন করুন</option>';
-                subjects.forEach(subject => {
-                    const option = document.createElement('option');
-                    option.value = subject.fileName;
-                    option.textContent = subject.name;
-                    subjectSelect.appendChild(option);
-                });
-            } catch (error) {
-                Toastify({
-                    text: 'সাবজেক্ট লোড করতে সমস্যা হয়েছে!',
-                    duration: 3000,
-                    backgroundColor: '#dc3545'
-                }).showToast();
-            }
-        }
-
-        // Load Chapters for Selected Subject
-        subjectSelect.addEventListener('change', async () => {
-            const fileName = subjectSelect.value;
-            if (!fileName) return;
-            try {
-                const response = await fetch(`./questions/subjects/${sanitizeFileName(fileName)}.json`);
-                const chapters = await response.json();
-                chapterSelect.innerHTML = '<option value="">চ্যাপ্টার নির্বাচন করুন</option>';
-                chapters.forEach(chapter => {
-                    const option = document.createElement('option');
-                    option.value = chapter.chapterName;
-                    option.textContent = chapter.chapterName;
-                    chapterSelect.appendChild(option);
-                });
-            } catch (error) {
-                Toastify({
-                    text: 'চ্যাপ্টার লোড করতে সমস্যা হয়েছে!',
-                    duration: 3000,
-                    backgroundColor: '#dc3545'
-                }).showToast();
-            }
-        });
-
         // Sanitize File Name
         function sanitizeFileName(name) {
             return name.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9\u0980-\u09FF-]/g, '');
         }
 
+        // Load Questions from JSON
+        async function loadQuestionsFromJSON(subject, chapter) {
+            const sanitizedSubject = sanitizeFileName(subject);
+            const sanitizedChapter = sanitizeFileName(chapter.replace(/^Chapter \d+:\s*/, ''));
+            const filePath = `/questions/subjects/${sanitizedSubject}/${sanitizedChapter}.json`;
+            try {
+                const response = await fetch(filePath);
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                Toastify({
+                    text: `${subject} - ${chapter} প্রশ্ন লোড করতে ব্যর্থ: ${error.message}`,
+                    duration: 3000,
+                    backgroundColor: '#dc3545'
+                }).showToast();
+                return [];
+            }
+        }
+
+        // Load Subjects
+        function loadSubjects() {
+            subjectSelect.innerHTML = '<option value="">সাবজেক্ট নির্বাচন করুন</option>';
+            for (const subject in subjects) {
+                if (subjects[subject].length > 0) {
+                    const option = document.createElement('option');
+                    option.value = subject;
+                    option.textContent = subject;
+                    subjectSelect.appendChild(option);
+                }
+            }
+        }
+
+        // Load Chapters for Selected Subject
+        subjectSelect.addEventListener('change', () => {
+            const subject = subjectSelect.value;
+            chapterSelect.innerHTML = '<option value="">চ্যাপ্টার নির্বাচন করুন</option>';
+            if (subject && subjects[subject]) {
+                subjects[subject].forEach(chapter => {
+                    const option = document.createElement('option');
+                    option.value = chapter;
+                    option.textContent = chapter.replace(/^Chapter \d+:\s*/, '');
+                    chapterSelect.appendChild(option);
+                });
+            }
+        });
+
         // Add Chapter
         addBtn.addEventListener('click', async () => {
-            const subject = subjectSelect.options[subjectSelect.selectedIndex]?.text;
+            const subject = subjectSelect.value;
             const chapter = chapterSelect.value;
+            const chapterName = chapterSelect.options[chapterSelect.selectedIndex]?.text;
             if (!subject || !chapter) {
                 Toastify({
                     text: 'সাবজেক্ট এবং চ্যাপ্টার নির্বাচন করুন!',
@@ -209,7 +293,7 @@
                 }).showToast();
                 return;
             }
-            const chapterKey = `${subject}-${chapter}`;
+            const chapterKey = `${subject}-${chapterName}`;
             if (selectedChapters.includes(chapterKey)) {
                 Toastify({
                     text: 'এই চ্যাপ্টার ইতিমধ্যে যোগ করা হয়েছে!',
@@ -219,19 +303,15 @@
                 return;
             }
             selectedChapters.push(chapterKey);
-            const fileName = subjectSelect.value;
             try {
-                const response = await fetch(`./questions/subjects/${sanitizeFileName(fileName)}.json`);
-                const data = await response.json();
-                const chapterData = data.find(c => c.chapterName === chapter);
-                if (!chapterData) throw new Error('Chapter not found');
-                questionsData[chapterKey] = chapterData.questions;
+                const questions = await loadQuestionsFromJSON(subject, chapter);
+                questionsData[chapterKey] = questions;
                 renderChapter(chapterKey);
                 saveState();
                 bootstrap.Modal.getInstance(document.getElementById('add-chapter-modal')).hide();
             } catch (error) {
                 Toastify({
-                    text: 'চ্যাপ্টার যোগ করতে সমস্যা হয়েছে!',
+                    text: `চ্যাপ্টার লোড করতে সমস্যা: ${chapterName}`,
                     duration: 3000,
                     backgroundColor: '#dc3545'
                 }).showToast();
@@ -393,6 +473,8 @@
                 return;
             }
             try {
+                const chaptersList = selectedChapters.map(ch => ch.split('-')[1]);
+                const subjectsList = [...new Set(selectedChapters.map(ch => ch.split('-')[0]))];
                 const examDoc = await db.collection('exams').add({
                     title: examName,
                     duration: timer,
@@ -401,6 +483,8 @@
                         const [subject, chapter] = sq.chapterKey.split('-');
                         return { subject, chapter, id: sq.index };
                     }),
+                    subjects: subjectsList,
+                    chapters: chaptersList,
                     createdBy: auth.currentUser.uid,
                     createdAt: firebase.firestore.FieldValue.serverTimestamp()
                 });
@@ -464,15 +548,12 @@
         // Load Selected Chapters
         async function loadSelectedChapters() {
             for (const chapterKey of selectedChapters) {
-                const [subject, chapter] = chapterKey.split('-');
-                const fileName = subjects.find(s => s.name === subject)?.fileName;
-                if (!fileName) continue;
+                const [subject, chapterName] = chapterKey.split('-');
+                const chapter = subjects[subject]?.find(ch => ch.endsWith(chapterName));
+                if (!chapter) continue;
                 try {
-                    const response = await fetch(`./questions/subjects/${sanitizeFileName(fileName)}.json`);
-                    const data = await response.json();
-                    const chapterData = data.find(c => c.chapterName === chapter);
-                    if (!chapterData) continue;
-                    questionsData[chapterKey] = chapterData.questions;
+                    const questions = await loadQuestionsFromJSON(subject, chapter);
+                    questionsData[chapterKey] = questions;
                     renderChapter(chapterKey);
                 } catch (error) {
                     Toastify({
@@ -489,9 +570,8 @@
             if (!user) {
                 window.location.href = 'auth.html';
             } else {
-                loadSubjects().then(() => {
-                    restoreState();
-                });
+                loadSubjects();
+                restoreState();
             }
         });
     </script>
