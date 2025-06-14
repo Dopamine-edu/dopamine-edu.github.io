@@ -73,26 +73,18 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <script>
-    // ১) Firebase init
-    const firebaseConfig = {
-      apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
-      authDomain: "dopamine-quiz.firebaseapp.com",
-      projectId: "dopamine-quiz",
-      storageBucket: "dopamine-quiz.appspot.com",
-      messagingSenderId: "822531459966",
-      appId: "1:822531459966:web:8e7d2385090e997eb1c12f"
-    };
+    // init Firebase
+    const firebaseConfig = { /* তোমার config */ };
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.firestore();
 
-    // ২) Auth UI ele
+    // Auth UI
     const btnSignIn  = document.getElementById("btnSignIn");
     const btnSignOut = document.getElementById("btnSignOut");
-    const userEmail = document.getElementById("userEmail");
-    const btnCreate = document.getElementById("btnCreateExam");
+    const userEmail  = document.getElementById("userEmail");
+    const btnCreate  = document.getElementById("btnCreateExam");
 
-    // ৩) Sign-in শোনো
     auth.onAuthStateChanged(user => {
       if (user) {
         userEmail.textContent = user.email || "Anonymous";
@@ -106,20 +98,21 @@
         btnCreate.disabled = true;
       }
     });
-
-    // ৪) Google Sign-in
-    btnSignIn.onclick = () => {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      auth.signInWithPopup(provider)
-        .catch(console.error);
-    };
+    btnSignIn.onclick  = () => auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(console.error);
     btnSignOut.onclick = () => auth.signOut();
 
-    // ৫) বাকি Code (Subjects, pagination, fetch)
+    // Dashboard subjects (all)
     const subjects = {
-      /* আপনার সব subject–chapter mapping */
-      "Botany": ["Chapter 01: কোষ ও এর গঠন", /* … */ "Chapter 04: অণুজীব" /* … */],
-      /* … অন্যান্য subject … */
+      "Botany": [/* … all chapters … */],
+      "Zoology": [/* … */],
+      "Physics 1st": [/* … */],
+      "Physics 2nd": [/* … */],
+      "Chemistry 1st": [/* … */],
+      "Chemistry 2nd": [/* … */],
+      "Higher Math 1st": [/* … */],
+      "Higher Math 2nd": [/* … */],
+      "English": [],
+      "Bangla": []
     };
 
     let selectedQ = JSON.parse(localStorage.getItem("selectedQuestions")||"[]");
@@ -173,19 +166,19 @@
       const url=`questions/subjects/${s}/${c}.json`;
       try {
         const r=await fetch(url);
-        if(!r.ok) throw new Error(r.status);
+        if(!r.ok) throw new Error(r.statusText);
         const data=await r.json();
         currentQ=data.map((q,i)=>({
           subject: sub,
-          chapter: ch.replace(/^Chapter\s*\d+:\s*/,""),
+          chapter: ch, // keep full chapter text
           id: i,
-          question:q.question,
-          options:q.options,
-          correctOption:q.correctOption
+          question: q.question,
+          options: q.options,
+          correctOption: q.correctOption
         }));
         renderQuestions();
       } catch(e){
-        Toastify({ text:"লোড এরর: "+e, duration:3000, style:{background:"#dc3545"} }).showToast();
+        Toastify({ text:"লোড এরর: "+e.message, duration:3000, style:{background:"#dc3545"} }).showToast();
       }
     }
 
@@ -193,18 +186,18 @@
       const area=document.getElementById("questionArea");
       area.innerHTML="";
       const start=(page-1)*perPage;
-      const pageQs=currentQ.slice(start,start+perPage);
-      pageQs.forEach(q=>{
+      currentQ.slice(start,start+perPage).forEach(q=>{
+        const key=`${q.subject}|${q.chapter}|${q.id}`;
         const div=document.createElement("div");
         div.className="question-card";
         div.innerHTML=`
           <div><strong>${q.question}</strong></div>
           <div class="small">উত্তর: ${q.options[q.correctOption-1]||""}</div>
           <div class="form-check mt-2">
-            <input class="form-check-input" type="checkbox" id="${q.subject}-${q.chapter}-${q.id}"
-                   ${(selectedQ.includes(`${q.subject}-${q.chapter}-${q.id}`))?"checked":""}
-                   onchange="toggleQ('${q.subject}','${q.chapter}',${q.id},this.checked)">
-            <label class="form-check-label" for="${q.subject}-${q.chapter}-${q.id}">নির্বাচন</label>
+            <input class="form-check-input" type="checkbox" id="${key}"
+                   ${selectedQ.includes(key)?"checked":""}
+                   onchange="toggleQ('${key}',this.checked)">
+            <label class="form-check-label" for="${key}">নির্বাচন</label>
           </div>`;
         area.appendChild(div);
       });
@@ -212,65 +205,64 @@
       document.getElementById("selectedCount").textContent = selectedQ.length;
     }
 
-    function toggleQ(sub, ch, idx, ok){
-      const key=`${sub}-${ch}-${idx}`;
-      if(ok) selectedQ.push(key);
-      else selectedQ=selectedQ.filter(x=>x!==key);
+    function toggleQ(key, ok){
+      if(ok) {
+        if(!selectedQ.includes(key)) selectedQ.push(key);
+      } else {
+        selectedQ = selectedQ.filter(x=>x!==key);
+      }
       localStorage.setItem("selectedQuestions",JSON.stringify(selectedQ));
       document.getElementById("selectedCount").textContent = selectedQ.length;
     }
 
     function renderPagination(){
-      const tot=Math.ceil(currentQ.length/perPage);
-      const ul=document.getElementById("pagination"); ul.innerHTML="";
-      for(let i=1;i<=tot;i++){
+      const total = Math.ceil(currentQ.length / perPage);
+      const ul = document.getElementById("pagination");
+      ul.innerHTML="";
+      for(let i=1;i<=total;i++){
         const li=document.createElement("li");
         li.className="page-item"+(i===page?" active":"");
         li.innerHTML=`<a class="page-link" href="#">${i}</a>`;
-        li.onclick=e=>{e.preventDefault();page=i;renderQuestions();};
+        li.onclick=e=>{ e.preventDefault(); page=i; renderQuestions(); };
         ul.appendChild(li);
       }
     }
 
-    async function createExam() {
-      // ensure authenticated
-      if (!auth.currentUser) {
+    async function createExam(){
+      if(!auth.currentUser) {
         return Toastify({ text:"প্রথমে লগইন করুন", duration:3000, style:{background:"#dc3545"} }).showToast();
       }
-      // gather & validate
+
+      // validation
       const title       = document.getElementById("examName").value.trim();
       const duration    = parseInt(document.getElementById("examTime").value,10);
       const negativeMark= parseFloat(document.getElementById("negativeMarking").value);
+      if(!title || isNaN(duration) || duration<=0 || isNaN(negativeMark) || negativeMark<0 || selectedQ.length===0){
+        return Toastify({ text:"সব ফিল্ড সঠিকভাবে পূরণ করুন", duration:3000, style:{background:"#dc3545"} }).showToast();
+      }
 
-      if (!title) return Toastify({ text:"পরীক্ষার নাম দিন",duration:3000,style:{background:"#dc3545"} }).showToast();
-      if (isNaN(duration)||duration<=0) return Toastify({ text:"সঠিক সময় দিন",duration:3000,style:{background:"#dc3545"} }).showToast();
-      if (isNaN(negativeMark)||negativeMark<0) return Toastify({ text:"সঠিক নেগেটিভ মার্কিং দিন",duration:3000,style:{background:"#dc3545"} }).showToast();
-      if (selectedQ.length===0) return Toastify({ text:"কোন প্রশ্ন সিলেক্ট করেননি",duration:3000,style:{background:"#dc3545"} }).showToast();
-
+      // build questions array
       const questions = selectedQ.map(key=>{
-        const parts = key.split("-");
-        const idx = parseInt(parts.pop(),10);
-        const chap= parts.pop();
-        const sub = parts.join("-");
-        return { subject: sub, chapter: chap, id: idx };
+        const [sub,chap,id] = key.split("|");
+        return { subject: sub, chapter: chap, id: parseInt(id,10) };
       });
 
       const payload = {
-        title,
-        duration,
-        negativeMark,
-        questions,
+        title, duration, negativeMark, questions,
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       };
 
       try {
-        const docRef = await db.collection("exams").add(payload);
-        const link = `quiz.html?examId=${docRef.id}`;
-        navigator.clipboard.writeText(window.location.origin + "/" + link);
-        Toastify({ text:"লিংক কপি হয়েছে: "+link,duration:4000,style:{background:"#22c55e"} }).showToast();
-      } catch(err) {
+        await db.collection("exams").add(payload);
+        // clear selections
+        localStorage.removeItem("selectedQuestions");
+        selectedQ = [];
+        document.getElementById("selectedCount").textContent = "0";
+
+        Toastify({ text:"পরীক্ষা সফলভাবে তৈরি হয়েছে", duration:3000, style:{background:"#22c55e"} }).showToast();
+      } catch(err){
         console.error(err);
-        Toastify({ text:"Exam তৈরি ত্রুটি: "+err.message,duration:3000,style:{background:"#dc3545"} }).showToast();
+        Toastify({ text:"ত্রুটি: "+err.message, duration:3000, style:{background:"#dc3545"} }).showToast();
       }
     }
   </script>
