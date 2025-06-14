@@ -238,16 +238,24 @@
             const sanitizedSubject = sanitizeFileName(subject);
             const sanitizedChapter = sanitizeFileName(chapter.replace(/^Chapter \d+:\s*/, ''));
             const filePath = `/questions/subjects/${sanitizedSubject}/${sanitizedChapter}.json`;
+            console.log(`Fetching: ${filePath}`);
             try {
                 const response = await fetch(filePath);
-                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status} - ${response.statusText}`);
+                }
                 const data = await response.json();
+                if (!Array.isArray(data)) {
+                    throw new Error('Invalid JSON format: Expected an array of questions');
+                }
+                console.log(`Loaded ${data.length} questions from ${filePath}`);
                 return data;
             } catch (error) {
+                console.error(`Error loading ${filePath}:`, error);
                 Toastify({
-                    text: `${subject} - ${chapter} প্রশ্ন লোড করতে ব্যর্থ: ${error.message}`,
+                    text: `${subject} - ${chapter.replace(/^Chapter \d+:\s*/, '')} প্রশ্ন লোড করতে ব্যর্থ: ${error.message}`,
                     duration: 3000,
-                    backgroundColor: '#dc3545'
+                    style: { background: '#dc3545' }
                 }).showToast();
                 return [];
             }
@@ -289,7 +297,7 @@
                 Toastify({
                     text: 'সাবজেক্ট এবং চ্যাপ্টার নির্বাচন করুন!',
                     duration: 3000,
-                    backgroundColor: '#dc3545'
+                    style: { background: '#dc3545' }
                 }).showToast();
                 return;
             }
@@ -298,22 +306,31 @@
                 Toastify({
                     text: 'এই চ্যাপ্টার ইতিমধ্যে যোগ করা হয়েছে!',
                     duration: 3000,
-                    backgroundColor: '#dc3545'
+                    style: { background: '#dc3545' }
                 }).showToast();
                 return;
             }
-            selectedChapters.push(chapterKey);
             try {
                 const questions = await loadQuestionsFromJSON(subject, chapter);
+                if (questions.length === 0) {
+                    Toastify({
+                        text: `কোনো প্রশ্ন পাওয়া যায়নি: ${chapterName}`,
+                        duration: 3000,
+                        style: { background: '#ff9800' }
+                    }).showToast();
+                    return;
+                }
+                selectedChapters.push(chapterKey);
                 questionsData[chapterKey] = questions;
                 renderChapter(chapterKey);
                 saveState();
                 bootstrap.Modal.getInstance(document.getElementById('add-chapter-modal')).hide();
             } catch (error) {
+                console.error(`Error adding chapter ${chapterKey}:`, error);
                 Toastify({
                     text: `চ্যাপ্টার লোড করতে সমস্যা: ${chapterName}`,
                     duration: 3000,
-                    backgroundColor: '#dc3545'
+                    style: { background: '#dc3545' }
                 }).showToast();
             }
         });
@@ -341,12 +358,29 @@
 
         // Render Questions for a Chapter Page
         function renderQuestions(chapterKey, page) {
-            const questions = questionsData[chapterKey];
+            const questions = questionsData[chapterKey] || [];
+            const questionsList = document.getElementById(`questions-${chapterKey}`);
+            const pageInfo = document.getElementById(`page-info-${chapterKey}`);
+            const prevBtn = document.querySelector(`#chapter-${chapterKey} .prev`);
+            const nextBtn = document.querySelector(`#chapter-${chapterKey} .next`);
+
+            if (!questionsList || !pageInfo || !prevBtn || !nextBtn) {
+                console.error(`DOM elements missing for chapter: ${chapterKey}`);
+                return;
+            }
+
+            if (!Array.isArray(questions) || questions.length === 0) {
+                questionsList.innerHTML = '<p>কোনো প্রশ্ন পাওয়া যায়নি।</p>';
+                pageInfo.textContent = 'পৃষ্ঠা 1 / 1';
+                prevBtn.disabled = true;
+                nextBtn.disabled = true;
+                return;
+            }
+
             const pageSize = 10;
             const start = (page - 1) * pageSize;
             const end = start + pageSize;
             const pageQuestions = questions.slice(start, end);
-            const questionsList = document.getElementById(`questions-${chapterKey}`);
             questionsList.innerHTML = '';
             pageQuestions.forEach((q, index) => {
                 const globalIndex = start + index;
@@ -357,18 +391,16 @@
                     <div class="form-check">
                         <input type="checkbox" class="form-check-input select-question" data-chapter="${chapterKey}" data-index="${globalIndex}" ${isSelected ? 'checked' : ''}>
                         <label class="form-check-label">
-                            <p><strong>প্রশ্ন:</strong> ${q.questionText}</p>
-                            <p><strong>অপশন:</strong> ${q.options.map((opt, i) => `${String.fromCharCode(2437 + i)}. ${opt}`).join(', ')}</p>
-                            <p><strong>সঠিক উত্তর:</strong> ${String.fromCharCode(2437 + q.options.indexOf(q.correctAnswer))}. ${q.correctAnswer}</p>
+                            <p><strong>প্রশ্ন:</strong> ${q.questionText || 'প্রশ্ন অনুপলব্ধ'}</p>
+                            <p><strong>অপশন:</strong> ${q.options ? q.options.map((opt, i) => `${String.fromCharCode(2437 + i)}. ${opt}`).join(', ') : 'অপশন অনুপলব্ধ'}</p>
+                            <p><strong>সঠিক উত্তর:</strong> ${q.correctAnswer ? `${String.fromCharCode(2437 + q.options.indexOf(q.correctAnswer))}. ${q.correctAnswer}` : 'উত্তর অনুপলব্ধ'}</p>
                         </label>
                     </div>
                 `;
                 questionsList.appendChild(questionDiv);
             });
             const totalPages = Math.ceil(questions.length / pageSize);
-            document.getElementById(`page-info-${chapterKey}`).textContent = `পৃষ্ঠা ${page} / ${totalPages}`;
-            const prevBtn = document.querySelector(`#chapter-${chapterKey} .prev`);
-            const nextBtn = document.querySelector(`#chapter-${chapterKey} .next`);
+            pageInfo.textContent = `পৃষ্ঠা ${page} / ${totalPages}`;
             prevBtn.disabled = page === 1;
             nextBtn.disabled = page === totalPages;
         }
@@ -400,7 +432,7 @@
             if (!chapterDiv) return;
             const chapterKey = chapterDiv.id.replace('chapter-', '');
             if (e.target.classList.contains('next')) {
-                const totalPages = Math.ceil(questionsData[chapterKey].length / 10);
+                const totalPages = Math.ceil((questionsData[chapterKey] || []).length / 10);
                 if (currentPages[chapterKey] < totalPages) {
                     currentPages[chapterKey]++;
                     renderQuestions(chapterKey, currentPages[chapterKey]);
@@ -414,6 +446,8 @@
                 selectedChapters = selectedChapters.filter(sc => sc !== chapterKey);
                 selectedQuestions = selectedQuestions.filter(sq => sq.chapterKey !== chapterKey);
                 chapterDiv.remove();
+                delete questionsData[chapterKey];
+                delete currentPages[chapterKey];
                 updateTotalSelected();
                 saveState();
             }
@@ -428,7 +462,7 @@
                 Toastify({
                     text: 'সব তথ্য পূরণ করুন!',
                     duration: 3000,
-                    backgroundColor: '#dc3545'
+                    style: { background: '#dc3545' }
                 }).showToast();
                 return;
             }
@@ -436,7 +470,7 @@
                 Toastify({
                     text: 'টাইমার এবং নেগেটিভ মার্কিং সঠিকভাবে পূরণ করুন!',
                     duration: 3000,
-                    backgroundColor: '#dc3545'
+                    style: { background: '#dc3545' }
                 }).showToast();
                 return;
             }
@@ -460,7 +494,7 @@
                 Toastify({
                     text: 'সঠিক তথ্য প্রদান করুন!',
                     duration: 3000,
-                    backgroundColor: '#dc3545'
+                    style: { background: '#dc3545' }
                 }).showToast();
                 return;
             }
@@ -468,7 +502,7 @@
                 Toastify({
                     text: 'অন্তত একটি প্রশ্ন বাছাই করুন!',
                     duration: 3000,
-                    backgroundColor: '#dc3545'
+                    style: { background: '#dc3545' }
                 }).showToast();
                 return;
             }
@@ -493,17 +527,18 @@
                 Toastify({
                     text: `পরীক্ষা তৈরি হয়েছে! লিংক: ${window.location.origin}/${link}`,
                     duration: 5000,
-                    backgroundColor: '#28a745'
+                    style: { background: '#28a745' }
                 }).showToast();
                 sessionStorage.clear();
                 setTimeout(() => {
                     window.location.href = 'dashboard.html';
                 }, 5000);
             } catch (error) {
+                console.error('Error creating exam:', error);
                 Toastify({
                     text: 'পরীক্ষা তৈরিতে ত্রুটি হয়েছে!',
                     duration: 3000,
-                    backgroundColor: '#dc3545'
+                    style: { background: '#dc3545' }
                 }).showToast();
             }
         });
@@ -521,7 +556,7 @@
         }
 
         // Restore State from Session Storage
-        function restoreState() {
+        async function restoreState() {
             const savedSettings = sessionStorage.getItem('examSettings');
             if (savedSettings) {
                 const settings = JSON.parse(savedSettings);
@@ -532,7 +567,7 @@
             const savedChapters = sessionStorage.getItem('selectedChapters');
             if (savedChapters) {
                 selectedChapters = JSON.parse(savedChapters);
-                loadSelectedChapters();
+                await loadSelectedChapters();
             }
             const savedQuestions = sessionStorage.getItem('selectedQuestions');
             if (savedQuestions) {
@@ -550,16 +585,24 @@
             for (const chapterKey of selectedChapters) {
                 const [subject, chapterName] = chapterKey.split('-');
                 const chapter = subjects[subject]?.find(ch => ch.endsWith(chapterName));
-                if (!chapter) continue;
+                if (!chapter) {
+                    console.warn(`Chapter not found for ${chapterKey}`);
+                    continue;
+                }
                 try {
                     const questions = await loadQuestionsFromJSON(subject, chapter);
+                    if (questions.length === 0) {
+                        console.warn(`No questions loaded for ${chapterKey}`);
+                        continue;
+                    }
                     questionsData[chapterKey] = questions;
                     renderChapter(chapterKey);
                 } catch (error) {
+                    console.error(`Error loading chapter ${chapterKey}:`, error);
                     Toastify({
-                        text: `চ্যাপ্টার লোড করতে সমস্যা: ${chapterKey}`,
+                        text: `চ্যাপ্টার লোড করতে সমস্যা: ${chapterName}`,
                         duration: 3000,
-                        backgroundColor: '#dc3545'
+                        style: { background: '#dc3545' }
                     }).showToast();
                 }
             }
