@@ -1,270 +1,373 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>পরীক্ষা নির্মাতা</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
-  <link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" rel="stylesheet"/>
-  <style>
-    body { font-family: 'Hind Siliguri', sans-serif; background: #f5f5f5; padding: 2rem; }
-    .step { display: none; }
-    .step.active { display: block; }
-    .question-card { background: #fff; border: 1px solid #ddd; border-radius: 6px; padding: 1rem; margin-bottom: 1rem; }
-    .sticky-top-bar { position: sticky; top: 0; background: #fff; padding: 1rem; border-bottom: 1px solid #eee; z-index: 100; }
-    .pagination { justify-content: center; }
-    #authStatus { position: fixed; top: 1rem; right: 1rem; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>পরীক্ষা তৈরি | ডোপামিন</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+        }
+        .chapter, .question {
+            margin-bottom: 1rem;
+        }
+        .questions-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+    </style>
 </head>
 <body>
-  <div id="authStatus" class="text-end">
-    <span id="userEmail">অজানা ব্যবহারকারী</span>
-    <button id="btnSignIn" class="btn btn-sm btn-outline-primary">লগইন</button>
-    <button id="btnSignOut" class="btn btn-sm btn-outline-danger" style="display:none">লগআউট</button>
-  </div>
-
-  <div class="container">
-    <h2 class="mb-4">পরীক্ষা নির্মাতা</h2>
-
-    <!-- Step 1 -->
-    <div class="step active" id="step1">
-      <div class="mb-3">
-        <label class="form-label">পরীক্ষার নাম</label>
-        <input type="text" id="examName" class="form-control" required/>
-      </div>
-      <div class="mb-3">
-        <label class="form-label">সময় (মিনিট)</label>
-        <input type="number" id="examTime" class="form-control" required/>
-      </div>
-      <div class="mb-3">
-        <label class="form-label">নেগেটিভ মার্কিং (প্রতি ভুল উত্তরে)</label>
-        <input type="number" id="negativeMarking" class="form-control" step="0.01" value="0" required/>
-      </div>
-      <button class="btn btn-primary" onclick="goToStep(2)">পরবর্তী ধাপ</button>
-    </div>
-
-    <!-- Step 2 -->
-    <div class="step" id="step2">
-      <h4>বিষয় নির্বাচন করুন</h4>
-      <div id="subjectList" class="mb-3"></div>
-      <button class="btn btn-secondary" onclick="goToStep(1)">আগের ধাপ</button>
-      <button class="btn btn-primary" onclick="goToStep(3)">পরবর্তী ধাপ</button>
-    </div>
-
-    <!-- Step 3 -->
-    <div class="step" id="step3">
-      <div class="sticky-top-bar d-flex justify-content-between align-items-center">
-        <span>সিলেক্ট করা প্রশ্ন: <strong id="selectedCount">0</strong></span>
-        <div>
-          <button class="btn btn-sm btn-outline-primary" onclick="goToStep(2)">আরেকটি বিষয়</button>
-          <button class="btn btn-sm btn-outline-success" onclick="promptChapterSelection()">আরেকটি অধ্যায়</button>
+    <div class="container mt-5">
+        <div id="exam-settings">
+            <h2>পরীক্ষার সেটিংস</h2>
+            <div class="mb-3">
+                <label for="exam-name" class="form-label">পরীক্ষার নাম</label>
+                <input type="text" id="exam-name" class="form-control">
+            </div>
+            <div class="mb-3">
+                <label for="timer" class="form-label">টাইমার (মিনিট)</label>
+                <input type="number" id="timer" class="form-control" min="1">
+            </div>
+            <div class="mb-3">
+                <label for="negative-marking" class="form-label">নেগেটিভ মার্কিং</label>
+                <input type="number" id="negative-marking" class="form-control" step="0.01" min="0">
+            </div>
+            <button id="next-btn" class="btn btn-primary">পরবর্তী</button>
         </div>
-      </div>
-      <div id="chapterSelectArea" class="my-3"></div>
-      <div id="questionArea"></div>
-      <nav><ul class="pagination" id="pagination"></ul></nav>
-      <button id="btnCreateExam" class="btn btn-success mt-3" onclick="createExam()">পরীক্ষা তৈরি করুন</button>
+
+        <div id="question-selection" style="display: none;">
+            <h2>প্রশ্ন বাছাই</h2>
+            <button id="add-chapter-btn" class="btn btn-secondary mb-3" data-bs-toggle="modal" data-bs-target="#add-chapter-modal">চ্যাপ্টার যোগ করুন</button>
+            <div id="selected-chapters"></div>
+            <div class="mb-3">মোট বাছাইকৃত প্রশ্ন: <span id="total-selected">0</span></div>
+            <button id="create-exam-btn" class="btn btn-success">পরীক্ষা তৈরি করুন</button>
+            <button id="back-btn" class="btn btn-secondary">পেছনে</button>
+        </div>
     </div>
-  </div>
 
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-  <script>
-    // init Firebase
-    const firebaseConfig = { /* তোমার config */ };
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+    <!-- Add Chapter Modal -->
+    <div class="modal fade" id="add-chapter-modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">চ্যাপ্টার যোগ করুন</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="subject-select" class="form-label">সাবজেক্ট</label>
+                    <select id="subject-select" class="form-select"></select>
+                    <label for="chapter-select" class="form-label mt-3">চ্যাপ্টার</label>
+                    <select id="chapter-select" class="form-select"></select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">বাতিল</button>
+                    <button type="button" class="btn btn-primary" id="add-btn">যোগ করুন</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    // Auth UI
-    const btnSignIn  = document.getElementById("btnSignIn");
-    const btnSignOut = document.getElementById("btnSignOut");
-    const userEmail  = document.getElementById("userEmail");
-    const btnCreate  = document.getElementById("btnCreateExam");
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
 
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        userEmail.textContent = user.email || "Anonymous";
-        btnSignIn.style.display  = "none";
-        btnSignOut.style.display = "inline-block";
-        btnCreate.disabled = false;
-      } else {
-        userEmail.textContent = "অজানা ব্যবহারকারী";
-        btnSignIn.style.display  = "inline-block";
-        btnSignOut.style.display = "none";
-        btnCreate.disabled = true;
-      }
-    });
-    btnSignIn.onclick  = () => auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(console.error);
-    btnSignOut.onclick = () => auth.signOut();
+        let subjects = [];
+        let selectedChapters = [];
+        let selectedQuestions = [];
+        let currentPages = {};
+        let questionsData = {};
 
-    // Dashboard subjects (all)
-    const subjects = {
-      "Botany": [/* … all chapters … */],
-      "Zoology": [/* … */],
-      "Physics 1st": [/* … */],
-      "Physics 2nd": [/* … */],
-      "Chemistry 1st": [/* … */],
-      "Chemistry 2nd": [/* … */],
-      "Higher Math 1st": [/* … */],
-      "Higher Math 2nd": [/* … */],
-      "English": [],
-      "Bangla": []
-    };
+        const selectedChaptersContainer = document.getElementById('selected-chapters');
+        const totalSelectedSpan = document.getElementById('total-selected');
+        const subjectSelect = document.getElementById('subject-select');
+        const chapterSelect = document.getElementById('chapter-select');
+        const addBtn = document.getElementById('add-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const backBtn = document.getElementById('back-btn');
+        const createExamBtn = document.getElementById('create-exam-btn');
 
-    let selectedQ = JSON.parse(localStorage.getItem("selectedQuestions")||"[]");
-    let currentQ = [], perPage=20, page=1, curSub="", curChap="";
+        // Load subjects
+        async function loadSubjects() {
+            try {
+                const response = await fetch('./questions/subjects/subjects.json');
+                subjects = await response.json();
+                subjects.forEach(subject => {
+                    const option = document.createElement('option');
+                    option.value = subject.fileName;
+                    option.textContent = subject.name;
+                    subjectSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error loading subjects:', error);
+            }
+        }
 
-    document.getElementById("selectedCount").textContent = selectedQ.length;
+        // Load chapters for selected subject
+        subjectSelect.addEventListener('change', async () => {
+            const fileName = subjectSelect.value;
+            try {
+                const response = await fetch(`./questions/subjects/${fileName}.json`);
+                const chapters = await response.json();
+                chapterSelect.innerHTML = '';
+                chapters.forEach(chapter => {
+                    const option = document.createElement('option');
+                    option.value = chapter.chapterName;
+                    option.textContent = chapter.chapterName;
+                    chapterSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error loading chapters:', error);
+            }
+        });
 
-    function goToStep(n){
-      document.querySelectorAll(".step").forEach(s=>s.classList.remove("active"));
-      document.getElementById("step"+n).classList.add("active");
-      if(n===2) populateSubjects();
-    }
+        // Add chapter
+        addBtn.addEventListener('click', async () => {
+            const subject = subjectSelect.options[subjectSelect.selectedIndex].text;
+            const chapter = chapterSelect.value;
+            const chapterKey = `${subject}-${chapter}`;
+            if (selectedChapters.includes(chapterKey)) {
+                alert('এই চ্যাপ্টার ইতিমধ্যে যোগ করা হয়েছে');
+                return;
+            }
+            selectedChapters.push(chapterKey);
+            const fileName = subjectSelect.value;
+            try {
+                const response = await fetch(`./questions/subjects/${fileName}.json`);
+                const data = await response.json();
+                const chapterData = data.find(c => c.chapterName === chapter);
+                questionsData[chapterKey] = chapterData.questions;
+                renderChapter(chapterKey);
+                saveState();
+                bootstrap.Modal.getInstance(document.getElementById('add-chapter-modal')).hide();
+            } catch (error) {
+                console.error('Error adding chapter:', error);
+            }
+        });
 
-    function populateSubjects(){
-      const el = document.getElementById("subjectList");
-      el.innerHTML="";
-      Object.keys(subjects).forEach(sub=>{
-        const btn=document.createElement("button");
-        btn.className="btn btn-outline-primary m-1";
-        btn.textContent=sub;
-        btn.onclick=()=>selectSubject(sub);
-        el.appendChild(btn);
-      });
-    }
+        // Render chapter
+        function renderChapter(chapterKey) {
+            const [subject, chapter] = chapterKey.split('-');
+            const chapterDiv = document.createElement('div');
+            chapterDiv.className = 'chapter';
+            chapterDiv.id = `chapter-${chapterKey}`;
+            chapterDiv.innerHTML = `
+                <h3>${subject} - ${chapter}</h3>
+                <div class="questions-list" id="questions-${chapterKey}"></div>
+                <div class="pagination">
+                    <button class="btn btn-secondary prev">পূর্ববর্তী</button>
+                    <span id="page-info-${chapterKey}">পৃষ্ঠা 1</span>
+                    <button class="btn btn-secondary next">পরবর্তী</button>
+                </div>
+                <button class="btn btn-danger remove-chapter mt-2">চ্যাপ্টার সরান</button>
+            `;
+            selectedChaptersContainer.appendChild(chapterDiv);
+            currentPages[chapterKey] = 1;
+            renderQuestions(chapterKey, 1);
+        }
 
-    function selectSubject(sub){
-      curSub=sub; page=1;
-      const area=document.getElementById("chapterSelectArea");
-      area.innerHTML=`<h5>${sub} - অধ্যায়</h5>`;
-      subjects[sub].forEach(ch=>{
-        const btn=document.createElement("button");
-        btn.className="btn btn-outline-secondary m-1";
-        btn.textContent=ch;
-        btn.onclick=()=>loadQuestions(sub,ch);
-        area.appendChild(btn);
-      });
-      goToStep(3);
-    }
+        // Render questions for a chapter page
+        function renderQuestions(chapterKey, page) {
+            const questions = questionsData[chapterKey];
+            const pageSize = 10;
+            const start = (page - 1) * pageSize;
+            const end = start + pageSize;
+            const pageQuestions = questions.slice(start, end);
+            const questionsList = document.getElementById(`questions-${chapterKey}`);
+            questionsList.innerHTML = '';
+            pageQuestions.forEach((q, index) => {
+                const globalIndex = start + index;
+                const isSelected = selectedQuestions.some(sq => sq.subject === chapterKey.split('-')[0] && sq.chapter === chapterKey.split('-')[1] && sq.questionIndex === globalIndex);
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.innerHTML = `
+                    <input type="checkbox" class="form-check-input select-question" data-subject="${chapterKey.split('-')[0]}" data-chapter="${chapterKey.split('-')[1]}" data-index="${globalIndex}" ${isSelected ? 'checked' : ''}>
+                    <p><strong>প্রশ্ন:</strong> ${q.questionText}</p>
+                    <p><strong>অপশন:</strong> ${q.options.map((opt, i) => `${String.fromCharCode(65 + i)}. ${opt}`).join(', ')}</p>
+                    <p><strong>সঠিক উত্তর:</strong> ${String.fromCharCode(65 + q.options.indexOf(q.correctAnswer))}. ${q.correctAnswer}</p>
+                `;
+                questionsList.appendChild(questionDiv);
+            });
+            const totalPages = Math.ceil(questions.length / pageSize);
+            document.getElementById(`page-info-${chapterKey}`).textContent = `পৃষ্ঠা ${page} / ${totalPages}`;
+        }
 
-    function promptChapterSelection(){ goToStep(2); }
+        // Handle checkbox changes
+        selectedChaptersContainer.addEventListener('change', e => {
+            if (e.target.classList.contains('select-question')) {
+                const checkbox = e.target;
+                const subject = checkbox.dataset.subject;
+                const chapter = checkbox.dataset.chapter;
+                const questionIndex = parseInt(checkbox.dataset.index);
+                if (checkbox.checked) {
+                    selectedQuestions.push({subject, chapter, questionIndex});
+                } else {
+                    selectedQuestions = selectedQuestions.filter(sq => !(sq.subject === subject && sq.chapter === chapter && sq.questionIndex === questionIndex));
+                }
+                updateTotalSelected();
+                saveState();
+            }
+        });
 
-    function sanitizeFileName(name){
-      return name.replace(/^Chapter\s*\d+:\s*/,"")
-                 .trim().replace(/\s+/g,"-")
-                 .replace(/[^\u0980-\u09FFa-zA-Z0-9\-]/g,"");
-    }
+        // Update total selected questions
+        function updateTotalSelected() {
+            totalSelectedSpan.textContent = selectedQuestions.length;
+        }
 
-    async function loadQuestions(sub, ch){
-      curSub=sub; curChap=ch; page=1;
-      const s=sanitizeFileName(sub), c=sanitizeFileName(ch);
-      const url=`questions/subjects/${s}/${c}.json`;
-      try {
-        const r=await fetch(url);
-        if(!r.ok) throw new Error(r.statusText);
-        const data=await r.json();
-        currentQ=data.map((q,i)=>({
-          subject: sub,
-          chapter: ch, // keep full chapter text
-          id: i,
-          question: q.question,
-          options: q.options,
-          correctOption: q.correctOption
-        }));
-        renderQuestions();
-      } catch(e){
-        Toastify({ text:"লোড এরর: "+e.message, duration:3000, style:{background:"#dc3545"} }).showToast();
-      }
-    }
+        // Handle pagination and remove chapter
+        selectedChaptersContainer.addEventListener('click', e => {
+            const chapterDiv = e.target.closest('.chapter');
+            const chapterKey = chapterDiv.id.replace('chapter-', '');
+            if (e.target.classList.contains('next')) {
+                const totalPages = Math.ceil(questionsData[chapterKey].length / 10);
+                if (currentPages[chapterKey] < totalPages) {
+                    currentPages[chapterKey]++;
+                    renderQuestions(chapterKey, currentPages[chapterKey]);
+                }
+            } else if (e.target.classList.contains('prev')) {
+                if (currentPages[chapterKey] > 1) {
+                    currentPages[chapterKey]--;
+                    renderQuestions(chapterKey, currentPages[chapterKey]);
+                }
+            } else if (e.target.classList.contains('remove-chapter')) {
+                selectedChapters = selectedChapters.filter(sc => sc !== chapterKey);
+                selectedQuestions = selectedQuestions.filter(sq => sq.subject + '-' + sq.chapter !== chapterKey);
+                chapterDiv.remove();
+                updateTotalSelected();
+                saveState();
+            }
+        });
 
-    function renderQuestions(){
-      const area=document.getElementById("questionArea");
-      area.innerHTML="";
-      const start=(page-1)*perPage;
-      currentQ.slice(start,start+perPage).forEach(q=>{
-        const key=`${q.subject}|${q.chapter}|${q.id}`;
-        const div=document.createElement("div");
-        div.className="question-card";
-        div.innerHTML=`
-          <div><strong>${q.question}</strong></div>
-          <div class="small">উত্তর: ${q.options[q.correctOption-1]||""}</div>
-          <div class="form-check mt-2">
-            <input class="form-check-input" type="checkbox" id="${key}"
-                   ${selectedQ.includes(key)?"checked":""}
-                   onchange="toggleQ('${key}',this.checked)">
-            <label class="form-check-label" for="${key}">নির্বাচন</label>
-          </div>`;
-        area.appendChild(div);
-      });
-      renderPagination();
-      document.getElementById("selectedCount").textContent = selectedQ.length;
-    }
+        // Next button
+        nextBtn.addEventListener('click', () => {
+            const examName = document.getElementById('exam-name').value;
+            const timer = document.getElementById('timer').value;
+            const negativeMarking = document.getElementById('negative-marking').value;
+            if (!examName || !timer || !negativeMarking) {
+                alert('সব তথ্য পূরণ করুন');
+                return;
+            }
+            saveState();
+            document.getElementById('exam-settings').style.display = 'none';
+            document.getElementById('question-selection').style.display = 'block';
+        });
 
-    function toggleQ(key, ok){
-      if(ok) {
-        if(!selectedQ.includes(key)) selectedQ.push(key);
-      } else {
-        selectedQ = selectedQ.filter(x=>x!==key);
-      }
-      localStorage.setItem("selectedQuestions",JSON.stringify(selectedQ));
-      document.getElementById("selectedCount").textContent = selectedQ.length;
-    }
+        // Back button
+        backBtn.addEventListener('click', () => {
+            document.getElementById('question-selection').style.display = 'none';
+            document.getElementById('exam-settings').style.display = 'block';
+        });
 
-    function renderPagination(){
-      const total = Math.ceil(currentQ.length / perPage);
-      const ul = document.getElementById("pagination");
-      ul.innerHTML="";
-      for(let i=1;i<=total;i++){
-        const li=document.createElement("li");
-        li.className="page-item"+(i===page?" active":"");
-        li.innerHTML=`<a class="page-link" href="#">${i}</a>`;
-        li.onclick=e=>{ e.preventDefault(); page=i; renderQuestions(); };
-        ul.appendChild(li);
-      }
-    }
+        // Create exam
+        createExamBtn.addEventListener('click', async () => {
+            const examName = document.getElementById('exam-name').value;
+            const timer = parseInt(document.getElementById('timer').value);
+            const negativeMarking = parseFloat(document.getElementById('negative-marking').value);
+            if (!examName || isNaN(timer) || timer <= 0 || isNaN(negativeMarking) || negativeMarking < 0) {
+                alert('সঠিক তথ্য প্রদান করুন');
+                return;
+            }
+            if (selectedQuestions.length === 0) {
+                alert('অন্তত একটি প্রশ্ন বাছাই করুন');
+                return;
+            }
+            try {
+                const examDoc = await db.collection('exams').add({
+                    title: examName,
+                    duration: timer,
+                    negativeMark: negativeMarking,
+                    questions: selectedQuestions.map(sq => ({subject: sq.subject, chapter: sq.chapter, id: sq.questionIndex})),
+                    createdBy: auth.currentUser.uid,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                const examId = examDoc.id;
+                const link = `quiz.html?examId=${examId}`;
+                alert(`পরীক্ষা তৈরি হয়েছে! লিংক: ${window.location.origin}/${link}`);
+                sessionStorage.clear();
+            } catch (error) {
+                console.error('Error creating exam:', error);
+                alert('পরীক্ষা তৈরিতে ত্রুটি হয়েছে');
+            }
+        });
 
-    async function createExam(){
-      if(!auth.currentUser) {
-        return Toastify({ text:"প্রথমে লগইন করুন", duration:3000, style:{background:"#dc3545"} }).showToast();
-      }
+        // Save state to session storage
+        function saveState() {
+            sessionStorage.setItem('examSettings', JSON.stringify({
+                examName: document.getElementById('exam-name').value,
+                timer: document.getElementById('timer').value,
+                negativeMarking: document.getElementById('negative-marking').value
+            }));
+            sessionStorage.setItem('selectedChapters', JSON.stringify(selectedChapters));
+            sessionStorage.setItem('selectedQuestions', JSON.stringify(selectedQuestions));
+        }
 
-      // validation
-      const title       = document.getElementById("examName").value.trim();
-      const duration    = parseInt(document.getElementById("examTime").value,10);
-      const negativeMark= parseFloat(document.getElementById("negativeMarking").value);
-      if(!title || isNaN(duration) || duration<=0 || isNaN(negativeMark) || negativeMark<0 || selectedQ.length===0){
-        return Toastify({ text:"সব ফিল্ড সঠিকভাবে পূরণ করুন", duration:3000, style:{background:"#dc3545"} }).showToast();
-      }
+        // Restore state from session storage
+        function restoreState() {
+            const savedSettings = sessionStorage.getItem('examSettings');
+            if (savedSettings) {
+                const settings = JSON.parse(savedSettings);
+                document.getElementById('exam-name').value = settings.examName;
+                document.getElementById('timer').value = settings.timer;
+                document.getElementById('negative-marking').value = settings.negativeMarking;
+            }
+            const savedChapters = sessionStorage.getItem('selectedChapters');
+            if (savedChapters) {
+                selectedChapters = JSON.parse(savedChapters);
+                loadSelectedChapters();
+            }
+            const savedQuestions = sessionStorage.getItem('selectedQuestions');
+            if (savedQuestions) {
+                selectedQuestions = JSON.parse(savedQuestions);
+                updateTotalSelected();
+            }
+        }
 
-      // build questions array
-      const questions = selectedQ.map(key=>{
-        const [sub,chap,id] = key.split("|");
-        return { subject: sub, chapter: chap, id: parseInt(id,10) };
-      });
+        async function loadSelectedChapters() {
+            for (const chapterKey of selectedChapters) {
+                const [subject, chapter] = chapterKey.split('-');
+                const fileName = subjects.find(s => s.name === subject).fileName;
+                try {
+                    const response = await fetch(`./questions/subjects/${fileName}.json`);
+                    const data = await response.json();
+                    const chapterData = data.find(c => c.chapterName === chapter);
+                    questionsData[chapterKey] = chapterData.questions;
+                    renderChapter(chapterKey);
+                } catch (error) {
+                    console.error('Error loading chapter:', error);
+                }
+            }
+        }
 
-      const payload = {
-        title, duration, negativeMark, questions,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      };
-
-      try {
-        await db.collection("exams").add(payload);
-        // clear selections
-        localStorage.removeItem("selectedQuestions");
-        selectedQ = [];
-        document.getElementById("selectedCount").textContent = "0";
-
-        Toastify({ text:"পরীক্ষা সফলভাবে তৈরি হয়েছে", duration:3000, style:{background:"#22c55e"} }).showToast();
-      } catch(err){
-        console.error(err);
-        Toastify({ text:"ত্রুটি: "+err.message, duration:3000, style:{background:"#dc3545"} }).showToast();
-      }
-    }
-  </script>
+        // Initial load
+        auth.onAuthStateChanged(user => {
+            if (!user) {
+                window.location.href = 'auth.html';
+            } else {
+                loadSubjects().then(() => {
+                    restoreState();
+                });
+            }
+        });
+    </script>
 </body>
 </html>
