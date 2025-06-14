@@ -49,12 +49,8 @@
       <div class="sticky-top-bar d-flex justify-content-between align-items-center">
         <span>সিলেক্ট করা প্রশ্ন: <strong id="selectedCount">0</strong></span>
         <div>
-          <button class="btn btn-sm btn-outline-primary" onclick="goToStep(2)">
-            আরেকটি বিষয়
-          </button>
-          <button class="btn btn-sm btn-outline-success" onclick="promptChapterSelection()">
-            আরেকটি অধ্যায়
-          </button>
+          <button class="btn btn-sm btn-outline-primary" onclick="goToStep(2)">আরেকটি বিষয়</button>
+          <button class="btn btn-sm btn-outline-success" onclick="promptChapterSelection()">আরেকটি অধ্যায়</button>
         </div>
       </div>
       <div id="chapterSelectArea" class="my-3"></div>
@@ -205,24 +201,57 @@
       }
     }
 
-    async function createExam(){
-      const payload={
-        title: document.getElementById("examName").value,
-        duration: parseInt(document.getElementById("examTime").value),
-        negativeMark: parseFloat(document.getElementById("negativeMarking").value),
-        questions: selectedQ.map(key=>{
-          const [sub,chap,idx]=key.split(/-(.+)/)[0].split("-");
-          return { subject: sub, chapter: chap, id: parseInt(key.split("-").pop()) };
-        }),
+    async function createExam() {
+      const title = document.getElementById("examName").value.trim();
+      const duration = parseInt(document.getElementById("examTime").value, 10);
+      const negativeMark = parseFloat(document.getElementById("negativeMarking").value);
+
+      if (!title) {
+        return Toastify({ text: "পরীক্ষার নাম দিন", duration:3000, style:{background:"#dc3545"} }).showToast();
+      }
+      if (isNaN(duration) || duration <= 0) {
+        return Toastify({ text: "সঠিক সময় (মিনিট) দিন", duration:3000, style:{background:"#dc3545"} }).showToast();
+      }
+      if (isNaN(negativeMark) || negativeMark < 0) {
+        return Toastify({ text: "সঠিক নেগেটিভ মার্কিং দিন", duration:3000, style:{background:"#dc3545"} }).showToast();
+      }
+      if (selectedQ.length === 0) {
+        return Toastify({ text: "কোন প্রশ্ন সিলেক্ট করেননি", duration:3000, style:{background:"#dc3545"} }).showToast();
+      }
+
+      const questions = selectedQ.map(key => {
+        // key format: "Subject-Chapter-Index"
+        const parts = key.split("-");
+        const idx = parseInt(parts.pop(), 10);
+        const chap = parts.pop();
+        const sub = parts.join("-");
+        return { subject: sub, chapter: chap, id: idx };
+      });
+
+      const payload = {
+        title,
+        duration,
+        negativeMark,
+        questions,
         createdAt: firebase.firestore.FieldValue.serverTimestamp()
       };
+
       try {
-        const doc=await db.collection("exams").add(payload);
-        const link=`quiz.html?examId=${doc.id}`;
-        navigator.clipboard.writeText(window.location.origin+"/"+link);
-        Toastify({ text:"লিংক কপি হয়েছে: "+link,duration:4000,style:{background:"#22c55e"} }).showToast();
-      } catch(err){
-        Toastify({ text:"এই রকম এরর: "+err,duration:3000,style:{background:"#dc3545"} }).showToast();
+        const docRef = await db.collection("exams").add(payload);
+        const link = `quiz.html?examId=${docRef.id}`;
+        navigator.clipboard.writeText(window.location.origin + "/" + link);
+        Toastify({
+          text: "লিংক কপি হয়েছে: " + link,
+          duration: 4000,
+          style: { background: "#22c55e" }
+        }).showToast();
+      } catch (err) {
+        console.error("Firestore add error:", err);
+        Toastify({
+          text: "Exam তৈরি করতে ত্রুটি: " + err.message,
+          duration: 3000,
+          style: { background: "#dc3545" }
+        }).showToast();
       }
     }
   </script>
