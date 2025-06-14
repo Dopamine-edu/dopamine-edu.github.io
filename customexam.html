@@ -2,648 +2,495 @@
 <html lang="bn">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Custom Exam</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>পরীক্ষা তৈরি | ডোপামিন</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css?family=Hind+Siliguri');
         :root {
-            --bg-color: #f5f5f5; --text-color: #333; --card-bg: #fff; --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            --border-color: #ddd; --primary-color: #6b48ff; --hover-color: #5a3de6; --secondary-text-color: #666;
-            --subject-card-bg: #f0f7ff; --settings-card-bg: #fff8f0;
+            --primary-color: #4a90e2;
+            --bg-color: #f4f7fa;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
         }
-        [data-theme="dark"] {
-            --bg-color: #1a1a1a; --text-color: #e0e0e0; --card-bg: #2d2d2d; --shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
-            --border-color: #444; --secondary-text-color: #b0b0b0;
-            --subject-card-bg: #1a2a40; --settings-card-bg: #402a1a;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Hind Siliguri', sans-serif; transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
-        body { background: var(--bg-color); color: var(--text-color); min-height: 100vh; display: flex; flex-direction: column; }
-        .navbar { background: var(--card-bg); padding: 1rem; border-radius: 15px; box-shadow: var(--shadow); display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; position: sticky; top: 0; z-index: 100; }
-        .nav-left { display: flex; align-items: center; gap: 1rem; }
-        .nav-left img { width: 40px; height: 40px; border-radius: 50%; }
-        .website-name { font-size: 1.5rem; color: var(--text-color); font-weight: 700; }
-        .nav-right { display: flex; align-items: center; gap: 1rem; }
-        .back-to-dashboard, .theme-toggle, .menu-btn { background: none; border: none; color: var(--primary-color); cursor: pointer; font-size: 1.5rem; padding: 0.5rem; transition: transform 0.3s; }
-        .back-to-dashboard:hover { transform: scale(1.1); }
-        .theme-toggle:hover { transform: scale(1.1); }
-        .menu-btn:hover { transform: rotate(90deg); }
-        .menu-container { position: relative; }
-        .menu-dropdown { position: absolute; right: 0; top: 3rem; background: var(--card-bg); border-radius: 10px; box-shadow: var(--shadow); display: none; min-width: 200px; z-index: 1000; }
-        .menu-dropdown.show { display: block; animation: fadeIn 0.3s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-        .menu-item { padding: 1rem 1.5rem; color: var(--text-color); text-decoration: none; display: flex; align-items: center; gap: 1rem; transition: all 0.3s; }
-        .menu-item:hover { background: var(--border-color); padding-left: 2rem; }
-        .container { flex: 1; padding: 1rem; max-width: 1200px; margin: 0 auto; width: 100%; }
-        .form-group { margin-bottom: 1rem; }
-        
-        /* Card Styles */
-        .card {
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: var(--shadow);
-            height: 100%;
-        }
-        .subject-card {
-            background: var(--subject-card-bg);
-            border-left: 5px solid var(--primary-color);
-        }
-        .settings-card {
-            background: var(--settings-card-bg);
-            border-left: 5px solid #ff9800;
-        }
-        .card-title {
-            font-size: 1.5rem;
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--border-color);
-            display: inline-block;
-        }
-        .settings-card .card-title {
-            color: #ff9800;
-        }
-        
-        /* Settings Form Styles */
-        .form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-        .form-control {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 5px;
-            padding: 0.5rem;
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background-color: var(--bg-color);
             color: var(--text-color);
-            width: 100%;
+            margin: 0;
+            transition: background-color 0.3s, color 0.3s;
         }
-        .form-control:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 5px rgba(107, 72, 255, 0.3);
-            outline: none;
+        .chapter, .question {
+            margin-bottom: 1rem;
         }
-        .select-wrapper {
-            position: relative;
-        }
-        .select-wrapper::after {
-            content: "▼";
-            font-size: 0.8rem;
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            pointer-events: none;
-            color: var(--secondary-text-color);
-        }
-        select.form-control {
-            appearance: none;
-            padding-right: 30px;
-        }
-        .custom-time-input {
-            display: none;
-            margin-top: 0.5rem;
-        }
-        
-        /* Summary Section */
-        .summary-section {
-            background: rgba(0,0,0,0.05);
-            border-radius: 10px;
+        .questions-list {
+            max-height: 400px;
+            overflow-y: auto;
+            background-color: var(--card-bg);
             padding: 1rem;
-            margin: 1.5rem 0;
+            border-radius: var(--border-radius);
         }
-        [data-theme="dark"] .summary-section {
-            background: rgba(255,255,255,0.05);
-        }
-        .summary-title {
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--primary-color);
-        }
-        .summary-item {
+        .pagination {
             display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.3rem;
+            justify-content: center;
+            margin-top: 1rem;
         }
-        .summary-label {
-            color: var(--secondary-text-color);
-        }
-        .summary-value {
+        .form-label {
             font-weight: 600;
         }
-        
-        /* Button Styles */
-        .btn-primary {
+        .chapter h3 {
             background-color: var(--primary-color);
-            border: none;
-            color: #fff;
-            padding: 0.75rem 1rem;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            width: 100%;
-            font-size: 1rem;
-            font-weight: 600;
+            color: white;
+            padding: 0.5rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 1rem;
         }
-        .btn-primary:hover {
-            background-color: var(--hover-color);
-        }
-        
-        /* Subject Selection Styles */
-        .subject-box { border: 1px solid var(--border-color); border-radius: 10px; margin-bottom: 0.5rem; background: var(--card-bg); box-shadow: var(--shadow); }
-        .subject-header { display: flex; align-items: center; justify-content: space-between; padding: 0.8rem; cursor: pointer; }
-        .subject-header:hover { background: var(--border-color); }
-        .subject-header .form-check-input { margin-right: 0.5rem; width: 20px; height: 20px; border: 2px solid var(--border-color); cursor: pointer; }
-        .subject-header .form-check-input:checked { background-color: var(--primary-color); border-color: var(--primary-color); }
-        .subject-name { flex-grow: 1; font-size: 1rem; }
-        .question-count { color: #fff; background: var(--primary-color); padding: 0.2rem 0.5rem; border-radius: 12px; font-size: 0.9rem; }
-        .arrow { display: none; cursor: pointer; color: var(--primary-color); font-size: 1.2rem; transition: transform 0.3s; }
-        .arrow.active { transform: rotate(180deg); }
-        .chapter-list { max-height: 0; overflow: hidden; padding: 0 0 0 2rem; transition: max-height 0.5s ease-in-out; }
-        .chapter-list.show { max-height: 500px; padding: 0.5rem 0 0.5rem 2rem; }
-        .chapter-box { display: flex; align-items: center; padding: 0.5rem 0; justify-content: space-between; }
-        .chapter-box .form-check-input { margin-right: 0.5rem; width: 18px; height: 18px; border: 2px solid var(--border-color); cursor: pointer; }
-        .chapter-box .form-check-input:checked { background-color: var(--primary-color); border-color: var(--primary-color); }
-        .chapter-name { flex-grow: 1; font-size: 0.9rem; }
-        .chapter-question-count { color: #fff; background: #ff9800; padding: 0.2rem 0.5rem; border-radius: 12px; font-size: 0.9rem; }
-        
-        .loading-spinner { display: none; text-align: center; padding: 1rem; color: var(--primary-color); }
-        
-        /* Responsive layout */
-        .row { display: flex; flex-wrap: wrap; margin: 0 -0.5rem; }
-        .col-md-6 { padding: 0 0.5rem; flex: 0 0 100%; max-width: 100%; }
-        
-        @media (min-width: 768px) {
-            .col-md-6 { flex: 0 0 50%; max-width: 50%; }
-        }
-        
-        @media (max-width: 767px) {
-            .navbar { padding: 0.8rem; }
-            .nav-left img { width: 30px; height: 30px; }
-            .website-name { font-size: 1.2rem; }
-            .back-to-dashboard, .theme-toggle, .menu-btn { font-size: 1.2rem; padding: 0.3rem; }
-            .subject-box, .chapter-box { font-size: 0.9rem; }
-            .question-count, .chapter-question-count { font-size: 0.8rem; }
-            .card { padding: 1rem; }
+        .question {
+            background-color: var(--card-bg);
+            padding: 1rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 0.5rem;
         }
     </style>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-left">
-            <img src="logo.png" alt="ডোপামিন Logo">
-            <h1 class="website-name">ডোপামিন</h1>
-        </div>
-        <div class="nav-right">
-            <button class="back-to-dashboard" onclick="window.location.href='https://dopamine-edu.github.io/dashboard.html'">
-                <i class="fas fa-arrow-left"></i>
-            </button>
-            <button class="theme-toggle" onclick="toggleTheme()">
-                <i class="fas fa-moon" id="themeIcon"></i>
-            </button>
-            <div class="menu-container">
-                <button class="menu-btn" onclick="toggleMenu(event)">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <div class="menu-dropdown" id="menuDropdown">
-                    <a href="https://dopamine-edu.github.io/courses.html" class="menu-item">
-                        <i class="fas fa-book"></i> কোর্স
-                    </a>
-                    <a href="#" class="menu-item" onclick="logout()">
-                        <i class="fas fa-sign-out-alt"></i> লগআউট
-                    </a>
-                </div>
+    <div class="container mt-5">
+        <div id="exam-settings">
+            <h2>পরীক্ষার সেটিংস</h2>
+            <div class="mb-3">
+                <label for="exam-name" class="form-label">পরীক্ষার নাম</label>
+                <input type="text" id="exam-name" class="form-control" required>
             </div>
-        </div>
-    </nav>
-    <div class="container">
-        <div id="loading" class="loading-spinner">পরীক্ষা তৈরি হচ্ছে...</div>
-        <form id="customExamForm">
-            <div class="row">
-                <div class="col-md-6 form-group">
-                    <div class="card subject-card">
-                        <h2 class="card-title">বিষয় নির্বাচন</h2>
-                        <div id="subjectSelection"></div>
-                    </div>
-                </div>
-                <div class="col-md-6 form-group">
-                    <div class="card settings-card">
-                        <h2 class="card-title">পরীক্ষা সেটিংস</h2>
-                        <div class="settings-content">
-                            <div class="form-group">
-                                <label for="numQuestions" class="form-label">প্রশ্নের সংখ্যা</label>
-                                <input type="number" id="numQuestions" class="form-control" min="1" required placeholder="প্রশ্ন সংখ্যা লিখুন" />
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="timeSelect" class="form-label">সময় (মিনিট)</label>
-                                <div class="select-wrapper">
-                                    <select id="timeSelect" class="form-control">
-                                        <option value="10">১০ মিনিট</option>
-                                        <option value="20">২০ মিনিট</option>
-                                        <option value="30">৩০ মিনিট</option>
-                                        <option value="60">৬০ মিনিট</option>
-                                        <option value="custom">কাস্টম সময়</option>
-                                    </select>
-                                </div>
-                                <div id="customTimeInput" class="custom-time-input">
-                                    <input type="number" id="customTime" class="form-control" min="1" placeholder="কাস্টম মিনিট লিখুন" />
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="negativeMarking" class="form-label">নেগেটিভ মার্কিং (প্রতি ভুল উত্তরে)</label>
-                                <input type="number" id="negativeMarking" class="form-control" min="0" step="0.01" value="0" placeholder="০" />
-                            </div>
-                            
-                            <div class="summary-section">
-                                <div class="summary-title">সেটিংস সামারি</div>
-                                <div class="summary-item">
-                                    <span class="summary-label">মোট প্রশ্ন:</span>
-                                    <span id="summaryQuestions" class="summary-value">০</span>
-                                </div>
-                                <div class="summary-item">
-                                    <span class="summary-label">সময়:</span>
-                                    <span id="summaryTime" class="summary-value">০ মিনিট</span>
-                                </div>
-                                <div class="summary-item">
-                                    <span class="summary-label">নেগেটিভ মার্কিং:</span>
-                                    <span id="summaryNegative" class="summary-value">০</span>
-                                </div>
-                            </div>
-                            
-                            <button type="submit" class="btn-primary">পরীক্ষা শুরু</button>
-                        </div>
-                    </div>
-                </div>
+            <div class="mb-3">
+                <label for="timer" class="form-label">টাইমার (মিনিট)</label>
+                <input type="number" id="timer" class="form-control" min="1" required>
             </div>
-        </form>
+            <div class="mb-3">
+                <label for="negative-marking" class="form-label">নেগেটিভ মার্কিং</label>
+                <input type="number" id="negative-marking" class="form-control" step="0.01" min="0" required>
+            </div>
+            <button id="next-btn" class="btn btn-primary">পরবর্তী</button>
+        </div>
+
+        <div id="question-selection" style="display: none;">
+            <h2>প্রশ্ন বাছাই</h2>
+            <button id="add-chapter-btn" class="btn btn-secondary mb-3" data-bs-toggle="modal" data-bs-target="#add-chapter-modal">চ্যাপ্টার যোগ করুন</button>
+            <div id="selected-chapters"></div>
+            <div class="mb-3">মোট বাছাইকৃত প্রশ্ন: <span id="total-selected">0</span></div>
+            <button id="create-exam-btn" class="btn btn-success">পরীক্ষা তৈরি করুন</button>
+            <button id="back-btn" class="btn btn-secondary">পেছনে</button>
+        </div>
     </div>
-    <script>
-    const firebaseConfig = {
-        apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
-        authDomain: "dopamine-quiz.firebaseapp.com",
-        projectId: "dopamine-quiz",
-        storageBucket: "dopamine-quiz.appspot.com",
-        messagingSenderId: "822531459966",
-        appId: "1:822531459966:web:8e7d2385090e997eb1c12f"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
 
-    auth.onAuthStateChanged((user) => {
-        if (!user) window.location.href = "auth.html";
-    });
-
-    const subjects = {
-        "Botany": [
-            "Chapter 01: কোষ ও এর গঠন",
-            "Chapter 02: কোষ বিভাজন",
-            "Chapter 03: কোষ রসায়ন",
-            "Chapter 04: অণুজীব",
-            "Chapter 05: শৈবাল ও ছত্রাক",
-            "Chapter 06: ব্রায়োফাইটা ও টেরেডোফাইটা",
-            "Chapter 07: নগ্নবীজী ও আবৃতবীজী উদ্ভিদ",
-            "Chapter 08: টিস্যু ও টিস্যুতন্ত্র",
-            "Chapter 09: উদ্ভিদ শারীরতত্ত্ব",
-            "Chapter 10: উদ্ভিদ প্রজনন",
-            "Chapter 11: জীবপ্রযুক্তি"
-        ],
-        "Zoology": [
-            "Chapter 01: প্রাণীর বিভিন্নতা ও শ্রেণিবিন্যাস",
-            "Chapter 02: প্রাণীর পরিচিতি",
-            "Chapter 03: পরিপাক ও শোষণ",
-            "Chapter 04: রক্ত সঞ্চালন",
-            "Chapter 05: শ্বাসক্রিয়া ও শ্বসন",
-            "Chapter 06: বর্জ্য ও নিষ্কাশন",
-            "Chapter 07: চলন ও অঙ্গচালনা",
-            "Chapter 08: সমন্বয় ও নিয়ন্ত্রণ",
-            "Chapter 09: মানব জীবনের ধারাবাহিকতা",
-            "Chapter 10: মানবদেহের প্রতিরক্ষা",
-            "Chapter 11: জীনতত্ত্ব ও বিবর্তন"
-        ],
-        "Physics 1st": [
-            "Chapter 01: ভৌত জগৎ ও পরিমাপ",
-            "Chapter 02: ভেক্টর",
-            "Chapter 04: নিউটোনিয়ান বলবিদ্যা",
-            "Chapter 05: কাজ, শক্তি ও ক্ষমতা",
-            "Chapter 06: মহাকর্ষ ও অভিকর্ষ",
-            "Chapter 07: পদার্থের গাঠনিক ধর্ম",
-            "Chapter 08: পর্যাবৃত্ত গতি",
-            "Chapter 10: আদর্শ গ্যাস ও গ্যাসের গতিতত্ত্ব"
-        ],
-        "Physics 2nd": [
-            "Chapter 01: তাপগতিবিদ্যা",
-            "Chapter 02: স্থির তড়িৎ",
-            "Chapter 03: চলতড়িৎ",
-            "Chapter 07: ভৌত আলোকবিজ্ঞান",
-            "Chapter 08: আধুনিক পদার্থবিজ্ঞানের সূচনা",
-            "Chapter 09: পরমাণুর মডেল এবং নিউক্লিয়ার পদার্থবিজ্ঞান",
-            "Chapter 10: সেমিকন্ডাক্টর ও ইলেকট্রনিক্স"
-        ],
-        "Chemistry 1st": [
-            "Chapter 01: ল্যাবরেটরির নিরাপদ ব্যবহার",
-            "Chapter 02: গুণগত রসায়ন",
-            "Chapter 03: মৌলের পর্যায়বৃত্ত ধর্ম",
-            "Chapter 04: রাসায়নিক পরিবর্তন",
-            "Chapter 05: কর্মমুখী রসায়ন"
-        ],
-        "Chemistry 2nd": [
-            "Chapter 01: পরিবেশ রসায়ন",
-            "Chapter 02: জৈব রসায়ন",
-            "Chapter 03: পরিমাণগত রসায়ন",
-            "Chapter 04: তড়িৎ রসায়ন",
-            "Chapter 05: অর্থনৈতিক রসায়ন"
-        ],
-        "Higher Math 1st": [
-            "Chapter 01: ম্যাট্রিক্স ও নির্ণায়ক",
-            "Chapter 03: সরলরেখা",
-            "Chapter 04: বৃত্ত",
-            "Chapter 07: সংযুক্ত কোণের ত্রিকোণমিতিক অনুপাত",
-            "Chapter 09: অন্তরীকরণ",
-            "Chapter 10: যোগজীকরণ"
-        ],
-        "Higher Math 2nd": [
-            "Chapter 03: জটিল সংখ্যা",
-            "Chapter 04: বহুপদী ও বহুপদী সমীকরণ",
-            "Chapter 06: কণিক",
-            "Chapter 07: বিপরীত ত্রিকোণমিতিক ফাংশন ও ত্রিকোণমিতিক সমীকরণ",
-            "Chapter 08: স্থিতিবিদ্যা",
-            "Chapter 09: সমতলে বস্তুকণার গতি"
-        ],
-        "English": [],
-        "Bangla": []
-    };
-
-    // Time selection handler
-    document.getElementById('timeSelect').addEventListener('change', function() {
-        const customTimeInput = document.getElementById('customTimeInput');
-        if (this.value === 'custom') {
-            customTimeInput.style.display = 'block';
-        } else {
-            customTimeInput.style.display = 'none';
-            updateSummary();
-        }
-    });
-
-    // Update summary when inputs change
-    document.getElementById('numQuestions').addEventListener('input', updateSummary);
-    document.getElementById('timeSelect').addEventListener('change', updateSummary);
-    document.getElementById('customTime').addEventListener('input', updateSummary);
-    document.getElementById('negativeMarking').addEventListener('input', updateSummary);
-
-    function updateSummary() {
-        const numQuestions = document.getElementById('numQuestions').value || '0';
-        const timeSelect = document.getElementById('timeSelect');
-        const customTime = document.getElementById('customTime').value;
-        const negativeMarking = document.getElementById('negativeMarking').value || '0';
-        
-        // Update questions
-        document.getElementById('summaryQuestions').textContent = numQuestions;
-        
-        // Update time
-        let timeDisplay;
-        if (timeSelect.value === 'custom' && customTime) {
-            timeDisplay = `${customTime} মিনিট`;
-        } else if (timeSelect.value !== 'custom') {
-            timeDisplay = `${timeSelect.options[timeSelect.selectedIndex].text}`;
-        } else {
-            timeDisplay = '০ মিনিট';
-        }
-        document.getElementById('summaryTime').textContent = timeDisplay;
-        
-        // Update negative marking
-        document.getElementById('summaryNegative').textContent = negativeMarking;
-    }
-
-    function sanitizeFileName(name) {
-        return name.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9\u0980-\u09FF-]/g, '');
-    }
-
-    async function loadQuestionsFromJSON(subject, chapter) {
-        const sanitizedSubject = sanitizeFileName(subject);
-        const sanitizedChapter = sanitizeFileName(chapter.replace(/^Chapter \d+:\s*/, ''));
-        const filePath = `./questions/subjects/${sanitizedSubject}/${sanitizedChapter}.json`;
-        console.log(`Attempting to load: ${filePath}`);
-        try {
-            const response = await fetch(filePath);
-            if (!response.ok) {
-                console.error(`Fetch failed for ${filePath}: ${response.status} - ${response.statusText}`);
-                throw new Error(`HTTP error! Status: ${response.status}`);
-            }
-            const data = await response.json();
-            console.log(`Loaded ${data.length} questions from ${filePath}`);
-            return data;
-        } catch (error) {
-            console.error(`Error loading ${filePath}:`, error);
-            Toastify({ text: `${subject} - ${chapter} প্রশ্ন লোড করতে ব্যর্থ: ${error.message}`, duration: 3000, style: { background: "#dc3545" } }).showToast();
-            return [];
-        }
-    }
-
-    async function fetchQuestionCounts() {
-        const questionCounts = {};
-        const chapterQuestionCounts = {};
-        for (const subject in subjects) {
-            let subjectCount = 0;
-            const chapters = subjects[subject];
-            const chapterCounts = [];
-            for (const chapter of chapters) {
-                const questions = await loadQuestionsFromJSON(subject, chapter);
-                const count = questions.length;
-                subjectCount += count;
-                chapterCounts.push(count);
-            }
-            questionCounts[subject] = subjectCount;
-            chapterQuestionCounts[subject] = chapterCounts;
-        }
-        return { questionCounts, chapterQuestionCounts };
-    }
-
-    function createSubjectBox(subject, questionCount, chapterCounts) {
-        const subjectBox = document.createElement('div');
-        subjectBox.className = 'subject-box';
-        subjectBox.innerHTML = `
-            <div class="subject-header">
-                <input type="checkbox" class="form-check-input" onchange="toggleSubject(this)">
-                <span class="subject-name">${subject}</span>
-                <span class="question-count">${questionCount} প্রশ্ন</span>
-                <i class="fas fa-chevron-down arrow"></i>
+    <!-- Add Chapter Modal -->
+    <div class="modal fade" id="add-chapter-modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">চ্যাপ্টার যোগ করুন</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <label for="subject-select" class="form-label">সাবজেক্ট</label>
+                    <select id="subject-select" class="form-select"></select>
+                    <label for="chapter-select" class="form-label mt-3">চ্যাপ্টার</label>
+                    <select id="chapter-select" class="form-select"></select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">বাতিল</button>
+                    <button type="button" class="btn btn-primary" id="add-btn">যোগ করুন</button>
+                </div>
             </div>
-        `;
-        const chapterList = document.createElement('div');
-        chapterList.className = 'chapter-list';
-        subjects[subject].forEach((chapter, index) => {
-            const displayChapterName = chapter.replace(/^Chapter \d+:\s*/, '');
-            const chapterBox = document.createElement('div');
-            chapterBox.className = 'chapter-box';
-            chapterBox.dataset.originalChapter = chapter;
-            chapterBox.dataset.subject = subject;
-            chapterBox.innerHTML = `
-                <input type="checkbox" class="form-check-input" onchange="toggleChapter(this)">
-                <span class="chapter-name">${displayChapterName}</span>
-                <span class="chapter-question-count">${chapterCounts[index]} প্রশ্ন</span>
-            `;
-            chapterList.appendChild(chapterBox);
+        </div>
+    </div>
+
+    <!-- Firebase SDK Scripts (Compatibility Versions) -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
+    <!-- Bootstrap and Toastify -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.js"></script>
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // Global Variables
+        let subjects = [];
+        let selectedChapters = [];
+        let selectedQuestions = [];
+        let currentPages = {};
+        let questionsData = {};
+
+        // DOM Elements
+        const selectedChaptersContainer = document.getElementById('selected-chapters');
+        const totalSelectedSpan = document.getElementById('total-selected');
+        const subjectSelect = document.getElementById('subject-select');
+        const chapterSelect = document.getElementById('chapter-select');
+        const addBtn = document.getElementById('add-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const backBtn = document.getElementById('back-btn');
+        const createExamBtn = document.getElementById('create-exam-btn');
+
+        // Load Subjects with Retry Logic
+        async function loadSubjects(retries = 3) {
+            try {
+                const response = await fetch('/questions/subjects/subjects.json');
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                subjects = await response.json();
+                subjectSelect.innerHTML = '<option value="">সাবজেক্ট নির্বাচন করুন</option>';
+                subjects.forEach(subject => {
+                    const option = document.createElement('option');
+                    option.value = subject.fileName;
+                    option.textContent = subject.name;
+                    option.dataset.chapters = JSON.stringify(subject.chapters || []);
+                    subjectSelect.appendChild(option);
+                });
+            } catch (error) {
+                if (retries > 0) {
+                    console.warn(`Retrying subjects.json fetch (${retries} attempts left)`);
+                    return setTimeout(() => loadSubjects(retries - 1), 1000);
+                }
+                Toastify({
+                    text: 'সাবজেক্ট লোড করতে সমস্যা হয়েছে! দয়া করে নিশ্চিত করুন subjects.json ফাইলটি সঠিক পথে আছে।',
+                    duration: 5000,
+                    backgroundColor: '#dc3545'
+                }).showToast();
+            }
+        }
+
+        // Load Chapters for Selected Subject
+        subjectSelect.addEventListener('change', () => {
+            const selectedOption = subjectSelect.options[subjectSelect.selectedIndex];
+            const chapters = selectedOption ? JSON.parse(selectedOption.dataset.chapters || '[]') : [];
+            chapterSelect.innerHTML = '<option value="">চ্যাপ্টার নির্বাচন করুন</option>';
+            chapters.forEach(chapter => {
+                const option = document.createElement('option');
+                option.value = chapter.fileName;
+                option.textContent = chapter.chapterName;
+                chapterSelect.appendChild(option);
+            });
         });
-        subjectBox.appendChild(chapterList);
-        // Add click event to subject header, excluding checkbox
-        subjectBox.querySelector('.subject-header').addEventListener('click', function(e) {
-            if (e.target.type !== 'checkbox') {
-                toggleChapters(this);
+
+        // Sanitize File Name
+        function sanitizeFileName(name) {
+            return name.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9\u0980-\u09FF-]/g, '');
+        }
+
+        // Add Chapter
+        addBtn.addEventListener('click', async () => {
+            const subject = subjectSelect.options[subjectSelect.selectedIndex]?.text;
+            const chapterFile = chapterSelect.value;
+            const chapterName = chapterSelect.options[chapterSelect.selectedIndex]?.text;
+            if (!subject || !chapterFile || !chapterName) {
+                Toastify({
+                    text: 'সাবজেক্ট এবং চ্যাপ্টার নির্বাচন করুন!',
+                    duration: 3000,
+                    backgroundColor: '#dc3545'
+                }).showToast();
+                return;
+            }
+            const chapterKey = `${subject}-${chapterName}`;
+            if (selectedChapters.includes(chapterKey)) {
+                Toastify({
+                    text: 'এই চ্যাপ্টার ইতিমধ্যে যোগ করা হয়েছে!',
+                    duration: 3000,
+                    backgroundColor: '#dc3545'
+                }).showToast();
+                return;
+            }
+            selectedChapters.push(chapterKey);
+            const subjectFile = subjectSelect.value;
+            try {
+                const response = await fetch(`/questions/subjects/${sanitizeFileName(subjectFile)}/${sanitizeFileName(chapterFile)}.json`);
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const data = await response.json();
+                questionsData[chapterKey] = data.questions || [];
+                renderChapter(chapterKey);
+                saveState();
+                bootstrap.Modal.getInstance(document.getElementById('add-chapter-modal')).hide();
+            } catch (error) {
+                Toastify({
+                    text: `চ্যাপ্টার লোড করতে সমস্যা: ${chapterName}`,
+                    duration: 3000,
+                    backgroundColor: '#dc3545'
+                }).showToast();
             }
         });
-        return subjectBox;
-    }
 
-    function toggleSubject(checkbox) {
-        const subjectBox = checkbox.parentElement.parentElement;
-        const chapterList = subjectBox.querySelector('.chapter-list');
-        const arrow = subjectBox.querySelector('.arrow');
-        const chapterCheckboxes = chapterList.querySelectorAll('.form-check-input');
-        
-        // Show/hide arrow based on checkbox state
-        arrow.style.display = checkbox.checked ? 'block' : 'none';
-        
-        // Select/deselect all chapter checkboxes
-        chapterCheckboxes.forEach(chapterCheckbox => {
-            chapterCheckbox.checked = checkbox.checked;
+        // Render Chapter
+        function renderChapter(chapterKey) {
+            const [subject, chapter] = chapterKey.split('-');
+            const chapterDiv = document.createElement('div');
+            chapterDiv.className = 'chapter';
+            chapterDiv.id = `chapter-${chapterKey}`;
+            chapterDiv.innerHTML = `
+                <h3>${subject} - ${chapter}</h3>
+                <div class="questions-list" id="questions-${chapterKey}"></div>
+                <div class="pagination">
+                    <button class="btn btn-secondary prev" disabled>পূর্ববর্তী</button>
+                    <span id="page-info-${chapterKey}">পৃষ্ঠা 1</span>
+                    <button class="btn btn-secondary next">পরবর্তী</button>
+                </div>
+                <button class="btn btn-danger remove-chapter mt-2">চ্যাপ্টার সরান</button>
+            `;
+            selectedChaptersContainer.appendChild(chapterDiv);
+            currentPages[chapterKey] = 1;
+            renderQuestions(chapterKey, 1);
+        }
+
+        // Render Questions for a Chapter Page
+        function renderQuestions(chapterKey, page) {
+            const questions = questionsData[chapterKey];
+            const pageSize = 10;
+            const start = (page - 1) * pageSize;
+            const end = start + pageSize;
+            const pageQuestions = questions.slice(start, end);
+            const questionsList = document.getElementById(`questions-${chapterKey}`);
+            questionsList.innerHTML = '';
+            pageQuestions.forEach((q, index) => {
+                const globalIndex = start + index;
+                const isSelected = selectedQuestions.some(sq => sq.chapterKey === chapterKey && sq.index === globalIndex);
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.innerHTML = `
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input select-question" data-chapter="${chapterKey}" data-index="${globalIndex}" ${isSelected ? 'checked' : ''}>
+                        <label class="form-check-label">
+                            <p><strong>প্রশ্ন:</strong> ${q.questionText}</p>
+                            <p><strong>অপশন:</strong> ${q.options.map((opt, i) => `${String.fromCharCode(2437 + i)}. ${opt}`).join(', ')}</p>
+                            <p><strong>সঠিক উত্তর:</strong> ${String.fromCharCode(2437 + q.options.indexOf(q.correctAnswer))}. ${q.correctAnswer}</p>
+                        </label>
+                    </div>
+                `;
+                questionsList.appendChild(questionDiv);
+            });
+            const totalPages = Math.ceil(questions.length / pageSize);
+            document.getElementById(`page-info-${chapterKey}`).textContent = `পৃষ্ঠা ${page} / ${totalPages}`;
+            const prevBtn = document.querySelector(`#chapter-${chapterKey} .prev`);
+            const nextBtn = document.querySelector(`#chapter-${chapterKey} .next`);
+            prevBtn.disabled = page === 1;
+            nextBtn.disabled = page === totalPages;
+        }
+
+        // Handle Question Selection
+        selectedChaptersContainer.addEventListener('change', e => {
+            if (e.target.classList.contains('select-question')) {
+                const checkbox = e.target;
+                const chapterKey = checkbox.dataset.chapter;
+                const index = parseInt(checkbox.dataset.index);
+                if (checkbox.checked) {
+                    selectedQuestions.push({ chapterKey, index });
+                } else {
+                    selectedQuestions = selectedQuestions.filter(sq => !(sq.chapterKey === chapterKey && sq.index === index));
+                }
+                updateTotalSelected();
+                saveState();
+            }
         });
-    }
 
-    function toggleChapters(header) {
-        const chapterList = header.parentElement.querySelector('.chapter-list');
-        const arrow = header.querySelector('.arrow');
-        chapterList.classList.toggle('show');
-        arrow.classList.toggle('active');
-    }
+        // Update Total Selected Questions
+        function updateTotalSelected() {
+            totalSelectedSpan.textContent = selectedQuestions.length;
+        }
 
-    function toggleChapter(checkbox) {}
+        // Handle Pagination and Remove Chapter
+        selectedChaptersContainer.addEventListener('click', e => {
+            const chapterDiv = e.target.closest('.chapter');
+            if (!chapterDiv) return;
+            const chapterKey = chapterDiv.id.replace('chapter-', '');
+            if (e.target.classList.contains('next')) {
+                const totalPages = Math.ceil(questionsData[chapterKey].length / 10);
+                if (currentPages[chapterKey] < totalPages) {
+                    currentPages[chapterKey]++;
+                    renderQuestions(chapterKey, currentPages[chapterKey]);
+                }
+            } else if (e.target.classList.contains('prev')) {
+                if (currentPages[chapterKey] > 1) {
+                    currentPages[chapterKey]--;
+                    renderQuestions(chapterKey, currentPages[chapterKey]);
+                }
+            } else if (e.target.classList.contains('remove-chapter')) {
+                selectedChapters = selectedChapters.filter(sc => sc !== chapterKey);
+                selectedQuestions = selectedQuestions.filter(sq => sq.chapterKey !== chapterKey);
+                chapterDiv.remove();
+                updateTotalSelected();
+                saveState();
+            }
+        });
 
-    async function populateSubjects() {
-        try {
-            const { questionCounts, chapterQuestionCounts } = await fetchQuestionCounts();
-            const subjectSelection = document.getElementById('subjectSelection');
-            subjectSelection.innerHTML = '';
-            for (const subject in subjects) {
-                if (subjects[subject].length > 0) {
-                    const subjectBox = createSubjectBox(subject, questionCounts[subject], chapterQuestionCounts[subject]);
-                    subjectSelection.appendChild(subjectBox);
+        // Next Button
+        nextBtn.addEventListener('click', () => {
+            const examName = document.getElementById('exam-name').value;
+            const timer = document.getElementById('timer').value;
+            const negativeMarking = document.getElementById('negative-marking').value;
+            if (!examName || !timer || !negativeMarking) {
+                Toastify({
+                    text: 'সব তথ্য পূরণ করুন!',
+                    duration: 3000,
+                    backgroundColor: '#dc3545'
+                }).showToast();
+                return;
+            }
+            if (timer <= 0 || negativeMarking < 0) {
+                Toastify({
+                    text: 'টাইমার এবং নেগেটিভ মার্কিং সঠিকভাবে পূরণ করুন!',
+                    duration: 3000,
+                    backgroundColor: '#dc3545'
+                }).showToast();
+                return;
+            }
+            saveState();
+            document.getElementById('exam-settings').style.display = 'none';
+            document.getElementById('question-selection').style.display = 'block';
+        });
+
+        // Back Button
+        backBtn.addEventListener('click', () => {
+            document.getElementById('question-selection').style.display = 'none';
+            document.getElementById('exam-settings').style.display = 'block';
+        });
+
+        // Create Exam
+        createExamBtn.addEventListener('click', async () => {
+            const examName = document.getElementById('exam-name').value;
+            const timer = parseInt(document.getElementById('timer').value);
+            const negativeMarking = parseFloat(document.getElementById('negative-marking').value);
+            if (!examName || isNaN(timer) || timer <= 0 || isNaN(negativeMarking) || negativeMarking < 0) {
+                Toastify({
+                    text: 'সঠিক তথ্য প্রদান করুন!',
+                    duration: 3000,
+                    backgroundColor: '#dc3545'
+                }).showToast();
+                return;
+            }
+            if (selectedQuestions.length === 0) {
+                Toastify({
+                    text: 'অন্তত একটি প্রশ্ন বাছাই করুন!',
+                    duration: 3000,
+                    backgroundColor: '#dc3545'
+                }).showToast();
+                return;
+            }
+            try {
+                const examDoc = await db.collection('exams').add({
+                    title: examName,
+                    duration: timer,
+                    negativeMark: negativeMarking,
+                    questions: selectedQuestions.map(sq => {
+                        const [subject, chapter] = sq.chapterKey.split('-');
+                        return { subject, chapter, id: sq.index };
+                    }),
+                    createdBy: auth.currentUser.uid,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                const examId = examDoc.id;
+                const link = `quiz.html?examId=${examId}`;
+                Toastify({
+                    text: `পরীক্ষা তৈরি হয়েছে! লিংক: ${window.location.origin}/${link}`,
+                    duration: 5000,
+                    backgroundColor: '#28a745'
+                }).showToast();
+                sessionStorage.clear();
+                setTimeout(() => {
+                    window.location.href = 'dashboard.html';
+                }, 5000);
+            } catch (error) {
+                Toastify({
+                    text: 'পরীক্ষা তৈরিতে ত্রুটি হয়েছে!',
+                    duration: 3000,
+                    backgroundColor: '#dc3545'
+                }).showToast();
+            }
+        });
+
+        // Save State to Session Storage
+        function saveState() {
+            sessionStorage.setItem('examSettings', JSON.stringify({
+                examName: document.getElementById('exam-name').value,
+                timer: document.getElementById('timer').value,
+                negativeMarking: document.getElementById('negative-marking').value
+            }));
+            sessionStorage.setItem('selectedChapters', JSON.stringify(selectedChapters));
+            sessionStorage.setItem('selectedQuestions', JSON.stringify(selectedQuestions));
+            sessionStorage.setItem('currentPages', JSON.stringify(currentPages));
+        }
+
+        // Restore State from Session Storage
+        function restoreState() {
+            const savedSettings = sessionStorage.getItem('examSettings');
+            if (savedSettings) {
+                const settings = JSON.parse(savedSettings);
+                document.getElementById('exam-name').value = settings.examName;
+                document.getElementById('timer').value = settings.timer;
+                document.getElementById('negative-marking').value = settings.negativeMarking;
+            }
+            const savedChapters = sessionStorage.getItem('selectedChapters');
+            if (savedChapters) {
+                selectedChapters = JSON.parse(savedChapters);
+                loadSelectedChapters();
+            }
+            const savedQuestions = sessionStorage.getItem('selectedQuestions');
+            if (savedQuestions) {
+                selectedQuestions = JSON.parse(savedQuestions);
+                updateTotalSelected();
+            }
+            const savedPages = sessionStorage.getItem('currentPages');
+            if (savedPages) {
+                currentPages = JSON.parse(savedPages);
+            }
+        }
+
+        // Load Selected Chapters
+        async function loadSelectedChapters() {
+            for (const chapterKey of selectedChapters) {
+                const [subject, chapter] = chapterKey.split('-');
+                const subjectObj = subjects.find(s => s.name === subject);
+                if (!subjectObj) continue;
+                const chapterObj = subjectObj.chapters.find(c => c.chapterName === chapter);
+                if (!chapterObj) continue;
+                try {
+                    const response = await fetch(`/questions/subjects/${sanitizeFileName(subjectObj.fileName)}/${sanitizeFileName(chapterObj.fileName)}.json`);
+                    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                    const data = await response.json();
+                    questionsData[chapterKey] = data.questions || [];
+                    renderChapter(chapterKey);
+                } catch (error) {
+                    Toastify({
+                        text: `চ্যাপ্টার লোড করতে সমস্যা: ${chapterKey}`,
+                        duration: 3000,
+                        backgroundColor: '#dc3545'
+                    }).showToast();
                 }
             }
-        } catch (error) {
-            console.error("Error populating subjects:", error);
-            Toastify({ text: "বিষয়গুলো লোড করতে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
-        }
-    }
-
-    document.getElementById("customExamForm").addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const selectedChapters = [];
-        document.querySelectorAll('.chapter-box .form-check-input:checked').forEach(checkbox => {
-            const chapterBox = checkbox.parentElement;
-            const originalChapter = chapterBox.dataset.originalChapter;
-            const subject = chapterBox.dataset.subject;
-            selectedChapters.push({ subject, chapter: originalChapter });
-        });
-        
-        const numQuestions = parseInt(document.getElementById("numQuestions").value);
-        const timeSelect = document.getElementById("timeSelect");
-        let time;
-        if (timeSelect.value === 'custom') {
-            time = parseInt(document.getElementById("customTime").value);
-        } else {
-            time = parseInt(timeSelect.value);
-        }
-        const negativeMarking = parseFloat(document.getElementById("negativeMarking").value);
-
-        if (selectedChapters.length === 0) {
-            Toastify({ text: "অন্তত একটি অধ্যায় নির্বাচন করুন!", duration: 3000, style: { background: "#dc3545" } }).showToast();
-            return;
-        }
-        if (!numQuestions || numQuestions <= 0 || !time || time <= 0 || isNaN(negativeMarking) || negativeMarking < 0) {
-            Toastify({ text: "সব ক্ষেত্র সঠিকভাবে পূরণ করুন (প্রশ্ন > ০, সময় > ০, নেগেটিভ নম্বর ≥ ০)।", duration: 3000, style: { background: "#dc3545" } }).showToast();
-            return;
         }
 
-        const loadingDiv = document.getElementById("loading");
-        loadingDiv.style.display = "block";
-
-        try {
-            const allQuestions = [];
-            for (const { subject, chapter } of selectedChapters) {
-                const chapterQuestions = await loadQuestionsFromJSON(subject, chapter);
-                chapterQuestions.forEach((q, index) => {
-                    allQuestions.push({ id: index, subject, chapter });
+        // Initial Load
+        auth.onAuthStateChanged(user => {
+            if (!user) {
+                window.location.href = 'auth.html';
+            } else {
+                loadSubjects().then(() => {
+                    restoreState();
                 });
             }
-            if (allQuestions.length === 0) throw new Error("নির্বাচিত অধ্যায়গুলোর জন্য কোনো প্রশ্ন পাওয়া যায়নি।");
-            if (allQuestions.length < numQuestions) {
-                Toastify({ text: `মাত্র ${allQuestions.length}টি প্রশ্ন পাওয়া গেছে, সবগুলো ব্যবহার করা হচ্ছে।`, duration: 3000, style: { background: "#ff9800" } }).showToast();
-            }
-
-            const selectedQuestions = allQuestions.sort(() => 0.5 - Math.random()).slice(0, Math.min(numQuestions, allQuestions.length));
-            const subjectsList = [...new Set(selectedChapters.map(item => item.subject))];
-            const chaptersList = selectedChapters.map(item => item.chapter);
-
-            const examDocRef = await db.collection("exams").add({
-                title: `কাস্টম পরীক্ষা - ${chaptersList.map(ch => ch.replace(/^Chapter \d+:\s*/, '')).join(", ")}`,
-                duration: time,
-                marksPerQuestion: 1, // Default 1 mark per question
-                negativeMark: negativeMarking,
-                lastDate: null,
-                questions: selectedQuestions,
-                subjects: subjectsList,
-                chapters: chaptersList,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            });
-
-            loadingDiv.style.display = "none";
-            Toastify({ text: "কাস্টম পরীক্ষা সফলভাবে তৈরি হয়েছে!", duration: 3000, style: { background: "#6b48ff" } }).showToast();
-            window.location.href = `quiz.html?examId=${examDocRef.id}`;
-        } catch (error) {
-            loadingDiv.style.display = "none";
-            console.error("কাস্টম পরীক্ষা তৈরিতে ত্রুটি:", error);
-            Toastify({ text: "পরীক্ষা তৈরিতে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
-        }
-    });
-
-    let isDark = localStorage.getItem('theme') === 'dark';
-    if (isDark) {
-        document.body.setAttribute('data-theme', 'dark');
-        document.getElementById('themeIcon').classList.replace('fa-moon', 'fa-sun');
-    }
-    function toggleTheme() {
-        isDark = !isDark;
-        document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
-        document.getElementById('themeIcon').classList.toggle('fa-moon');
-        document.getElementById('themeIcon').classList.toggle('fa-sun');
-        localStorage.setItem('theme', isDark ? 'dark' : 'light');
-    }
-    function toggleMenu(event) {
-        event.stopPropagation();
-        document.getElementById('menuDropdown').classList.toggle('show');
-    }
-    function logout() {
-        auth.signOut().then(() => {
-            localStorage.removeItem('theme');
-            window.location.href = 'https://dopamine-edu.github.io/auth.html';
-        }).catch(error => alert(error.message));
-    }
-    document.addEventListener('click', (e) => {
-        if (!e.target.closest('.menu-container')) document.getElementById('menuDropdown').classList.remove('show');
-    });
-    document.addEventListener("DOMContentLoaded", function() {
-        populateSubjects();
-        updateSummary();
-    });
-</script>
+        });
+    </script>
 </body>
-    </html>
+</html>
