@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>সকল প্রশ্ন | ডোপামিন</title>
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4a90e2;
+            --bg-color: #f4f7fa;
+            --card-bg: #ffffff;
+            --text-color: #333333;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --border-radius: 8px;
+        }
+        [data-theme="dark"] {
+            --primary-color: #6ab0ff;
+            --bg-color: #1a1a1a;
+            --card-bg: #2c2c2c;
+            --text-color: #e0e0e0;
+        }
+        body {
+            font-family: 'Hind Siliguri', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .navbar {
+            background-color: var(--card-bg);
+            box-shadow: var(--shadow);
+            padding: 1rem;
+        }
+        .navbar-brand img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        .user-menu {
+            position: relative;
+        }
+        .dropdown-menu {
+            background-color: var(--card-bg);
+            border: none;
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.3s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .search-bar {
+            margin-bottom: 2rem;
+        }
+        .subject-card, .chapter-card, .question-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 1rem;
+            padding: 1rem;
+            transition: transform 0.2s;
+        }
+        .subject-card:hover, .chapter-card:hover {
+            transform: translateY(-2px);
+        }
+        .subject-card h2, .chapter-card h3 {
+            margin: 0;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .question-card {
+            display: none;
+        }
+        .question-card.show {
+            display: block;
+        }
+        .option {
+            margin: 0.5rem 0;
+        }
+        .correct {
+            color: #28a745;
+            font-weight: 600;
+        }
+        .explanation {
+            background-color: rgba(0, 0, 0, 0.05);
+            padding: 1rem;
+            border-radius: 4px;
+            margin-top: 1rem;
+        }
+        .toggle-icon::after {
+            content: '\f107';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+        }
+        .toggle-icon.open::after {
+            content: '\f106';
+        }
+        @media (max-width: 768px) {
+            .navbar-brand img {
+                height: 30px;
+            }
+            .container {
+                margin: 1rem auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="dashboard.html">
+                <img src="logo.png" alt="ডোপামিন লোগো">
+                <span>ডোপামিন</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <button id="theme-toggle" class="btn" aria-label="থিম টগল">
+                            <i class="fas fa-moon"></i>
+                        </button>
+                    </li>
+                    <li class="nav-item user-menu">
+                        <button id="user-menu-btn" class="btn">
+                            <i class="fas fa-user"></i> <span id="user-name">ব্যবহারকারী</span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">প্রোফাইল</a></li>
+                            <li><a class="dropdown-item" href="#">কোর্স</a></li>
+                            <li><a class="dropdown-item" href="#">গ্রুপ</a></li>
+                            <li><a class="dropdown-item" id="logout-btn" href="#">লগআউট</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-primary d-none" id="login-btn" href="auth.html">লগইন</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" id="search-input" class="form-control" placeholder="প্রশ্ন খুঁজুন...">
+        </div>
+        <div id="subjects-container"></div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastify-js/1.12.0/toastify.min.css" rel="stylesheet">
+    <script>
+        const firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_AUTH_DOMAIN",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_STORAGE_BUCKET",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        const subjectsContainer = document.getElementById('subjects-container');
+        const searchInput = document.getElementById('search-input');
+        const themeToggle = document.getElementById('theme-toggle');
+        const userMenuBtn = document.getElementById('user-menu-btn');
+        const userName = document.getElementById('user-name');
+        const loginBtn = document.getElementById('login-btn');
+        const logoutBtn = document.getElementById('logout-btn');
+        const dropdownMenu = userMenuBtn.nextElementSibling;
+
+        // Theme Toggle
+        themeToggle.addEventListener('click', () => {
+            const isDark = document.body.dataset.theme === 'dark';
+            document.body.dataset.theme = isDark ? 'light' : 'dark';
+            themeToggle.innerHTML = `<i class="fas fa-${isDark ? 'moon' : 'sun'}"></i>`;
+            localStorage.setItem('theme', document.body.dataset.theme);
+        });
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.dataset.theme = 'dark';
+            themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+        }
+
+        // User Authentication
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                db.collection('users').doc(user.uid).get().then(doc => {
+                    if (doc.exists && doc.data().profileComplete) {
+                        userName.textContent = doc.data().fullName || 'ব্যবহারকারী';
+                        loginBtn.classList.add('d-none');
+                        userMenuBtn.classList.remove('d-none');
+                        loadSubjects();
+                    } else {
+                        window.location.href = 'auth.html';
+                    }
+                });
+            } else {
+                window.location.href = 'auth.html';
+            }
+        });
+
+        // Dropdown Menu
+        userMenuBtn.addEventListener('click', () => {
+            dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+        });
+        logoutBtn.addEventListener('click', () => {
+            auth.signOut().then(() => {
+                Toastify({
+                    text: 'লগআউট সফল!',
+                    duration: 3000,
+                    backgroundColor: '#28a745'
+                }).showToast();
+                window.location.href = 'auth.html';
+            });
+        });
+        document.addEventListener('click', e => {
+            if (!userMenuBtn.contains(e.target)) {
+                dropdownMenu.style.display = 'none';
+            }
+        });
+
+        // Load Subjects and Questions
+        async function loadSubjects() {
+            try {
+                const response = await fetch('./questions/subjects/subjects.json');
+                const subjects = await response.json();
+                subjectsContainer.innerHTML = '';
+                for (const subject of subjects) {
+                    const chapters = await fetchChapters(subject.fileName);
+                    renderSubject(subject.name, subject.fileName, chapters);
+                }
+            } catch (error) {
+                Toastify({
+                    text: 'সাবজেক্ট লোড করতে সমস্যা হয়েছে!',
+                    duration: 3000,
+                    backgroundColor: '#dc3545'
+                }).showToast();
+            }
+        }
+
+        async function fetchChapters(fileName) {
+            const response = await fetch(`./questions/subjects/${sanitizeFileName(fileName)}.json`);
+            return await response.json();
+        }
+
+        function renderSubject(subjectName, fileName, chapters) {
+            const subjectCard = document.createElement('div');
+            subjectCard.className = 'subject-card';
+            subjectCard.innerHTML = `
+                <h2 class="toggle-icon">${subjectName}</h2>
+                <div class="chapters-container" style="display: none;"></div>
+            `;
+            const chaptersContainer = subjectCard.querySelector('.chapters-container');
+            subjectCard.querySelector('h2').addEventListener('click', () => {
+                const isOpen = chaptersContainer.style.display === 'block';
+                chaptersContainer.style.display = isOpen ? 'none' : 'block';
+                subjectCard.querySelector('h2').classList.toggle('open', !isOpen);
+            });
+            for (const chapter of chapters) {
+                renderChapter(chaptersContainer, chapter, fileName);
+            }
+            subjectsContainer.appendChild(subjectCard);
+        }
+
+        async function renderChapter(container, chapter, fileName) {
+            const chapterCard = document.createElement('div');
+            chapterCard.className = 'chapter-card';
+            chapterCard.innerHTML = `
+                <h3 class="toggle-icon">${chapter.chapterName}</h3>
+                <div class="questions-container" style="display: none;"></div>
+            `;
+            const questionsContainer = chapterCard.querySelector('.questions-container');
+            chapterCard.querySelector('h3').addEventListener('click', async () => {
+                const isOpen = questionsContainer.style.display === 'block';
+                if (!isOpen && !questionsContainer.hasChildNodes()) {
+                    const questions = await fetchQuestions(fileName, chapter.chapterName);
+                    renderQuestions(questionsContainer, questions);
+                }
+                questionsContainer.style.display = isOpen ? 'none' : 'block';
+                chapterCard.querySelector('h3').classList.toggle('open', !isOpen);
+            });
+            container.appendChild(chapterCard);
+        }
+
+        async function fetchQuestions(fileName, chapterName) {
+            const response = await fetch(`./questions/subjects/${sanitizeFileName(fileName)}.json`);
+            const chapters = await response.json();
+            const chapter = chapters.find(c => c.chapterName === chapterName);
+            return chapter ? chapter.questions : [];
+        }
+
+        function renderQuestions(container, questions) {
+            questions.forEach((q, index) => {
+                const questionCard = document.createElement('div');
+                questionCard.className = 'question-card';
+                questionCard.innerHTML = `
+                    <p><strong>প্রশ্ন ${index + 1}:</strong> ${q.questionText}</p>
+                    ${q.questionImage ? `<img src="${q.questionImage}" alt="প্রশ্নের ছবি" style="max-width: 100%; margin: 0.5rem 0;">` : ''}
+                    <div class="options">
+                        ${q.options.map((opt, i) => `
+                            <div class="option ${opt === q.correctAnswer ? 'correct' : ''}">
+                                ${String.fromCharCode(2437 + i)}. ${opt}
+                            </div>
+                        `).join('')}
+                    </div>
+                    ${q.explanation ? `<div class="explanation"><strong>ব্যাখ্যা:</strong> ${q.explanation}</div>` : ''}
+                    ${q.explanationImage ? `<img src="${q.explanationImage}" alt="ব্যাখ্যার ছবি" style="max-width: 100%; margin: 0.5rem 0;">` : ''}
+                `;
+                container.appendChild(questionCard);
+            });
+        }
+
+        // Search Functionality
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.toLowerCase();
+            document.querySelectorAll('.question-card').forEach(card => {
+                const text = card.textContent.toLowerCase();
+                card.classList.toggle('show', text.includes(query));
+                card.style.display = text.includes(query) ? 'block' : 'none';
+            });
+        });
+
+        function sanitizeFileName(fileName) {
+            return fileName.replace(/[^a-zA-Z0-9-_]/g, '');
+        }
+    </script>
+</body>
+</html>
