@@ -50,171 +50,180 @@
         <span>সিলেক্ট করা প্রশ্ন: <strong id="selectedCount">0</strong></span>
         <div>
           <button class="btn btn-sm btn-outline-primary" onclick="goToStep(2)">
-            আরেকটি বিষয় সিলেক্ট করুন
+            আরেকটি বিষয়
           </button>
           <button class="btn btn-sm btn-outline-success" onclick="promptChapterSelection()">
-            আরেকটি অধ্যায় সিলেক্ট করুন
+            আরেকটি অধ্যায়
           </button>
         </div>
       </div>
-
       <div id="chapterSelectArea" class="my-3"></div>
       <div id="questionArea"></div>
       <nav><ul class="pagination" id="pagination"></ul></nav>
-      <button class="btn btn-success mt-3" onclick="createExamLink()">
-        পরীক্ষা তৈরি করুন
-      </button>
+      <button class="btn btn-success mt-3" onclick="createExam()">পরীক্ষা তৈরি করুন</button>
     </div>
   </div>
 
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
   <script>
-    // উদাহরণ: এই অবজেক্টটি তোমার subject ও chapter অনুযায়ী ঠিক করে দাও
+    // Firebase init — তোমার config এখানে বসাও
+    const firebaseConfig = {
+      apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
+      authDomain: "dopamine-quiz.firebaseapp.com",
+      projectId: "dopamine-quiz",
+      storageBucket: "dopamine-quiz.appspot.com",
+      messagingSenderId: "822531459966",
+      appId: "1:822531459966:web:8e7d2385090e997eb1c12f"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // Dashboard-এ যেমন subjects
     const subjects = {
-      "Botany": ["Chapter 01: কোষ ও এর গঠন", "Chapter 02: কোষ বিভাজন", "Chapter 03: কোষ রসায়ন", "Chapter 04: অণুজীব"],
-      "Zoology": ["Chapter 01: প্রাণীর বিভিন্নতা ও শ্রেণিবিন্যাস", "Chapter 02: প্রাণীর পরিচিতি"]
-      // ... অন্যান্য subject
+      "Botany": ["Chapter 01: কোষ ও এর গঠন","Chapter 02: কোষ বিভাজন","Chapter 03: কোষ রসায়ন","Chapter 04: অণুজীব","Chapter 05: শৈবাল ও ছত্রাক","Chapter 06: ব্রায়োফাইটা ও টেরেডোফাইটা","Chapter 07: নগ্নবীজী ও আবৃতবীজী উদ্ভিদ","Chapter 08: টিস্যু ও টিস্যুতন্ত্র","Chapter 09: উদ্ভিদ শারীরতত্ত্ব","Chapter 10: উদ্ভিদ প্রজনন","Chapter 11: জীবপ্রযুক্তি"],
+      "Zoology": ["Chapter 01: প্রাণীর বিভিন্নতা ও শ্রেণিবিন্যাস","Chapter 02: প্রাণীর পরিচিতি","Chapter 03: পরিপাক ও শোষণ","Chapter 04: রক্ত সঞ্চালন","Chapter 05: শ্বাসক্রিয়া ও শ্বসন","Chapter 06: বর্জ্য ও নিষ্কাশন","Chapter 07: চলন ও অঙ্গচালনা","Chapter 08: সমন্বয় ও নিয়ন্ত্রণ","Chapter 09: মানব জীবনের ধারাবাহিকতা","Chapter 10: মানবদেহের প্রতিরক্ষা","Chapter 11: জীনতত্ত্ব ও বিবর্তন"],
+      "Physics 1st": ["Chapter 01: ভৌত জগৎ ও পরিমাপ","Chapter 02: ভেক্টর","Chapter 04: নিউটোনিয়ান বলবিদ্যা","Chapter 05: কাজ, শক্তি ও ক্ষমতা","Chapter 06: মহাকর্ষ ও অভিকর্ষ","Chapter 07: পদার্থের গাঠনিক ধর্ম","Chapter 08: পর্যাবৃত্ত গতি","Chapter 10: আদর্শ গ্যাস ও গ্যাসের গতিতত্ত্ব"],
+      "Physics 2nd": ["Chapter 01: তাপগতিবিদ্যা","Chapter 02: স্থির তড়িৎ","Chapter 03: চলতড়িৎ","Chapter 07: ভৌত আলোকবিজ্ঞান","Chapter 08: আধুনিক পদার্থবিজ্ঞানের সূচনা","Chapter 09: পরমাণুর মডেল এবং নিউক্লিয়ার পদার্থবিজ্ঞান","Chapter 10: সেমিকন্ডাক্টর ও ইলেকট্রনিক্স"],
+      "Chemistry 1st": ["Chapter 01: ল্যাবরেটরির নিরাপদ ব্যবহার","Chapter 02: গুণগত রসায়ন","Chapter 03: মৌলের পর্যায়বৃত্ত ধর্ম","Chapter 04: রাসায়নিক পরিবর্তন","Chapter 05: কর্মমুখী রসায়ন"],
+      "Chemistry 2nd": ["Chapter 01: পরিবেশ রসায়ন","Chapter 02: জৈব রসায়ন","Chapter 03: পরিমাণগত রসায়ন","Chapter 04: তড়িৎ রসায়ন","Chapter 05: অর্থনৈতিক রসায়ন"],
+      "Higher Math 1st": ["Chapter 01: ম্যাট্রিক্স ও নির্ণায়ক","Chapter 03: সরলরেখা","Chapter 04: বৃত্ত","Chapter 07: সংযুক্ত কোণের ত্রিকোণমিতিক অনুপাত","Chapter 09: অন্তরীকরণ","Chapter 10: যোগজীকরণ"],
+      "Higher Math 2nd": ["Chapter 03: জটিল সংখ্যা","Chapter 04: বহুপদী ও বহুপদী সমীকরণ","Chapter 06: কণিক","Chapter 07: বিপরীত ত্রিকোণমিতিক ফাংশন ও ত্রিকোণমিতিক সমীকরণ","Chapter 08: স্থিতিবিদ্যা","Chapter 09: সমতলে বস্তুকণার গতি"],
+      "English": [],
+      "Bangla": []
     };
 
-    let selectedQuestions = JSON.parse(localStorage.getItem("selectedQuestions") || "[]");
-    let currentQuestions = [];
-    const perPage = 20;
-    let currentPage = 1;
-    let currentSubject = "";
-    let currentChapter = "";
+    let selectedQ = JSON.parse(localStorage.getItem("selectedQuestions")||"[]");
+    let currentQ = [], perPage=20, page=1, curSub="", curChap="";
 
-    document.getElementById("selectedCount").textContent = selectedQuestions.length;
+    document.getElementById("selectedCount").textContent = selectedQ.length;
 
-    function goToStep(n) {
-      document.querySelectorAll(".step").forEach(s => s.classList.remove("active"));
+    function goToStep(n){
+      document.querySelectorAll(".step").forEach(s=>s.classList.remove("active"));
       document.getElementById("step"+n).classList.add("active");
       if(n===2) populateSubjects();
     }
 
-    function populateSubjects() {
-      const list = document.getElementById("subjectList");
-      list.innerHTML = "";
-      Object.keys(subjects).forEach(sub => {
-        const btn = document.createElement("button");
-        btn.className = "btn btn-outline-primary m-1";
-        btn.textContent = sub;
-        btn.onclick = ()=> selectSubject(sub);
-        list.appendChild(btn);
+    function populateSubjects(){
+      const el = document.getElementById("subjectList");
+      el.innerHTML="";
+      Object.keys(subjects).forEach(sub=>{
+        const btn=document.createElement("button");
+        btn.className="btn btn-outline-primary m-1";
+        btn.textContent=sub;
+        btn.onclick=()=>selectSubject(sub);
+        el.appendChild(btn);
       });
     }
 
-    function selectSubject(sub) {
-      currentSubject = sub;
-      const area = document.getElementById("chapterSelectArea");
-      area.innerHTML = `<h5>${sub} - অধ্যায় নির্বাচন করুন</h5>`;
-      subjects[sub].forEach(ch => {
-        const btn = document.createElement("button");
-        btn.className = "btn btn-outline-secondary m-1";
-        btn.textContent = ch;
-        btn.onclick = ()=> loadQuestions(sub, ch);
+    function selectSubject(sub){
+      curSub=sub; page=1;
+      const area=document.getElementById("chapterSelectArea");
+      area.innerHTML=`<h5>${sub} - অধ্যায়</h5>`;
+      subjects[sub].forEach(ch=>{
+        const btn=document.createElement("button");
+        btn.className="btn btn-outline-secondary m-1";
+        btn.textContent=ch;
+        btn.onclick=()=>loadQuestions(sub,ch);
         area.appendChild(btn);
       });
       goToStep(3);
     }
 
-    function promptChapterSelection() {
-      goToStep(2);
+    function promptChapterSelection(){ goToStep(2); }
+
+    function sanitizeFileName(name){
+      return name.replace(/^Chapter\s*\d+:\s*/,"")
+                 .trim().replace(/\s+/g,"-")
+                 .replace(/[^\u0980-\u09FFa-zA-Z0-9\-]/g,"");
     }
 
-    function sanitizeFileName(name) {
-      // স্পেস ও কোলন, টাইপ ছোট-বড় হাতের বাংলা ইংরেজি অক্ষর রেখে অন্যসব রিমুভ
-      return name.replace(/^Chapter\s*\d+:\s*/, "")
-                 .trim()
-                 .replace(/\s+/g, "-")
-                 .replace(/[^\u0980-\u09FFa-zA-Z0-9\-]/g, "");
-    }
-
-    async function loadQuestions(subject, chapter) {
-      currentSubject = subject;
-      currentChapter = chapter;
-      currentPage = 1;
-      const sub = sanitizeFileName(subject);
-      const chap = sanitizeFileName(chapter);
-      const path = `questions/subjects/${sub}/${chap}.json`;
+    async function loadQuestions(sub, ch){
+      curSub=sub; curChap=ch; page=1;
+      const s=sanitizeFileName(sub), c=sanitizeFileName(ch);
+      const url=`questions/subjects/${s}/${c}.json`;
       try {
-        const res = await fetch(path);
-        if(!res.ok) throw new Error(res.status+" "+res.statusText);
-        const data = await res.json();
-        // প্রত্যেক প্রশ্নে unique id লাগলে এখানে সেট করতে পারো, অথবা JSON-এ id রাখো
-        currentQuestions = data.map((q,i)=>({
-          id: q.id || `${sub}-${chap}-${i}`,
-          question: q.question || `প্রশ্ন ${i+1}`,
-          answer: q.answer || q.correctOption || ""
+        const r=await fetch(url);
+        if(!r.ok) throw new Error(r.status);
+        const data=await r.json();
+        currentQ=data.map((q,i)=>({
+          subject: sub,
+          chapter: ch.replace(/^Chapter\s*\d+:\s*/,""),
+          id: i,
+          question:q.question,
+          options:q.options,
+          correctOption:q.correctOption
         }));
         renderQuestions();
-      } catch(err) {
-        console.error(err);
-        Toastify({ text: "JSON লোড করতে ত্রুটি: "+err.message, duration:3000, style:{background:"#dc3545"} }).showToast();
+      } catch(e){
+        Toastify({ text:"লোড এরর: "+e, duration:3000, style:{background:"#dc3545"} }).showToast();
       }
     }
 
-    function renderQuestions() {
-      const area = document.getElementById("questionArea");
-      area.innerHTML = "";
-      const start = (currentPage-1)*perPage;
-      const pageItems = currentQuestions.slice(start, start+perPage);
-      pageItems.forEach(q=>{
-        const div = document.createElement("div");
-        div.className = "question-card";
-        div.innerHTML = `
-          <div class="fw-bold">${q.question}</div>
-          <div class="small text-muted">উত্তর: ${q.answer}</div>
+    function renderQuestions(){
+      const area=document.getElementById("questionArea");
+      area.innerHTML="";
+      const start=(page-1)*perPage;
+      const pageQs=currentQ.slice(start,start+perPage);
+      pageQs.forEach(q=>{
+        const div=document.createElement("div");
+        div.className="question-card";
+        div.innerHTML=`
+          <div><strong>${q.question}</strong></div>
+          <div class="small">উত্তর: ${q.options[q.correctOption-1]||""}</div>
           <div class="form-check mt-2">
-            <input class="form-check-input" type="checkbox" id="${q.id}"
-                   ${selectedQuestions.includes(q.id)?"checked":""}
-                   onchange="toggleQuestion('${q.id}', this.checked)">
-            <label class="form-check-label" for="${q.id}">নির্বাচন করুন</label>
+            <input class="form-check-input" type="checkbox" id="${q.subject}-${q.chapter}-${q.id}"
+                   ${(selectedQ.includes(`${q.subject}-${q.chapter}-${q.id}`))?"checked":""}
+                   onchange="toggleQ('${q.subject}','${q.chapter}',${q.id},this.checked)">
+            <label class="form-check-label" for="${q.subject}-${q.chapter}-${q.id}">নির্বাচন</label>
           </div>`;
         area.appendChild(div);
       });
       renderPagination();
-      document.getElementById("selectedCount").textContent = selectedQuestions.length;
+      document.getElementById("selectedCount").textContent=selectedQ.length;
     }
 
-    function toggleQuestion(id, checked) {
-      if(checked) {
-        if(!selectedQuestions.includes(id)) selectedQuestions.push(id);
-      } else {
-        selectedQuestions = selectedQuestions.filter(x=>x!==id);
-      }
-      localStorage.setItem("selectedQuestions", JSON.stringify(selectedQuestions));
-      document.getElementById("selectedCount").textContent = selectedQuestions.length;
+    function toggleQ(sub, ch, idx, ok){
+      const key=`${sub}-${ch}-${idx}`;
+      if(ok) selectedQ.push(key);
+      else selectedQ=selectedQ.filter(x=>x!==key);
+      localStorage.setItem("selectedQuestions",JSON.stringify(selectedQ));
+      document.getElementById("selectedCount").textContent=selectedQ.length;
     }
 
-    function renderPagination() {
-      const total = Math.ceil(currentQuestions.length/perPage);
-      const ul = document.getElementById("pagination");
-      ul.innerHTML = "";
-      for(let i=1;i<=total;i++){
-        const li = document.createElement("li");
-        li.className = "page-item"+(i===currentPage?" active":"");
-        li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
-        li.onclick = e=>{
-          e.preventDefault();
-          currentPage=i;
-          renderQuestions();
-        };
+    function renderPagination(){
+      const tot=Math.ceil(currentQ.length/perPage);
+      const ul=document.getElementById("pagination"); ul.innerHTML="";
+      for(let i=1;i<=tot;i++){
+        const li=document.createElement("li");
+        li.className="page-item"+(i===page?" active":"");
+        li.innerHTML=`<a class="page-link" href="#">${i}</a>`;
+        li.onclick=e=>{e.preventDefault();page=i;renderQuestions();};
         ul.appendChild(li);
       }
     }
 
-    function createExamLink() {
-      const id = Date.now();
-      const payload = {
-        name: document.getElementById("examName").value,
-        time: parseInt(document.getElementById("examTime").value),
-        negative: parseFloat(document.getElementById("negativeMarking").value),
-        questions: selectedQuestions
+    async function createExam(){
+      const payload={
+        title: document.getElementById("examName").value,
+        duration: parseInt(document.getElementById("examTime").value),
+        negativeMark: parseFloat(document.getElementById("negativeMarking").value),
+        questions: selectedQ.map(key=>{
+          const [sub,chap,idx]=key.split(/-(.+)/)[0].split("-");
+          return { subject: sub, chapter: chap, id: parseInt(key.split("-").pop()) };
+        }),
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
       };
-      localStorage.setItem("exam_"+id, JSON.stringify(payload));
-      const link = `quiz.html?examId=${id}`;
-      navigator.clipboard.writeText(window.location.origin+"/"+link);
-      Toastify({ text: "লিংক কপি হয়েছে: "+link, duration:3000, style:{background:"#22c55e"} }).showToast();
+      try {
+        const doc=await db.collection("exams").add(payload);
+        const link=`quiz.html?examId=${doc.id}`;
+        navigator.clipboard.writeText(window.location.origin+"/"+link);
+        Toastify({ text:"লিংক কপি হয়েছে: "+link,duration:4000,style:{background:"#22c55e"} }).showToast();
+      } catch(err){
+        Toastify({ text:"এই রকম এরর: "+err,duration:3000,style:{background:"#dc3545"} }).showToast();
+      }
     }
   </script>
 </body>
