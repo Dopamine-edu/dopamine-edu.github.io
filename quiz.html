@@ -446,6 +446,21 @@
             color: white;
         }
 
+        .nav-item.correct {
+            background: var(--correct-border);
+            color: white;
+        }
+
+        .nav-item.incorrect {
+            background: var(--incorrect-border);
+            color: white;
+        }
+
+        .nav-item.skipped {
+            background: var(--secondary-text-color);
+            color: white;
+        }
+
         @media (max-width: 768px) {
             .navbar { padding: 0.5rem; }
             .exam-title { font-size: 1.5rem; }
@@ -573,6 +588,7 @@
         const answersKey = "examAnswers_" + examId;
         const startTimeKey = "examStartTime_" + examId;
         const submittedFlagKey = "examSubmitted_" + examId;
+        let visibility = { correct: true, incorrect: true, skipped: true };
 
         function sanitizeFileName(name) {
             return name.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9\u0980-\u09FF-]/g, '');
@@ -968,11 +984,29 @@
                             textShadow: '0 0 5px rgba(0, 0, 0, 0.5)'
                         }
                     },
-                    layout: { padding: 20 }
+                    layout: { padding: 20 },
+                    onClick: (event, activeElements) => {
+                        if (activeElements.length > 0) {
+                            const index = activeElements[0].index;
+                            const type = ['correct', 'incorrect', 'skipped'][index];
+                            visibility[type] = !visibility[type];
+                            updateVisibility();
+                        }
+                    }
                 },
                 plugins: [ChartDataLabels]
             });
             document.getElementById("chartContainer").style.display = "block";
+        }
+
+        function updateVisibility() {
+            const types = ['correct', 'incorrect', 'skipped'];
+            types.forEach(type => {
+                const elements = document.querySelectorAll(`.question-card[data-type="${type}"], .nav-item.${type}`);
+                elements.forEach(el => {
+                    el.style.display = visibility[type] ? '' : 'none';
+                });
+            });
         }
 
         async function submitQuiz() {
@@ -996,14 +1030,20 @@
                         score += examData.marksPerQuestion;
                         correctAnswers++;
                         selectedOption.parentElement.classList.add("correct");
+                        qDiv.dataset.type = 'correct';
+                        document.querySelector(`.nav-item[data-index="${idx}"]`).classList.add('correct');
                     } else {
                         wrongAnswers++;
                         score -= examData.negativeMark || 0;
                         selectedOption.parentElement.classList.add("incorrect");
+                        qDiv.dataset.type = 'incorrect';
+                        document.querySelector(`.nav-item[data-index="${idx}"]`).classList.add('incorrect');
                     }
                 } else {
                     wrongAnswers++;
                     skippedAnswers++;
+                    qDiv.dataset.type = 'skipped';
+                    document.querySelector(`.nav-item[data-index="${idx}"]`).classList.add('skipped');
                 }
 
                 qDiv.querySelectorAll(".option-label").forEach(label => {
@@ -1088,6 +1128,20 @@
             document.getElementById("questionNav").style.display = "none";
 
             renderQuiz(questions, true, resultData.answers || {});
+
+            questions.forEach((q, idx) => {
+                const questionDiv = document.querySelector(`.question-card[data-index="${idx}"]`);
+                const userAnswer = resultData.answers["q" + idx];
+                if (userAnswer) {
+                    if (userAnswer === q.correctOption) {
+                        questionDiv.dataset.type = 'correct';
+                    } else {
+                        questionDiv.dataset.type = 'incorrect';
+                    }
+                } else {
+                    questionDiv.dataset.type = 'skipped';
+                }
+            });
 
             const correctAnswers = resultData.correctAnswers;
             const totalQuestions = questions.length;
