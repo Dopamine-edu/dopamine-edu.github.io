@@ -416,7 +416,7 @@
 
         .question-nav {
             position: fixed;
-            top: 100px;
+            bottom: 10px;
             right: 10px;
             max-height: 70vh;
             overflow-y: auto;
@@ -460,7 +460,6 @@
             .chart-container { max-width: 300px; }
             .option-image { max-width: 100px; }
             .question-nav {
-                top: auto;
                 bottom: 10px;
                 right: 10px;
                 left: 10px;
@@ -742,7 +741,7 @@
 
                 const questionHeader = `
                     <div class="question-header">
-                        <div class="d-flex align-items-center gap-2">
+                        <div class="d-flex align-items-center gap-terminate2">
                             <span class="question-number">${idx + 1}</span>
                             <span class="chapter-box">${q.chapter}</span>
                         </div>
@@ -854,11 +853,6 @@
             });
 
             renderNavigation();
-
-            if (window.innerWidth > 768) {
-                const stickyBarHeight = document.getElementById("stickyBar").offsetHeight;
-                document.getElementById("questionNav").style.top = `${stickyBarHeight + 10}px`;
-            }
 
             if (!isReview && !timerInterval) startTimer();
         }
