@@ -461,6 +461,78 @@
             color: white;
         }
 
+        /* Scroll to top button */
+        .scroll-top {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--purple-box);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: var(--shadow);
+            z-index: 101;
+            opacity: 0.8;
+            transition: all 0.3s;
+            transform: translateY(20px);
+            visibility: hidden;
+        }
+
+        .scroll-top.visible {
+            transform: translateY(0);
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            opacity: 1;
+            transform: translateY(-5px) scale(1.05);
+        }
+
+        /* Pie chart legend styling */
+        .chart-legend {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: rgba(0,0,0,0.05);
+            transition: all 0.2s;
+        }
+
+        .legend-item:hover {
+            background: rgba(0,0,0,0.1);
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .legend-text {
+            font-size: 0.9rem;
+        }
+
+        .legend-item.active {
+            font-weight: bold;
+            box-shadow: 0 0 0 2px currentColor;
+        }
+
         @media (max-width: 768px) {
             .navbar { padding: 0.5rem; }
             .exam-title { font-size: 1.5rem; }
@@ -486,6 +558,13 @@
             .nav-item {
                 display: inline-block;
                 margin: 0 5px;
+            }
+            .scroll-top {
+                bottom: 70px;
+                right: 15px;
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
             }
         }
 
@@ -549,6 +628,7 @@
             <div id="statsContainer" class="stats-container"></div>
             <div class="chart-container" id="chartContainer">
                 <canvas id="resultChart"></canvas>
+                <div class="chart-legend" id="chartLegend"></div>
             </div>
         </div>
 
@@ -558,6 +638,10 @@
         <div id="backToDashboardContainer" class="text-center mt-3" style="display: none;">
             <button type="button" id="backToDashboardBtn" class="btn btn-primary">ড্যাশবোর্ডে ফিরে যান</button>
         </div>
+    </div>
+
+    <div id="scrollTopBtn" class="scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <i class="fas fa-arrow-up"></i>
     </div>
 
     <script>
@@ -589,6 +673,17 @@
         const startTimeKey = "examStartTime_" + examId;
         const submittedFlagKey = "examSubmitted_" + examId;
         let visibility = { correct: true, incorrect: true, skipped: true };
+        let resultChart = null;
+
+        // Scroll to top button visibility
+        window.addEventListener('scroll', function() {
+            const scrollBtn = document.getElementById('scrollTopBtn');
+            if (window.scrollY > 300) {
+                scrollBtn.classList.add('visible');
+            } else {
+                scrollBtn.classList.remove('visible');
+            }
+        });
 
         function sanitizeFileName(name) {
             return name.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9\u0980-\u09FF-]/g, '');
@@ -926,18 +1021,62 @@
         function createPieChart(correct, incorrect, skipped) {
             const ctx = document.getElementById('resultChart').getContext('2d');
             const total = correct + incorrect + skipped;
-
+            
             const gradientCorrect = createGradient(ctx, "#34C759", "#28A745");
             const gradientIncorrect = createGradient(ctx, "#FF3B30", "#D32F2F");
             const gradientSkipped = createGradient(ctx, "#FFD700", "#FFA500");
 
-            new Chart(ctx, {
+            // Create legend
+            const legendContainer = document.getElementById('chartLegend');
+            legendContainer.innerHTML = '';
+            
+            const types = [
+                { id: 'correct', name: 'সঠিক উত্তর', count: correct, color: '#34C759' },
+                { id: 'incorrect', name: 'ভুল উত্তর', count: incorrect - skipped, color: '#FF3B30' },
+                { id: 'skipped', name: 'এড়িয়ে যাওয়া', count: skipped, color: '#FFD700' }
+            ];
+            
+            types.forEach(type => {
+                const legendItem = document.createElement('div');
+                legendItem.className = 'legend-item';
+                if (visibility[type.id]) legendItem.classList.add('active');
+                legendItem.dataset.type = type.id;
+                
+                legendItem.innerHTML = `
+                    <div class="legend-color" style="background-color: ${type.color}"></div>
+                    <span class="legend-text">${type.name}: ${type.count}</span>
+                `;
+                
+                legendItem.addEventListener('click', () => {
+                    visibility[type.id] = !visibility[type.id];
+                    updateVisibility();
+                    updateChartColors();
+                    
+                    // Toggle active state
+                    if (visibility[type.id]) {
+                        legendItem.classList.add('active');
+                    } else {
+                        legendItem.classList.remove('active');
+                    }
+                });
+                
+                legendContainer.appendChild(legendItem);
+            });
+
+            // Update colors based on visibility
+            const backgroundColors = [
+                visibility.correct ? gradientCorrect : '#CCCCCC',
+                visibility.incorrect ? gradientIncorrect : '#CCCCCC',
+                visibility.skipped ? gradientSkipped : '#CCCCCC'
+            ];
+
+            resultChart = new Chart(ctx, {
                 type: 'pie',
                 data: {
                     labels: ['সঠিক উত্তর', 'ভুল উত্তর', 'এড়িয়ে যাওয়া'],
                     datasets: [{
-                        data: [correct, incorrect, skipped],
-                        backgroundColor: [gradientCorrect, gradientIncorrect, gradientSkipped],
+                        data: [correct, incorrect - skipped, skipped],
+                        backgroundColor: backgroundColors,
                         borderColor: '#fff',
                         borderWidth: 2,
                         shadowOffsetX: 3,
@@ -957,6 +1096,7 @@
                     },
                     plugins: {
                         legend: {
+                            display: false,
                             position: 'bottom',
                             labels: {
                                 font: { size: 14, family: "'Hind Siliguri', sans-serif" },
@@ -972,10 +1112,20 @@
                             titleFont: { size: 14 },
                             bodyFont: { size: 12 },
                             padding: 10,
-                            cornerRadius: 8
+                            cornerRadius: 8,
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.raw || 0;
+                                    const total = context.chart.getDatasetMeta(0).total;
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${label}: ${value} (${percentage}%)`;
+                                }
+                            }
                         },
                         datalabels: {
                             formatter: (value, context) => {
+                                const total = context.chart.getDatasetMeta(0).total;
                                 const percentage = ((value / total) * 100).toFixed(1);
                                 return `${percentage}%`;
                             },
@@ -991,6 +1141,18 @@
                             const type = ['correct', 'incorrect', 'skipped'][index];
                             visibility[type] = !visibility[type];
                             updateVisibility();
+                            updateChartColors();
+                            
+                            // Update legend active state
+                            document.querySelectorAll('.legend-item').forEach(item => {
+                                if (item.dataset.type === type) {
+                                    if (visibility[type]) {
+                                        item.classList.add('active');
+                                    } else {
+                                        item.classList.remove('active');
+                                    }
+                                }
+                            });
                         }
                     }
                 },
@@ -998,13 +1160,37 @@
             });
             document.getElementById("chartContainer").style.display = "block";
         }
-
+        
+        function updateChartColors() {
+            if (!resultChart) return;
+            
+            const gradientCorrect = createGradient(resultChart.ctx, "#34C759", "#28A745");
+            const gradientIncorrect = createGradient(resultChart.ctx, "#FF3B30", "#D32F2F");
+            const gradientSkipped = createGradient(resultChart.ctx, "#FFD700", "#FFA500");
+            
+            resultChart.data.datasets[0].backgroundColor = [
+                visibility.correct ? gradientCorrect : '#CCCCCC',
+                visibility.incorrect ? gradientIncorrect : '#CCCCCC',
+                visibility.skipped ? gradientSkipped : '#CCCCCC'
+            ];
+            
+            resultChart.update();
+        }
+        
         function updateVisibility() {
             const types = ['correct', 'incorrect', 'skipped'];
+            
             types.forEach(type => {
-                const elements = document.querySelectorAll(`.question-card[data-type="${type}"], .nav-item.${type}`);
-                elements.forEach(el => {
-                    el.style.display = visibility[type] ? '' : 'none';
+                const visible = visibility[type];
+                
+                // Update questions
+                document.querySelectorAll(`.question-card[data-type="${type}"]`).forEach(el => {
+                    el.style.display = visible ? '' : 'none';
+                });
+                
+                // Update navigation items
+                document.querySelectorAll(`.nav-item.${type}`).forEach(el => {
+                    el.style.display = visible ? '' : 'none';
                 });
             });
         }
@@ -1087,7 +1273,7 @@
                 <p class="text-secondary fw-bold">এড়িয়ে যাওয়া: ${skippedAnswers}</p>
             `;
 
-            createPieChart(correctAnswers, wrongAnswers - skippedAnswers, skippedAnswers);
+            createPieChart(correctAnswers, wrongAnswers, skippedAnswers);
 
             document.getElementById("stickyBar").style.display = "none";
             document.getElementById("backToDashboardContainer").style.display = "block";
@@ -1125,7 +1311,7 @@
 
         function displayReviewMode(questions, resultData) {
             document.getElementById("stickyBar").style.display = "none";
-            document.getElementById("questionNav").style.display = "none";
+            document.getElementById("questionNav").style.display = "block";
 
             renderQuiz(questions, true, resultData.answers || {});
 
@@ -1156,7 +1342,7 @@
                 <p class="text-danger fw-bold">ভুল উত্তর: ${wrongAnswers - skippedAnswers}</p>
                 <p class="text-secondary fw-bold">এড়িয়ে যাওয়া: ${skippedAnswers}</p>
             `;
-            createPieChart(correctAnswers, wrongAnswers - skippedAnswers, skippedAnswers);
+            createPieChart(correctAnswers, wrongAnswers, skippedAnswers);
             document.getElementById("backToDashboardContainer").style.display = "block";
         }
 
