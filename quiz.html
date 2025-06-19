@@ -855,6 +855,11 @@
 
             renderNavigation();
 
+            if (window.innerWidth > 768) {
+                const stickyBarHeight = document.getElementById("stickyBar").offsetHeight;
+                document.getElementById("questionNav").style.top = `${stickyBarHeight + 10}px`;
+            }
+
             if (!isReview && !timerInterval) startTimer();
         }
 
@@ -870,7 +875,7 @@
                     navItem.classList.add("answered");
                 }
                 navItem.addEventListener("click", () => {
-                    document.querySelector(`.question-card[data-index="${idx}"]`).scrollIntoView({ behavior: "smooth" });
+                    document.querySelector(`.question-card[data-index="${idx}"]`).scrollIntoView({ behavior: "smooth", block: "center" });
                 });
                 navDiv.appendChild(navItem);
             });
@@ -904,7 +909,7 @@
         document.getElementById("nextBtn").addEventListener("click", () => {
             if (currentQuestionIndex < questions.length - 1) {
                 currentQuestionIndex++;
-                document.querySelectorAll(".question-card")[currentQuestionIndex].scrollIntoView({ behavior: "smooth" });
+                document.querySelectorAll(".question-card")[currentQuestionIndex].scrollIntoView({ behavior: "smooth", block: "center" });
             } else {
                 if (confirm("আপনি কি আপনার উত্তর জমা দিতে নিশ্চিত?")) submitQuiz();
             }
