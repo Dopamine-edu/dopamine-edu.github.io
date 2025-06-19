@@ -516,7 +516,7 @@
             <span class="answered-count" id="answeredCount">০/০</span>
             <span class="timer" id="stickyTimer"><i class="fas fa-clock"></i> ৫৯:০০ বাকি</span>
             <div class="action-buttons">
-                <button class="btn-next" id="nextBtn">পরবর্তী প্রশ্ন</button>
+                <button class="btn-next" id="submitBtnSticky">জমা দিন</button>
             </div>
         </div>
 
@@ -540,9 +540,6 @@
         <div id="loading" class="loading-spinner">পরীক্ষা লোড হচ্ছে...</div>
         <div id="expiredMessage" class="expired-message"></div>
         <form id="examForm"></form>
-        <div id="submitContainer" class="text-center mt-3">
-            <button type="button" id="submitBtn" class="btn btn-primary">জমা দিন</button>
-        </div>
         <div id="backToDashboardContainer" class="text-center mt-3" style="display: none;">
             <button type="button" id="backToDashboardBtn" class="btn btn-primary">ড্যাশবোর্ডে ফিরে যান</button>
         </div>
@@ -645,7 +642,6 @@
                     document.getElementById("expiredMessage").style.display = "block";
                     document.getElementById("expiredMessage").textContent = "এই পরীক্ষার সময় শেষ হয়ে গেছে। আপনি অংশ নিতে পারবেন না।";
                     document.getElementById("examForm").style.display = "none";
-                    document.getElementById("submitContainer").style.display = "none";
                     document.getElementById("stickyBar").style.display = "none";
                     loadingDiv.style.display = "none";
                     return;
@@ -900,13 +896,8 @@
             timerInterval = setInterval(updateTimer, 1000);
         }
 
-        document.getElementById("nextBtn").addEventListener("click", () => {
-            if (currentQuestionIndex < questions.length - 1) {
-                currentQuestionIndex++;
-                document.querySelectorAll(".question-card")[currentQuestionIndex].scrollIntoView({ behavior: "smooth", block: "center" });
-            } else {
-                if (confirm("আপনি কি আপনার উত্তর জমা দিতে নিশ্চিত?")) submitQuiz();
-            }
+        document.getElementById("submitBtnSticky").addEventListener("click", () => {
+            if (confirm("আপনি কি আপনার উত্তর জমা দিতে নিশ্চিত?")) submitQuiz();
         });
 
         function createGradient(ctx, colorStart, colorEnd) {
@@ -1058,7 +1049,6 @@
 
             createPieChart(correctAnswers, wrongAnswers - skippedAnswers, skippedAnswers);
 
-            document.getElementById("submitContainer").style.display = "none";
             document.getElementById("stickyBar").style.display = "none";
             document.getElementById("backToDashboardContainer").style.display = "block";
 
@@ -1089,6 +1079,8 @@
                     style: { background: "#dc3545" }
                 }).showToast();
             }
+
+            window.scrollTo(0, 0);
         }
 
         function displayReviewMode(questions, resultData) {
@@ -1111,13 +1103,8 @@
                 <p class="text-secondary fw-bold">এড়িয়ে যাওয়া: ${skippedAnswers}</p>
             `;
             createPieChart(correctAnswers, wrongAnswers - skippedAnswers, skippedAnswers);
-            document.getElementById("submitContainer").style.display = "none";
             document.getElementById("backToDashboardContainer").style.display = "block";
         }
-
-        document.getElementById("submitBtn").addEventListener("click", () => {
-            if (confirm("আপনি কি আপনার উত্তর জমা দিতে নিশ্চিত?")) submitQuiz();
-        });
 
         document.getElementById("backToDashboardBtn").addEventListener("click", () => {
             window.location.href = "https://dopamine-edu.github.io/dashboard.html";
