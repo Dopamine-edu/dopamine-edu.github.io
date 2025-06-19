@@ -32,8 +32,8 @@
             --blue-box: #2b7fff;
             --green-box: #00c950;
             --orange-btn: #F97316;
-            --light-purple: #c084fc; /* Lighter purple for question number */
-            --answered-border: #00c950; /* Green outline for answered questions */
+            --light-purple: #c084fc;
+            --answered-border: #00c950;
         }
 
         [data-theme="dark"] {
@@ -265,7 +265,7 @@
             color: white;
             padding: 0.5rem 1rem;
             border-radius: 8px;
-            font-size: 0.75rem; /* Reduced font size */
+            font-size: 0.75rem;
         }
 
         .question-text {
@@ -414,6 +414,38 @@
             display: none;
         }
 
+        .question-nav {
+            position: fixed;
+            top: 100px;
+            right: 10px;
+            max-height: 70vh;
+            overflow-y: auto;
+            background: var(--card-bg);
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .nav-item {
+            background: var(--border-color);
+            color: var(--text-color);
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .nav-item.answered {
+            background: var(--answered-border);
+            color: white;
+        }
+
         @media (max-width: 768px) {
             .navbar { padding: 0.5rem; }
             .exam-title { font-size: 1.5rem; }
@@ -427,6 +459,20 @@
             .solution-explanation { font-size: 0.9rem; padding: 10px; }
             .chart-container { max-width: 300px; }
             .option-image { max-width: 100px; }
+            .question-nav {
+                top: auto;
+                bottom: 10px;
+                right: 10px;
+                left: 10px;
+                max-height: 100px;
+                overflow-x: auto;
+                white-space: nowrap;
+                flex-direction: row;
+            }
+            .nav-item {
+                display: inline-block;
+                margin: 0 5px;
+            }
         }
 
         @media (min-width: 769px) {
@@ -474,6 +520,8 @@
                 <button class="btn-next" id="nextBtn">পরবর্তী প্রশ্ন</button>
             </div>
         </div>
+
+        <div id="questionNav" class="question-nav"></div>
 
         <div class="header">
             <div class="progress-container">
@@ -747,14 +795,18 @@
                                 radioInput.checked = true;
                                 localStorage.setItem(answersKey, JSON.stringify(userAnswers));
                                 updateProgress();
-                                document.querySelector(`.question-card[data-index="${idx}"]`).classList.add("answered");
+                                const questionCard = radioInput.closest(".question-card");
+                                questionCard.classList.add("answered");
+                                const index = questionCard.dataset.index;
+                                const navItem = document.querySelector(`.nav-item[data-index="${index}"]`);
+                                if (navItem) navItem.classList.add("answered");
                             }
                         });
                     }
 
                     const optionPrefix = document.createElement("span");
                     optionPrefix.className = "option-prefix";
-                    optionPrefix.textContent = String.fromCharCode(2453 + optIdx); // Bengali alphabet (ক, খ, গ, ঘ)
+                    optionPrefix.textContent = String.fromCharCode(2453 + optIdx);
 
                     label.appendChild(radioInput);
                     label.appendChild(optionPrefix);
@@ -801,7 +853,27 @@
                 examForm.appendChild(questionDiv);
             });
 
+            renderNavigation();
+
             if (!isReview && !timerInterval) startTimer();
+        }
+
+        function renderNavigation() {
+            const navDiv = document.getElementById("questionNav");
+            navDiv.innerHTML = "";
+            questions.forEach((q, idx) => {
+                const navItem = document.createElement("button");
+                navItem.textContent = idx + 1;
+                navItem.className = "nav-item";
+                navItem.dataset.index = idx;
+                if (userAnswers["q" + idx] && userAnswers["q" + idx + "_locked"]) {
+                    navItem.classList.add("answered");
+                }
+                navItem.addEventListener("click", () => {
+                    document.querySelector(`.question-card[data-index="${idx}"]`).scrollIntoView({ behavior: "smooth" });
+                });
+                navDiv.appendChild(navItem);
+            });
         }
 
         function startTimer() {
@@ -966,7 +1038,7 @@
                 }
                 if (hasExplanationImage) {
                     const explanationImg = document.createElement("img");
-                    explanationImg.src = q.explanationImage;
+                    explanationImg.src = explanationImage;
                     explanationImg.className = "explanation-image";
                     explanationImg.alt = `Explanation diagram for question ${idx + 1}`;
                     explanationImg.loading = "lazy";
@@ -1022,6 +1094,7 @@
 
         function displayReviewMode(questions, resultData) {
             document.getElementById("stickyBar").style.display = "none";
+            document.getElementById("questionNav").style.display = "none";
 
             renderQuiz(questions, true, resultData.answers || {});
 
