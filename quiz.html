@@ -589,7 +589,6 @@
         const startTimeKey = "examStartTime_" + examId;
         const submittedFlagKey = "examSubmitted_" + examId;
         let visibility = { correct: true, incorrect: true, skipped: true };
-        let chartInstance = null;
 
         function sanitizeFileName(name) {
             return name.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9\u0980-\u09FF-]/g, '');
@@ -685,7 +684,7 @@
                 document.getElementById("subjectDisplay").textContent = subjects || "অজানা বিষয়";
                 document.getElementById("questionsCount").textContent = `${questions.length} প্রশ্ন`;
                 document.getElementById("timer").textContent = `${examData.duration} মিনিট`;
-                document.getElementById("answered discordCount").textContent = `০/${questions.length}`;
+                document.getElementById("answeredCount").textContent = `০/${questions.length}`;
                 updateProgress();
                 renderQuiz(questions);
             } catch (error) {
@@ -754,7 +753,7 @@
 
                 const questionHeader = `
                     <div class="question-header">
-                        <div class="d-flex align-items-center gap-2">
+                        <div class="d-flex align-items-center gap-terminate2">
                             <span class="question-number">${idx + 1}</span>
                             <span class="chapter-box">${q.chapter}</span>
                         </div>
@@ -924,30 +923,6 @@
             return gradient;
         }
 
-        function updateVisibility() {
-            const types = ['correct', 'incorrect', 'skipped'];
-            types.forEach(type => {
-                const elements = document.querySelectorAll(`.question-card[data-type="${type}"], .nav-item.${type}`);
-                elements.forEach(el => {
-                    el.style.display = visibility[type] ? '' : 'none';
-                });
-            });
-            updateChart();
-        }
-
-        function updateChart() {
-            if (chartInstance) {
-                const data = chartInstance.data.datasets[0].data;
-                const newData = [
-                    visibility.correct ? data[0] : 0,
-                    visibility.incorrect ? data[1] : 0,
-                    visibility.skipped ? data[2] : 0
-                ];
-                chartInstance.data.datasets[0].data = newData;
-                chartInstance.update();
-            }
-        }
-
         function createPieChart(correct, incorrect, skipped) {
             const ctx = document.getElementById('resultChart').getContext('2d');
             const total = correct + incorrect + skipped;
@@ -956,7 +931,7 @@
             const gradientIncorrect = createGradient(ctx, "#FF3B30", "#D32F2F");
             const gradientSkipped = createGradient(ctx, "#FFD700", "#FFA500");
 
-            chartInstance = new Chart(ctx, {
+            new Chart(ctx, {
                 type: 'pie',
                 data: {
                     labels: ['সঠিক উত্তর', 'ভুল উত্তর', 'এড়িয়ে যাওয়া'],
@@ -989,15 +964,6 @@
                                 usePointStyle: true,
                                 pointStyle: 'circle',
                                 color: getComputedStyle(document.documentElement).getPropertyValue('--text-color').trim()
-                            },
-                            onClick: (e, legendItem, legend) => {
-                                const index = legendItem.index;
-                                const type = ['correct', 'incorrect', 'skipped'][index];
-                                visibility[type] = !visibility[type];
-                                legendItem.text = visibility[type] 
-                                    ? ['সঠিক উত্তর', 'ভুল উত্তর', 'এড়িয়ে যাওয়া'][index] 
-                                    : `<s>${['সঠিক উত্তর', 'ভুল উত্তর', 'এড়িয়ে যাওয়া'][index]}</s>`;
-                                updateVisibility();
                             }
                         },
                         tooltip: {
@@ -1020,16 +986,27 @@
                     },
                     layout: { padding: 20 },
                     onClick: (event, activeElements) => {
-                        visibility = { correct: false, incorrect: false, skipped: false };
-                        chartInstance.options.plugins.legend.labels.generateLabels(chartInstance).forEach((label, index) => {
-                            label.text = `<s>${['সঠিক উত্তর', 'ভুল উত্তর', 'এড়িয়ে যাওয়া'][index]}</s>`;
-                        });
-                        updateVisibility();
+                        if (activeElements.length > 0) {
+                            const index = activeElements[0].index;
+                            const type = ['correct', 'incorrect', 'skipped'][index];
+                            visibility[type] = !visibility[type];
+                            updateVisibility();
+                        }
                     }
                 },
                 plugins: [ChartDataLabels]
             });
             document.getElementById("chartContainer").style.display = "block";
+        }
+
+        function updateVisibility() {
+            const types = ['correct', 'incorrect', 'skipped'];
+            types.forEach(type => {
+                const elements = document.querySelectorAll(`.question-card[data-type="${type}"], .nav-item.${type}`);
+                elements.forEach(el => {
+                    el.style.display = visibility[type] ? '' : 'none';
+                });
+            });
         }
 
         async function submitQuiz() {
