@@ -457,37 +457,8 @@
         }
 
         .nav-item.skipped {
-            /* Inherits background from .nav-item */
-        }
-
-        .go-to-top {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            background: var(--purple-box);
+            background: var(--secondary-text-color);
             color: white;
-            border: none;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s;
-            box-shadow: var(--shadow);
-            z-index: 100;
-        }
-
-        .go-to-top.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .go-to-top:hover {
-            background: var(--light-purple);
         }
 
         @media (max-width: 768px) {
@@ -515,11 +486,6 @@
             .nav-item {
                 display: inline-block;
                 margin: 0 5px;
-            }
-            .go-to-top {
-                width: 40px;
-                height: 40px;
-                font-size: 1rem;
             }
         }
 
@@ -593,10 +559,6 @@
             <button type="button" id="backToDashboardBtn" class="btn btn-primary">ড্যাশবোর্ডে ফিরে যান</button>
         </div>
     </div>
-
-    <button id="goToTopBtn" class="go-to-top" title="শীর্ষে যান">
-        <i class="fas fa-arrow-up"></i>
-    </button>
 
     <script>
         const firebaseConfig = {
@@ -791,7 +753,7 @@
 
                 const questionHeader = `
                     <div class="question-header">
-                        <div class="d-flex align-items-center gap-2">
+                        <div class="d-flex align-items-center gap-terminate2">
                             <span class="question-number">${idx + 1}</span>
                             <span class="chapter-box">${q.chapter}</span>
                         </div>
@@ -1054,7 +1016,7 @@
 
             let score = 0;
             let correctAnswers = 0;
-            let wrongAnswers = 0;
+            let incorrectAnswers = 0;
             let skippedAnswers = 0;
             const questionDivs = document.querySelectorAll(".question-card");
             const totalQuestions = questionDivs.length;
@@ -1071,14 +1033,13 @@
                         qDiv.dataset.type = 'correct';
                         document.querySelector(`.nav-item[data-index="${idx}"]`).classList.add('correct');
                     } else {
-                        wrongAnswers++;
+                        incorrectAnswers++;
                         score -= examData.negativeMark || 0;
                         selectedOption.parentElement.classList.add("incorrect");
                         qDiv.dataset.type = 'incorrect';
                         document.querySelector(`.nav-item[data-index="${idx}"]`).classList.add('incorrect');
                     }
                 } else {
-                    wrongAnswers++;
                     skippedAnswers++;
                     qDiv.dataset.type = 'skipped';
                     document.querySelector(`.nav-item[data-index="${idx}"]`).classList.add('skipped');
@@ -1121,11 +1082,11 @@
             document.getElementById("statsContainer").style.display = "block";
             document.getElementById("statsContainer").innerHTML = `
                 <p class="text-success fw-bold">সঠিক উত্তর: ${correctAnswers}</p>
-                <p class="text-danger fw-bold">ভুল উত্তর: ${wrongAnswers - skippedAnswers}</p>
+                <p class="text-danger fw-bold">ভুল উত্তর: ${incorrectAnswers}</p>
                 <p class="text-secondary fw-bold">এড়িয়ে যাওয়া: ${skippedAnswers}</p>
             `;
 
-            createPieChart(correctAnswers, wrongAnswers - skippedAnswers, skippedAnswers);
+            createPieChart(correctAnswers, incorrectAnswers, skippedAnswers);
 
             document.getElementById("stickyBar").style.display = "none";
             document.getElementById("backToDashboardContainer").style.display = "block";
@@ -1140,6 +1101,8 @@
                     examId: examData.id,
                     score: score,
                     correctAnswers: correctAnswers,
+                    incorrectAnswers: incorrectAnswers,
+                    skippedAnswers: skippedAnswers,
                     totalQuestions: questions.length,
                     answers: userAnswers,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
@@ -1167,34 +1130,36 @@
 
             renderQuiz(questions, true, resultData.answers || {});
 
+            let correctAnswers = 0;
+            let incorrectAnswers = 0;
+            let skippedAnswers = 0;
+
             questions.forEach((q, idx) => {
                 const questionDiv = document.querySelector(`.question-card[data-index="${idx}"]`);
                 const userAnswer = resultData.answers["q" + idx];
                 if (userAnswer) {
-                    if (userAnswer == q.correctOption) {
+                    if (userAnswer === q.correctOption) {
                         questionDiv.dataset.type = 'correct';
+                        correctAnswers++;
                     } else {
                         questionDiv.dataset.type = 'incorrect';
+                        incorrectAnswers++;
                     }
                 } else {
                     questionDiv.dataset.type = 'skipped';
+                    skippedAnswers++;
                 }
             });
-
-            const correctAnswers = resultData.correctAnswers;
-            const totalQuestions = questions.length;
-            const wrongAnswers = totalQuestions - correctAnswers;
-            const skippedAnswers = wrongAnswers - (resultData.totalQuestions - resultData.correctAnswers);
 
             document.getElementById("scoreDisplay").style.display = "block";
             document.getElementById("scoreDisplay").innerHTML = `আপনার স্কোর: ${resultData.score} / ${questions.length * examData.marksPerQuestion}`;
             document.getElementById("statsContainer").style.display = "block";
             document.getElementById("statsContainer").innerHTML = `
                 <p class="text-success fw-bold">সঠিক উত্তর: ${correctAnswers}</p>
-                <p class="text-danger fw-bold">ভুল উত্তর: ${wrongAnswers - skippedAnswers}</p>
+                <p class="text-danger fw-bold">ভুল উত্তর: ${incorrectAnswers}</p>
                 <p class="text-secondary fw-bold">এড়িয়ে যাওয়া: ${skippedAnswers}</p>
             `;
-            createPieChart(correctAnswers, wrongAnswers - skippedAnswers, skippedAnswers);
+            createPieChart(correctAnswers, incorrectAnswers, skippedAnswers);
             document.getElementById("backToDashboardContainer").style.display = "block";
         }
 
@@ -1215,20 +1180,6 @@
             document.getElementById('themeIcon').classList.toggle('fa-sun');
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
         }
-
-        // Go to Top Button Functionality
-        const goToTopBtn = document.getElementById('goToTopBtn');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 300) {
-                goToTopBtn.classList.add('show');
-            } else {
-                goToTopBtn.classList.remove('show');
-            }
-        });
-
-        goToTopBtn.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
 
         document.addEventListener("DOMContentLoaded", loadExam);
     </script>
