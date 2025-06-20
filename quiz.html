@@ -457,8 +457,37 @@
         }
 
         .nav-item.skipped {
-            background: var(--secondary-text-color);
+            /* Inherits background from .nav-item */
+        }
+
+        .go-to-top {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: var(--purple-box);
             color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            box-shadow: var(--shadow);
+            z-index: 100;
+        }
+
+        .go-to-top.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .go-to-top:hover {
+            background: var(--light-purple);
         }
 
         @media (max-width: 768px) {
@@ -486,6 +515,11 @@
             .nav-item {
                 display: inline-block;
                 margin: 0 5px;
+            }
+            .go-to-top {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
             }
         }
 
@@ -559,6 +593,10 @@
             <button type="button" id="backToDashboardBtn" class="btn btn-primary">ড্যাশবোর্ডে ফিরে যান</button>
         </div>
     </div>
+
+    <button id="goToTopBtn" class="go-to-top" title="শীর্ষে যান">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 
     <script>
         const firebaseConfig = {
@@ -753,7 +791,7 @@
 
                 const questionHeader = `
                     <div class="question-header">
-                        <div class="d-flex align-items-center gap-terminate2">
+                        <div class="d-flex align-items-center gap-2">
                             <span class="question-number">${idx + 1}</span>
                             <span class="chapter-box">${q.chapter}</span>
                         </div>
@@ -1133,7 +1171,7 @@
                 const questionDiv = document.querySelector(`.question-card[data-index="${idx}"]`);
                 const userAnswer = resultData.answers["q" + idx];
                 if (userAnswer) {
-                    if (userAnswer === q.correctOption) {
+                    if (userAnswer == q.correctOption) {
                         questionDiv.dataset.type = 'correct';
                     } else {
                         questionDiv.dataset.type = 'incorrect';
@@ -1177,6 +1215,20 @@
             document.getElementById('themeIcon').classList.toggle('fa-sun');
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
         }
+
+        // Go to Top Button Functionality
+        const goToTopBtn = document.getElementById('goToTopBtn');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                goToTopBtn.classList.add('show');
+            } else {
+                goToTopBtn.classList.remove('show');
+            }
+        });
+
+        goToTopBtn.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
 
         document.addEventListener("DOMContentLoaded", loadExam);
     </script>
