@@ -1487,16 +1487,20 @@
             const sanitizedSubject = sanitizeFileName(subject);
             const sanitizedChapter = sanitizeFileName(chapter.replace(/^Chapter \d+:\s*/, ''));
             const filePath = `./questions/subjects/${sanitizedSubject}/${sanitizedChapter}.json`;
+            
             try {
                 const response = await fetch(filePath);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
+                if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
                 const data = await response.json();
-                return data;
+                
+                // Ensure questions have correctOption property
+                return data.map(q => ({
+                    ...q,
+                    correctOption: q.correctOption || 0 // default to 0 if not specified
+                }));
+                
             } catch (error) {
                 console.error(`Error loading ${filePath}:`, error);
-                Toastify({ text: `${subject} - ${chapter} প্রশ্ন লোড করতে ব্যর্থ`, duration: 3000, style: { background: "#dc3545" } }).showToast();
                 return [];
             }
         }
@@ -1981,8 +1985,14 @@
                     player2: player2Id,
                     status: 'active',
                     questions: selectedQuestions,
-                    scores: { player1: 0, player2: 0 },
-                    answers: { player1: [], player2: [] },
+                    scores: { 
+                        player1: 0, 
+                        player2: 0 
+                    },
+                    answers: { 
+                        player1: [], 
+                        player2: [] 
+                    },
                     currentQuestion: 0,
                     startTime: firebase.firestore.FieldValue.serverTimestamp()
                 });
@@ -1992,8 +2002,8 @@
                 document.getElementById('battleScreen').style.display = 'block';
                 loadBattleQuestion();
             } catch (error) {
-                Toastify({ text: "ব্যাটল শুরু করতে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
                 console.error("Error starting battle:", error);
+                Toastify({ text: "ব্যাটল শুরু করতে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
             }
         }
 
@@ -2060,31 +2070,52 @@
                     });
                     loadBattleQuestion();
                 } catch (error) {
-                    Toastify({ text: "উত্তর জমা দিতে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
-                    console.error("Error submitting answer:", error);
+                    console.error("Error moving to next question:", error);
                 }
                 return;
             }
 
             try {
-                const battleDoc = await db.collection('battles').doc(currentBattle).get();
+                // Get the current battle data
+                const battleRef = db.collection('battles').doc(currentBattle);
+                const battleDoc = await battleRef.get();
                 const battleData = battleDoc.data();
+                
+                // Get the current question data
                 const questionData = selectedQuestions[currentQuestionIndex];
                 const questions = await loadQuestionsFromJSON(questionData.subject, questionData.chapter);
                 const question = questions[questionData.id];
+                
+                // Determine if answer is correct
                 const isCorrect = optionIndex === question.correctOption;
-
                 const user = auth.currentUser;
                 const playerField = battleData.player1 === user.uid ? 'player1' : 'player2';
-                playerAnswers.push({ questionIndex: currentQuestionIndex, answer: optionIndex, correct: isCorrect });
-
-                const updateData = {
-                    [`answers.${playerField}`]: playerAnswers
-                };
-                if (isCorrect) {
-                    updateData[`scores.${playerField}`] = firebase.firestore.FieldValue.increment(1);
-                }
-
+                
+                // Use transaction to ensure atomic update
+                await db.runTransaction(async (transaction) => {
+                    // Get fresh document data
+                    const freshDoc = await transaction.get(battleRef);
+                    const freshData = freshDoc.data();
+                    
+                    // Update answers array
+                    const updatedAnswers = [...(freshData.answers[playerField] || []), 
+                        { questionIndex: currentQuestionIndex, answer: optionIndex, correct: isCorrect }];
+                    
+                    // Prepare update data
+                    const updateData = {
+                        [`answers.${playerField}`]: updatedAnswers
+                    };
+                    
+                    // Increment score if correct
+                    if (isCorrect) {
+                        updateData[`scores.${playerField}`] = firebase.firestore.FieldValue.increment(1);
+                    }
+                    
+                    // Update the document
+                    transaction.update(battleRef, updateData);
+                });
+                
+                // Update UI immediately
                 const options = document.querySelectorAll('#battleOptions .option');
                 options.forEach((option, idx) => {
                     option.disabled = true;
@@ -2094,19 +2125,28 @@
                         option.classList.add('incorrect');
                     }
                 });
-
+                
+                // Update local score display
+                if (isCorrect) {
+                    const scoreElement = document.getElementById(`${playerField}Score`);
+                    const currentScore = parseInt(scoreElement.textContent);
+                    scoreElement.textContent = currentScore + 1;
+                }
+                
                 clearInterval(battleTimer);
                 setTimeout(async () => {
                     currentQuestionIndex++;
-                    await db.collection('battles').doc(currentBattle).update({
-                        currentQuestion: currentQuestionIndex,
-                        ...updateData
-                    });
+                    await battleRef.update({ currentQuestion: currentQuestionIndex });
                     loadBattleQuestion();
                 }, 2000);
+                
             } catch (error) {
-                Toastify({ text: "উত্তর জমা দিতে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
                 console.error("Error submitting answer:", error);
+                Toastify({ 
+                    text: "উত্তর জমা দিতে ত্রুটি: " + error.message, 
+                    duration: 3000, 
+                    style: { background: "#dc3545" } 
+                }).showToast();
             }
         }
 
@@ -2165,44 +2205,36 @@
             openBattleModal();
         }
 
-        async function setupBattleListener(userId) {
+        function setupBattleListener(userId) {
             try {
                 // Listener for battles where user is player1
                 battleListener = db.collection('battles')
                     .where('player1', '==', userId)
                     .where('status', '==', 'active')
-                    .onSnapshot(async snapshot => {
-                        snapshot.docChanges().forEach(async change => {
-                            if (change.type === 'added' || change.type === 'modified') {
+                    .onSnapshot(snapshot => {
+                        snapshot.docChanges().forEach(change => {
+                            if (change.type === 'modified') {
                                 const battleData = change.doc.data();
-                                currentBattle = change.doc.id;
-                                selectedQuestions = battleData.questions;
-                                await updatePlayerInfo(battleData);
-                                loadBattleQuestion();
+                                // Update score display
+                                document.getElementById('player1Score').textContent = battleData.scores.player1 || 0;
+                                document.getElementById('player2Score').textContent = battleData.scores.player2 || 0;
                             }
                         });
-                    }, error => {
-                        console.error("Error in battle listener (player1):", error);
-                        Toastify({ text: "ব্যাটল তথ্য লোডে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
                     });
-
+                
                 // Listener for battles where user is player2
                 battleListener2 = db.collection('battles')
                     .where('player2', '==', userId)
                     .where('status', '==', 'active')
-                    .onSnapshot(async snapshot => {
-                        snapshot.docChanges().forEach(async change => {
-                            if (change.type === 'added' || change.type === 'modified') {
+                    .onSnapshot(snapshot => {
+                        snapshot.docChanges().forEach(change => {
+                            if (change.type === 'modified') {
                                 const battleData = change.doc.data();
-                                currentBattle = change.doc.id;
-                                selectedQuestions = battleData.questions;
-                                await updatePlayerInfo(battleData);
-                                loadBattleQuestion();
+                                // Update score display
+                                document.getElementById('player2Score').textContent = battleData.scores.player2 || 0;
+                                document.getElementById('player1Score').textContent = battleData.scores.player1 || 0;
                             }
                         });
-                    }, error => {
-                        console.error("Error in battle listener (player2):", error);
-                        Toastify({ text: "ব্যাটল তথ্য লোডে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
                     });
             } catch (error) {
                 console.error("Error setting up battle listener:", error);
