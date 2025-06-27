@@ -272,7 +272,6 @@
             100% { box-shadow: 0 0 8px var(--glow-color); }
         }
 
-        /* Custom Exam Section Styles */
         .custom-exam-section {
             padding: 1rem;
             max-width: 1200px;
@@ -599,7 +598,6 @@
             }
         }
 
-        /* Battle Modal Styles */
         .modal {
             display: none;
             position: fixed;
@@ -1018,7 +1016,6 @@
             </div>
         </div>
 
-        <!-- Custom Exam Section -->
         <div class="custom-exam-section" id="custom-exam-section">
             <h2 class="custom-exam-headline">কাস্টম পরীক্ষা তৈরি করুন</h2>
             <div class="container">
@@ -1083,10 +1080,9 @@
         </div>
     </div>
 
-    <!-- Battle Modal -->
     <div id="battleModal" class="modal">
         <div class="modal-content">
-            <span class="close-modal" onclick="closeBattleModal()">&times;</span>
+            <span class="close-modal" onclick="closeBattleModal()">×</span>
             <h2>কুইজ ব্যাটল</h2>
             
             <div id="battleTabs">
@@ -1112,7 +1108,6 @@
         </div>
     </div>
 
-    <!-- Battle Screen -->
     <div id="battleScreen">
         <div class="player-info">
             <div class="player" id="player1">
@@ -1164,6 +1159,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
     <script>
+        // Firebase configuration (move to a separate file in production)
         const firebaseConfig = {
             apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
             authDomain: "dopamine-quiz.firebaseapp.com",
@@ -1173,10 +1169,12 @@
             appId: "1:822531459966:web:8e7d2385090e997eb1c12f"
         };
 
+        // Initialize Firebase
         const app = firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
         const db = firebase.firestore();
 
+        // Cache and battle variables
         const CACHE_KEY = 'userProfileData';
         const CACHE_EXPIRATION = 24 * 60 * 60 * 1000;
         const QUESTION_COUNT_CACHE_KEY = 'questionCounts';
@@ -1184,18 +1182,18 @@
 
         let isDark = localStorage.getItem('theme') === 'dark';
         let isAuthenticated = false;
-
-        // Battle variables
         let currentBattle = null;
         let battleTimer = null;
         let timeLeft = 30;
         let matchmakingListener = null;
         let battleListener = null;
+        let battleListener2 = null; // Second listener for player2
         let selectedQuestions = [];
         let currentQuestionIndex = 0;
         let playerAnswers = [];
         let opponentAnswers = [];
 
+        // Theme setup
         if (isDark) {
             document.body.setAttribute('data-theme', 'dark');
             document.getElementById('themeIcon').classList.replace('fa-moon', 'fa-sun');
@@ -1259,6 +1257,7 @@
             }
         }
 
+        // Auth state listener
         auth.onAuthStateChanged(async user => {
             const loginBtn = document.getElementById('login-btn');
             const menuContainer = document.getElementById('menu-container');
@@ -1298,16 +1297,32 @@
                     .onSnapshot(snapshot => {
                         snapshot.docChanges().forEach(change => {
                             if (change.type === 'added') {
-                                showChallengeNotification(change.doc.data());
+                                showChallengeNotification({ ...change.doc.data(), requestId: change.doc.id });
                             }
                         });
                     });
+
+                // Setup battle listener for active battles
+                setupBattleListener(user.uid);
             } else {
                 isAuthenticated = false;
                 loginBtn.style.display = 'inline-block';
                 menuContainer.style.display = 'none';
                 userFullName.textContent = 'ব্যবহারকারী';
                 lastName.textContent = 'ব্যবহারকারী';
+                // Clean up listeners
+                if (battleListener) {
+                    battleListener();
+                    battleListener = null;
+                }
+                if (battleListener2) {
+                    battleListener2();
+                    battleListener2 = null;
+                }
+                if (matchmakingListener) {
+                    matchmakingListener();
+                    matchmakingListener = null;
+                }
             }
         });
 
@@ -1472,19 +1487,16 @@
             const sanitizedSubject = sanitizeFileName(subject);
             const sanitizedChapter = sanitizeFileName(chapter.replace(/^Chapter \d+:\s*/, ''));
             const filePath = `./questions/subjects/${sanitizedSubject}/${sanitizedChapter}.json`;
-            console.log(`Attempting to load: ${filePath}`);
             try {
                 const response = await fetch(filePath);
                 if (!response.ok) {
-                    console.error(`Fetch failed for ${filePath}: ${response.status} - ${response.statusText}`);
                     throw new Error(`HTTP error! Status: ${response.status}`);
                 }
                 const data = await response.json();
-                console.log(`Loaded ${data.length} questions from ${filePath}`);
                 return data;
             } catch (error) {
                 console.error(`Error loading ${filePath}:`, error);
-                Toastify({ text: `${subject} - ${chapter} প্রশ্ন লোড করতে ব্যর্থ: ${error.message}`, duration: 3000, style: { background: "#dc3545" } }).showToast();
+                Toastify({ text: `${subject} - ${chapter} প্রশ্ন লোড করতে ব্যর্থ`, duration: 3000, style: { background: "#dc3545" } }).showToast();
                 return [];
             }
         }
@@ -1615,23 +1627,20 @@
                 window.location.href = 'https://dopamine-edu.github.io/auth.html';
                 return;
             }
+
             const submitButton = e.target.querySelector('.btn-primary');
             submitButton.disabled = true;
             submitButton.textContent = 'তৈরি হচ্ছে...';
             const loadingDiv = document.getElementById("loading-spinner");
             loadingDiv.style.display = "block";
 
-            const selectedChapters = [];
-            document.querySelectorAll('.chapter-box .form-check-input:checked').forEach(checkbox => {
-                const chapterBox = checkbox.parentElement;
-                selectedChapters.push({ subject: chapterBox.dataset.subject, chapter: chapterBox.dataset.originalChapter });
-            });
-            
             const numQuestions = parseInt(document.getElementById("numQuestions").value);
             const timeSelect = document.getElementById("timeSelect");
-            let time = timeSelect.value === 'custom' ? parseInt(document.getElementById("customTime").value) : parseInt(timeSelect.value);
+            const customTime = parseInt(document.getElementById("customTime").value);
             const negativeMarking = parseFloat(document.getElementById("negativeMarking").value);
+            const selectedChapters = document.querySelectorAll('.chapter-box .form-check-input:checked');
 
+            // Client-side validation
             if (selectedChapters.length === 0) {
                 Toastify({ text: "অন্তত একটি অধ্যায় নির্বাচন করুন!", duration: 3000, style: { background: "#dc3545" } }).showToast();
                 loadingDiv.style.display = "none";
@@ -1639,8 +1648,22 @@
                 submitButton.textContent = 'পরীক্ষা শুরু';
                 return;
             }
-            if (!numQuestions || numQuestions <= 0 || !time || time <= 0 || isNaN(negativeMarking) || negativeMarking < 0) {
-                Toastify({ text: "সব ক্ষেত্র সঠিকভাবে পূরণ করুন (প্রশ্ন > ০, সময় > ০, নেগেটিভ নম্বর ≥ ০)।", duration: 3000, style: { background: "#dc3545" } }).showToast();
+            if (!numQuestions || numQuestions <= 0) {
+                Toastify({ text: "প্রশ্নের সংখ্যা ১ বা তার বেশি হতে হবে।", duration: 3000, style: { background: "#dc3545" } }).showToast();
+                loadingDiv.style.display = "none";
+                submitButton.disabled = false;
+                submitButton.textContent = 'পরীক্ষা শুরু';
+                return;
+            }
+            if (timeSelect.value === 'custom' && (!customTime || customTime <= 0)) {
+                Toastify({ text: "কাস্টম সময় ১ মিনিট বা তার বেশি হতে হবে।", duration: 3000, style: { background: "#dc3545" } }).showToast();
+                loadingDiv.style.display = "none";
+                submitButton.disabled = false;
+                submitButton.textContent = 'পরীক্ষা শুরু';
+                return;
+            }
+            if (isNaN(negativeMarking) || negativeMarking < 0) {
+                Toastify({ text: "নেগেটিভ মার্কিং ০ বা তার বেশি হতে হবে।", duration: 3000, style: { background: "#dc3545" } }).showToast();
                 loadingDiv.style.display = "none";
                 submitButton.disabled = false;
                 submitButton.textContent = 'পরীক্ষা শুরু';
@@ -1648,21 +1671,31 @@
             }
 
             try {
+                const selectedChaptersData = [];
+                selectedChapters.forEach(checkbox => {
+                    const chapterBox = checkbox.parentElement;
+                    selectedChaptersData.push({ subject: chapterBox.dataset.subject, chapter: chapterBox.dataset.originalChapter });
+                });
+
                 const allQuestions = [];
-                for (const { subject, chapter } of selectedChapters) {
+                for (const { subject, chapter } of selectedChaptersData) {
                     const chapterQuestions = await loadQuestionsFromJSON(subject, chapter);
                     chapterQuestions.forEach((q, index) => {
                         allQuestions.push({ id: index, subject, chapter });
                     });
                 }
-                if (allQuestions.length === 0) throw new Error("নির্বাচিত অধ্যায়গুলোর জন্য কোনো প্রশ্ন পাওয়া যায়নি।");
+
+                if (allQuestions.length === 0) {
+                    throw new Error("নির্বাচিত অধ্যায়গুলোর জন্য কোনো প্রশ্ন পাওয়া যায়নি।");
+                }
                 if (allQuestions.length < numQuestions) {
                     Toastify({ text: `মাত্র ${allQuestions.length}টি প্রশ্ন পাওয়া গেছে, সবগুলো ব্যবহার করা হচ্ছে।`, duration: 3000, style: { background: "#ff9800" } }).showToast();
                 }
 
                 const selectedQuestions = allQuestions.sort(() => 0.5 - Math.random()).slice(0, Math.min(numQuestions, allQuestions.length));
-                const subjectsList = [...new Set(selectedChapters.map(item => item.subject))];
-                const chaptersList = selectedChapters.map(item => item.chapter);
+                const subjectsList = [...new Set(selectedChaptersData.map(item => item.subject))];
+                const chaptersList = selectedChaptersData.map(item => item.chapter);
+                const time = timeSelect.value === 'custom' ? customTime : parseInt(timeSelect.value);
 
                 const examDocRef = await db.collection("exams").add({
                     title: `কাস্টম পরীক্ষা - ${chaptersList.map(ch => ch.replace(/^Chapter \d+:\s*/, '')).join(", ")}`,
@@ -1693,22 +1726,35 @@
         // Battle modal functions
         function openBattleModal() {
             if (!isAuthenticated) {
-                requireLogin();
+                Toastify({ text: "কুইজ ব্যাটল খেলতে লগইন করুন!", duration: 3000, style: { background: "#dc3545" } }).showToast();
+                window.location.href = 'https://dopamine-edu.github.io/auth.html';
                 return;
             }
             document.getElementById('battleModal').style.display = 'block';
             loadFriendList();
             loadBattleHistory();
+            const user = auth.currentUser;
+            if (user) {
+                setupBattleListener(user.uid);
+            }
         }
-        
+
         function closeBattleModal() {
             document.getElementById('battleModal').style.display = 'none';
             if (matchmakingListener) {
                 matchmakingListener();
                 matchmakingListener = null;
             }
+            if (battleListener) {
+                battleListener();
+                battleListener = null;
+            }
+            if (battleListener2) {
+                battleListener2();
+                battleListener2 = null;
+            }
         }
-        
+
         function openBattleTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.remove('active');
@@ -1716,25 +1762,29 @@
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
-            
+
             document.getElementById(tabId).classList.add('active');
-            event.target.classList.add('active');
+            document.querySelector(`[onclick="openBattleTab('${tabId}')"]`).classList.add('active');
         }
-        
-        // Friend challenge functions
+
         async function loadFriendList() {
             const user = auth.currentUser;
             if (!user) return;
-            
+
             try {
                 const snapshot = await db.collection('users')
                     .where('uid', '!=', user.uid)
                     .limit(20)
                     .get();
-                
+
                 const friendList = document.getElementById('friendList');
                 friendList.innerHTML = '';
-                
+
+                if (snapshot.empty) {
+                    friendList.innerHTML = '<p>কোনো বন্ধু পাওয়া যায়নি</p>';
+                    return;
+                }
+
                 snapshot.forEach(doc => {
                     const friend = doc.data();
                     const friendItem = document.createElement('div');
@@ -1750,379 +1800,56 @@
                 });
             } catch (error) {
                 console.error("Error loading friends:", error);
+                Toastify({ text: "বন্ধু লোড করতে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
             }
         }
-        
-        function searchFriends() {
-            const searchTerm = document.getElementById('friendSearch').value.toLowerCase();
-            const friends = document.querySelectorAll('.friend-item');
-            
-            friends.forEach(friend => {
-                const name = friend.textContent.toLowerCase();
-                if (name.includes(searchTerm)) {
-                    friend.style.display = 'flex';
-                } else {
-                    friend.style.display = 'none';
-                }
-            });
-        }
-        
-        function sendChallenge(friendId) {
-            const user = auth.currentUser;
-            if (!user) return;
-            
-            db.collection('battle_requests').add({
-                fromUser: user.uid,
-                toUser: friendId,
-                status: 'pending',
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            }).then(() => {
-                Toastify({ 
-                    text: "চ্যালেঞ্জ পাঠানো হয়েছে!", 
-                    duration: 3000,
-                    style: { background: "#6b48ff" }
-                }).showToast();
-            }).catch(error => {
-                Toastify({ 
-                    text: "চ্যালেঞ্জ পাঠাতে ব্যর্থ: " + error.message, 
-                    duration: 3000,
-                    style: { background: "#dc3545" }
-                }).showToast();
-            });
-        }
-        
-        function showChallengeNotification(request) {
-            const accept = confirm(`${request.fromUser} আপনাকে চ্যালেঞ্জ করেছে! গ্রহণ করবেন?`);
-            
-            if (accept) {
-                acceptChallenge(request);
-            } else {
-                rejectChallenge(request);
-            }
-        }
-        
-        function acceptChallenge(request) {
-            const battleRef = db.collection('battles').doc();
-            
-            getRandomQuestions(10).then(questions => {
-                db.runTransaction(transaction => {
-                    transaction.update(db.collection('battle_requests').doc(request.requestId), {
-                        status: 'accepted'
-                    });
-                    
-                    transaction.set(battleRef, {
-                        battleId: battleRef.id,
-                        player1: request.fromUser,
-                        player2: request.toUser,
-                        status: 'active',
-                        questions: questions,
-                        scores: { player1: 0, player2: 0 },
-                        currentQuestion: 0,
-                        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-                        startTime: firebase.firestore.FieldValue.serverTimestamp()
-                    });
-                    
-                    return Promise.resolve();
-                }).then(() => {
-                    startBattle({
-                        battleId: battleRef.id,
-                        player1: request.fromUser,
-                        player2: request.toUser,
-                        questions: questions,
-                        scores: { player1: 0, player2: 0 },
-                        status: 'active'
-                    });
-                });
-            });
-        }
-        
-        function rejectChallenge(request) {
-            db.collection('battle_requests').doc(request.requestId).update({
-                status: 'rejected'
-            });
-        }
-        
-        // Matchmaking functions
-        function findOpponent() {
-            const user = auth.currentUser;
-            if (!user) return;
-            
-            document.getElementById('matchmakingStatus').textContent = 'খেলোয়াড় খুঁজছি...';
-            
-            db.collection('matchmaking').doc(user.uid).set({
-                userId: user.uid,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
-            });
-            
-            matchmakingListener = db.collection('battles')
-                .where('status', '==', 'waiting')
-                .where('player2', '==', '')
-                .limit(1)
-                .onSnapshot(snapshot => {
-                    if (!snapshot.empty) {
-                        const battle = snapshot.docs[0];
-                        db.collection('battles').doc(battle.id).update({
-                            player2: user.uid,
-                            status: 'active',
-                            startTime: firebase.firestore.FieldValue.serverTimestamp()
-                        });
-                    } else {
-                        createNewBattle(user.uid);
-                    }
-                });
-                
-            setupBattleListener(user.uid);
-        }
-        
-        function createNewBattle(player1Id) {
-            const battleRef = db.collection('battles').doc();
-            
-            getRandomQuestions(10).then(questions => {
-                battleRef.set({
-                    battleId: battleRef.id,
-                    player1: player1Id,
-                    player2: '',
-                    status: 'waiting',
-                    questions: questions,
-                    scores: { player1: 0, player2: 0 },
-                    currentQuestion: 0,
-                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                });
-            });
-        }
-        
-        function setupBattleListener(userId) {
-            battleListener = db.collection('battles')
-                .where('status', '==', 'active')
-                .where(function() {
-                    return firebase.firestore.FieldPath.documentId() != 'dummy' && 
-                          (firebase.firestore.FieldPath.documentId() == userId || 
-                           firebase.firestore.FieldPath.documentId() == userId);
-                })
-                .onSnapshot(snapshot => {
-                    snapshot.docChanges().forEach(change => {
-                        if (change.type === 'added' || change.type === 'modified') {
-                            const battle = change.doc.data();
-                            if (battle.status === 'active' && 
-                                (battle.player1 === userId || battle.player2 === userId)) {
-                                startBattle(battle);
-                            }
-                        }
-                    });
-                });
-        }
-        
-        // Battle functions
-        async function startBattle(battleData) {
-            closeBattleModal();
-            document.getElementById('battleScreen').style.display = 'block';
-            document.getElementById('battleResult').style.display = 'none';
-            document.querySelector('.question-container').style.display = 'block';
-            
-            currentBattle = battleData;
-            currentQuestionIndex = 0;
-            playerAnswers = [];
-            opponentAnswers = [];
-            
-            await loadPlayerInfo(battleData.player1, 'player1');
-            await loadPlayerInfo(battleData.player2, 'player2');
-            
-            showQuestion(currentQuestionIndex);
-        }
-        
-        async function loadPlayerInfo(userId, elementPrefix) {
-            try {
-                const userDoc = await db.collection('users').doc(userId).get();
-                if (userDoc.exists) {
-                    const user = userDoc.data();
-                    document.getElementById(`${elementPrefix}Name`).textContent = user.fullName || 'ব্যবহারকারী';
-                    document.getElementById(`${elementPrefix}Avatar`).src = user.avatar || 
-                        'https://cdn-icons-png.flaticon.com/512/4333/4333609.png';
-                }
-            } catch (error) {
-                console.error("Error loading player info:", error);
-            }
-        }
-        
-        function showQuestion(index) {
-            if (index >= currentBattle.questions.length) {
-                endBattle();
-                return;
-            }
-            
-            const question = currentBattle.questions[index];
-            document.getElementById('battleQuestionText').textContent = question.question;
-            
-            const options = document.querySelectorAll('.option');
-            question.options.forEach((option, i) => {
-                options[i].textContent = option;
-                options[i].className = 'option';
-            });
-            
-            timeLeft = 30;
-            document.getElementById('questionTimer').textContent = timeLeft;
-            
-            if (battleTimer) clearInterval(battleTimer);
-            battleTimer = setInterval(() => {
-                timeLeft--;
-                document.getElementById('questionTimer').textContent = timeLeft;
-                
-                if (timeLeft <= 0) {
-                    clearInterval(battleTimer);
-                    submitAnswer(-1);
-                }
-            }, 1000);
-        }
-        
-        function submitAnswer(optionIndex) {
-            clearInterval(battleTimer);
-            
-            const user = auth.currentUser;
-            if (!user) return;
-            
-            const isPlayer1 = user.uid === currentBattle.player1;
-            const answerKey = isPlayer1 ? 'player1Answers' : 'player2Answers';
-            
-            const question = currentBattle.questions[currentQuestionIndex];
-            const isCorrect = optionIndex === question.correctAnswer;
-            
-            if (optionIndex >= 0) {
-                const options = document.querySelectorAll('.option');
-                options[optionIndex].classList.add(isCorrect ? 'correct' : 'incorrect');
-                if (question.correctAnswer >= 0) {
-                    options[question.correctAnswer].classList.add('correct');
-                }
-            }
-            
-            const scoreUpdate = {};
-            scoreUpdate[`scores.${isPlayer1 ? 'player1' : 'player2'}`] = 
-                firebase.firestore.FieldValue.increment(isCorrect ? 10 : 0);
-            
-            db.collection('battles').doc(currentBattle.battleId).update(scoreUpdate);
-            
-            playerAnswers.push({
-                questionIndex: currentQuestionIndex,
-                answer: optionIndex,
-                isCorrect: isCorrect,
-                time: 30 - timeLeft
-            });
-            
-            setTimeout(() => {
-                currentQuestionIndex++;
-                showQuestion(currentQuestionIndex);
-            }, 3000);
-        }
-        
-        function endBattle() {
-            clearInterval(battleTimer);
-            
-            document.querySelector('.question-container').style.display = 'none';
-            document.getElementById('battleResult').style.display = 'block';
-            
-            const user = auth.currentUser;
-            const isPlayer1 = user.uid === currentBattle.player1;
-            const playerScore = isPlayer1 ? currentBattle.scores.player1 : currentBattle.scores.player2;
-            const opponentScore = isPlayer1 ? currentBattle.scores.player2 : currentBattle.scores.player1;
-            
-            document.getElementById('finalPlayer1Score').textContent = isPlayer1 ? playerScore : opponentScore;
-            document.getElementById('finalPlayer2Score').textContent = isPlayer1 ? opponentScore : playerScore;
-            
-            const correctAnswers = playerAnswers.filter(a => a.isCorrect).length;
-            document.getElementById('correctAnswers').textContent = correctAnswers;
-            
-            if (playerScore > opponentScore) {
-                document.getElementById('resultTitle').textContent = 'আপনি জিতেছেন!';
-            } else if (playerScore < opponentScore) {
-                document.getElementById('resultTitle').textContent = 'আপনি হারেছেন!';
-            } else {
-                document.getElementById('resultTitle').textContent = 'ড্র হয়েছে!';
-            }
-            
-            db.collection('battles').doc(currentBattle.battleId).update({
-                status: 'completed',
-                endTime: firebase.firestore.FieldValue.serverTimestamp()
-            });
-            
-            updateUserStats(playerScore > opponentScore);
-        }
-        
-        async function updateUserStats(didWin) {
-            const user = auth.currentUser;
-            if (!user) return;
-            
-            const userRef = db.collection('user_stats').doc(user.uid);
-            
-            try {
-                await db.runTransaction(async transaction => {
-                    const doc = await transaction.get(userRef);
-                    
-                    if (doc.exists) {
-                        const stats = doc.data();
-                        transaction.update(userRef, {
-                            battlesPlayed: firebase.firestore.FieldValue.increment(1),
-                            battlesWon: firebase.firestore.FieldValue.increment(didWin ? 1 : 0),
-                            winStreak: didWin ? (stats.winStreak || 0) + 1 : 0,
-                            highestScore: Math.max(stats.highestScore || 0, 
-                                didWin ? currentBattle.scores[user.uid === currentBattle.player1 ? 'player1' : 'player2'] : 0)
-                        });
-                    } else {
-                        transaction.set(userRef, {
-                            battlesPlayed: 1,
-                            battlesWon: didWin ? 1 : 0,
-                            winStreak: didWin ? 1 : 0,
-                            highestScore: didWin ? currentBattle.scores[user.uid === currentBattle.player1 ? 'player1' : 'player2'] : 0,
-                            averageScore: didWin ? currentBattle.scores[user.uid === currentBattle.player1 ? 'player1' : 'player2'] : 0
-                        });
-                    }
-                });
-            } catch (error) {
-                console.error("Error updating stats:", error);
-            }
-        }
-        
-        function closeBattleScreen() {
-            document.getElementById('battleScreen').style.display = 'none';
-            if (battleListener) {
-                battleListener();
-                battleListener = null;
-            }
-            openBattleModal();
-        }
-        
-        // Battle history
+
         async function loadBattleHistory() {
             const user = auth.currentUser;
             if (!user) return;
-            
+
             try {
-                const snapshot = await db.collection('battles')
+                // Query battles where the user is player1
+                const snapshot1 = await db.collection('battles')
                     .where('status', '==', 'completed')
-                    .where(function() {
-                        return firebase.firestore.FieldPath.documentId() != 'dummy' && 
-                              (firebase.firestore.FieldPath.documentId() == user.uid || 
-                               firebase.firestore.FieldPath.documentId() == user.uid);
-                    })
+                    .where('player1', '==', user.uid)
                     .orderBy('endTime', 'desc')
                     .limit(10)
                     .get();
-                
+
+                // Query battles where the user is player2
+                const snapshot2 = await db.collection('battles')
+                    .where('status', '==', 'completed')
+                    .where('player2', '==', user.uid)
+                    .orderBy('endTime', 'desc')
+                    .limit(10)
+                    .get();
+
                 const historyList = document.getElementById('historyList');
                 historyList.innerHTML = '';
-                
-                if (snapshot.empty) {
+
+                // Combine results
+                const battles = [];
+                snapshot1.forEach(doc => battles.push({ id: doc.id, ...doc.data() }));
+                snapshot2.forEach(doc => battles.push({ id: doc.id, ...doc.data() }));
+
+                // Sort by endTime and limit to 10
+                battles.sort((a, b) => (b.endTime?.toMillis() || 0) - (a.endTime?.toMillis() || 0));
+                const limitedBattles = battles.slice(0, 10);
+
+                if (limitedBattles.length === 0) {
                     historyList.innerHTML = '<p>কোনো ইতিহাস পাওয়া যায়নি</p>';
                     return;
                 }
-                
-                snapshot.forEach(async doc => {
-                    const battle = doc.data();
+
+                for (const battle of limitedBattles) {
                     const opponentId = battle.player1 === user.uid ? battle.player2 : battle.player1;
                     const opponentDoc = await db.collection('users').doc(opponentId).get();
-                    const opponent = opponentDoc.data();
-                    
+                    const opponent = opponentDoc.data() || { fullName: 'ব্যবহারকারী', avatar: 'https://cdn-icons-png.flaticon.com/512/4333/4333609.png' };
+
                     const isWinner = (battle.player1 === user.uid && battle.scores.player1 > battle.scores.player2) ||
                                     (battle.player2 === user.uid && battle.scores.player2 > battle.scores.player1);
-                    
+
                     const historyItem = document.createElement('div');
                     historyItem.className = `history-item ${isWinner ? 'win' : 'lose'}`;
                     historyItem.innerHTML = `
@@ -2130,7 +1857,7 @@
                             <img src="${opponent.avatar || 'https://cdn-icons-png.flaticon.com/512/4333/4333609.png'}" 
                                  class="history-avatar"
                                  onerror="this.src='https://via.placeholder.com/30'">
-                            <span>${opponent.fullName || 'ব্যবহারকারী'}</span>
+                            <span>${opponent.fullName}</span>
                         </div>
                         <div>
                             <span>${battle.scores.player1}</span> - 
@@ -2138,33 +1865,371 @@
                         </div>
                     `;
                     historyList.appendChild(historyItem);
-                });
+                }
             } catch (error) {
                 console.error("Error loading battle history:", error);
+                Toastify({ text: "ইতিহাস লোড করতে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
             }
         }
-        
-        // Question management
-        async function getRandomQuestions(count) {
-            // This should be replaced with your actual question fetching logic
-            return [
-                {
-                    question: "মাইটোকন্ড্রিয়াকে বলা হয় কোষের কী?",
-                    options: ["শক্তিঘর", "প্রোটিন কারখানা", "নিয়ন্ত্রণ কেন্দ্র", "পরিবহন ব্যবস্থা"],
-                    correctAnswer: 0
-                },
-                {
-                    question: "নিচের কোনটি উদ্ভিদ হরমোন নয়?",
-                    options: ["অক্সিন", "জিব্বারেলিন", "ইনসুলিন", "সাইটোকাইনিন"],
-                    correctAnswer: 2
-                }
-            ].slice(0, count);
+
+        function searchFriends() {
+            const searchTerm = document.getElementById('friendSearch').value.toLowerCase();
+            const friends = document.querySelectorAll('.friend-item');
+
+            friends.forEach(friend => {
+                const name = friend.textContent.toLowerCase();
+                friend.style.display = name.includes(searchTerm) ? 'flex' : 'none';
+            });
         }
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            updateSummary();
-            populateSubjects();
-        });
+
+        function sendChallenge(friendId) {
+            const user = auth.currentUser;
+            if (!user) return;
+
+            db.collection('battle_requests').add({
+                fromUser: user.uid,
+                toUser: friendId,
+                status: 'pending',
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            }).then(() => {
+                Toastify({ text: "চ্যালেঞ্জ পাঠানো হয়েছে!", duration: 3000, style: { background: "#6b48ff" } }).showToast();
+            }).catch(error => {
+                Toastify({ text: "চ্যালেঞ্জ পাঠাতে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
+                console.error("Error sending challenge:", error);
+            }
+        }
+
+        function showChallengeNotification(request) {
+            Toastify({
+                text: `আপনি ${request.fromUser} থেকে একটি ব্যাটল চ্যালেঞ্জ পেয়েছেন!`,
+                duration: 5000,
+                style: { background: "#6b48ff" },
+                close: true,
+                onClick: () => {
+                    db.collection('battle_requests').doc(request.requestId).update({
+                        status: 'accepted'
+                    }).then(() => startBattle(request.fromUser, auth.currentUser.uid));
+                }
+            }).showToast();
+        }
+
+        async function findOpponent() {
+            const user = auth.currentUser;
+            if (!user) return;
+
+            const statusDiv = document.getElementById('matchmakingStatus');
+            statusDiv.textContent = 'প্রতিপক্ষ খুঁজছি...';
+
+            try {
+                const existingRequest = await db.collection('battle_requests')
+                    .where('status', '==', 'pending')
+                    .where('toUser', '==', null)
+                    .where('fromUser', '!=', user.uid)
+                    .limit(1)
+                    .get();
+
+                if (!existingRequest.empty) {
+                    const request = existingRequest.docs[0];
+                    await db.collection('battle_requests').doc(request.id).update({
+                        toUser: user.uid,
+                        status: 'accepted'
+                    });
+                    startBattle(request.data().fromUser, user.uid);
+                    return;
+                }
+
+                const requestRef = await db.collection('battle_requests').add({
+                    fromUser: user.uid,
+                    toUser: null,
+                    status: 'pending',
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                matchmakingListener = db.collection('battle_requests')
+                    .doc(requestRef.id)
+                    .onSnapshot(doc => {
+                        if (doc.exists && doc.data().status === 'accepted') {
+                            statusDiv.textContent = 'প্রতিপক্ষ পাওয়া গেছে!';
+                            startBattle(user.uid, doc.data().toUser);
+                        }
+                    });
+            } catch (error) {
+                statusDiv.textContent = 'প্রতিপক্ষ খুঁজতে ত্রুটি';
+                Toastify({ text: "প্রতিপক্ষ খুঁজতে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
+                console.error("Error finding opponent:", error);
+            }
+        }
+
+        async function startBattle(player1Id, player2Id) {
+            try {
+                const subjectsToInclude = ['Botany', 'Zoology', 'Physics 1st', 'Physics 2nd', 'Chemistry 1st', 'Chemistry 2nd'];
+                const allQuestions = [];
+
+                for (const subject of subjectsToInclude) {
+                    for (const chapter of subjects[subject]) {
+                        const questions = await loadQuestionsFromJSON(subject, chapter);
+                        questions.forEach((q, index) => {
+                            allQuestions.push({ id: index, subject, chapter });
+                        });
+                    }
+                }
+
+                selectedQuestions = allQuestions.sort(() => 0.5 - Math.random()).slice(0, 10);
+
+                const battleRef = await db.collection('battles').add({
+                    player1: player1Id,
+                    player2: player2Id,
+                    status: 'active',
+                    questions: selectedQuestions,
+                    scores: { player1: 0, player2: 0 },
+                    answers: { player1: [], player2: [] },
+                    currentQuestion: 0,
+                    startTime: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                currentBattle = battleRef.id;
+                document.getElementById('battleModal').style.display = 'none';
+                document.getElementById('battleScreen').style.display = 'block';
+                loadBattleQuestion();
+            } catch (error) {
+                Toastify({ text: "ব্যাটল শুরু করতে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
+                console.error("Error starting battle:", error);
+            }
+        }
+
+        async function loadBattleQuestion() {
+            if (!currentBattle) return;
+
+            try {
+                const battleDoc = await db.collection('battles').doc(currentBattle).get();
+                if (!battleDoc.exists) {
+                    endBattle();
+                    return;
+                }
+
+                const battleData = battleDoc.data();
+                currentQuestionIndex = battleData.currentQuestion || 0;
+
+                if (currentQuestionIndex >= selectedQuestions.length) {
+                    endBattle();
+                    return;
+                }
+
+                const questionData = selectedQuestions[currentQuestionIndex];
+                const questions = await loadQuestionsFromJSON(questionData.subject, questionData.chapter);
+                const question = questions[questionData.id];
+
+                document.getElementById('battleQuestionText').textContent = question.question;
+                const options = document.querySelectorAll('#battleOptions .option');
+                question.options.forEach((option, index) => {
+                    options[index].textContent = option;
+                    options[index].classList.remove('correct', 'incorrect');
+                    options[index].disabled = false;
+                });
+
+                timeLeft = 30;
+                document.getElementById('questionTimer').textContent = timeLeft;
+                if (battleTimer) clearInterval(battleTimer);
+                battleTimer = setInterval(() => {
+                    timeLeft--;
+                    document.getElementById('questionTimer').textContent = timeLeft;
+                    if (timeLeft <= 0) {
+                        submitAnswer(null);
+                    }
+                }, 1000);
+
+                const user = auth.currentUser;
+                if (user) {
+                    const playerField = battleData.player1 === user.uid ? 'player1' : 'player2';
+                    playerAnswers = battleData.answers[playerField] || [];
+                    opponentAnswers = battleData.answers[playerField === 'player1' ? 'player2' : 'player1'] || [];
+                }
+            } catch (error) {
+                Toastify({ text: "প্রশ্ন লোড করতে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
+                console.error("Error loading battle question:", error);
+            }
+        }
+
+        async function submitAnswer(optionIndex) {
+            if (!currentBattle || optionIndex === null) {
+                clearInterval(battleTimer);
+                currentQuestionIndex++;
+                try {
+                    await db.collection('battles').doc(currentBattle).update({
+                        currentQuestion: currentQuestionIndex
+                    });
+                    loadBattleQuestion();
+                } catch (error) {
+                    Toastify({ text: "উত্তর জমা দিতে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
+                    console.error("Error submitting answer:", error);
+                }
+                return;
+            }
+
+            try {
+                const battleDoc = await db.collection('battles').doc(currentBattle).get();
+                const battleData = battleDoc.data();
+                const questionData = selectedQuestions[currentQuestionIndex];
+                const questions = await loadQuestionsFromJSON(questionData.subject, questionData.chapter);
+                const question = questions[questionData.id];
+                const isCorrect = optionIndex === question.correctOption;
+
+                const user = auth.currentUser;
+                const playerField = battleData.player1 === user.uid ? 'player1' : 'player2';
+                playerAnswers.push({ questionIndex: currentQuestionIndex, answer: optionIndex, correct: isCorrect });
+
+                const updateData = {
+                    [`answers.${playerField}`]: playerAnswers
+                };
+                if (isCorrect) {
+                    updateData[`scores.${playerField}`] = firebase.firestore.FieldValue.increment(1);
+                }
+
+                const options = document.querySelectorAll('#battleOptions .option');
+                options.forEach((option, idx) => {
+                    option.disabled = true;
+                    if (idx === question.correctOption) {
+                        option.classList.add('correct');
+                    } else if (idx === optionIndex) {
+                        option.classList.add('incorrect');
+                    }
+                });
+
+                clearInterval(battleTimer);
+                setTimeout(async () => {
+                    currentQuestionIndex++;
+                    await db.collection('battles').doc(currentBattle).update({
+                        currentQuestion: currentQuestionIndex,
+                        ...updateData
+                    });
+                    loadBattleQuestion();
+                }, 2000);
+            } catch (error) {
+                Toastify({ text: "উত্তর জমা দিতে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
+                console.error("Error submitting answer:", error);
+            }
+        }
+
+        async function endBattle() {
+            clearInterval(battleTimer);
+            if (!currentBattle) return;
+
+            try {
+                const battleDoc = await db.collection('battles').doc(currentBattle).get();
+                const battleData = battleDoc.data();
+                const user = auth.currentUser;
+                const playerField = battleData.player1 === user.uid ? 'player1' : 'player2';
+                const opponentField = playerField === 'player1' ? 'player2' : 'player1';
+
+                const playerScore = battleData.scores[playerField] || 0;
+                const opponentScore = battleData.scores[opponentField] || 0;
+                const correctCount = playerAnswers.filter(a => a.correct).length;
+
+                document.getElementById('finalPlayer1Score').textContent = battleData.scores.player1 || 0;
+                document.getElementById('finalPlayer2Score').textContent = battleData.scores.player2 || 0;
+                document.getElementById('correctAnswers').textContent = correctCount;
+                document.getElementById('resultTitle').textContent = playerScore > opponentScore ? 'আপনি জিতেছেন!' : playerScore < opponentScore ? 'আপনি হেরেছেন!' : 'ড্র!';
+                document.getElementById('battleResult').style.display = 'block';
+
+                await db.collection('battles').doc(currentBattle).update({
+                    status: 'completed',
+                    endTime: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+                currentBattle = null;
+                selectedQuestions = [];
+                currentQuestionIndex = 0;
+                playerAnswers = [];
+                opponentAnswers = [];
+            } catch (error) {
+                Toastify({ text: "ব্যাটল শেষ করতে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
+                console.error("Error ending battle:", error);
+            }
+        }
+
+        function closeBattleScreen() {
+            document.getElementById('battleScreen').style.display = 'none';
+            document.getElementById('battleResult').style.display = 'none';
+            if (battleListener) {
+                battleListener();
+                battleListener = null;
+            }
+            if (battleListener2) {
+                battleListener2();
+                battleListener2 = null;
+            }
+            if (matchmakingListener) {
+                matchmakingListener();
+                matchmakingListener = null;
+            }
+            openBattleModal();
+        }
+
+        async function setupBattleListener(userId) {
+            try {
+                // Listener for battles where user is player1
+                battleListener = db.collection('battles')
+                    .where('player1', '==', userId)
+                    .where('status', '==', 'active')
+                    .onSnapshot(async snapshot => {
+                        snapshot.docChanges().forEach(async change => {
+                            if (change.type === 'added' || change.type === 'modified') {
+                                const battleData = change.doc.data();
+                                currentBattle = change.doc.id;
+                                selectedQuestions = battleData.questions;
+                                await updatePlayerInfo(battleData);
+                                loadBattleQuestion();
+                            }
+                        });
+                    }, error => {
+                        console.error("Error in battle listener (player1):", error);
+                        Toastify({ text: "ব্যাটল তথ্য লোডে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
+                    });
+
+                // Listener for battles where user is player2
+                battleListener2 = db.collection('battles')
+                    .where('player2', '==', userId)
+                    .where('status', '==', 'active')
+                    .onSnapshot(async snapshot => {
+                        snapshot.docChanges().forEach(async change => {
+                            if (change.type === 'added' || change.type === 'modified') {
+                                const battleData = change.doc.data();
+                                currentBattle = change.doc.id;
+                                selectedQuestions = battleData.questions;
+                                await updatePlayerInfo(battleData);
+                                loadBattleQuestion();
+                            }
+                        });
+                    }, error => {
+                        console.error("Error in battle listener (player2):", error);
+                        Toastify({ text: "ব্যাটল তথ্য লোডে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
+                    });
+            } catch (error) {
+                console.error("Error setting up battle listener:", error);
+                Toastify({ text: "ব্যাটল লিসেনার সেটআপে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
+            }
+        }
+
+        async function updatePlayerInfo(battleData) {
+            try {
+                const player1Doc = await db.collection('users').doc(battleData.player1).get();
+                const player2Doc = await db.collection('users').doc(battleData.player2).get();
+                
+                document.getElementById('player1Name').textContent = player1Doc.data()?.fullName || 'Player 1';
+                document.getElementById('player1Avatar').src = player1Doc.data()?.avatar || 'https://cdn-icons-png.flaticon.com/512/4333/4333609.png';
+                document.getElementById('player1Score').textContent = battleData.scores.player1 || 0;
+
+                document.getElementById('player2Name').textContent = player2Doc.data()?.fullName || 'Player 2';
+                document.getElementById('player2Avatar').src = player2Doc.data()?.avatar || 'https://cdn-icons-png.flaticon.com/512/4333/4333609.png';
+                document.getElementById('player2Score').textContent = battleData.scores.player2 || 0;
+            } catch (error) {
+                console.error("Error updating player info:", error);
+                Toastify({ text: "প্লেয়ার তথ্য লোডে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
+            }
+        }
+
+        // Initialize subjects on page load
+        populateSubjects();
     </script>
 </body>
 </html>
