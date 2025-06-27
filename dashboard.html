@@ -1896,7 +1896,7 @@
             }).catch(error => {
                 Toastify({ text: "চ্যালেঞ্জ পাঠাতে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
                 console.error("Error sending challenge:", error);
-            }
+            });
         }
 
         function showChallengeNotification(request) {
