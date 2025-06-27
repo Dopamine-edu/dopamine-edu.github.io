@@ -58,7 +58,7 @@
     <h1>Quiz Battle</h1>
   </header>
   <div class="container">
-    <div id="status">Waiting for opponent...</div>
+    <div id="status">Authenticating...</div>
     <div id="question-box" class="hide">
       <div class="question" id="question"></div>
       <div class="options" id="options"></div>
@@ -72,7 +72,6 @@
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 
   <script>
-    // Your Firebase config (replace with yours from config file)
     const firebaseConfig = {
       apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
       authDomain: "dopamine-quiz.firebaseapp.com",
@@ -98,13 +97,15 @@
     let selectedAnswers = [];
 
     auth.onAuthStateChanged(async user => {
-      if (!user) return location.href = 'auth.html';
+      if (!user) {
+        statusEl.innerText = "Please login from auth.html before entering battle.";
+        return;
+      }
       currentUser = user;
       await startBattle();
     });
 
     async function startBattle() {
-      // Try to join an existing battle
       let query = await db.collection('battles').where('status', '==', 'waiting').limit(1).get();
 
       if (!query.empty) {
@@ -112,7 +113,6 @@
         await battleDoc.ref.update({ player2Id: currentUser.uid, status: 'in-progress' });
         currentBattle = battleDoc.ref;
       } else {
-        // Create new battle if none available
         const questions = await getSampleQuestions(5);
         currentBattle = await db.collection('battles').add({
           player1Id: currentUser.uid,
@@ -173,15 +173,15 @@
       if (isPlayer1) update.player1Answers = selectedAnswers;
       else update.player2Answers = selectedAnswers;
 
-      // Determine winner if both answered
       if ((isPlayer1 && data.player2Answers.length > 0) || (!isPlayer1 && data.player1Answers.length > 0)) {
-        const opponentAnswers = isPlayer1 ? data.player2Answers : data.player1Answers;
         const questions = data.questions;
+        const player1Answers = isPlayer1 ? selectedAnswers : data.player1Answers;
+        const player2Answers = isPlayer1 ? data.player2Answers : selectedAnswers;
 
         let score1 = 0, score2 = 0;
         for (let i = 0; i < questions.length; i++) {
-          if (data.player1Answers[i] === questions[i].answer) score1++;
-          if (data.player2Answers[i] === questions[i].answer) score2++;
+          if (player1Answers[i] === questions[i].answer) score1++;
+          if (player2Answers[i] === questions[i].answer) score2++;
         }
         update.status = 'finished';
         update.winner = score1 > score2 ? data.player1Id : data.player2Id;
@@ -191,7 +191,6 @@
     }
 
     async function getSampleQuestions(n = 5) {
-      // Temporary hardcoded questions (replace with your actual fetch from Firestore/JSON)
       return [
         { question: "What is the capital of France?", options: ["Paris", "London", "Berlin", "Madrid"], answer: "Paris" },
         { question: "5 + 3 = ?", options: ["5", "8", "10", "6"], answer: "8" },
