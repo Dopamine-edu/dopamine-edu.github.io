@@ -31,8 +31,7 @@
             --purple-box: #9810fa;
             --blue-box: #2b7fff;
             --green-box: #00c950;
-            --orang
-            e-btn: #F97316;
+            --orange-btn: #F97316;
             --light-purple: #c084fc;
             --answered-border: #00c950;
         }
@@ -400,20 +399,6 @@
             border-color: #EA580C;
         }
 
-        .btn-leaderboard {
-            background-color: var(--purple-box);
-            border-color: var(--purple-box);
-            color: #fff;
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-            transition: background-color 0.3s;
-        }
-
-        .btn-leaderboard:hover {
-            background-color: #7C3AED;
-            border-color: #7C3AED;
-        }
-
         .loading-spinner {
             display: none;
             text-align: center;
@@ -427,36 +412,6 @@
             font-size: 1.5rem;
             padding: 20px;
             display: none;
-        }
-
-        .leaderboard-container {
-            margin-top: 20px;
-            padding: 15px;
-            background: var(--card-bg);
-            border-radius: 8px;
-            box-shadow: var(--shadow);
-            display: none;
-        }
-
-        .leaderboard-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .leaderboard-table th,
-        .leaderboard-table td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .leaderboard-table th {
-            font-weight: bold;
-            color: var(--purple-box);
-        }
-
-        .leaderboard-table tr:hover {
-            background-color: var(--border-color);
         }
 
         .question-nav {
@@ -506,6 +461,41 @@
             color: white;
         }
 
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            min-width: 200px;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            border-radius: 12px;
+        }
+
+        .leaderboard-container {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            box-shadow: var(--shadow);
+        }
+
+        .leaderboard-container h3 {
+            color: var(--purple-box);
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .leaderboard-container table {
+            color: var(--text-color);
+            border-color: var(--border-color);
+        }
+
         @media (max-width: 768px) {
             .navbar { padding: 0.5rem; }
             .exam-title { font-size: 1.5rem; }
@@ -531,6 +521,13 @@
             .nav-item {
                 display: inline-block;
                 margin: 0 5px;
+            }
+            .btn-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            .btn-primary {
+                width: 100%;
             }
         }
 
@@ -601,24 +598,10 @@
         <div id="expiredMessage" class="expired-message"></div>
         <form id="examForm"></form>
         <div id="backToDashboardContainer" class="text-center mt-3" style="display: none;">
-            <button type="button" id="backToDashboardBtn" class="btn btn-primary">ড্যাশবোর্ডে ফিরে যান</button>
-            <button type="button" id="leaderboardBtn" class="btn btn-leaderboard ms-2">লিডারবোর্ড দেখুন</button>
-        </div>
-        <div id="leaderboardContainer" class="leaderboard-container">
-            <h3 class="text-center mb-3">লিডারবোর্ড</h3>
-            <table class="leaderboard-table">
-                <thead>
-                    <tr>
-                        <th>র‍্যাঙ্ক</th>
-                        <th>নাম</th>
-                        <th>স্কোর</th>
-                        <th>সঠিক</th>
-                        <th>ভুল</th>
-                        <th>এড়িয়ে যাওয়া</th>
-                    </tr>
-                </thead>
-                <tbody id="leaderboardBody"></tbody>
-            </table>
+            <div class="d-flex justify-content-center gap-3">
+                <button type="button" id="backToDashboardBtn" class="btn btn-primary">ড্যাশবোর্ডে ফিরে যান</button>
+                <button type="button" id="viewLeaderboardBtn" class="btn btn-primary">লিডারবোর্ড দেখুন</button>
+            </div>
         </div>
     </div>
 
@@ -1087,93 +1070,6 @@
             document.getElementById("chartContainer").style.display = "block";
         }
 
-        async function showLeaderboard() {
-            const leaderboardContainer = document.getElementById("leaderboardContainer");
-            const leaderboardBody = document.getElementById("leaderboardBody");
-            leaderboardBody.innerHTML = '<tr><td colspan="6" class="text-center">লোড হচ্ছে...</td></tr>';
-
-            try {
-                const attemptsSnapshot = await db.collection("attempts")
-                    .where("examId", "==", examId)
-                    .orderBy("score", "desc")
-                    .orderBy("timestamp", "asc")
-                    .limit(10)
-                    .get();
-
-                if (attemptsSnapshot.empty) {
-                    leaderboardBody.innerHTML = '<tr><td colspan="6" class="text-center">কোনো ফলাফল পাওয়া যায়নি।</td></tr>';
-                    leaderboardContainer.style.display = "block";
-                    return;
-                }
-
-                const userIds = [...new Set(attemptsSnapshot.docs.map(doc => doc.data().userId))].filter(id => id);
-                let userMap = {};
-
-                if (userIds.length > 0) {
-                    // Handle Firestore's limitation of 'in' query (max 10 IDs)
-                    const userBatches = [];
-                    for (let i = 0; i < userIds.length; i += 10) {
-                        userBatches.push(userIds.slice(i, i + 10));
-                    }
-
-                    for (const batch of userBatches) {
-                        const usersSnapshot = await db.collection("users")
-                            .where(firebase.firestore.FieldPath.documentId(), "in", batch)
-                            .get();
-                        usersSnapshot.forEach(doc => {
-                            userMap[doc.id] = doc.data().displayName || "অজানা ব্যবহারকারী";
-                        });
-                    }
-                }
-
-                leaderboardBody.innerHTML = "";
-                let rank = 1;
-                let lastScore = null;
-                let lastTimestamp = null;
-                let sameRankCount = 0;
-
-                attemptsSnapshot.forEach((doc, index) => {
-                    const data = doc.data();
-                    const currentScore = data.score;
-                    const currentTimestamp = data.timestamp ? data.timestamp.toMillis() : 0;
-
-                    // Handle rank calculation for ties
-                    if (index > 0 && lastScore !== null && currentScore === lastScore && currentTimestamp === lastTimestamp) {
-                        sameRankCount++;
-                    } else {
-                        rank = index + 1 - sameRankCount;
-                        sameRankCount = 0;
-                    }
-
-                    const row = document.createElement("tr");
-                    row.innerHTML = `
-                        <td>${rank}</td>
-                        <td>${userMap[data.userId] || "অজানা ব্যবহারকারী"}</td>
-                        <td>${data.score || 0}</td>
-                        <td>${data.correctAnswers || 0}</td>
-                        <td>${data.incorrectAnswers || 0}</td>
-                        <td>${data.skippedAnswers || 0}</td>
-                    `;
-                    leaderboardBody.appendChild(row);
-
-                    lastScore = currentScore;
-                    lastTimestamp = currentTimestamp;
-                });
-
-                leaderboardContainer.style.display = "block";
-                leaderboardContainer.scrollIntoView({ behavior: "smooth" });
-            } catch (error) {
-                console.error("Error loading leaderboard:", error);
-                Toastify({
-                    text: "লিডারবোর্ড লোড করতে ত্রুটি: " + error.message,
-                    duration: 3000,
-                    style: { background: "#dc3545" }
-                }).showToast();
-                leaderboardBody.innerHTML = '<tr><td colspan="6" class="text-center">লিডারবোর্ড লোড করতে ব্যর্থ।</td></tr>';
-                leaderboardContainer.style.display = "block";
-            }
-        }
-
         async function submitQuiz() {
             if (submitted) return;
             submitted = true;
@@ -1332,7 +1228,101 @@
             window.location.href = "https://dopamine-edu.github.io/dashboard.html";
         });
 
-        document.getElementById("leaderboardBtn").addEventListener("click", showLeaderboard);
+        document.getElementById("viewLeaderboardBtn").addEventListener("click", async function() {
+            try {
+                const loadingToast = Toastify({
+                    text: "লিডারবোর্ড লোড হচ্ছে...",
+                    duration: -1,
+                    style: { background: "#9810fa" }
+                }).showToast();
+
+                // Fetch top 10 scores for this exam
+                const leaderboardSnapshot = await db.collection("attempts")
+                    .where("examId", "==", examId)
+                    .orderBy("score", "desc")
+                    .limit(10)
+                    .get();
+
+                // Get user details for each attempt
+                const leaderboardData = await Promise.all(
+                    leaderboardSnapshot.docs.map(async doc => {
+                        const attempt = doc.data();
+                        const userDoc = await db.collection("users").doc(attempt.userId).get();
+                        return {
+                            name: userDoc.data().name || "অজানা ব্যবহারকারী",
+                            score: attempt.score,
+                            correct: attempt.correctAnswers,
+                            total: attempt.totalQuestions,
+                            timestamp: attempt.timestamp?.toDate() || new Date()
+                        };
+                    })
+                );
+
+                loadingToast.hideToast();
+
+                // Create leaderboard HTML
+                let leaderboardHTML = `
+                    <div class="leaderboard-container">
+                        <h3>${examData.name} - লিডারবোর্ড</h3>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">নাম</th>
+                                        <th scope="col">স্কোর</th>
+                                        <th scope="col">সঠিক উত্তর</th>
+                                        <th scope="col">সময়</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                `;
+
+                leaderboardData.forEach((entry, index) => {
+                    const timeString = entry.timestamp.toLocaleString('bn-BD', {
+                        day: 'numeric',
+                        month: 'short',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                    });
+                    
+                    leaderboardHTML += `
+                        <tr ${auth.currentUser.uid === leaderboardSnapshot.docs[index].data().userId ? 
+                          'style="background-color: var(--light-purple); font-weight: bold;"' : ''}>
+                            <th scope="row">${index + 1}</th>
+                            <td>${entry.name}</td>
+                            <td>${entry.score}/${entry.total * examData.marksPerQuestion}</td>
+                            <td>${entry.correct}/${entry.total}</td>
+                            <td>${timeString}</td>
+                        </tr>
+                    `;
+                });
+
+                leaderboardHTML += `
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+
+                // Display the leaderboard
+                const statsContainer = document.getElementById("statsContainer");
+                statsContainer.insertAdjacentHTML('afterend', leaderboardHTML);
+
+                // Scroll to the leaderboard
+                document.querySelector('.leaderboard-container').scrollIntoView({
+                    behavior: 'smooth'
+                });
+
+            } catch (error) {
+                console.error("Error loading leaderboard:", error);
+                Toastify({
+                    text: "লিডারবোর্ড লোড করতে ত্রুটি: " + error.message,
+                    duration: 3000,
+                    style: { background: "#dc3545" }
+                }).showToast();
+            }
+        });
 
         let isDark = localStorage.getItem('theme') === 'dark';
         if (isDark) {
