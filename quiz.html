@@ -256,7 +256,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.9rem;
+            \n            font-size: 0.9rem;
             font-weight: bold;
         }
 
@@ -399,6 +399,20 @@
             border-color: #EA580C;
         }
 
+        .btn-leaderboard {
+            background-color: var(--purple-box);
+            border-color: var(--purple-box);
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+
+        .btn-leaderboard:hover {
+            background-color: #7C3AED;
+            border-color: #7C3AED;
+        }
+
         .loading-spinner {
             display: none;
             text-align: center;
@@ -412,6 +426,36 @@
             font-size: 1.5rem;
             padding: 20px;
             display: none;
+        }
+
+        .leaderboard-container {
+            margin-top: 20px;
+            padding: 15px;
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            display: none;
+        }
+
+        .leaderboard-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .leaderboard-table th,
+        .leaderboard-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .leaderboard-table th {
+            font-weight: bold;
+            color: var(--purple-box);
+        }
+
+        .leaderboard-table tr:hover {
+            background-color: var(--border-color);
         }
 
         .question-nav {
@@ -557,6 +601,23 @@
         <form id="examForm"></form>
         <div id="backToDashboardContainer" class="text-center mt-3" style="display: none;">
             <button type="button" id="backToDashboardBtn" class="btn btn-primary">ড্যাশবোর্ডে ফিরে যান</button>
+            <button type="button" id="leaderboardBtn" class="btn btn-leaderboard ms-2">লিডারবোর্ড দেখুন</button>
+        </div>
+        <div id="leaderboardContainer" class="leaderboard-container">
+            <h3 class="text-center mb-3">লিডারবোর্ড</h3>
+            <table class="leaderboard-table">
+                <thead>
+                    <tr>
+                        <th>র‍্যাঙ্ক</th>
+                        <th>নাম</th>
+                        <th>স্কোর</th>
+                        <th>সঠিক</th>
+                        <th>ভুল</th>
+                        <th>এড়িয়ে যাওয়া</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboardBody"></tbody>
+            </table>
         </div>
     </div>
 
@@ -1025,6 +1086,64 @@
             document.getElementById("chartContainer").style.display = "block";
         }
 
+        async function showLeaderboard() {
+            const leaderboardContainer = document.getElementById("leaderboardContainer");
+            const leaderboardBody = document.getElementById("leaderboardBody");
+            leaderboardBody.innerHTML = '<tr><td colspan="6" class="text-center">লোড হচ্ছে...</td></tr>';
+
+            try {
+                const attemptsSnapshot = await db.collection("attempts")
+                    .where("examId", "==", examId)
+                    .orderBy("score", "desc")
+                    .orderBy("timestamp", "asc")
+                    .limit(10)
+                    .get();
+
+                if (attemptsSnapshot.empty) {
+                    leaderboardBody.innerHTML = '<tr><td colspan="6" class="text-center">কোনো ফলাফল পাওয়া যায়নি।</td></tr>';
+                    leaderboardContainer.style.display = "block";
+                    return;
+                }
+
+                const userIds = [...new Set(attemptsSnapshot.docs.map(doc => doc.data().userId))];
+                const usersSnapshot = await db.collection("users")
+                    .where(firebase.firestore.FieldPath.documentId(), "in", userIds)
+                    .get();
+
+                const userMap = {};
+                usersSnapshot.forEach(doc => {
+                    userMap[doc.id] = doc.data().displayName || "অজানা ব্যবহারকারী";
+                });
+
+                leaderboardBody.innerHTML = "";
+                attemptsSnapshot.forEach((doc, index) => {
+                    const data = doc.data();
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${userMap[data.userId] || "অজানা ব্যবহারকারী"}</td>
+                        <td>${data.score}</td>
+                        <td>${data.correctAnswers}</td>
+                        <td>${data.incorrectAnswers}</td>
+                        <td>${data.skippedAnswers}</td>
+                    `;
+                    leaderboardBody.appendChild(row);
+                });
+
+                leaderboardContainer.style.display = "block";
+                leaderboardContainer.scrollIntoView({ behavior: "smooth" });
+            } catch (error) {
+                console.error("Error loading leaderboard:", error);
+                Toastify({
+                    text: "লিডারবোর্ড লোড করতে ত্রুটি: " + error.message,
+                    duration: 3000,
+                    style: { background: "#dc3545" }
+                }).showToast();
+                leaderboardBody.innerHTML = '<tr><td colspan="6" class="text-center">লিডারবোর্ড লোড করতে ব্যর্থ।</td></tr>';
+                leaderboardContainer.style.display = "block";
+            }
+        }
+
         async function submitQuiz() {
             if (submitted) return;
             submitted = true;
@@ -1182,6 +1301,8 @@
         document.getElementById("backToDashboardBtn").addEventListener("click", () => {
             window.location.href = "https://dopamine-edu.github.io/dashboard.html";
         });
+
+        document.getElementById("leaderboardBtn").addEventListener("click", showLeaderboard);
 
         let isDark = localStorage.getItem('theme') === 'dark';
         if (isDark) {
