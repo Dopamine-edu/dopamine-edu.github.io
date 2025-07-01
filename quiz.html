@@ -31,7 +31,8 @@
             --purple-box: #9810fa;
             --blue-box: #2b7fff;
             --green-box: #00c950;
-            --orange-btn: #F97316;
+            --orang
+            e-btn: #F97316;
             --light-purple: #c084fc;
             --answered-border: #00c950;
         }
@@ -256,7 +257,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            \n            font-size: 0.9rem;
+            font-size: 0.9rem;
             font-weight: bold;
         }
 
@@ -1105,29 +1106,58 @@
                     return;
                 }
 
-                const userIds = [...new Set(attemptsSnapshot.docs.map(doc => doc.data().userId))];
-                const usersSnapshot = await db.collection("users")
-                    .where(firebase.firestore.FieldPath.documentId(), "in", userIds)
-                    .get();
+                const userIds = [...new Set(attemptsSnapshot.docs.map(doc => doc.data().userId))].filter(id => id);
+                let userMap = {};
 
-                const userMap = {};
-                usersSnapshot.forEach(doc => {
-                    userMap[doc.id] = doc.data().displayName || "অজানা ব্যবহারকারী";
-                });
+                if (userIds.length > 0) {
+                    // Handle Firestore's limitation of 'in' query (max 10 IDs)
+                    const userBatches = [];
+                    for (let i = 0; i < userIds.length; i += 10) {
+                        userBatches.push(userIds.slice(i, i + 10));
+                    }
+
+                    for (const batch of userBatches) {
+                        const usersSnapshot = await db.collection("users")
+                            .where(firebase.firestore.FieldPath.documentId(), "in", batch)
+                            .get();
+                        usersSnapshot.forEach(doc => {
+                            userMap[doc.id] = doc.data().displayName || "অজানা ব্যবহারকারী";
+                        });
+                    }
+                }
 
                 leaderboardBody.innerHTML = "";
+                let rank = 1;
+                let lastScore = null;
+                let lastTimestamp = null;
+                let sameRankCount = 0;
+
                 attemptsSnapshot.forEach((doc, index) => {
                     const data = doc.data();
+                    const currentScore = data.score;
+                    const currentTimestamp = data.timestamp ? data.timestamp.toMillis() : 0;
+
+                    // Handle rank calculation for ties
+                    if (index > 0 && lastScore !== null && currentScore === lastScore && currentTimestamp === lastTimestamp) {
+                        sameRankCount++;
+                    } else {
+                        rank = index + 1 - sameRankCount;
+                        sameRankCount = 0;
+                    }
+
                     const row = document.createElement("tr");
                     row.innerHTML = `
-                        <td>${index + 1}</td>
+                        <td>${rank}</td>
                         <td>${userMap[data.userId] || "অজানা ব্যবহারকারী"}</td>
-                        <td>${data.score}</td>
-                        <td>${data.correctAnswers}</td>
-                        <td>${data.incorrectAnswers}</td>
-                        <td>${data.skippedAnswers}</td>
+                        <td>${data.score || 0}</td>
+                        <td>${data.correctAnswers || 0}</td>
+                        <td>${data.incorrectAnswers || 0}</td>
+                        <td>${data.skippedAnswers || 0}</td>
                     `;
                     leaderboardBody.appendChild(row);
+
+                    lastScore = currentScore;
+                    lastTimestamp = currentTimestamp;
                 });
 
                 leaderboardContainer.style.display = "block";
