@@ -1087,67 +1087,62 @@
         }
 
         async function showLeaderboard() {
-    const leaderboardContainer = document.getElementById("leaderboardContainer");
-    const leaderboardBody = document.getElementById("leaderboardBody");
-    leaderboardBody.innerHTML = '<tr><td colspan="6" class="text-center">লোড হচ্ছে...</td></tr>';
+            const leaderboardContainer = document.getElementById("leaderboardContainer");
+            const leaderboardBody = document.getElementById("leaderboardBody");
+            leaderboardBody.innerHTML = '<tr><td colspan="6" class="text-center">লোড হচ্ছে...</td></tr>';
 
-    try {
-        const attemptsSnapshot = await db.collection("attempts")
-            .where("examId", "==", examId)
-            .orderBy("score", "desc")
-            .limit(10)
-            .get();
+            try {
+                const attemptsSnapshot = await db.collection("attempts")
+                    .where("examId", "==", examId)
+                    .orderBy("score", "desc")
+                    .orderBy("timestamp", "asc")
+                    .limit(10)
+                    .get();
 
-        if (attemptsSnapshot.empty) {
-            leaderboardBody.innerHTML = '<tr><td colspan="6" class="text-center">কোনো ফলাফল পাওয়া যায়নি।</td></tr>';
-            leaderboardContainer.style.display = "block";
-            return;
-        }
+                if (attemptsSnapshot.empty) {
+                    leaderboardBody.innerHTML = '<tr><td colspan="6" class="text-center">কোনো ফলাফল পাওয়া যায়নি।</td></tr>';
+                    leaderboardContainer.style.display = "block";
+                    return;
+                }
 
-        const userIds = attemptsSnapshot.docs.map(doc => doc.data().userId);
-        const usersSnapshot = await db.collection("users")
-            .where("__name__", "in", userIds)
-            .get();
+                const userIds = [...new Set(attemptsSnapshot.docs.map(doc => doc.data().userId))];
+                const usersSnapshot = await db.collection("users")
+                    .where(firebase.firestore.FieldPath.documentId(), "in", userIds)
+                    .get();
 
-        const userMap = {};
-        usersSnapshot.forEach(doc => {
-            const userData = doc.data();
-            userMap[doc.id] = userData.fullName || userData.email || "অজানা ব্যবহারকারী";
-        });
+                const userMap = {};
+                usersSnapshot.forEach(doc => {
+                    userMap[doc.id] = doc.data().fullName || "অজানা ব্যবহারকারী";
+                });
 
-        leaderboardBody.innerHTML = "";
-        let rank = 1;
-        let prevScore = null;
+                leaderboardBody.innerHTML = "";
+                attemptsSnapshot.forEach((doc, index) => {
+                    const data = doc.data();
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${userMap[data.userId] || "অজানা ব্যবহারকারী"}</td>
+                        <td>${data.score}</td>
+                        <td>${data.correctAnswers}</td>
+                        <td>${data.incorrectAnswers}</td>
+                        <td>${data.skippedAnswers}</td>
+                    `;
+                    leaderboardBody.appendChild(row);
+                });
 
-        attemptsSnapshot.forEach((doc, index) => {
-            const data = doc.data();
-            const currentScore = data.score || 0; // Fallback if score is missing
-
-            // Update rank only if score changes
-            if (prevScore !== null && currentScore !== prevScore) {
-                rank = index + 1;
+                leaderboardContainer.style.display = "block";
+                leaderboardContainer.scrollIntoView({ behavior: "smooth" });
+            } catch (error) {
+                console.error("Error loading leaderboard:", error);
+                Toastify({
+                    text: "লিডারবোর্ড লোড করতে ত্রুটি: " + error.message,
+                    duration: 3000,
+                    style: { background: "#dc3545" }
+                }).showToast();
+                leaderboardBody.innerHTML = '<tr><td colspan="6" class="text-center">লিডারবোর্ড লোড করতে ব্যর্থ।</td></tr>';
+                leaderboardContainer.style.display = "block";
             }
-            prevScore = currentScore;
-
-            const row = document.createElement("tr");
-            row.innerHTML = `
-                <td>${rank}</td>
-                <td>${userMap[data.userId]}</td>
-                <td>${currentScore}</td>
-                <td>${data.correctAnswers || 0}</td>
-                <td>${data.incorrectAnswers || 0}</td>
-                <td>${data.skippedAnswers || 0}</td>
-            `;
-            leaderboardBody.appendChild(row);
-        });
-
-        leaderboardContainer.style.display = "block";
-    } catch (error) {
-        console.error("Error loading leaderboard:", error);
-        leaderboardBody.innerHTML = '<tr><td colspan="6" class="text-center">ত্রুটি: লিডারবোর্ড লোড করতে ব্যর্থ</td></tr>';
-        leaderboardContainer.style.display = "block";
-    }
-}
+        }
 
         async function submitQuiz() {
             if (submitted) return;
