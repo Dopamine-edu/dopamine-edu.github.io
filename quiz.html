@@ -1941,16 +1941,7 @@
         // Initialize auth modal
         document.addEventListener("DOMContentLoaded", () => {
             // Show auth modal if not logged in, otherwise load exam
-            auth.onAuthStateChanged((user) => {
-                if (user) {
-                    document.getElementById('authModal').style.display = 'none';
-                    document.getElementById('quizContainer').style.display = 'block';
-                    loadExam();
-                } else {
-                    document.getElementById('authModal').style.display = 'flex';
-                    document.getElementById('quizContainer').style.display = 'none';
-                }
-            });
+            
         });
     </script>
 </body>
