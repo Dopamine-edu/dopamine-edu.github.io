@@ -1231,131 +1231,169 @@
         }
 
         async function loadQuestionsFromJSON(subject, chapter) {
-            const sanitizedSubject = sanitizeFileName(subject);
-            const sanitizedChapter = sanitizeFileName(chapter.replace(/^Chapter \d+:\s*/, ''));
-            const filePath = `./questions/subjects/${sanitizedSubject}/${sanitizedChapter}.json`;
-            console.log(`Attempting to load: ${filePath}`);
-            try {
-                const response = await fetch(filePath);
-                if (!response.ok) {
-                    console.error(`Fetch failed for ${filePath}: ${response.status} - ${response.statusText}`);
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                const data = await response.json();
-                data.forEach((q, idx) => {
-                    if (!q.options || q.options.length === 0 || !q.correctOption) {
-                        console.warn(`Invalid question at index ${idx} in ${filePath}: Missing options or correctOption`);
-                        throw new Error(`Invalid question at index ${idx}`);
-                    }
-                    if (q.optionImages && q.optionImages.length !== q.options.length) {
-                        console.warn(`optionImages length mismatch for question ${idx} in ${filePath}`);
-                        q.optionImages = q.options.map(() => null);
-                    }
-                    if (!q.question && !q.questionImage) {
-                        console.warn(`Question at index ${idx} in ${filePath} has no text or image`);
-                        q.question = `প্রশ্ন ${idx + 1}`;
-                    }
-                });
-                console.log(`Loaded ${data.length} questions from ${filePath}`);
-                return data;
-            } catch (error) {
-                console.error(`Error loading ${filePath}:`, error);
-                Toastify({ text: `${subject} - ${chapter} প্রশ্ন লোড করতে ব্যর্থ: ${error.message}`, duration: 3000, style: { background: "#dc3545" } }).showToast();
-                return [];
+    const sanitizedSubject = sanitizeFileName(subject);
+    const sanitizedChapter = sanitizeFileName(chapter.replace(/^Chapter \d+:\s*/, ''));
+    const filePath = ./questions/subjects/${sanitizedSubject}/${sanitizedChapter}.json;
+    
+    try {
+        const response = await fetch(filePath);
+        if (!response.ok) throw new Error(HTTP ${response.status});
+        
+        const data = await response.json();
+        const validatedQuestions = [];
+        const seenIds = new Set();
+
+        data.forEach((q, idx) => {
+            // Ensure each question has required fields
+            if (!q.id) q.id = idx; // Assign index as ID if missing
+            if (!q.options || !q.correctOption) {
+                throw new Error(Question ${q.id} missing required fields);
             }
-        }
+
+            // Ensure unique IDs within the file
+            if (seenIds.has(q.id)) {
+                console.warn(Duplicate ID ${q.id} in ${filePath}, adding suffix);
+                q.id = ${q.id}-${idx};
+            }
+            seenIds.add(q.id);
+
+            // Set default values if missing
+            if (!q.question) q.question = প্রশ্ন ${idx + 1};
+            if (q.optionImages && q.optionImages.length !== q.options.length) {
+                q.optionImages = q.options.map(() => null);
+            }
+
+            validatedQuestions.push(q);
+        });
+
+        console.log(Loaded ${validatedQuestions.length} validated questions from ${filePath});
+        return validatedQuestions;
+    } catch (error) {
+        console.error(Error loading ${filePath}:, error);
+        Toastify({
+            text: ${subject} - ${chapter} প্রশ্ন লোড করতে ব্যর্থ: ${error.message},
+            duration: 3000,
+            style: { background: "#dc3545" }
+        }).showToast();
+        return [];
+    }
+}
 
         async function loadExam() {
-            const loadingDiv = document.getElementById("loading");
-            loadingDiv.style.display = "block";
+    const loadingDiv = document.getElementById("loading");
+    loadingDiv.style.display = "block";
 
+    try {
+        if (!examId) throw new Error("Exam ID not found in URL");
+
+        const examDoc = await db.collection("exams").doc(examId).get();
+        if (!examDoc.exists) throw new Error("Exam not found");
+
+        examData = examDoc.data();
+        examData.id = examDoc.id;
+
+        const attemptSnapshot = await db.collection("attempts")
+            .where("userId", "==", auth.currentUser.uid)
+            .where("examId", "==", examId)
+            .get();
+
+        if (!attemptSnapshot.empty) {
+            const resultDoc = attemptSnapshot.docs[0].data();
+            await loadQuestionsForReview();
+            displayReviewMode(questions, resultDoc);
+            return;
+        }
+
+        if (isExamExpired(examData.lastDate)) {
+            document.getElementById("expiredMessage").style.display = "block";
+            document.getElementById("expiredMessage").textContent = "এই পরীক্ষার সময় শেষ হয়ে গেছে। আপনি অংশ নিতে পারবেন না।";
+            document.getElementById("examForm").style.display = "none";
+            document.getElementById("stickyBar").style.display = "none";
+            loadingDiv.style.display = "none";
+            return;
+        }
+
+        // NEW: Track unique questions and filter duplicates
+        const uniqueQuestionsMap = new Map();
+        questions = [];
+
+        for (const q of examData.questions) {
             try {
-                if (!examId) throw new Error("Exam ID not found in URL");
-
-                const examDoc = await db.collection("exams").doc(examId).get();
-                if (!examDoc.exists) throw new Error("Exam not found");
-
-                examData = examDoc.data();
-                examData.id = examDoc.id;
-
-                const attemptSnapshot = await db.collection("attempts")
-                    .where("userId", "==", auth.currentUser.uid)
-                    .where("examId", "==", examId)
-                    .get();
-
-                if (!attemptSnapshot.empty) {
-                    const resultDoc = attemptSnapshot.docs[0].data();
-                    await loadQuestionsForReview();
-                    displayReviewMode(questions, resultDoc);
-                    return;
-                }
-
-                if (isExamExpired(examData.lastDate)) {
-                    document.getElementById("expiredMessage").style.display = "block";
-                    document.getElementById("expiredMessage").textContent = "এই পরীক্ষার সময় শেষ হয়ে গেছে। আপনি অংশ নিতে পারবেন না।";
-                    document.getElementById("examForm").style.display = "none";
-                    document.getElementById("stickyBar").style.display = "none";
-                    loadingDiv.style.display = "none";
-                    return;
-                }
-
-                questions = [];
-                for (const q of examData.questions) {
-                    const chapterQuestions = await loadQuestionsFromJSON(q.subject, q.chapter);
-                    if (chapterQuestions[q.id]) {
-                        questions.push({
-                            ...chapterQuestions[q.id],
-                            id: `${q.subject}-${q.chapter}-${q.id}`,
+                const chapterQuestions = await loadQuestionsFromJSON(q.subject, q.chapter);
+                const question = chapterQuestions[q.id];
+                
+                if (question) {
+                    const uniqueId = ${q.subject}-${q.chapter}-${q.id};
+                    
+                    if (!uniqueQuestionsMap.has(uniqueId)) {
+                        const questionObj = {
+                            ...question,
+                            id: uniqueId,
                             subject: q.subject,
                             chapter: q.chapter.replace(/^Chapter \d+:\s*/, '')
-                        });
+                        };
+                        questions.push(questionObj);
+                        uniqueQuestionsMap.set(uniqueId, true);
                     }
                 }
-
-                if (questions.length === 0) throw new Error("No questions found for this exam");
-
-                userAnswers = JSON.parse(localStorage.getItem(answersKey)) || {};
-
-                const subjects = [...new Set(questions.map(q => q.subject))].join(", ");
-                document.getElementById("subjectDisplay").textContent = subjects || "অজানা বিষয়";
-                document.getElementById("questionsCount").textContent = `${questions.length} প্রশ্ন`;
-                document.getElementById("timer").textContent = `${examData.duration} মিনিট`;
-                document.getElementById("answeredCount").textContent = `০/${questions.length}`;
-                updateProgress();
-                renderQuiz(questions);
             } catch (error) {
-                console.error("Error loading exam:", error);
-                Toastify({
-                    text: "পরীক্ষা লোড করতে ত্রুটি: " + error.message,
-                    duration: 3000,
-                    style: { background: "#dc3545" }
-                }).showToast();
-                setTimeout(() => {
-                    window.location.href = "https://dopamine-edu.github.io/dashboard.html";
-                }, 3000);
-            } finally {
-                loadingDiv.style.display = "none";
+                console.error(Error loading question ${q.id} from ${q.chapter}:, error);
             }
         }
 
-        async function loadQuestionsForReview() {
-            questions = [];
-            const examDoc = await db.collection("exams").doc(examId).get();
-            examData = examDoc.data();
-            examData.id = examDoc.id;
+        if (questions.length === 0) throw new Error("No valid questions found for this exam");
 
-            for (const q of examData.questions) {
-                const chapterQuestions = await loadQuestionsFromJSON(q.subject, q.chapter);
-                if (chapterQuestions[q.id]) {
-                    questions.push({
-                        ...chapterQuestions[q.id],
-                        id: `${q.subject}-${q.chapter}-${q.id}`,
-                        subject: q.subject,
-                        chapter: q.chapter.replace(/^Chapter \d+:\s*/, '')
-                    });
-                }
+        userAnswers = JSON.parse(localStorage.getItem(answersKey)) || {};
+
+        const subjects = [...new Set(questions.map(q => q.subject))].join(", ");
+        document.getElementById("subjectDisplay").textContent = subjects || "অজানা বিষয়";
+        document.getElementById("questionsCount").textContent = ${questions.length} প্রশ্ন;
+        document.getElementById("timer").textContent = ${examData.duration} মিনিট;
+        document.getElementById("answeredCount").textContent = ০/${questions.length};
+        updateProgress();
+        renderQuiz(questions);
+    } catch (error) {
+        console.error("Error loading exam:", error);
+        Toastify({
+            text: "পরীক্ষা লোড করতে ত্রুটি: " + error.message,
+            duration: 3000,
+            style: { background: "#dc3545" }
+        }).showToast();
+        setTimeout(() => {
+            window.location.href = "https://dopamine-edu.github.io/dashboard.html";
+        }, 3000);
+    } finally {
+        loadingDiv.style.display = "none";
+    }
+}
+
+async function loadQuestionsForReview() {
+    const uniqueQuestionsMap = new Map();
+    questions = [];
+    const examDoc = await db.collection("exams").doc(examId).get();
+    examData = examDoc.data();
+    examData.id = examDoc.id;
+
+    for (const q of examData.questions) {
+        try {
+            const chapterQuestions = await loadQuestionsFromJSON(q.subject, q.chapter);
+            const question = chapterQuestions[q.id];
+            const uniqueId = ${q.subject}-${q.chapter}-${q.id};
+            
+            if (question && !uniqueQuestionsMap.has(uniqueId)) {
+                questions.push({
+                    ...question,
+                    id: uniqueId,
+                    subject: q.subject,
+                    chapter: q.chapter.replace(/^Chapter \d+:\s*/, '')
+                });
+                uniqueQuestionsMap.set(uniqueId, true);
             }
+        } catch (error) {
+            console.error(Error loading question ${q.id} from ${q.chapter} for review:, error);
         }
+    }
+}
 
         function isExamExpired(lastDate) {
             if (!lastDate) return false;
@@ -1377,8 +1415,18 @@
             const examForm = document.getElementById("examForm");
             examForm.innerHTML = "";
 
+            const renderedQuestions = new Set();
+
             questions.forEach((q, idx) => {
                 const questionDiv = document.createElement("div");
+
+                if (renderedQuestions.has(questionKey)) {
+                    console.warn('Duplicate question detected and skipped: ${questionKey}');
+                    return;
+                }
+                renderedQuestions.add(questionKey);
+
+                const questionDiv = document.createElement('div');
                 questionDiv.className = "question-card";
                 questionDiv.dataset.answer = q.correctOption;
                 questionDiv.dataset.index = idx;
