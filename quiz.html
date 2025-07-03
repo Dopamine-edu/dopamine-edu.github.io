@@ -1586,6 +1586,10 @@
         function createPieChart(correct, incorrect, skipped) {
             const ctx = document.getElementById('resultChart').getContext('2d');
             const total = correct + incorrect + skipped;
+            // Destroy previous chart instance if it exists
+            if (chartInstance){
+                chartInstance.destroy();
+            }
 
             const gradientCorrect = createGradient(ctx, "#34C759", "#28A745");
             const gradientIncorrect = createGradient(ctx, "#FF3B30", "#D32F2F");
@@ -1834,6 +1838,11 @@
         }
 
         function displayReviewMode(questions, resultData) {
+            // Clear any existing chart first
+            if (chartInstance){
+                chartInstance.destroy();
+                chartInstance = null;
+            }
             document.getElementById("stickyBar").style.display = "none";
             document.getElementById("questionNav").style.display = "none";
 
