@@ -1233,7 +1233,7 @@
         async function loadQuestionsFromJSON(subject, chapter) {
     const sanitizedSubject = sanitizeFileName(subject);
     const sanitizedChapter = sanitizeFileName(chapter.replace(/^Chapter \d+:\s*/, ''));
-    const filePath = ./questions/subjects/${sanitizedSubject}/${sanitizedChapter}.json;
+    const filePath = `./questions/subjects/${sanitizedSubject}/${sanitizedChapter}.json`;
     
     try {
         const response = await fetch(filePath);
@@ -1271,7 +1271,7 @@
     } catch (error) {
         console.error(Error loading ${filePath}:, error);
         Toastify({
-            text: ${subject} - ${chapter} প্রশ্ন লোড করতে ব্যর্থ: ${error.message},
+            text: '${subject} - ${chapter} প্রশ্ন লোড করতে ব্যর্থ: ${error.message}',
             duration: 3000,
             style: { background: "#dc3545" }
         }).showToast();
