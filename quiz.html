@@ -71,6 +71,241 @@
             flex-direction: column;
         }
 
+        /* Auth Modal Styles */
+        .auth-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .auth-container {
+            background: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            width: 100%;
+            max-width: 400px;
+            padding: 1.5rem;
+            margin: 1rem;
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .auth-header img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-header h2 {
+            color: var(--purple-box);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .auth-options {
+            display: flex;
+            justify-content: space-between;
+            background: var(--border-color);
+            border-radius: 25px;
+            padding: 0.3rem;
+            margin-bottom: 1rem;
+        }
+
+        .auth-option {
+            flex: 1;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--secondary-text-color);
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            background: transparent;
+            border: none;
+            outline: none;
+        }
+
+        .auth-option.active {
+            background: var(--card-bg);
+            color: var(--purple-box);
+            box-shadow: var(--shadow);
+        }
+
+        .auth-form {
+            display: none;
+        }
+
+        .auth-form.active {
+            display: block;
+        }
+
+        .form-group {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem 2.5rem;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 1rem;
+            color: var(--text-color);
+            background: var(--bg-color);
+        }
+
+        .form-group input:focus {
+            border-color: var(--purple-box);
+            outline: none;
+            background: var(--card-bg);
+        }
+
+        .form-group .icon-left {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-text-color);
+            font-size: 1rem;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--secondary-text-color);
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--purple-box);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: background 0.3s;
+            margin-top: 0.5rem;
+        }
+
+        .auth-btn:hover {
+            background: var(--light-purple);
+        }
+
+        .auth-btn.loading {
+            position: relative;
+            color: transparent;
+        }
+
+        .auth-btn.loading::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid white;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .divider {
+            position: relative;
+            text-align: center;
+            margin: 1rem 0;
+            color: var(--secondary-text-color);
+        }
+
+        .divider span {
+            background: var(--card-bg);
+            padding: 0 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 40%;
+            height: 1px;
+            background: var(--border-color);
+        }
+
+        .divider::before { left: 0; }
+        .divider::after { right: 0; }
+
+        .google-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--card-bg);
+            color: #4285F4;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .google-btn:hover {
+            background: var(--border-color);
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--secondary-text-color);
+        }
+
+        .auth-link {
+            color: var(--purple-box);
+            cursor: pointer;
+            font-weight: 500;
+        }
+
+        .auth-link:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: var(--incorrect-border);
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            text-align: center;
+            display: none;
+        }
+
+        /* Main Quiz Styles */
         .navbar {
             padding: 0.5rem 1rem;
             display: flex;
@@ -256,7 +491,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            \n            font-size: 0.9rem;
+            font-size: 0.9rem;
             font-weight: bold;
         }
 
@@ -554,7 +789,90 @@
     <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
 </head>
 <body>
-    <div class="container">
+    <!-- Auth Modal -->
+    <div class="auth-modal" id="authModal">
+        <div class="auth-container">
+            <div class="auth-header">
+                <img src="logo.png" alt="ডোপামিন Logo">
+                <h2>ডোপামিন</h2>
+                <p>কুইজে অংশগ্রহণ করতে লগইন করুন</p>
+            </div>
+
+            <div class="auth-options">
+                <button class="auth-option active" onclick="showAuthForm('login')">লগইন</button>
+                <button class="auth-option" onclick="showAuthForm('signup')">রেজিষ্ট্রেশন</button>
+            </div>
+
+            <!-- Login Form -->
+            <div class="auth-form active" id="login-form">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <i class="fas fa-envelope icon-left"></i>
+                        <input type="email" id="loginEmail" placeholder="ইমেইল" required>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-lock icon-left"></i>
+                        <i class="fas fa-eye password-toggle" onclick="togglePassword('loginPassword')"></i>
+                        <input type="password" id="loginPassword" placeholder="পাসওয়ার্ড" required>
+                    </div>
+                    <button type="submit" class="auth-btn" id="loginBtn">লগইন করুন</button>
+                </form>
+                <div class="divider"><span>অথবা</span></div>
+                <button class="google-btn" onclick="signInWithGoogle()">
+                    <i class="fab fa-google"></i> গুগল সাইন ইন করুন
+                </button>
+                <div class="auth-footer">
+                    <span class="auth-link" onclick="showAuthForm('forgot')">পাসওয়ার্ড ভুলে গেছেন?</span>
+                    <span id="resendVerification" class="auth-link" style="display: none;" onclick="resendVerificationEmail()">পুনরায় ইমেইল পাঠান</span>
+                </div>
+                <div class="error-message" id="loginError"></div>
+            </div>
+
+            <!-- Signup Form -->
+            <div class="auth-form" id="signup-form">
+                <form id="signupForm">
+                    <div class="form-group">
+                        <i class="fas fa-envelope icon-left"></i>
+                        <input type="email" id="signupEmail" placeholder="ইমেইল" required>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-lock icon-left"></i>
+                        <i class="fas fa-eye password-toggle" onclick="togglePassword('signupPassword')"></i>
+                        <input type="password" id="signupPassword" placeholder="পাসওয়ার্ড" required>
+                    </div>
+                    <div class="form-group">
+                        <i class="fas fa-lock icon-left"></i>
+                        <i class="fas fa-eye password-toggle" onclick="togglePassword('confirmPassword')"></i>
+                        <input type="password" id="confirmPassword" placeholder="কনফার্ম পাসওয়ার্ড" required>
+                    </div>
+                    <button type="submit" class="auth-btn" id="signupBtn">রেজিষ্ট্রেশন করুন</button>
+                </form>
+                <div class="divider"><span>অথবা</span></div>
+                <button class="google-btn" onclick="signInWithGoogle()">
+                    <i class="fab fa-google"></i> গুগল সাইন আপ করুন
+                </button>
+                <div class="error-message" id="signupError"></div>
+            </div>
+
+            <!-- Forgot Password Form -->
+            <div class="auth-form" id="forgot-form">
+                <form id="forgotForm">
+                    <div class="form-group">
+                        <i class="fas fa-envelope icon-left"></i>
+                        <input type="email" id="forgotEmail" placeholder="ইমেইল" required>
+                    </div>
+                    <button type="submit" class="auth-btn" id="forgotBtn">পাসওয়ার্ড রিসেট করুন</button>
+                </form>
+                <div class="auth-footer">
+                    <span class="auth-link" onclick="showAuthForm('login')">লগইন পৃষ্ঠায় ফিরে যান</span>
+                </div>
+                <div class="error-message" id="forgotError"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Quiz Content -->
+    <div class="container" id="quizContainer" style="display: none;">
         <nav class="navbar">
             <div class="nav-left">
                 <div class="exam-title" id="examNameDisplay">ডোপামিন এমসিকিউ</div>
@@ -634,10 +952,6 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
-        auth.onAuthStateChanged((user) => {
-            if (!user) window.location.href = "auth.html";
-        });
-
         let questions = [];
         let examData = {};
         let userAnswers = {};
@@ -652,6 +966,266 @@
         let visibility = { correct: true, incorrect: true, skipped: true };
         let chartInstance = null;
 
+        // Auth Functions
+        function showAuthForm(formType) {
+            document.querySelectorAll('.auth-form').forEach(form => form.classList.remove('active'));
+            document.querySelectorAll('.auth-option').forEach(option => option.classList.remove('active'));
+            
+            if (formType === 'login') {
+                document.getElementById('login-form').classList.add('active');
+                document.querySelectorAll('.auth-option')[0].classList.add('active');
+            } else if (formType === 'signup') {
+                document.getElementById('signup-form').classList.add('active');
+                document.querySelectorAll('.auth-option')[1].classList.add('active');
+            } else if (formType === 'forgot') {
+                document.getElementById('forgot-form').classList.add('active');
+            }
+            
+            document.querySelectorAll('.error-message').forEach(error => error.style.display = 'none');
+        }
+
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const icon = input.parentElement.querySelector('.password-toggle');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        function showError(formId, message) {
+            const errorElement = document.getElementById(`${formId}Error`);
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+
+        function hideError(formId) {
+            document.getElementById(`${formId}Error`).style.display = 'none';
+        }
+
+        function setLoading(buttonId, isLoading) {
+            const button = document.getElementById(buttonId);
+            if (isLoading) {
+                button.classList.add('loading');
+                button.disabled = true;
+            } else {
+                button.classList.remove('loading');
+                button.disabled = false;
+            }
+        }
+
+        async function signInWithGoogle() {
+            try {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                const result = await auth.signInWithPopup(provider);
+                const user = result.user;
+                
+                // Check if user exists in Firestore
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                
+                if (!userDoc.exists) {
+                    // Create user profile if not exists
+                    await db.collection('users').doc(user.uid).set({
+                        fullName: user.displayName || '',
+                        email: user.email,
+                        profileComplete: false,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                }
+                
+                // Hide auth modal and show quiz
+                document.getElementById('authModal').style.display = 'none';
+                document.getElementById('quizContainer').style.display = 'block';
+                loadExam();
+            } catch (error) {
+                showError('login', error.message);
+            }
+        }
+
+        async function resendVerificationEmail() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!email || !password) {
+                showError('login', 'ইমেইল এবং পাসওয়ার্ড দিন');
+                return;
+            }
+            
+            try {
+                setLoading('loginBtn', true);
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                await userCredential.user.sendEmailVerification();
+                Toastify({
+                    text: "যাচাইকরণ ইমেইল পুনরায় পাঠানো হয়েছে। আপনার ইনবক্স চেক করুন।",
+                    duration: 3000,
+                    style: { background: "#28a745" }
+                }).showToast();
+                await auth.signOut();
+            } catch (error) {
+                showError('login', error.message);
+            } finally {
+                setLoading('loginBtn', false);
+            }
+        }
+
+        // Login Form Submission
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            try {
+                setLoading('loginBtn', true);
+                hideError('login');
+                
+                const userCredential = await auth.signInWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                
+                if (!user.emailVerified) {
+                    await auth.signOut();
+                    showError('login', 'আপনার ইমেইল যাচাই করা হয়নি। অনুগ্রহ করে আপনার ইমেইল চেক করুন।');
+                    document.getElementById('resendVerification').style.display = 'inline';
+                    return;
+                }
+                
+                // Check if profile is complete
+                const userDoc = await db.collection('users').doc(user.uid).get();
+                if (!userDoc.exists || !userDoc.data().profileComplete) {
+                    // Redirect to profile completion if needed
+                    window.location.href = 'auth.html';
+                    return;
+                }
+                
+                // Hide auth modal and show quiz
+                document.getElementById('authModal').style.display = 'none';
+                document.getElementById('quizContainer').style.display = 'block';
+                loadExam();
+            } catch (error) {
+                if (error.code === 'auth/invalid-login-credentials' || 
+                    error.code === 'auth/wrong-password' || 
+                    error.code === 'auth/invalid-email' || 
+                    error.code === 'auth/user-not-found') {
+                    showError('login', 'ইমেইল অথবা পাসওয়ার্ডটি সঠিক নয়');
+                } else {
+                    showError('login', error.message);
+                }
+            } finally {
+                setLoading('loginBtn', false);
+            }
+        });
+
+        // Signup Form Submission
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                showError('signup', 'পাসওয়ার্ড মেলেনি');
+                return;
+            }
+            
+            try {
+                setLoading('signupBtn', true);
+                hideError('signup');
+                
+                const userCredential = await auth.createUserWithEmailAndPassword(email, password);
+                const user = userCredential.user;
+                
+                // Save user to Firestore
+                await db.collection('users').doc(user.uid).set({
+                    email: email,
+                    profileComplete: false,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                
+                // Send verification email
+                await user.sendEmailVerification();
+                
+                Toastify({
+                    text: "একটি যাচাইকরণ ইমেইল পাঠানো হয়েছে। অনুগ্রহ করে আপনার ইমেইল চেক করুন।",
+                    duration: 5000,
+                    style: { background: "#28a745" }
+                }).showToast();
+                
+                // Switch to login form
+                showAuthForm('login');
+                document.getElementById('loginEmail').value = email;
+                document.getElementById('resendVerification').style.display = 'inline';
+            } catch (error) {
+                if (error.code === 'auth/email-already-in-use') {
+                    showError('signup', 'এই ইমেইলটি ইতিমধ্যে ব্যবহৃত হয়েছে');
+                } else if (error.code === 'auth/weak-password') {
+                    showError('signup', 'পাসওয়ার্ডটি কমপক্ষে ৬ অক্ষরের হতে হবে');
+                } else if (error.code === 'auth/invalid-email') {
+                    showError('signup', 'অবৈধ ইমেইল ঠিকানা');
+                } else {
+                    showError('signup', error.message);
+                }
+            } finally {
+                setLoading('signupBtn', false);
+            }
+        });
+
+        // Forgot Password Form Submission
+        document.getElementById('forgotForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('forgotEmail').value;
+            
+            try {
+                setLoading('forgotBtn', true);
+                hideError('forgot');
+                
+                await auth.sendPasswordResetEmail(email);
+                
+                Toastify({
+                    text: "পাসওয়ার্ড রিসেট লিঙ্ক আপনার ইমেইলে পাঠানো হয়েছে।",
+                    duration: 5000,
+                    style: { background: "#28a745" }
+                }).showToast();
+                
+                // Switch back to login form
+                showAuthForm('login');
+            } catch (error) {
+                if (error.code === 'auth/user-not-found') {
+                    showError('forgot', 'এই ইমেইলটি খুঁজে পাওয়া যায়নি');
+                } else {
+                    showError('forgot', error.message);
+                }
+            } finally {
+                setLoading('forgotBtn', false);
+            }
+        });
+
+        // Check auth state on load
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                // User is signed in, check if profile is complete
+                db.collection('users').doc(user.uid).get().then(doc => {
+                    if (doc.exists && doc.data().profileComplete) {
+                        // Profile is complete, show quiz
+                        document.getElementById('authModal').style.display = 'none';
+                        document.getElementById('quizContainer').style.display = 'block';
+                        loadExam();
+                    } else {
+                        // Profile not complete, redirect to auth page
+                        window.location.href = 'auth.html';
+                    }
+                });
+            } else {
+                // No user is signed in, show auth modal
+                document.getElementById('authModal').style.display = 'flex';
+                document.getElementById('quizContainer').style.display = 'none';
+            }
+        });
+
+        // Quiz Functions
         function sanitizeFileName(name) {
             return name.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9\u0980-\u09FF-]/g, '');
         }
@@ -1318,7 +1892,20 @@
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
         }
 
-        document.addEventListener("DOMContentLoaded", loadExam);
+        // Initialize auth modal
+        document.addEventListener("DOMContentLoaded", () => {
+            // Show auth modal if not logged in, otherwise load exam
+            auth.onAuthStateChanged((user) => {
+                if (user) {
+                    document.getElementById('authModal').style.display = 'none';
+                    document.getElementById('quizContainer').style.display = 'block';
+                    loadExam();
+                } else {
+                    document.getElementById('authModal').style.display = 'flex';
+                    document.getElementById('quizContainer').style.display = 'none';
+                }
+            });
+        });
     </script>
 </body>
 </html>
