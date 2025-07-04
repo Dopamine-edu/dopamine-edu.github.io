@@ -482,10 +482,13 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
 
     <script>
-        // Get the examId from the URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const examId = urlParams.get('examId');
-        
+        // Store the original URL that redirected to this page
+        if (!sessionStorage.getItem('redirectUrl')) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirectUrl = urlParams.get('redirect') || document.referrer || '/quiz.html';
+            sessionStorage.setItem('redirectUrl', redirectUrl);
+        }
+
         const firebaseConfig = {
             apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
             authDomain: "dopamine-quiz.firebaseapp.com",
@@ -588,8 +591,10 @@
                 if (user.emailVerified) {
                     const doc = await db.collection('users').doc(user.uid).get();
                     if (doc.exists && doc.data().profileComplete) {
-                        // Redirect back to the quiz page with the examId
-                        window.location.href = `/quiz.html?examId=${examId}`;
+                        // Redirect to stored URL or fallback to quiz.html
+                        const redirectUrl = sessionStorage.getItem('redirectUrl') || '/quiz.html';
+                        sessionStorage.removeItem('redirectUrl');
+                        window.location.href = redirectUrl;
                     } else {
                         showProfile();
                     }
@@ -634,8 +639,10 @@
                         })
                         .then((doc) => {
                             if (doc.data().profileComplete) {
-                                // Redirect back to the quiz page with the examId
-                                window.location.href = `/quiz.html?examId=${examId}`;
+                                // Redirect to stored URL or fallback to quiz.html
+                                const redirectUrl = sessionStorage.getItem('redirectUrl') || '/quiz.html';
+                                sessionStorage.removeItem('redirectUrl');
+                                window.location.href = redirectUrl;
                             } else {
                                 showProfile();
                             }
@@ -674,8 +681,10 @@
                         phone: phone,
                         profileComplete: true
                     });
-                    // Redirect back to the quiz page with the examId
-                    window.location.href = `/quiz.html?examId=${examId}`;
+                    // Redirect to stored URL or fallback to quiz.html
+                    const redirectUrl = sessionStorage.getItem('redirectUrl') || '/quiz.html';
+                    sessionStorage.removeItem('redirectUrl');
+                    window.location.href = redirectUrl;
                 } catch (error) {
                     showError(error.message, error.message);
                 } finally {
