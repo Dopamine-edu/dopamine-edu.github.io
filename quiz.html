@@ -442,36 +442,20 @@
             border-collapse: collapse;
         }
 
-        .leaderboard-table th, 
+        .leaderboard-table th,
         .leaderboard-table td {
             padding: 10px;
+            text-align: left;
             border-bottom: 1px solid var(--border-color);
         }
-        
+
         .leaderboard-table th {
             font-weight: bold;
             color: var(--purple-box);
-            text-align: center;
         }
-        
-        .leaderboard-table td {
-            text-align: center;
-        }
-        
-        .leaderboard-table td:nth-child(2) {
-            text-align: left; /* Name column left-aligned */
-        }
-        
+
         .leaderboard-table tr:hover {
-            background-color: rgba(152, 16, 250, 0.1);
-        }
-        
-        .leaderboard-table tr:nth-child(even) {
-            background-color: rgba(0, 0, 0, 0.05);
-        }
-        
-        [data-theme="dark"] .leaderboard-table tr:nth-child(even) {
-            background-color: rgba(255, 255, 255, 0.05);
+            background-color: var(--border-color);
         }
 
         .question-nav {
@@ -1102,63 +1086,63 @@
             document.getElementById("chartContainer").style.display = "block";
         }
 
-async function showLeaderboard() {
-    const leaderboardContainer = document.getElementById("leaderboardContainer");
-    const leaderboardBody = document.getElementById("leaderboardBody");
-    leaderboardBody.innerHTML = '<tr><td colspan="6" class="text-center">লোড হচ্ছে...</td></tr>';
+        async function showLeaderboard() {
+            const leaderboardContainer = document.getElementById("leaderboardContainer");
+            const leaderboardBody = document.getElementById("leaderboardBody");
+            leaderboardBody.innerHTML = '<tr><td colspan="6" class="text-center">লোড হচ্ছে...</td></tr>';
 
-    try {
-        const attemptsSnapshot = await db.collection("attempts")
-            .where("examId", "==", examId)
-            .orderBy("score", "desc")
-            .orderBy("timestamp", "asc")
-            .limit(10)
-            .get();
+            try {
+                const attemptsSnapshot = await db.collection("attempts")
+                    .where("examId", "==", examId)
+                    .orderBy("score", "desc")
+                    .orderBy("timestamp", "asc")
+                    .limit(10)
+                    .get();
 
-        if (attemptsSnapshot.empty) {
-            leaderboardBody.innerHTML = '<tr><td colspan="6" class="text-center">কোনো ফলাফল পাওয়া যায়নি।</td></tr>';
-            leaderboardContainer.style.display = "block";
-            return;
+                if (attemptsSnapshot.empty) {
+                    leaderboardBody.innerHTML = '<tr><td colspan="6" class="text-center">কোনো ফলাফল পাওয়া যায়নি।</td></tr>';
+                    leaderboardContainer.style.display = "block";
+                    return;
+                }
+
+                const userIds = [...new Set(attemptsSnapshot.docs.map(doc => doc.data().userId))];
+                const usersSnapshot = await db.collection("users")
+                    .where(firebase.firestore.FieldPath.documentId(), "in", userIds)
+                    .get();
+
+                const userMap = {};
+                usersSnapshot.forEach(doc => {
+                    userMap[doc.id] = doc.data().fullName || "অজানা ব্যবহারকারী";
+                });
+
+                leaderboardBody.innerHTML = "";
+                attemptsSnapshot.forEach((doc, index) => {
+                    const data = doc.data();
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${userMap[data.userId] || "অজানা ব্যবহারকারী"}</td>
+                        <td>${data.score}</td>
+                        <td>${data.correctAnswers}</td>
+                        <td>${data.incorrectAnswers}</td>
+                        <td>${data.skippedAnswers}</td>
+                    `;
+                    leaderboardBody.appendChild(row);
+                });
+
+                leaderboardContainer.style.display = "block";
+                leaderboardContainer.scrollIntoView({ behavior: "smooth" });
+            } catch (error) {
+                console.error("Error loading leaderboard:", error);
+                Toastify({
+                    text: "লিডারবোর্ড লোড করতে ত্রুটি: " + error.message,
+                    duration: 3000,
+                    style: { background: "#dc3545" }
+                }).showToast();
+                leaderboardBody.innerHTML = '<tr><td colspan="6" class="text-center">লিডারবোর্ড লোড করতে ব্যর্থ।</td></tr>';
+                leaderboardContainer.style.display = "block";
+            }
         }
-
-        const userIds = [...new Set(attemptsSnapshot.docs.map(doc => doc.data().userId))];
-        const usersSnapshot = await db.collection("users")
-            .where(firebase.firestore.FieldPath.documentId(), "in", userIds)
-            .get();
-
-        const userMap = {};
-        usersSnapshot.forEach(doc => {
-            userMap[doc.id] = doc.data().fullName || "অজানা ব্যবহারকারী";
-        });
-
-        leaderboardBody.innerHTML = "";
-        attemptsSnapshot.forEach((doc, index) => {
-            const data = doc.data();
-            const row = document.createElement("tr");
-            row.innerHTML = `
-                <td style="font-weight: bold; text-align: center;">${index + 1}</td>
-                <td>${userMap[data.userId] || "অজানা ব্যবহারকারী"}</td>
-                <td style="text-align: center;">${data.score}</td>
-                <td style="text-align: center;">${data.correctAnswers}</td>
-                <td style="text-align: center;">${data.incorrectAnswers}</td>
-                <td style="text-align: center;">${data.skippedAnswers}</td>
-            `;
-            leaderboardBody.appendChild(row);
-        });
-
-        leaderboardContainer.style.display = "block";
-        leaderboardContainer.scrollIntoView({ behavior: "smooth" });
-    } catch (error) {
-        console.error("Error loading leaderboard:", error);
-        Toastify({
-            text: "লিডারবোর্ড লোড করতে ত্রুটি: " + error.message,
-            duration: 3000,
-            style: { background: "#dc3545" }
-        }).showToast();
-        leaderboardBody.innerHTML = '<tr><td colspan="6" class="text-center">লিডারবোর্ড লোড করতে ব্যর্থ।</td></tr>';
-        leaderboardContainer.style.display = "block";
-    }
-}
 
         async function submitQuiz() {
             if (submitted) return;
