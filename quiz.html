@@ -635,7 +635,7 @@
         const db = firebase.firestore();
 
         auth.onAuthStateChanged((user) => {
-            if (!user) window.location.href = "authexam.html";
+            if (!user) window.location.href = "auth.html";
         });
 
         let questions = [];
