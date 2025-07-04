@@ -256,7 +256,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            \n            font-size: 0.9rem;
+            font-size: 0.9rem;
             font-weight: bold;
         }
 
@@ -505,6 +505,50 @@
             color: white;
         }
 
+        /* Menu styles */
+        .menu-container {
+            position: relative;
+            display: none;
+        }
+
+        .menu-btn {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            right: 0;
+            top: 100%;
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            padding: 0.5rem 0;
+            min-width: 180px;
+            z-index: 1000;
+            display: none;
+        }
+
+        .dropdown-menu.show {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 0.5rem 1rem;
+            color: var(--text-color);
+            text-decoration: none;
+            display: block;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown-item:hover {
+            background-color: var(--border-color);
+        }
+
         @media (max-width: 768px) {
             .navbar { padding: 0.5rem; }
             .exam-title { font-size: 1.5rem; }
@@ -565,7 +609,23 @@
                 </div>
             </div>
             <div class="nav-right">
-                <button class="theme-toggle" onclick="toggleTheme()">
+                <div class="menu-container" id="menuContainer">
+                    <button class="menu-btn" id="menuBtn">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                    <div class="dropdown-menu" id="dropdownMenu">
+                        <a href="https://dopamine-edu.github.io/dashboard.html" class="dropdown-item">
+                            <i class="fas fa-home mr-2"></i> হোম
+                        </a>
+                        <a href="#" class="dropdown-item" id="themeToggleMenuItem">
+                            <i class="fas fa-moon mr-2"></i> ডার্ক/লাইট মোড
+                        </a>
+                        <a href="#" class="dropdown-item" id="leaderboardMenuItem">
+                            <i class="fas fa-trophy mr-2"></i> লিডারবোর্ড
+                        </a>
+                    </div>
+                </div>
+                <button class="theme-toggle" onclick="toggleTheme()" id="themeToggleBtn">
                     <i class="fas fa-moon" id="themeIcon"></i>
                 </button>
             </div>
@@ -582,7 +642,7 @@
         <div id="questionNav" class="question-nav"></div>
 
         <div class="header">
-            <div class="progress-container">
+            <div class="progress-container" id="progressContainer">
                 <span class="progress-text">অগ্রগতি</span>
                 <div class="progress">
                     <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
@@ -1227,7 +1287,10 @@
             createPieChart(correctAnswers, incorrectAnswers, skippedAnswers);
 
             document.getElementById("stickyBar").style.display = "none";
+            document.getElementById("progressContainer").style.display = "none";
             document.getElementById("backToDashboardContainer").style.display = "block";
+            document.getElementById("menuContainer").style.display = "block";
+            document.getElementById("themeToggleBtn").style.display = "none";
 
             localStorage.removeItem(startTimeKey);
             localStorage.removeItem(answersKey);
@@ -1265,6 +1328,9 @@
         function displayReviewMode(questions, resultData) {
             document.getElementById("stickyBar").style.display = "none";
             document.getElementById("questionNav").style.display = "none";
+            document.getElementById("progressContainer").style.display = "none";
+            document.getElementById("menuContainer").style.display = "block";
+            document.getElementById("themeToggleBtn").style.display = "none";
 
             renderQuiz(questions, true, resultData.answers || {});
 
@@ -1307,10 +1373,41 @@
 
         document.getElementById("leaderboardBtn").addEventListener("click", showLeaderboard);
 
+        // Menu functionality
+        const menuBtn = document.getElementById("menuBtn");
+        const dropdownMenu = document.getElementById("dropdownMenu");
+        const themeToggleMenuItem = document.getElementById("themeToggleMenuItem");
+        const leaderboardMenuItem = document.getElementById("leaderboardMenuItem");
+
+        menuBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle("show");
+        });
+
+        themeToggleMenuItem.addEventListener("click", (e) => {
+            e.preventDefault();
+            toggleTheme();
+            dropdownMenu.classList.remove("show");
+        });
+
+        leaderboardMenuItem.addEventListener("click", (e) => {
+            e.preventDefault();
+            showLeaderboard();
+            dropdownMenu.classList.remove("show");
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener("click", () => {
+            dropdownMenu.classList.remove("show");
+        });
+
         let isDark = localStorage.getItem('theme') === 'dark';
         if (isDark) {
             document.body.setAttribute('data-theme', 'dark');
             document.getElementById('themeIcon').classList.replace('fa-moon', 'fa-sun');
+            themeToggleMenuItem.innerHTML = '<i class="fas fa-sun mr-2"></i> ডার্ক/লাইট মোড';
+        } else {
+            themeToggleMenuItem.innerHTML = '<i class="fas fa-moon mr-2"></i> ডার্ক/লাইট মোড';
         }
 
         function toggleTheme() {
@@ -1319,6 +1416,12 @@
             document.getElementById('themeIcon').classList.toggle('fa-moon');
             document.getElementById('themeIcon').classList.toggle('fa-sun');
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            
+            if (isDark) {
+                themeToggleMenuItem.innerHTML = '<i class="fas fa-sun mr-2"></i> ডার্ক/লাইট মোড';
+            } else {
+                themeToggleMenuItem.innerHTML = '<i class="fas fa-moon mr-2"></i> ডার্ক/লাইট মোড';
+            }
         }
 
         document.addEventListener("DOMContentLoaded", loadExam);
