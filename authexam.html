@@ -485,7 +485,7 @@
         // Store the original URL that redirected to this page
         if (!sessionStorage.getItem('redirectUrl')) {
             const urlParams = new URLSearchParams(window.location.search);
-            const redirectUrl = urlParams.get('redirect') || document.referrer || '/quiz.html';
+            const redirectUrl = urlParams.get('redirect') || document.referrer || '/dashboard.html';
             sessionStorage.setItem('redirectUrl', redirectUrl);
         }
 
@@ -591,8 +591,8 @@
                 if (user.emailVerified) {
                     const doc = await db.collection('users').doc(user.uid).get();
                     if (doc.exists && doc.data().profileComplete) {
-                        // Redirect to stored URL or fallback to quiz.html
-                        const redirectUrl = sessionStorage.getItem('redirectUrl') || '/quiz.html';
+                        // Redirect to stored URL or fallback to dashboard.html
+                        const redirectUrl = sessionStorage.getItem('redirectUrl') || '/dashboard.html';
                         sessionStorage.removeItem('redirectUrl');
                         window.location.href = redirectUrl;
                     } else {
@@ -639,8 +639,8 @@
                         })
                         .then((doc) => {
                             if (doc.data().profileComplete) {
-                                // Redirect to stored URL or fallback to quiz.html
-                                const redirectUrl = sessionStorage.getItem('redirectUrl') || '/quiz.html';
+                                // Redirect to stored URL or fallback to dashboard.html
+                                const redirectUrl = sessionStorage.getItem('redirectUrl') || '/dashboard.html';
                                 sessionStorage.removeItem('redirectUrl');
                                 window.location.href = redirectUrl;
                             } else {
@@ -681,8 +681,8 @@
                         phone: phone,
                         profileComplete: true
                     });
-                    // Redirect to stored URL or fallback to quiz.html
-                    const redirectUrl = sessionStorage.getItem('redirectUrl') || '/quiz.html';
+                    // Redirect to stored URL or fallback to dashboard.html
+                    const redirectUrl = sessionStorage.getItem('redirectUrl') || '/dashboard.html';
                     sessionStorage.removeItem('redirectUrl');
                     window.location.href = redirectUrl;
                 } catch (error) {
