@@ -485,8 +485,10 @@
         // Store the original URL that redirected to this page
         if (!sessionStorage.getItem('redirectUrl')) {
             const urlParams = new URLSearchParams(window.location.search);
-            const redirectUrl = urlParams.get('redirect') || document.referrer || '/dashboard.html';
-            sessionStorage.setItem('redirectUrl', redirectUrl);
+            const redirectUrl = urlParams.get('redirect') || document.referrer;
+            if (redirectUrl && !redirectUrl.includes('authexam.html')) {
+                sessionStorage.setItem('redirectUrl', redirectUrl);
+            }
         }
 
         const firebaseConfig = {
