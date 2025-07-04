@@ -482,6 +482,13 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-firestore-compat.js"></script>
 
     <script>
+        // Store the original URL that redirected to this page
+        if (!sessionStorage.getItem('redirectUrl')) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const redirectUrl = urlParams.get('redirect') || document.referrer || '/dashboard.html';
+            sessionStorage.setItem('redirectUrl', redirectUrl);
+        }
+
         const firebaseConfig = {
             apiKey: "AIzaSyBXXaWWoFqn6MpH6IWSm6CGaqUJzAmzbzA",
             authDomain: "dopamine-quiz.firebaseapp.com",
@@ -584,7 +591,10 @@
                 if (user.emailVerified) {
                     const doc = await db.collection('users').doc(user.uid).get();
                     if (doc.exists && doc.data().profileComplete) {
-                        window.location.href = '/dashboard.html';
+                        // Redirect to stored URL or fallback to dashboard.html
+                        const redirectUrl = sessionStorage.getItem('redirectUrl') || '/dashboard.html';
+                        sessionStorage.removeItem('redirectUrl');
+                        window.location.href = redirectUrl;
                     } else {
                         showProfile();
                     }
@@ -629,7 +639,10 @@
                         })
                         .then((doc) => {
                             if (doc.data().profileComplete) {
-                                window.location.href = '/dashboard.html';
+                                // Redirect to stored URL or fallback to dashboard.html
+                                const redirectUrl = sessionStorage.getItem('redirectUrl') || '/dashboard.html';
+                                sessionStorage.removeItem('redirectUrl');
+                                window.location.href = redirectUrl;
                             } else {
                                 showProfile();
                             }
@@ -668,7 +681,10 @@
                         phone: phone,
                         profileComplete: true
                     });
-                    window.location.href = '/dashboard.html';
+                    // Redirect to stored URL or fallback to dashboard.html
+                    const redirectUrl = sessionStorage.getItem('redirectUrl') || '/dashboard.html';
+                    sessionStorage.removeItem('redirectUrl');
+                    window.location.href = redirectUrl;
                 } catch (error) {
                     showError(error.message, error.message);
                 } finally {
