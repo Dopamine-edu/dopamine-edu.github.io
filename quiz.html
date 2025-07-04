@@ -1090,7 +1090,7 @@
             const leaderboardContainer = document.getElementById("leaderboardContainer");
             const leaderboardBody = document.getElementById("leaderboardBody");
             leaderboardBody.innerHTML = '<tr><td colspan="6" class="text-center">লোড হচ্ছে...</td></tr>';
-
+        
             try {
                 const attemptsSnapshot = await db.collection("attempts")
                     .where("examId", "==", examId)
@@ -1098,23 +1098,23 @@
                     .orderBy("timestamp", "asc")
                     .limit(10)
                     .get();
-
+        
                 if (attemptsSnapshot.empty) {
                     leaderboardBody.innerHTML = '<tr><td colspan="6" class="text-center">কোনো ফলাফল পাওয়া যায়নি।</td></tr>';
                     leaderboardContainer.style.display = "block";
                     return;
                 }
-
+        
                 const userIds = [...new Set(attemptsSnapshot.docs.map(doc => doc.data().userId))];
                 const usersSnapshot = await db.collection("users")
                     .where(firebase.firestore.FieldPath.documentId(), "in", userIds)
                     .get();
-
+        
                 const userMap = {};
                 usersSnapshot.forEach(doc => {
                     userMap[doc.id] = doc.data().fullName || "অজানা ব্যবহারকারী";
                 });
-
+        
                 leaderboardBody.innerHTML = "";
                 attemptsSnapshot.forEach((doc, index) => {
                     const data = doc.data();
@@ -1129,7 +1129,7 @@
                     `;
                     leaderboardBody.appendChild(row);
                 });
-
+        
                 leaderboardContainer.style.display = "block";
                 leaderboardContainer.scrollIntoView({ behavior: "smooth" });
             } catch (error) {
