@@ -120,6 +120,7 @@
             display: flex;
             align-items: center;
             gap: 1rem;
+            position: relative;
         }
 
         .theme-toggle {
@@ -133,6 +134,49 @@
         }
 
         .theme-toggle:hover { transform: scale(1.1); }
+
+        .menu-button {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 1.2rem;
+            padding: 0.5rem;
+            transition: transform 0.3s;
+            display: none;
+        }
+
+        .menu-button:hover { transform: scale(1.1); }
+
+        .menu-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            z-index: 100;
+            display: none;
+            flex-direction: column;
+            min-width: 150px;
+        }
+
+        .menu-dropdown.show {
+            display: flex;
+        }
+
+        .menu-item {
+            padding: 10px 15px;
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .menu-item:hover {
+            background: var(`${--border-color}`);
+        }
 
         .sticky-bar {
             position: sticky;
@@ -256,7 +300,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            \n            font-size: 0.9rem;
+            font-size: 0.9rem;
             font-weight: bold;
         }
 
@@ -509,7 +553,7 @@
             .navbar { padding: 0.5rem; }
             .exam-title { font-size: 1.5rem; }
             .subject-box, .questions-box, .timer-box { font-size: 0.85rem; padding: 0.3rem 0.8rem; }
-            .theme-toggle { font-size: 1.2rem; padding: 0.5rem; }
+            .theme-toggle, .menu-button { font-size: 1.2rem; padding: 0.5rem; }
             .sticky-bar { padding: 0.5rem; }
             .sticky-bar .answered-count, .sticky-bar .timer { font-size: 0.9rem; }
             .btn-next { font-size: 0.9rem; padding: 0.3rem 0.8rem; }
@@ -531,13 +575,16 @@
                 display: inline-block;
                 margin: 0 5px;
             }
+            .menu-dropdown {
+                min-width: 120px;
+            }
         }
 
         @media (min-width: 769px) {
             .navbar { padding: 1rem; }
             .exam-title { font-size: 2rem; }
             .subject-box, .questions-box, .timer-box { font-size: 1rem; padding: 0.5rem 1rem; }
-            .theme-toggle { font-size: 1.5rem; padding: 0.5rem; }
+            .theme-toggle, .menu-button { font-size: 1.5rem; padding: 0.5rem; }
             .sticky-bar { padding: 0.8rem 1rem; }
             .sticky-bar .answered-count, .sticky-bar .timer { font-size: 1.1rem; }
             .btn-next { font-size: 1rem; padding: 0.5rem 1rem; }
@@ -568,6 +615,14 @@
                 <button class="theme-toggle" onclick="toggleTheme()">
                     <i class="fas fa-moon" id="themeIcon"></i>
                 </button>
+                <button class="menu-button" id="menuButton" onclick="toggleMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="menu-dropdown" id="menuDropdown">
+                    <a href="https://dopamine-edu.github.io/dashboard.html" class="menu-item">হোম</a>
+                    <div class="menu-item" onclick="toggleTheme()">ডার্ক/লাইট মোড</div>
+                    <div class="menu-item" onclick="showLeaderboard()">লিডারবোর্ড</div>
+                </div>
             </div>
         </nav>
 
@@ -582,7 +637,7 @@
         <div id="questionNav" class="question-nav"></div>
 
         <div class="header">
-            <div class="progress-container">
+            <div class="progress-container" id="progressContainer">
                 <span class="progress-text">অগ্রগতি</span>
                 <div class="progress">
                     <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
@@ -721,6 +776,8 @@
                     document.getElementById("expiredMessage").textContent = "এই পরীক্ষার সময় শেষ হয়ে গেছে। আপনি অংশ নিতে পারবেন না।";
                     document.getElementById("examForm").style.display = "none";
                     document.getElementById("stickyBar").style.display = "none";
+                    document.getElementById("progressContainer").style.display = "none";
+                    document.getElementById("menuButton").style.display = "block";
                     loadingDiv.style.display = "none";
                     return;
                 }
@@ -808,6 +865,7 @@
                 questionDiv.className = "question-card";
                 questionDiv.dataset.answer = q.correctOption;
                 questionDiv.dataset.index = idx;
+                questionDiv.dataset.type = '';
 
                 if (userAnswers["q" + idx] && userAnswers["q" + idx + "_locked"]) {
                     questionDiv.classList.add("answered");
@@ -978,6 +1036,11 @@
             if (confirm("আপনি কি আপনার উত্তর জমা দিতে নিশ্চিত?")) submitQuiz();
         });
 
+        function toggleMenu() {
+            const menuDropdown = document.getElementById("menuDropdown");
+            menuDropdown.classList.toggle("show");
+        }
+
         function createGradient(ctx, colorStart, colorEnd) {
             const gradient = ctx.createLinearGradient(0, 0, 0, 400);
             gradient.addColorStop(0, colorStart);
@@ -1056,8 +1119,9 @@
                                 const type = ['correct', 'incorrect', 'skipped'][index];
                                 visibility[type] = !visibility[type];
                                 legendItem.text = visibility[type] 
-                                    ? ['সঠিক উত্তর', 'ভুল উত্তর', 'এড়িয়ে যাওয়া'][index] 
+                                    ? ['সঠিক উত্তর', 'ভুল উত্তর', 'এড়িয়ে যাওয়া'][index]
                                     : `<s>${['সঠিক উত্তর', 'ভুল উত্তর', 'এড়িয়ে যাওয়া'][index]}</s>`;
+                                legendItem.font.style = visibility[type] ? 'normal' : 'line-through';
                                 updateVisibility();
                             }
                         },
@@ -1090,7 +1154,7 @@
             const leaderboardContainer = document.getElementById("leaderboardContainer");
             const leaderboardBody = document.getElementById("leaderboardBody");
             leaderboardBody.innerHTML = '<tr><td colspan="6" class="text-center">লোড হচ্ছে...</td></tr>';
-        
+
             try {
                 const attemptsSnapshot = await db.collection("attempts")
                     .where("examId", "==", examId)
@@ -1098,26 +1162,26 @@
                     .orderBy("timestamp", "asc")
                     .limit(10)
                     .get();
-        
+
                 if (attemptsSnapshot.empty) {
                     leaderboardBody.innerHTML = '<tr><td colspan="6" class="text-center">কোনো ফলাফল পাওয়া যায়নি।</td></tr>';
                     leaderboardContainer.style.display = "block";
                     return;
                 }
-        
+
                 const userIds = [...new Set(attemptsSnapshot.docs.map(doc => doc.data().userId))];
                 const usersSnapshot = await db.collection("users")
                     .where(firebase.firestore.FieldPath.documentId(), "in", userIds)
                     .get();
-        
+
                 const userMap = {};
                 usersSnapshot.forEach(doc => {
                     userMap[doc.id] = doc.data().fullName || "অজানা ব্যবহারকারী";
                 });
-        
+
                 leaderboardBody.innerHTML = "";
-                let serialNumber = 1; // Start serial number from 1
-        
+                let serialNumber = 1;
+
                 attemptsSnapshot.forEach((doc) => {
                     const data = doc.data();
                     const row = document.createElement("tr");
@@ -1130,9 +1194,9 @@
                         <td>${data.skippedAnswers}</td>
                     `;
                     leaderboardBody.appendChild(row);
-                    serialNumber++; // Increment serial number for the next row
+                    serialNumber++;
                 });
-        
+
                 leaderboardContainer.style.display = "block";
                 leaderboardContainer.scrollIntoView({ behavior: "smooth" });
             } catch (error) {
@@ -1223,11 +1287,12 @@
                 <p class="text-danger fw-bold">ভুল উত্তর: ${incorrectAnswers}</p>
                 <p class="text-secondary fw-bold">এড়িয়ে যাওয়া: ${skippedAnswers}</p>
             `;
-
-            createPieChart(correctAnswers, incorrectAnswers, skippedAnswers);
-
+            document.getElementById("progressContainer").style.display = "none";
+            document.getElementById("menuButton").style.display = "block";
             document.getElementById("stickyBar").style.display = "none";
             document.getElementById("backToDashboardContainer").style.display = "block";
+
+            createPieChart(correctAnswers, incorrectAnswers, skippedAnswers);
 
             localStorage.removeItem(startTimeKey);
             localStorage.removeItem(answersKey);
@@ -1265,6 +1330,8 @@
         function displayReviewMode(questions, resultData) {
             document.getElementById("stickyBar").style.display = "none";
             document.getElementById("questionNav").style.display = "none";
+            document.getElementById("progressContainer").style.display = "none";
+            document.getElementById("menuButton").style.display = "block";
 
             renderQuiz(questions, true, resultData.answers || {});
 
@@ -1322,6 +1389,15 @@
         }
 
         document.addEventListener("DOMContentLoaded", loadExam);
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (event) => {
+            const menuButton = document.getElementById('menuButton');
+            const menuDropdown = document.getElementById('menuDropdown');
+            if (!menuButton.contains(event.target) && !menuDropdown.contains(event.target)) {
+                menuDropdown.classList.remove('show');
+            }
+        });
     </script>
 </body>
 </html>
