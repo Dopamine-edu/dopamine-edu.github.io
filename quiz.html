@@ -1116,11 +1116,13 @@
                 });
         
                 leaderboardBody.innerHTML = "";
-                attemptsSnapshot.forEach((doc, index) => {
+                let serialNumber = 1; // Start serial number from 1
+        
+                attemptsSnapshot.forEach((doc) => {
                     const data = doc.data();
                     const row = document.createElement("tr");
                     row.innerHTML = `
-                        <td>${index + 1}</td>
+                        <td>${serialNumber}</td>
                         <td>${userMap[data.userId] || "অজানা ব্যবহারকারী"}</td>
                         <td>${data.score}</td>
                         <td>${data.correctAnswers}</td>
@@ -1128,6 +1130,7 @@
                         <td>${data.skippedAnswers}</td>
                     `;
                     leaderboardBody.appendChild(row);
+                    serialNumber++; // Increment serial number for the next row
                 });
         
                 leaderboardContainer.style.display = "block";
