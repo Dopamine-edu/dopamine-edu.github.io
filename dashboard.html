@@ -2602,10 +2602,20 @@ async function loadPerformanceData() {
         };
 
         // Get exam details for each attempt
+        // Get exam details for each attempt (batched to handle >10 IDs)
         const examIds = [...new Set(attemptsSnapshot.docs.map(doc => doc.data().examId))];
-        const examsSnapshot = await db.collection('exams')
-            .where(firebase.firestore.FieldPath.documentId(), 'in', examIds)
-            .get();
+        const examsMap = {};
+
+        // Process in batches of 10
+        for (let i = 0; i < examIds.length; i += 10) {
+            const batch = examIds.slice(i, i + 10);
+            const snapshot = await db.collection('exams')
+                .where(firebase.firestore.FieldPath.documentId(), 'in', batch)
+                .get();
+            snapshot.forEach(doc => {
+                examsMap[doc.id] = doc.data();
+            });
+        }
         
         const examsMap = {};
         examsSnapshot.forEach(doc => {
