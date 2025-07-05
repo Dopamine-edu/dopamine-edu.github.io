@@ -2359,22 +2359,28 @@
 
     async function loadQuestionsFromJSON(subject, chapter) {
         if (!subject || !chapter) {
-        console.error("Invalid subject/chapter:", subject, chapter);
-        return [];
+            console.error("Missing subject or chapter:", subject, chapter);
+            return [];
         }
-        const sanitizedSubject = sanitizeFileName(subject);
-        const sanitizedChapter = sanitizeFileName(chapter.replace(/^Chapter \d+:\s*/, ''));
-        const filePath = `./questions/subjects/${sanitizedSubject}/${sanitizedChapter}.json`;
-        
+    
         try {
+            const sanitizedSubject = subject.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9\u0980-\u09FF-]/g, '');
+            const sanitizedChapter = chapter.replace(/^Chapter \d+:\s*/, '')
+                                          .replace(/\s+/g, '-')
+                                          .replace(/[^a-zA-Z0-9\u0980-\u09FF-]/g, '');
+            
+            const filePath = `./questions/subjects/${sanitizedSubject}/${sanitizedChapter}.json`;
             
             const response = await fetch(filePath);
-            return await response.json();
-         } catch (error) {
-            console.error(`Error loading ${filePath}:`, error);
+            if (!response.ok) throw new Error("File not found");
+            
+            const data = await response.json();
+            return Array.isArray(data) ? data : [];
+        } catch (error) {
+            console.error(`Error loading ${subject} - ${chapter}:`, error);
             return [];
-         }
-     }
+        }
+    }
 
 async function fetchQuestionCounts() {
     // 1. Check cached data first
@@ -2543,7 +2549,15 @@ async function populateSubjects() {
         const timeSelect = document.getElementById("timeSelect");
         const customTime = parseInt(document.getElementById("customTime").value);
         const negativeMarking = parseFloat(document.getElementById("negativeMarking").value);
-        const selectedChapters = document.querySelectorAll('.chapter-box .form-check-input:checked');
+        const selectedChapters = [];
+        document.querySelectorAll('.chapter-box .form-check-input:checked').forEach(checkbox => {
+            
+            const chapterBox = checkbox.closest('.chapter-box');
+            selectedChapters.push({
+                subject: chapterBox.dataset.subject,
+                chapter: chapterBox.dataset.originalChapter
+            });
+        });
 
         if (selectedChapters.length === 0) {
             Toastify({ text: "অন্তত একটি অধ্যায় নির্বাচন করুন!", duration: 3000, style: { background: "#dc3545" } }).showToast();
