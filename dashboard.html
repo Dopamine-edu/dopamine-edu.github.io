@@ -1093,6 +1093,7 @@
 
         
     </style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div id="content">
@@ -1191,7 +1192,7 @@
                 <div class="col-md-6">
                     <h4 class="text-center mb-3">সামগ্রিক পারফরম্যান্স</h4>
                     <div class="chart-container">
-                        <canvas id="overallChart"></canvas>
+                        <canvas id="overallChart" width="100%" height="400"></canvas>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -1750,6 +1751,16 @@
     }
 
     function renderPerformanceChart(tabId) {
+        // Check if Chart is available
+        if (typeof Chart === 'undefined') {
+            console.error('Chart.js is not loaded');
+            Toastify({ 
+                text: "চার্ট প্রদর্শনের জন্য প্রয়োজনীয় লাইব্রেরি লোড হয়নি", 
+                duration: 3000, 
+                style: { background: "#dc3545" } 
+            }).showToast();
+            return;
+        }
         if (performanceChartInstances[tabId]) {
             performanceChartInstances[tabId].destroy();
         }
