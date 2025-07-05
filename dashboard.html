@@ -934,6 +934,164 @@
                 font-size: 1rem;
             }
         }
+
+
+
+        .modal {
+    display: none;
+    position: fixed;
+    z-index: 1001;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+}
+
+.modal-content {
+    background-color: var(--card-bg);
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 15px;
+    width: 90%;
+    box-shadow: var(--shadow);
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    color: var(--text-color);
+    cursor: pointer;
+}
+
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.tab-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    margin: 0 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.tab-btn.active {
+    background: var(--hover-color);
+}
+
+.tab-content {
+    display: none;
+    padding: 20px 0;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.chart-container {
+    position: relative;
+    height: 400px;
+    margin-bottom: 20px;
+    background: var(--card-bg);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+}
+
+.stats-summary {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.stat-label {
+    font-weight: 600;
+    color: var(--secondary-text-color);
+}
+
+.stat-value {
+    font-weight: 700;
+    color: var(--text-color);
+}
+
+.subject-stats, .chapter-stats, .timeline-stats {
+    background: var(--card-bg);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    margin-top: 15px;
+}
+
+.subject-stats h5, .chapter-stats h5 {
+    color: var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.progress {
+    height: 10px;
+    background-color: var(--border-color);
+    margin-bottom: 10px;
+}
+
+.progress-bar {
+    background-color: var(--primary-color);
+}
+
+.strength-meter {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.strength-label {
+    width: 120px;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        padding: 15px;
+    }
+    
+    .tab-btn {
+        padding: 8px 12px;
+        font-size: 0.8rem;
+        margin: 0 2px;
+    }
+    
+    .chart-container {
+        height: 300px;
+    }
+}
+
+
+
+
+
+
+
+        
     </style>
 </head>
 <body>
@@ -1010,10 +1168,111 @@
                 <i class="fas fa-gamepad card-icon"></i>
                 <h3 class="card-title">কুইজ ব্যাটল</h3>
             </div>
-            <div class="card" onclick="requireLogin('#')">
-                <i class="fas fa-chart-line card-icon"></i>
-                <h3 class="card-title">পারফরম্যান্স</h3>
+            <div class="card" onclick="showPerformanceModal()">
+    <i class="fas fa-chart-line card-icon"></i>
+    <h3 class="card-title">পারফরম্যান্স</h3>
+</div>
+
+<!-- Performance Modal -->
+<div id="performanceModal" class="modal">
+    <div class="modal-content" style="max-width: 900px;">
+        <span class="close-modal" onclick="closePerformanceModal()">×</span>
+        <h2 class="text-center mb-4">আপনার পারফরম্যান্স বিশ্লেষণ</h2>
+        
+        <div class="tabs mb-3">
+            <button class="tab-btn active" onclick="openPerformanceTab('overall')">সামগ্রিক</button>
+            <button class="tab-btn" onclick="openPerformanceTab('subject')">বিষয়ভিত্তিক</button>
+            <button class="tab-btn" onclick="openPerformanceTab('chapter')">অধ্যায়ভিত্তিক</button>
+            <button class="tab-btn" onclick="openPerformanceTab('timeline')">সময়রেখা</button>
+        </div>
+        
+        <div id="overall" class="tab-content active">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4 class="text-center mb-3">সামগ্রিক পারফরম্যান্স</h4>
+                    <div class="chart-container">
+                        <canvas id="overallChart"></canvas>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="stats-summary">
+                        <h4 class="text-center mb-3">পরিসংখ্যান</h4>
+                        <div class="stat-item">
+                            <span class="stat-label">পরীক্ষা দেওয়া হয়েছে:</span>
+                            <span class="stat-value" id="totalExams">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">সর্বোচ্চ স্কোর:</span>
+                            <span class="stat-value" id="highestScore">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">গড় স্কোর:</span>
+                            <span class="stat-value" id="averageScore">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">সঠিক উত্তরের হার:</span>
+                            <span class="stat-value" id="accuracyRate">0%</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">গড় সম্পূর্ণতা:</span>
+                            <span class="stat-value" id="completionRate">0%</span>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
+        
+        <div id="subject" class="tab-content">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4 class="text-center mb-3">বিষয়ভিত্তিক পারফরম্যান্স</h4>
+                    <div class="chart-container">
+                        <canvas id="subjectChart"></canvas>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="subject-selector">
+                        <label for="subjectSelect" class="form-label">বিষয় নির্বাচন করুন:</label>
+                        <select id="subjectSelect" class="form-control" onchange="updateSubjectStats()">
+                            <option value="">সব বিষয়</option>
+                        </select>
+                    </div>
+                    <div class="subject-stats" id="subjectStats">
+                        <!-- Will be populated dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="chapter" class="tab-content">
+            <div class="row">
+                <div class="col-md-4">
+                    <label for="chapterSubjectSelect" class="form-label">বিষয় নির্বাচন করুন:</label>
+                    <select id="chapterSubjectSelect" class="form-control" onchange="updateChapterList()">
+                        <option value="">সব বিষয়</option>
+                    </select>
+                </div>
+                <div class="col-md-8">
+                    <div class="chapter-stats" id="chapterStats">
+                        <!-- Will be populated dynamically -->
+                    </div>
+                </div>
+            </div>
+            <div class="chart-container mt-3">
+                <canvas id="chapterChart"></canvas>
+            </div>
+        </div>
+        
+        <div id="timeline" class="tab-content">
+            <div class="chart-container">
+                <canvas id="timelineChart"></canvas>
+            </div>
+            <div class="timeline-stats mt-3" id="timelineStats">
+                <!-- Will be populated dynamically -->
+            </div>
+        </div>
+    </div>
+</div>
         </div>
 
         <div class="custom-exam-section" id="custom-exam-section">
@@ -2259,7 +2518,672 @@
                 Toastify({ text: "প্লেয়ার তথ্য লোডে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
             }
         }
+// performance js
 
+
+
+        // Performance tracking functions
+let performanceChartInstances = {};
+let performanceData = {};
+
+async function showPerformanceModal() {
+    if (!isAuthenticated) {
+        Toastify({ text: "পারফরম্যান্স দেখতে লগইন করুন!", duration: 3000, style: { background: "#dc3545" } }).showToast();
+        window.location.href = 'https://dopamine-edu.github.io/auth.html';
+        return;
+    }
+
+    document.getElementById('performanceModal').style.display = 'block';
+    loadPerformanceData();
+}
+
+function closePerformanceModal() {
+    document.getElementById('performanceModal').style.display = 'none';
+    // Destroy all chart instances to prevent memory leaks
+    Object.values(performanceChartInstances).forEach(chart => chart.destroy());
+    performanceChartInstances = {};
+}
+
+function openPerformanceTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+
+    document.getElementById(tabId).classList.add('active');
+    document.querySelector(`[onclick="openPerformanceTab('${tabId}')"]`).classList.add('active');
+    
+    // Render the chart for the active tab
+    if (performanceData && Object.keys(performanceData).length > 0) {
+        renderPerformanceChart(tabId);
+    }
+}
+
+async function loadPerformanceData() {
+    const loading = Toastify({
+        text: "পারফরম্যান্স ডেটা লোড হচ্ছে...",
+        duration: -1,
+        style: { background: "#6b48ff" }
+    });
+    loading.showToast();
+
+    try {
+        const userId = auth.currentUser.uid;
+        
+        // Fetch all exam attempts by the user
+        const attemptsSnapshot = await db.collection('attempts')
+            .where('userId', '==', userId)
+            .orderBy('timestamp', 'desc')
+            .get();
+
+        if (attemptsSnapshot.empty) {
+            loading.hideToast();
+            Toastify({ text: "কোনো পরীক্ষার ডেটা পাওয়া যায়নি", duration: 3000, style: { background: "#ff9800" } }).showToast();
+            return;
+        }
+
+        // Process the data
+        performanceData = {
+            attempts: [],
+            subjects: {},
+            chapters: {},
+            timeline: [],
+            overall: {
+                totalExams: 0,
+                totalQuestions: 0,
+                correctAnswers: 0,
+                incorrectAnswers: 0,
+                skippedAnswers: 0,
+                highestScore: 0,
+                totalScore: 0
+            }
+        };
+
+        // Get exam details for each attempt
+        const examIds = [...new Set(attemptsSnapshot.docs.map(doc => doc.data().examId))];
+        const examsSnapshot = await db.collection('exams')
+            .where(firebase.firestore.FieldPath.documentId(), 'in', examIds)
+            .get();
+        
+        const examsMap = {};
+        examsSnapshot.forEach(doc => {
+            examsMap[doc.id] = doc.data();
+        });
+
+        // Process each attempt
+        attemptsSnapshot.forEach(doc => {
+            const attempt = doc.data();
+            const exam = examsMap[attempt.examId] || {};
+            
+            // Add to timeline data
+            performanceData.timeline.push({
+                date: attempt.timestamp.toDate(),
+                score: attempt.score,
+                total: attempt.totalQuestions * (exam.marksPerQuestion || 1),
+                examTitle: exam.title || 'কাস্টম পরীক্ষা'
+            });
+
+            // Update overall stats
+            performanceData.overall.totalExams++;
+            performanceData.overall.totalQuestions += attempt.totalQuestions;
+            performanceData.overall.correctAnswers += attempt.correctAnswers;
+            performanceData.overall.incorrectAnswers += attempt.incorrectAnswers;
+            performanceData.overall.skippedAnswers += attempt.skippedAnswers;
+            performanceData.overall.totalScore += attempt.score;
+            
+            if (attempt.score > performanceData.overall.highestScore) {
+                performanceData.overall.highestScore = attempt.score;
+            }
+
+            // Process subject-wise data
+            if (exam.subjects && exam.subjects.length > 0) {
+                exam.subjects.forEach(subject => {
+                    if (!performanceData.subjects[subject]) {
+                        performanceData.subjects[subject] = {
+                            totalQuestions: 0,
+                            correctAnswers: 0,
+                            incorrectAnswers: 0,
+                            skippedAnswers: 0,
+                            attempts: 0
+                        };
+                    }
+                    
+                    // Distribute questions evenly across subjects for this attempt
+                    const questionsPerSubject = Math.floor(attempt.totalQuestions / exam.subjects.length);
+                    performanceData.subjects[subject].totalQuestions += questionsPerSubject;
+                    performanceData.subjects[subject].correctAnswers += Math.floor(attempt.correctAnswers / exam.subjects.length);
+                    performanceData.subjects[subject].incorrectAnswers += Math.floor(attempt.incorrectAnswers / exam.subjects.length);
+                    performanceData.subjects[subject].skippedAnswers += Math.floor(attempt.skippedAnswers / exam.subjects.length);
+                    performanceData.subjects[subject].attempts++;
+                });
+            }
+
+            // Process chapter-wise data (if available)
+            if (exam.chapters && exam.chapters.length > 0) {
+                exam.chapters.forEach(chapter => {
+                    const chapterName = chapter.replace(/^Chapter \d+:\s*/, '');
+                    const subject = exam.subjects?.find(s => chapter.includes(s)) || 'Unknown';
+                    
+                    if (!performanceData.chapters[chapterName]) {
+                        performanceData.chapters[chapterName] = {
+                            subject: subject,
+                            totalQuestions: 0,
+                            correctAnswers: 0,
+                            incorrectAnswers: 0,
+                            skippedAnswers: 0,
+                            attempts: 0
+                        };
+                    }
+                    
+                    // Distribute questions evenly across chapters for this attempt
+                    const questionsPerChapter = Math.floor(attempt.totalQuestions / exam.chapters.length);
+                    performanceData.chapters[chapterName].totalQuestions += questionsPerChapter;
+                    performanceData.chapters[chapterName].correctAnswers += Math.floor(attempt.correctAnswers / exam.chapters.length);
+                    performanceData.chapters[chapterName].incorrectAnswers += Math.floor(attempt.incorrectAnswers / exam.chapters.length);
+                    performanceData.chapters[chapterName].skippedAnswers += Math.floor(attempt.skippedAnswers / exam.chapters.length);
+                    performanceData.chapters[chapterName].attempts++;
+                });
+            }
+        });
+
+        // Update UI with overall stats
+        updateOverallStats();
+        
+        // Populate subject dropdowns
+        populateSubjectDropdowns();
+        
+        // Render the initial chart
+        renderPerformanceChart('overall');
+
+        loading.hideToast();
+    } catch (error) {
+        console.error("Error loading performance data:", error);
+        loading.hideToast();
+        Toastify({ text: "পারফরম্যান্স ডেটা লোড করতে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
+    }
+}
+
+function updateOverallStats() {
+    const overall = performanceData.overall;
+    
+    document.getElementById('totalExams').textContent = overall.totalExams;
+    document.getElementById('highestScore').textContent = overall.highestScore;
+    
+    const averageScore = overall.totalExams > 0 
+        ? (overall.totalScore / overall.totalExams).toFixed(1) 
+        : 0;
+    document.getElementById('averageScore').textContent = averageScore;
+    
+    const accuracyRate = overall.totalQuestions > 0 
+        ? ((overall.correctAnswers / overall.totalQuestions) * 100).toFixed(1) + '%' 
+        : '0%';
+    document.getElementById('accuracyRate').textContent = accuracyRate;
+    
+    const completionRate = overall.totalQuestions > 0 
+        ? (((overall.correctAnswers + overall.incorrectAnswers) / overall.totalQuestions) * 100).toFixed(1) + '%' 
+        : '0%';
+    document.getElementById('completionRate').textContent = completionRate;
+}
+
+function populateSubjectDropdowns() {
+    const subjectSelect = document.getElementById('subjectSelect');
+    const chapterSubjectSelect = document.getElementById('chapterSubjectSelect');
+    
+    // Clear existing options
+    subjectSelect.innerHTML = '<option value="">সব বিষয়</option>';
+    chapterSubjectSelect.innerHTML = '<option value="">সব বিষয়</option>';
+    
+    // Add subjects
+    Object.keys(performanceData.subjects).forEach(subject => {
+        const option = document.createElement('option');
+        option.value = subject;
+        option.textContent = subject;
+        subjectSelect.appendChild(option.cloneNode(true));
+        chapterSubjectSelect.appendChild(option);
+    });
+    
+    // Update subject stats for the first subject
+    updateSubjectStats();
+}
+
+function updateSubjectStats() {
+    const subjectSelect = document.getElementById('subjectSelect');
+    const selectedSubject = subjectSelect.value;
+    const subjectStatsDiv = document.getElementById('subjectStats');
+    
+    if (!selectedSubject) {
+        // Show combined stats for all subjects
+        const overall = performanceData.overall;
+        subjectStatsDiv.innerHTML = `
+            <h5>সব বিষয়ের সম্মিলিত পারফরম্যান্স</h5>
+            <div class="strength-meter">
+                <span class="strength-label">সঠিক উত্তর:</span>
+                <div class="progress" style="flex-grow: 1;">
+                    <div class="progress-bar" role="progressbar" 
+                         style="width: ${(overall.correctAnswers / overall.totalQuestions) * 100}%; background-color: #28a745;">
+                    </div>
+                </div>
+                <span class="ms-2">${overall.correctAnswers}/${overall.totalQuestions}</span>
+            </div>
+            <div class="strength-meter">
+                <span class="strength-label">ভুল উত্তর:</span>
+                <div class="progress" style="flex-grow: 1;">
+                    <div class="progress-bar" role="progressbar" 
+                         style="width: ${(overall.incorrectAnswers / overall.totalQuestions) * 100}%; background-color: #dc3545;">
+                    </div>
+                </div>
+                <span class="ms-2">${overall.incorrectAnswers}/${overall.totalQuestions}</span>
+            </div>
+            <div class="strength-meter">
+                <span class="strength-label">এড়িয়ে যাওয়া:</span>
+                <div class="progress" style="flex-grow: 1;">
+                    <div class="progress-bar" role="progressbar" 
+                         style="width: ${(overall.skippedAnswers / overall.totalQuestions) * 100}%; background-color: #6c757d;">
+                    </div>
+                </div>
+                <span class="ms-2">${overall.skippedAnswers}/${overall.totalQuestions}</span>
+            </div>
+        `;
+    } else {
+        // Show stats for selected subject
+        const subject = performanceData.subjects[selectedSubject];
+        subjectStatsDiv.innerHTML = `
+            <h5>${selectedSubject} পারফরম্যান্স</h5>
+            <p><strong>পরীক্ষা দেওয়া হয়েছে:</strong> ${subject.attempts}</p>
+            <div class="strength-meter">
+                <span class="strength-label">সঠিক উত্তর:</span>
+                <div class="progress" style="flex-grow: 1;">
+                    <div class="progress-bar" role="progressbar" 
+                         style="width: ${(subject.correctAnswers / subject.totalQuestions) * 100}%; background-color: #28a745;">
+                    </div>
+                </div>
+                <span class="ms-2">${subject.correctAnswers}/${subject.totalQuestions}</span>
+            </div>
+            <div class="strength-meter">
+                <span class="strength-label">ভুল উত্তর:</span>
+                <div class="progress" style="flex-grow: 1;">
+                    <div class="progress-bar" role="progressbar" 
+                         style="width: ${(subject.incorrectAnswers / subject.totalQuestions) * 100}%; background-color: #dc3545;">
+                    </div>
+                </div>
+                <span class="ms-2">${subject.incorrectAnswers}/${subject.totalQuestions}</span>
+            </div>
+            <div class="strength-meter">
+                <span class="strength-label">এড়িয়ে যাওয়া:</span>
+                <div class="progress" style="flex-grow: 1;">
+                    <div class="progress-bar" role="progressbar" 
+                         style="width: ${(subject.skippedAnswers / subject.totalQuestions) * 100}%; background-color: #6c757d;">
+                    </div>
+                </div>
+                <span class="ms-2">${subject.skippedAnswers}/${subject.totalQuestions}</span>
+            </div>
+        `;
+    }
+    
+    // Re-render subject chart
+    renderPerformanceChart('subject');
+}
+
+function updateChapterList() {
+    const subjectSelect = document.getElementById('chapterSubjectSelect');
+    const selectedSubject = subjectSelect.value;
+    const chapterStatsDiv = document.getElementById('chapterStats');
+    
+    // Filter chapters by selected subject
+    const filteredChapters = Object.entries(performanceData.chapters)
+        .filter(([_, data]) => !selectedSubject || data.subject === selectedSubject)
+        .sort((a, b) => b[1].attempts - a[1].attempts);
+    
+    if (filteredChapters.length === 0) {
+        chapterStatsDiv.innerHTML = '<p>কোনো অধ্যায়ের ডেটা পাওয়া যায়নি</p>';
+        return;
+    }
+    
+    // Display chapter stats
+    let html = '<h5>অধ্যায়ভিত্তিক পারফরম্যান্স</h5><div class="row">';
+    
+    filteredChapters.forEach(([chapter, data]) => {
+        const accuracy = data.totalQuestions > 0 
+            ? (data.correctAnswers / data.totalQuestions * 100).toFixed(1) 
+            : 0;
+        
+        html += `
+            <div class="col-md-6 mb-3">
+                <div class="chapter-card p-3" style="background: var(--card-bg); border-radius: 8px; box-shadow: var(--shadow);">
+                    <h6>${chapter}</h6>
+                    <small class="text-muted">${data.subject}</small>
+                    <div class="d-flex justify-content-between mt-2">
+                        <span>সঠিকতা:</span>
+                        <span class="fw-bold">${accuracy}%</span>
+                    </div>
+                    <div class="progress mt-1" style="height: 8px;">
+                        <div class="progress-bar" role="progressbar" 
+                             style="width: ${accuracy}%; background-color: ${accuracy > 70 ? '#28a745' : accuracy > 40 ? '#ffc107' : '#dc3545'};">
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between mt-2">
+                        <small>সঠিক: ${data.correctAnswers}</small>
+                        <small>ভুল: ${data.incorrectAnswers}</small>
+                        <small>এড়ানো: ${data.skippedAnswers}</small>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+    
+    html += '</div>';
+    chapterStatsDiv.innerHTML = html;
+    
+    // Re-render chapter chart
+    renderPerformanceChart('chapter');
+}
+
+function renderPerformanceChart(tabId) {
+    // Destroy existing chart if it exists
+    if (performanceChartInstances[tabId]) {
+        performanceChartInstances[tabId].destroy();
+    }
+    
+    const ctx = document.getElementById(`${tabId}Chart`).getContext('2d');
+    let chart;
+    
+    switch (tabId) {
+        case 'overall':
+            const overall = performanceData.overall;
+            chart = new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: ['সঠিক উত্তর', 'ভুল উত্তর', 'এড়িয়ে যাওয়া'],
+                    datasets: [{
+                        data: [overall.correctAnswers, overall.incorrectAnswers, overall.skippedAnswers],
+                        backgroundColor: ['#28a745', '#dc3545', '#6c757d'],
+                        borderColor: '#fff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                    const value = context.raw;
+                                    const percentage = Math.round((value / total) * 100);
+                                    return `${context.label}: ${value} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            break;
+            
+        case 'subject':
+            const subjectSelect = document.getElementById('subjectSelect');
+            const selectedSubject = subjectSelect.value;
+            
+            if (!selectedSubject) {
+                // Show comparison of all subjects
+                const subjects = Object.keys(performanceData.subjects);
+                const accuracyData = subjects.map(subject => {
+                    const s = performanceData.subjects[subject];
+                    return s.totalQuestions > 0 
+                        ? (s.correctAnswers / s.totalQuestions * 100) 
+                        : 0;
+                });
+                
+                chart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: subjects,
+                        datasets: [{
+                            label: 'সঠিক উত্তরের হার (%)',
+                            data: accuracyData,
+                            backgroundColor: subjects.map((_, i) => 
+                                `hsl(${(i * 360 / subjects.length)}, 70%, 50%)`),
+                            borderColor: '#fff',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100,
+                                title: { display: true, text: 'সঠিক উত্তরের হার (%)' }
+                            }
+                        },
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const subject = performanceData.subjects[context.label];
+                                        return [
+                                            `সঠিক: ${subject.correctAnswers}/${subject.totalQuestions}`,
+                                            `ভুল: ${subject.incorrectAnswers}`,
+                                            `এড়ানো: ${subject.skippedAnswers}`
+                                        ];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            } else {
+                // Show pie chart for selected subject
+                const subject = performanceData.subjects[selectedSubject];
+                chart = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['সঠিক উত্তর', 'ভুল উত্তর', 'এড়িয়ে যাওয়া'],
+                        datasets: [{
+                            data: [subject.correctAnswers, subject.incorrectAnswers, subject.skippedAnswers],
+                            backgroundColor: ['#28a745', '#dc3545', '#6c757d'],
+                            borderColor: '#fff',
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: { position: 'bottom' },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                        const value = context.raw;
+                                        const percentage = Math.round((value / total) * 100);
+                                        return `${context.label}: ${value} (${percentage}%)`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+            break;
+            
+        case 'chapter':
+            const chapterSubjectSelect = document.getElementById('chapterSubjectSelect');
+            const selectedChapterSubject = chapterSubjectSelect.value;
+            
+            // Filter chapters by selected subject
+            const filteredChapters = Object.entries(performanceData.chapters)
+                .filter(([_, data]) => !selectedChapterSubject || data.subject === selectedChapterSubject);
+                
+            const chapterNames = filteredChapters.map(([name]) => name);
+            const chapterAccuracy = filteredChapters.map(([_, data]) => {
+                return data.totalQuestions > 0 
+                    ? (data.correctAnswers / data.totalQuestions * 100)
+                    : 0;
+            });
+            
+            chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: chapterNames,
+                    datasets: [{
+                        label: 'সঠিক উত্তরের হার (%)',
+                        data: chapterAccuracy,
+                        backgroundColor: chapterNames.map((_, i) => 
+                            `hsl(${(i * 360 / chapterNames.length)}, 70%, 50%)`),
+                        borderColor: '#fff',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 100,
+                            title: { display: true, text: 'সঠিক উত্তরের হার (%)' }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const chapter = performanceData.chapters[context.label];
+                                    return [
+                                        `সঠিক: ${chapter.correctAnswers}/${chapter.totalQuestions}`,
+                                        `ভুল: ${chapter.incorrectAnswers}`,
+                                        `এড়ানো: ${chapter.skippedAnswers}`
+                                    ];
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            break;
+            
+        case 'timeline':
+            // Prepare timeline data
+            const dates = performanceData.timeline.map(item => 
+                item.date.toLocaleDateString('bn-BD'));
+            const scores = performanceData.timeline.map(item => item.score);
+            const totals = performanceData.timeline.map(item => item.total);
+            const percentages = performanceData.timeline.map((item, i) => 
+                Math.round((item.score / item.total) * 100));
+                
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: dates,
+                    datasets: [
+                        {
+                            label: 'স্কোর',
+                            data: scores,
+                            borderColor: '#6b48ff',
+                            backgroundColor: 'rgba(107, 72, 255, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.3,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'সর্বোচ্চ সম্ভাব্য',
+                            data: totals,
+                            borderColor: '#6c757d',
+                            backgroundColor: 'rgba(108, 117, 125, 0.1)',
+                            borderWidth: 1,
+                            borderDash: [5, 5],
+                            tension: 0.3,
+                            yAxisID: 'y'
+                        },
+                        {
+                            label: 'শতকরা হার (%)',
+                            data: percentages,
+                            borderColor: '#28a745',
+                            backgroundColor: 'rgba(40, 167, 69, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.3,
+                            yAxisID: 'y1',
+                            hidden: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false
+                    },
+                    scales: {
+                        y: {
+                            type: 'linear',
+                            display: true,
+                            position: 'left',
+                            title: { display: true, text: 'স্কোর' }
+                        },
+                        y1: {
+                            type: 'linear',
+                            display: true,
+                            position: 'right',
+                            min: 0,
+                            max: 100,
+                            title: { display: true, text: 'শতকরা হার (%)' },
+                            grid: { drawOnChartArea: false }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            callbacks: {
+                                afterLabel: function(context) {
+                                    const index = context.dataIndex;
+                                    const item = performanceData.timeline[index];
+                                    return `পরীক্ষা: ${item.examTitle}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Update timeline stats
+            const timelineStatsDiv = document.getElementById('timelineStats');
+            if (performanceData.timeline.length > 1) {
+                const firstScore = performanceData.timeline[0].score;
+                const lastScore = performanceData.timeline[performanceData.timeline.length - 1].score;
+                const improvement = lastScore - firstScore;
+                const improvementPercentage = firstScore > 0 
+                    ? ((improvement / firstScore) * 100).toFixed(1)
+                    : '∞';
+                    
+                timelineStatsDiv.innerHTML = `
+                    <h5>সময়রেখা বিশ্লেষণ</h5>
+                    <p>প্রথম পরীক্ষার স্কোর: ${firstScore}</p>
+                    <p>সর্বশেষ পরীক্ষার স্কোর: ${lastScore}</p>
+                    <p class="fw-bold">উন্নতি: ${improvement} (${improvementPercentage}%)</p>
+                `;
+            } else {
+                timelineStatsDiv.innerHTML = '<p>সময়রেখা বিশ্লেষণের জন্য কমপক্ষে ২টি পরীক্ষা প্রয়োজন</p>';
+            }
+            break;
+    }
+    
+    // Store the chart instance
+    performanceChartInstances[tabId] = chart;
+}
+
+
+
+
+
+
+
+
+
+
+        
         // Initialize subjects on page load
         populateSubjects();
     </script>
