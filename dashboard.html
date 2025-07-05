@@ -2378,83 +2378,104 @@
         }
     }
 
-    async function fetchQuestionCounts() {
-        const cachedCounts = localStorage.getItem(QUESTION_COUNT_CACHE_KEY);
-        if (cachedCounts) {
-            try {
-                const { data, timestamp } = JSON.parse(cachedCounts);
-                if (Date.now() - timestamp < QUESTION_COUNT_CACHE_EXPIRATION) {
-                    return data;
-                }
-            } catch (e) {
-                console.error('Error parsing cached question counts:', e);
-                localStorage.removeItem(QUESTION_COUNT_CACHE_KEY);
-            }
-        }
-
-        const questionCounts = {};
-        const chapterQuestionCounts = {};
-        for (const subject in subjects) {
-            if (subjects[subject].length === 0) continue;
-            let subjectCount = 0;
-            const chapters = subjects[subject];
-            const chapterCounts = [];
-            for (const chapter of chapters) {
-                const questions = await loadQuestionsFromJSON(subject, chapter);
-                const count = questions.length;
-                subjectCount += count;
-                chapterCounts.push(count);
-            }
-            questionCounts[subject] = subjectCount;
-            chapterQuestionCounts[subject] = chapterCounts;
-        }
-
+async function fetchQuestionCounts() {
+    // 1. Check cached data first
+    const cachedCounts = localStorage.getItem(QUESTION_COUNT_CACHE_KEY);
+    if (cachedCounts) {
         try {
-            localStorage.setItem(QUESTION_COUNT_CACHE_KEY, JSON.stringify({
-                data: { questionCounts, chapterQuestionCounts },
-                timestamp: Date.now()
-            }));
+            const { data, timestamp } = JSON.parse(cachedCounts);
+            if (Date.now() - timestamp < QUESTION_COUNT_CACHE_EXPIRATION) {
+                console.log('Using cached question counts');
+                return data; // Return cached data if valid
+            }
         } catch (e) {
-            console.error('Error caching question counts:', e);
+            console.error('Error parsing cached question counts:', e);
+            localStorage.removeItem(QUESTION_COUNT_CACHE_KEY);
+        }
+    }
+
+    // 2. Initialize data structures
+    const questionCounts = {};
+    const chapterQuestionCounts = {};
+
+    // 3. Process each subject and chapter
+    for (const subject in subjects) {
+        if (!subjects[subject] || subjects[subject].length === 0) {
+            console.warn(`No chapters found for subject: ${subject}`);
+            continue;
         }
 
-        return { questionCounts, chapterQuestionCounts };
+        questionCounts[subject] = 0;
+        chapterQuestionCounts[subject] = []; // Initialize array for chapters
+
+        for (const chapter of subjects[subject]) {
+            try {
+                const questions = await loadQuestionsFromJSON(subject, chapter);
+                const count = questions?.length || 0; // Handle undefined questions
+                
+                questionCounts[subject] += count;
+                chapterQuestionCounts[subject].push(count);
+                
+                console.log(`Loaded ${count} questions for ${subject} - ${chapter}`);
+            } catch (error) {
+                console.error(`Failed to load ${subject} - ${chapter}:`, error);
+                chapterQuestionCounts[subject].push(0); // Push 0 if loading fails
+            }
+        }
     }
 
-    function createSubjectBox(subject, questionCount, chapterCounts) {
-        const subjectBox = document.createElement('div');
-        subjectBox.className = 'subject-box';
-        subjectBox.innerHTML = `
-            <div class="subject-header">
-                <input type="checkbox" class="form-check-input" onchange="toggleSubject(this)">
-                <span class="subject-name">${subject}</span>
-                <span class="question-count">${questionCount} প্রশ্ন</span>
-                <i class="fas fa-chevron-down arrow"></i>
-            </div>
-        `;
-        const chapterList = document.createElement('div');
-        chapterList.className = 'chapter-list';
-        subjects[subject].forEach((chapter, index) => {
-            const displayChapterName = chapter.replace(/^Chapter \d+:\s*/, '');
-            const chapterBox = document.createElement('div');
-            chapterBox.className = 'chapter-box';
-            chapterBox.dataset.originalChapter = chapter;
-            chapterBox.dataset.subject = subject;
-            chapterBox.innerHTML = `
-                <input type="checkbox" class="form-check-input" onchange="toggleChapter(this)">
-                <span class="chapter-name">${displayChapterName}</span>
-                <span class="chapter-question-count">${chapterCounts[index]} প্রশ্ন</span>
-            `;
-            chapterList.appendChild(chapterBox);
-        });
-        subjectBox.appendChild(chapterList);
-        subjectBox.querySelector('.subject-header').addEventListener('click', function(e) {
-            if (e.target.type !== 'checkbox') {
-                toggleChapters(this);
-            }
-        });
-        return subjectBox;
+    // 4. Cache the results
+    try {
+        localStorage.setItem(QUESTION_COUNT_CACHE_KEY, JSON.stringify({
+            data: { questionCounts, chapterQuestionCounts },
+            timestamp: Date.now()
+        }));
+    } catch (e) {
+        console.error('Failed to cache question counts:', e);
     }
+
+    // 5. Return the counts
+    return { questionCounts, chapterQuestionCounts };
+}
+function createSubjectBox(subject, questionCount, chapterCounts) {
+    const subjectBox = document.createElement('div');
+    subjectBox.className = 'subject-box';
+    subjectBox.innerHTML = `
+        <div class="subject-header">
+            <input type="checkbox" class="form-check-input" onchange="toggleSubject(this)">
+            <span class="subject-name">${subject}</span>
+            <span class="question-count">${questionCount} প্রশ্ন</span>
+            <i class="fas fa-chevron-down arrow"></i>
+        </div>
+    `;
+
+    const chapterList = document.createElement('div');
+    chapterList.className = 'chapter-list';
+
+    // Safely handle missing chapterCounts
+    const countsForSubject = chapterCounts[subject] || [];
+    
+    subjects[subject].forEach((chapter, index) => {
+        const displayChapterName = chapter.replace(/^Chapter \d+:\s*/, '');
+        const chapterBox = document.createElement('div');
+        chapterBox.className = 'chapter-box';
+        chapterBox.dataset.originalChapter = chapter;
+        chapterBox.dataset.subject = subject;
+
+        // Use countsForSubject[index] or default to 0
+        const questionCountForChapter = countsForSubject[index] || 0;
+
+        chapterBox.innerHTML = `
+            <input type="checkbox" class="form-check-input" onchange="toggleChapter(this)">
+            <span class="chapter-name">${displayChapterName}</span>
+            <span class="chapter-question-count">${questionCountForChapter} প্রশ্ন</span>
+        `;
+        chapterList.appendChild(chapterBox);
+    });
+
+    subjectBox.appendChild(chapterList);
+    return subjectBox;
+}
 
     function toggleSubject(checkbox) {
         const subjectBox = checkbox.parentElement.parentElement;
@@ -2480,22 +2501,29 @@
         updateSummary();
     }
 
-    async function populateSubjects() {
-        try {
-            const { questionCounts, chapterQuestionCounts } = await fetchQuestionCounts();
-            const subjectSelection = document.getElementById('subjectSelection');
-            subjectSelection.innerHTML = '';
-            for (const subject in subjects) {
-                if (subjects[subject].length > 0) {
-                    const subjectBox = createSubjectBox(subject, questionCounts[subject], chapterQuestionCounts[subject]);
-                    subjectSelection.appendChild(subjectBox);
-                }
-            }
-        } catch (error) {
-            console.error("Error populating subjects:", error);
-            Toastify({ text: "বিষয়গুলো লোড করতে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
+async function populateSubjects() {
+    try {
+        const { questionCounts, chapterQuestionCounts } = await fetchQuestionCounts();
+        const subjectSelection = document.getElementById('subjectSelection');
+        subjectSelection.innerHTML = '';
+
+        for (const subject in subjects) {
+            // Default to 0 if counts are missing
+            const totalQuestions = questionCounts[subject] || 0;
+            const chapterCounts = chapterQuestionCounts[subject] || [];
+
+            const subjectBox = createSubjectBox(subject, totalQuestions, chapterQuestionCounts);
+            subjectSelection.appendChild(subjectBox);
         }
+    } catch (error) {
+        console.error("Error populating subjects:", error);
+        Toastify({ 
+            text: "বিষয়গুলো লোড করতে ত্রুটি: " + error.message, 
+            duration: 3000, 
+            style: { background: "#dc3545" } 
+        }).showToast();
     }
+}
 
     document.getElementById("customExamForm").addEventListener("submit", async (e) => {
         e.preventDefault();
