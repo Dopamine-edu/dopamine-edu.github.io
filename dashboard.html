@@ -2447,33 +2447,35 @@ function createSubjectBox(subject, questionCount, chapterCounts) {
             <span class="question-count">${questionCount} প্রশ্ন</span>
             <i class="fas fa-chevron-down arrow"></i>
         </div>
+        <div class="chapter-list">
+            <!-- Chapters will be inserted here -->
+        </div>
     `;
 
-    const chapterList = document.createElement('div');
-    chapterList.className = 'chapter-list';
-
-    // Safely handle missing chapterCounts
-    const countsForSubject = chapterCounts[subject] || [];
-    
+    // Insert chapters
+    const chapterList = subjectBox.querySelector('.chapter-list');
     subjects[subject].forEach((chapter, index) => {
-        const displayChapterName = chapter.replace(/^Chapter \d+:\s*/, '');
         const chapterBox = document.createElement('div');
         chapterBox.className = 'chapter-box';
-        chapterBox.dataset.originalChapter = chapter;
-        chapterBox.dataset.subject = subject;
-
-        // Use countsForSubject[index] or default to 0
-        const questionCountForChapter = countsForSubject[index] || 0;
-
         chapterBox.innerHTML = `
             <input type="checkbox" class="form-check-input" onchange="toggleChapter(this)">
-            <span class="chapter-name">${displayChapterName}</span>
-            <span class="chapter-question-count">${questionCountForChapter} প্রশ্ন</span>
+            <span class="chapter-name">${chapter.replace(/^Chapter \d+:\s*/, '')}</span>
+            <span class="chapter-question-count">${chapterCounts[subject]?.[index] || 0} প্রশ্ন</span>
         `;
         chapterList.appendChild(chapterBox);
     });
 
-    subjectBox.appendChild(chapterList);
+    // Add click event to expand/collapse
+    const subjectHeader = subjectBox.querySelector('.subject-header');
+    const arrow = subjectBox.querySelector('.arrow');
+    
+    subjectHeader.addEventListener('click', (e) => {
+        if (e.target.tagName !== 'INPUT') { // Ignore checkbox clicks
+            chapterList.classList.toggle('show');
+            arrow.classList.toggle('active');
+        }
+    });
+
     return subjectBox;
 }
 
