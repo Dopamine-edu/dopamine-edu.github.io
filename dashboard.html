@@ -1148,7 +1148,100 @@
     width: 20px;
     text-align: center;
 }
+.qb-category-card {
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+}
 
+.qb-category-header {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.3s;
+}
+
+.qb-category-header:hover {
+    background-color: var(--hover-color);
+}
+
+.qb-category-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.qb-category-header i.fa-chevron-down {
+    transition: transform 0.3s;
+}
+
+.qb-category-header.active i.fa-chevron-down {
+    transform: rotate(180deg);
+}
+
+.qb-exams-list {
+    background: var(--card-bg);
+    padding: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out;
+}
+
+.qb-exams-list.show {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.qb-exam-item {
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.qb-exam-item:last-child {
+    border-bottom: none;
+}
+
+.qb-exam-item:hover {
+    background-color: var(--border-color);
+}
+
+.qb-exam-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background-color: rgba(107, 72, 255, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 15px;
+    color: var(--primary-color);
+}
+
+.qb-exam-details {
+    flex-grow: 1;
+}
+
+.qb-exam-title {
+    font-weight: 600;
+    margin-bottom: 3px;
+}
+
+.qb-exam-meta {
+    font-size: 0.8rem;
+    color: var(--secondary-text-color);
+}
+
+.qb-exam-arrow {
+    color: var(--secondary-text-color);
+}
 
 
         
@@ -1236,104 +1329,51 @@
 
 
 <!-- QB modal-->
-            <div id="questionBankModal" class="modal">
-    <div class="modal-content">
+            
+<div id="questionBankModal" class="modal">
+    <div class="modal-content" style="max-width: 800px;">
         <span class="close-modal" onclick="closeQuestionBankModal()">×</span>
-        <h2>প্রশ্ন ব্যাংক</h2>
+        <h2 class="text-center mb-4">প্রশ্ন ব্যাংক</h2>
         
-        <div class="question-bank-container">
-            <div class="qb-category">
-                <h3 class="qb-category-title" onclick="toggleQbCategory(this)">
-                    <i class="fas fa-chevron-right"></i> মেডিকেল প্রশ্ন ব্যাংক
-                </h3>
-                <div class="qb-exams">
-                    <div class="qb-exam" onclick="startQbExam('medical', '2011-12')">
-                        <i class="fas fa-file-alt"></i>
-                        <span>মেডিকেল ভর্তি পরীক্ষা ২০১১-১২</span>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="qb-category-card">
+                    <div class="qb-category-header" onclick="toggleQbCategory(this, 'medical')">
+                        <i class="fas fa-hospital me-2"></i>
+                        <h3>মেডিকেল প্রশ্ন ব্যাংক</h3>
+                        <i class="fas fa-chevron-down ms-auto"></i>
                     </div>
-                    <div class="qb-exam" onclick="startQbExam('medical', '2012-13')">
-                        <i class="fas fa-file-alt"></i>
-                        <span>মেডিকেল ভর্তি পরীক্ষা ২০১২-১৩</span>
-                    </div>
-                    <div class="qb-exam" onclick="startQbExam('medical', '2013-14')">
-                        <i class="fas fa-file-alt"></i>
-                        <span>মেডিকেল ভর্তি পরীক্ষা ২০১৩-১৪</span>
-                    </div>
-<div class="qb-exam" onclick="startQbExam('medical', '2014-15')">
-                        <i class="fas fa-file-alt"></i>
-                        <span>মেডিকেল ভর্তি পরীক্ষা ২০১৪-১৫</span>
-                    </div>
-<div class="qb-exam" onclick="startQbExam('medical', '2015-16')">
-                        <i class="fas fa-file-alt"></i>
-                        <span>মেডিকেল ভর্তি পরীক্ষা ২০১৫-১৬</span>
-                    </div>
-<div class="qb-exam" onclick="startQbExam('medical', '2016-17')">
-                        <i class="fas fa-file-alt"></i>
-                        <span>মেডিকেল ভর্তি পরীক্ষা ২০১৬-১৭</span>
-                    </div>
-<div class="qb-exam" onclick="startQbExam('medical', '2017-18')">
-                        <i class="fas fa-file-alt"></i>
-                        <span>মেডিকেল ভর্তি পরীক্ষা ২০১৭-১৮</span>
-                    </div>
-<div class="qb-exam" onclick="startQbExam('medical', '2018-19')">
-                        <i class="fas fa-file-alt"></i>
-                        <span>মেডিকেল ভর্তি পরীক্ষা ২০১৮-১৯</span>
-                    </div>
-<div class="qb-exam" onclick="startQbExam('medical', '2019-20')">
-                        <i class="fas fa-file-alt"></i>
-                        <span>মেডিকেল ভর্তি পরীক্ষা ২০১৯-২০</span>
-                    </div>
-<div class="qb-exam" onclick="startQbExam('medical', '2020-21')">
-                        <i class="fas fa-file-alt"></i>
-                        <span>মেডিকেল ভর্তি পরীক্ষা ২০২০-২১</span>
-                    </div>
-<div class="qb-exam" onclick="startQbExam('medical', '2021-22')">
-                        <i class="fas fa-file-alt"></i>
-                        <span>মেডিকেল ভর্তি পরীক্ষা ২০২১-২২</span>
-                    </div>
-<div class="qb-exam" onclick="startQbExam('medical', '2022-23')">
-                        <i class="fas fa-file-alt"></i>
-                        <span>মেডিকেল ভর্তি পরীক্ষা ২০২২-২৩</span>
-                    </div>
-                    <div class="qb-exam" onclick="startQbExam('medical', '2023-24')">
-                        <i class="fas fa-file-alt"></i>
-                        <span>মেডিকেল ভর্তি পরীক্ষা ২০২৩-২৪</span>
-                    </div>
-                    <div class="qb-exam" onclick="startQbExam('medical', '2024-25')">
-                        <i class="fas fa-file-alt"></i>
-                        <span>মেডিকেল ভর্তি পরীক্ষা ২০২৪-২৫</span>
+                    <div class="qb-exams-list" id="medicalExams">
+                        <!-- Will be populated dynamically -->
+                        <div class="text-center py-3">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">লোড হচ্ছে...</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             
-            <div class="qb-category">
-                <h3 class="qb-category-title" onclick="toggleQbCategory(this)">
-                    <i class="fas fa-chevron-right"></i> বিশ্ববিদ্যালয় প্রশ্ন ব্যাংক
-                </h3>
-                <div class="qb-exams">
-                    <div class="qb-exam" onclick="startQbExam('varsity', 'ju')">
-                        <i class="fas fa-university"></i>
-                        <span>জাহাঙ্গীরনগর বিশ্ববিদ্যালয়</span>
+            <div class="col-md-6">
+                <div class="qb-category-card">
+                    <div class="qb-category-header" onclick="toggleQbCategory(this, 'varsity')">
+                        <i class="fas fa-university me-2"></i>
+                        <h3>বিশ্ববিদ্যালয় প্রশ্ন ব্যাংক</h3>
+                        <i class="fas fa-chevron-down ms-auto"></i>
                     </div>
-                    <div class="qb-exam" onclick="startQbExam('varsity', 'cu')">
-                        <i class="fas fa-university"></i>
-                        <span>চট্টগ্রাম বিশ্ববিদ্যালয়</span>
-                    </div>
-                    <div class="qb-exam" onclick="startQbExam('varsity', 'du')">
-                        <i class="fas fa-university"></i>
-                        <span>ঢাকা বিশ্ববিদ্যালয়</span>
-                    </div>
-                    <div class="qb-exam" onclick="startQbExam('varsity', 'ru')">
-                        <i class="fas fa-university"></i>
-                        <span>রাজশাহী বিশ্ববিদ্যালয়</span>
+                    <div class="qb-exams-list" id="varsityExams">
+                        <!-- Will be populated dynamically -->
+                        <div class="text-center py-3">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden">লোড হচ্ছে...</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
 
 
 
@@ -3417,6 +3457,127 @@ async function loadVarsityQuestions(university) {
         console.error(`Error loading varsity questions for ${university}:`, error);
         return [];
     }
+}
+
+        // Add to your dashboard.js
+async function loadQuestionBankExams() {
+    try {
+        // Load medical exams
+        const medicalResponse = await fetch('./question-bank/medical/_index.json');
+        const medicalExams = await medicalResponse.json();
+        renderQuestionBankExams('medical', medicalExams);
+        
+        // Load varsity exams
+        const varsityResponse = await fetch('./question-bank/varsity/_index.json');
+        const varsityExams = await varsityResponse.json();
+        renderQuestionBankExams('varsity', varsityExams);
+    } catch (error) {
+        console.error("Error loading question bank index:", error);
+        Toastify({
+            text: "প্রশ্ন ব্যাংক লোড করতে ত্রুটি",
+            duration: 3000,
+            style: { background: "#dc3545" }
+        }).showToast();
+    }
+}
+
+function renderQuestionBankExams(type, exams) {
+    const container = document.getElementById(`${type}Exams`);
+    container.innerHTML = '';
+    
+    if (!exams || exams.length === 0) {
+        container.innerHTML = '<div class="text-center py-3 text-muted">কোনো পরীক্ষা পাওয়া যায়নি</div>';
+        return;
+    }
+    
+    exams.forEach(exam => {
+        const examItem = document.createElement('div');
+        examItem.className = 'qb-exam-item';
+        examItem.onclick = () => startQbExam(type, exam.id);
+        
+        examItem.innerHTML = `
+            <div class="qb-exam-icon">
+                <i class="fas ${type === 'medical' ? 'fa-hospital' : 'fa-university'}"></i>
+            </div>
+            <div class="qb-exam-details">
+                <div class="qb-exam-title">${exam.title}</div>
+                <div class="qb-exam-meta">${exam.questions} প্রশ্ন • ${exam.duration} মিনিট</div>
+            </div>
+            <div class="qb-exam-arrow">
+                <i class="fas fa-chevron-right"></i>
+            </div>
+        `;
+        
+        container.appendChild(examItem);
+    });
+    
+    // Show the category by default
+    container.classList.add('show');
+    document.querySelector(`.qb-category-header[onclick*="${type}"]`).classList.add('active');
+}
+
+function toggleQbCategory(header, type) {
+    header.classList.toggle('active');
+    const content = document.getElementById(`${type}Exams`);
+    content.classList.toggle('show');
+}
+
+async function startQbExam(type, id) {
+    if (!isAuthenticated) {
+        Toastify({ text: "পরীক্ষা দিতে লগইন করুন!", duration: 3000, style: { background: "#dc3545" } }).showToast();
+        window.location.href = 'https://dopamine-edu.github.io/auth.html';
+        return;
+    }
+
+    const loading = Toastify({ text: "পরীক্ষা লোড হচ্ছে...", duration: -1, style: { background: "#6b48ff" } });
+    loading.showToast();
+
+    try {
+        // Load exam config
+        const response = await fetch(`./question-bank/${type}/${id}.json`);
+        if (!response.ok) throw new Error("Exam config not found");
+        
+        const examConfig = await response.json();
+        
+        // Validate config
+        if (!examConfig.questions || examConfig.questions.length === 0) {
+            throw new Error("No questions found in this exam");
+        }
+
+        // Create the exam in Firestore
+        const examDocRef = await db.collection("exams").add({
+            ...examConfig,
+            isQuestionBank: true,
+            questionBankType: type,
+            questionBankId: id,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        closeQuestionBankModal();
+        loading.hideToast();
+        window.location.href = `quiz.html?examId=${examDocRef.id}`;
+
+    } catch (error) {
+        loading.hideToast();
+        Toastify({ 
+            text: `পরীক্ষা লোড করতে ত্রুটি: ${error.message}`, 
+            duration: 3000, 
+            style: { background: "#dc3545" } 
+        }).showToast();
+        console.error("Error starting QB exam:", error);
+    }
+}
+
+// Call this when opening the modal
+function openQuestionBankModal() {
+    if (!isAuthenticated) {
+        Toastify({ text: "প্রশ্ন ব্যাংক ব্যবহার করতে লগইন করুন!", duration: 3000, style: { background: "#dc3545" } }).showToast();
+        window.location.href = 'https://dopamine-edu.github.io/auth.html';
+        return;
+    }
+    
+    document.getElementById('questionBankModal').style.display = 'block';
+    loadQuestionBankExams();
 }
 
     // Initialize subjects on page load
