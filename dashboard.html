@@ -3378,17 +3378,34 @@ function getUniversityName(id) {
 // Placeholder functions - you'll need to implement these based on your data structure
 async function loadMedicalQuestions(year) {
     try {
-        // Load from your question bank JSON files
         const response = await fetch(`./question-bank/medical/${year}.json`);
-        if (!response.ok) throw new Error("File not found");
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
         const data = await response.json();
-        return Array.isArray(data) ? data : [];
+        
+        if (!Array.isArray(data)) {
+            throw new Error("Invalid question data format");
+        }
+        
+        // Transform data if needed
+        return data.map((q, index) => ({
+            id: index,
+            subject: 'Medical',
+            chapter: `Medical Admission ${year}`,
+            ...q
+        }));
+        
     } catch (error) {
         console.error(`Error loading medical questions for ${year}:`, error);
+        Toastify({ 
+            text: `মেডিকেল প্রশ্ন লোড করতে ত্রুটি: ${year}`, 
+            duration: 3000, 
+            style: { background: "#dc3545" } 
+        }).showToast();
         return [];
     }
 }
-
 async function loadVarsityQuestions(university) {
     try {
         // Load from your question bank JSON files
