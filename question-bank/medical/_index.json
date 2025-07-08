@@ -1,0 +1,24 @@
+[
+    {
+        "id": "2011-12",
+        "title": "মেডিকেল ভর্তি পরীক্ষা ২০১১-১২",
+        "questions": 100,
+        "duration": 60,
+        "negativeMarking": 0.25
+    },
+    {
+        "id": "2012-13",
+        "title": "মেডিকেল ভর্তি পরীক্ষা ২০১২-১৩",
+        "questions": 100,
+        "duration": 60,
+        "negativeMarking": 0.25
+    },
+    // ... more years
+    {
+        "id": "2024-25",
+        "title": "মেডিকেল ভর্তি পরীক্ষা ২০২৪-২৫",
+        "questions": 100,
+        "duration": 60,
+        "negativeMarking": 0.25
+    }
+]
