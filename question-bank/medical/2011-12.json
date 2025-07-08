@@ -1,0 +1,20 @@
+{
+    "title": "মেডিকেল ভর্তি পরীক্ষা ২০১১-১২",
+    "duration": 60,
+    "marksPerQuestion": 1,
+    "negativeMark": 0.25,
+    "questions": [
+        {
+            "subject": "Medical",
+            "chapter": "Medical Admission 2011-12",
+            "id": 0,
+            "question": "মানবদেহে রক্তের pH কত?",
+            "options": ["7.0", "7.4", "8.0", "6.8"],
+            "correctOption": 1,
+            "explanation": "সাধারণভাবে মানবদেহে রক্তের pH 7.4 যা সামান্য ক্ষারীয়।"
+        },
+        // ... more questions
+    ],
+    "subjects": ["Medical"],
+    "chapters": ["Medical Admission 2011-12"]
+}
