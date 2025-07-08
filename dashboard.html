@@ -1087,7 +1087,67 @@
 
 
 
+.question-bank-container {
+    margin-top: 20px;
+}
 
+.qb-category {
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.qb-category-title {
+    padding: 12px 15px;
+    background-color: var(--primary-color);
+    color: white;
+    margin: 0;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.qb-category-title i {
+    transition: transform 0.3s;
+}
+
+.qb-category-title.active i {
+    transform: rotate(90deg);
+}
+
+.qb-exams {
+    padding: 10px;
+    background: var(--card-bg);
+    display: none;
+}
+
+.qb-category.active .qb-exams {
+    display: block;
+}
+
+.qb-exam {
+    padding: 10px;
+    margin: 5px 0;
+    background: var(--subject-card-bg);
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s;
+}
+
+.qb-exam:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.qb-exam i {
+    width: 20px;
+    text-align: center;
+}
 
 
 
@@ -1149,10 +1209,10 @@
                 <i class="fas fa-tasks card-icon"></i>
                 <h3 class="card-title">স্টাডি প্ল্যানার</h3>
             </div>
-            <div class="card glowing" onclick="requireLogin('https://dopamine-edu.github.io/eid-salami-exam.html')">
-                <i class="fas fa-graduation-cap card-icon"></i>
-                <h3 class="card-title">ঈদ সালামী এক্সাম</h3>
-            </div>
+            <div class="card glowing" onclick="openQuestionBankModal()">
+        <i class="fas fa-book-open card-icon"></i>
+        <h3 class="card-title">প্রশ্ন ব্যাংক</h3>
+        </div>
             <div class="card" onclick="requireLogin('https://dopamine-edu.github.io/courses.html')">
                 <i class="fas fa-book card-icon"></i>
                 <h3 class="card-title">কোর্স</h3>
@@ -1174,6 +1234,71 @@
     <h3 class="card-title">পারফরম্যান্স</h3>
 </div>
 
+
+<!-- QB modal-->
+            <div id="questionBankModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeQuestionBankModal()">×</span>
+        <h2>প্রশ্ন ব্যাংক</h2>
+        
+        <div class="question-bank-container">
+            <div class="qb-category">
+                <h3 class="qb-category-title" onclick="toggleQbCategory(this)">
+                    <i class="fas fa-chevron-right"></i> মেডিকেল প্রশ্ন ব্যাংক
+                </h3>
+                <div class="qb-exams">
+                    <div class="qb-exam" onclick="startQbExam('medical', '2011-12')">
+                        <i class="fas fa-file-alt"></i>
+                        <span>মেডিকেল ভর্তি পরীক্ষা ২০১১-১২</span>
+                    </div>
+                    <div class="qb-exam" onclick="startQbExam('medical', '2012-13')">
+                        <i class="fas fa-file-alt"></i>
+                        <span>মেডিকেল ভর্তি পরীক্ষা ২০১২-১৩</span>
+                    </div>
+                    <!-- Add more years as needed -->
+                    <div class="qb-exam" onclick="startQbExam('medical', '2023-24')">
+                        <i class="fas fa-file-alt"></i>
+                        <span>মেডিকেল ভর্তি পরীক্ষা ২০২৩-২৪</span>
+                    </div>
+                    <div class="qb-exam" onclick="startQbExam('medical', '2024-25')">
+                        <i class="fas fa-file-alt"></i>
+                        <span>মেডিকেল ভর্তি পরীক্ষা ২০২৪-২৫</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="qb-category">
+                <h3 class="qb-category-title" onclick="toggleQbCategory(this)">
+                    <i class="fas fa-chevron-right"></i> বিশ্ববিদ্যালয় প্রশ্ন ব্যাংক
+                </h3>
+                <div class="qb-exams">
+                    <div class="qb-exam" onclick="startQbExam('varsity', 'ju')">
+                        <i class="fas fa-university"></i>
+                        <span>জাহাঙ্গীরনগর বিশ্ববিদ্যালয়</span>
+                    </div>
+                    <div class="qb-exam" onclick="startQbExam('varsity', 'cu')">
+                        <i class="fas fa-university"></i>
+                        <span>চট্টগ্রাম বিশ্ববিদ্যালয়</span>
+                    </div>
+                    <div class="qb-exam" onclick="startQbExam('varsity', 'du')">
+                        <i class="fas fa-university"></i>
+                        <span>ঢাকা বিশ্ববিদ্যালয়</span>
+                    </div>
+                    <div class="qb-exam" onclick="startQbExam('varsity', 'ru')">
+                        <i class="fas fa-university"></i>
+                        <span>রাজশাহী বিশ্ববিদ্যালয়</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+            
 <!-- Performance Modal -->
 <div id="performanceModal" class="modal">
     <div class="modal-content" style="max-width: 900px;">
@@ -3124,6 +3249,119 @@ async function populateSubjects() {
             Toastify({ text: "প্লেয়ার তথ্য লোডে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
         }
     }
+        function openQuestionBankModal() {
+    if (!isAuthenticated) {
+        Toastify({ text: "প্রশ্ন ব্যাংক ব্যবহার করতে লগইন করুন!", duration: 3000, style: { background: "#dc3545" } }).showToast();
+        window.location.href = 'https://dopamine-edu.github.io/auth.html';
+        return;
+    }
+    document.getElementById('questionBankModal').style.display = 'block';
+}
+
+function closeQuestionBankModal() {
+    document.getElementById('questionBankModal').style.display = 'none';
+}
+
+function toggleQbCategory(element) {
+    element.classList.toggle('active');
+    element.parentElement.classList.toggle('active');
+}
+
+async function startQbExam(type, id) {
+    if (!isAuthenticated) {
+        Toastify({ text: "পরীক্ষা দিতে লগইন করুন!", duration: 3000, style: { background: "#dc3545" } }).showToast();
+        window.location.href = 'https://dopamine-edu.github.io/auth.html';
+        return;
+    }
+
+    const loading = Toastify({ text: "পরীক্ষা লোড হচ্ছে...", duration: -1, style: { background: "#6b48ff" } });
+    loading.showToast();
+
+    try {
+        // Here you would load the exam configuration based on type and id
+        // For now, we'll use a placeholder configuration
+        let examConfig = {
+            title: '',
+            duration: 60,
+            marksPerQuestion: 1,
+            negativeMark: 0.25,
+            questions: []
+        };
+
+        if (type === 'medical') {
+            examConfig.title = `মেডিকেল ভর্তি পরীক্ষা ${id}`;
+            // Load medical questions for the specific year
+            examConfig.questions = await loadMedicalQuestions(id);
+        } else if (type === 'varsity') {
+            examConfig.title = `${getUniversityName(id)} ভর্তি পরীক্ষা`;
+            // Load varsity questions for the specific university
+            examConfig.questions = await loadVarsityQuestions(id);
+        }
+
+        if (examConfig.questions.length === 0) {
+            throw new Error("এই পরীক্ষার জন্য প্রশ্ন পাওয়া যায়নি");
+        }
+
+        // Create the exam in Firestore
+        const examDocRef = await db.collection("exams").add({
+            ...examConfig,
+            isQuestionBank: true,
+            questionBankType: type,
+            questionBankId: id,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        closeQuestionBankModal();
+        loading.hideToast();
+        window.location.href = `quiz.html?examId=${examDocRef.id}`;
+
+    } catch (error) {
+        loading.hideToast();
+        Toastify({ 
+            text: "পরীক্ষা লোড করতে ত্রুটি: " + error.message, 
+            duration: 3000, 
+            style: { background: "#dc3545" } 
+        }).showToast();
+        console.error("Error starting QB exam:", error);
+    }
+}
+
+function getUniversityName(id) {
+    const universities = {
+        'ju': 'জাহাঙ্গীরনগর বিশ্ববিদ্যালয়',
+        'cu': 'চট্টগ্রাম বিশ্ববিদ্যালয়',
+        'du': 'ঢাকা বিশ্ববিদ্যালয়',
+        'ru': 'রাজশাহী বিশ্ববিদ্যালয়'
+    };
+    return universities[id] || 'বিশ্ববিদ্যালয়';
+}
+
+// Placeholder functions - you'll need to implement these based on your data structure
+async function loadMedicalQuestions(year) {
+    try {
+        // Load from your question bank JSON files
+        const response = await fetch(`./question-bank/medical/${year}.json`);
+        if (!response.ok) throw new Error("File not found");
+        const data = await response.json();
+        return Array.isArray(data) ? data : [];
+    } catch (error) {
+        console.error(`Error loading medical questions for ${year}:`, error);
+        return [];
+    }
+}
+
+async function loadVarsityQuestions(university) {
+    try {
+        // Load from your question bank JSON files
+        const response = await fetch(`./question-bank/varsity/${university}.json`);
+        if (!response.ok) throw new Error("File not found");
+        const data = await response.json();
+        return Array.isArray(data) ? data : [];
+    } catch (error) {
+        console.error(`Error loading varsity questions for ${university}:`, error);
+        return [];
+    }
+}
 
     // Initialize subjects on page load
     populateSubjects();
