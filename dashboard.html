@@ -3463,12 +3463,12 @@ async function loadVarsityQuestions(university) {
 async function loadQuestionBankExams() {
     try {
         // Load medical exams
-        const medicalResponse = await fetch('./question-bank/medical/_index.json');
+        const medicalResponse = await fetch('./question-bank/medical/parameter.json');
         const medicalExams = await medicalResponse.json();
         renderQuestionBankExams('medical', medicalExams);
         
         // Load varsity exams
-        const varsityResponse = await fetch('./question-bank/varsity/_index.json');
+        const varsityResponse = await fetch('./question-bank/varsity/parameter.json');
         const varsityExams = await varsityResponse.json();
         renderQuestionBankExams('varsity', varsityExams);
     } catch (error) {
