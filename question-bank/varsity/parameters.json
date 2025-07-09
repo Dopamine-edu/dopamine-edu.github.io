@@ -1,0 +1,24 @@
+[
+    {
+        "title": "জাহাঙ্গীরনগর বিশ্ববিদ্যালয় ভর্তি পরীক্ষা",
+        "year": "২০২৩",
+        "type": "varsity",
+        "questionFile": "ju-admission.json",
+        "totalQuestions": 100,
+        "duration": 60,
+        "marksPerQuestion": 1,
+        "negativeMarking": 0,
+        "subject": "Varsity Admission"
+    },
+    {
+        "title": "চট্টগ্রাম বিশ্ববিদ্যালয় ভর্তি পরীক্ষা",
+        "year": "২০২৩",
+        "type": "varsity",
+        "questionFile": "cu-admission.json",
+        "totalQuestions": 100,
+        "duration": 60,
+        "marksPerQuestion": 1,
+        "negativeMarking": 0,
+        "subject": "Varsity Admission"
+    }
+]
