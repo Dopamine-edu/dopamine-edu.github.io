@@ -2754,7 +2754,24 @@ async function startQBExam(examConfig) {
         
         // Load questions from the specified JSON file
         const response = await fetch(`./question-bank/${examConfig.type}/${examConfig.questionFile}`);
+        
+        // First check if response is OK
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        // Parse the JSON
         const questions = await response.json();
+        
+        // Validate the questions data
+        if (!Array.isArray(questions)) {
+            console.error("Received questions data:", questions);
+            throw new Error("Questions data is not an array");
+        }
+        
+        if (questions.length === 0) {
+            throw new Error("No questions found in the file");
+        }
         
         // Create exam document in Firestore
         const examDocRef = await db.collection("exams").add({
