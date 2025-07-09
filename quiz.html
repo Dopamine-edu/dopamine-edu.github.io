@@ -657,59 +657,39 @@
         }
 
         async function loadQuestionsFromJSON(subject, chapter) {
-    if (!subject || !chapter) {
-        console.error("Missing subject or chapter:", subject, chapter);
-        return [];
-    }
-
-    try {
-        const sanitizedSubject = sanitizeFileName(subject);
-        const sanitizedChapter = sanitizeFileName(chapter.replace(/^Chapter \d+:\s*/, ''));
-        
-        // Try both paths - one for custom exams, one for question bank
-        let filePath = `./questions/subjects/${sanitizedSubject}/${sanitizedChapter}.json`;
-        let response = await fetch(filePath);
-        
-        if (!response.ok) {
-            // Try question bank path if first attempt fails
-            filePath = `./question-bank/${sanitizedSubject}/${sanitizedChapter}.json`;
-            response = await fetch(filePath);
-            if (!response.ok) throw new Error("File not found");
+            const sanitizedSubject = sanitizeFileName(subject);
+            const sanitizedChapter = sanitizeFileName(chapter.replace(/^Chapter \d+:\s*/, ''));
+            const filePath = `./questions/subjects/${sanitizedSubject}/${sanitizedChapter}.json`;
+            console.log(`Attempting to load: ${filePath}`);
+            try {
+                const response = await fetch(filePath);
+                if (!response.ok) {
+                    console.error(`Fetch failed for ${filePath}: ${response.status} - ${response.statusText}`);
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+                data.forEach((q, idx) => {
+                    if (!q.options || q.options.length === 0 || !q.correctOption) {
+                        console.warn(`Invalid question at index ${idx} in ${filePath}: Missing options or correctOption`);
+                        throw new Error(`Invalid question at index ${idx}`);
+                    }
+                    if (q.optionImages && q.optionImages.length !== q.options.length) {
+                        console.warn(`optionImages length mismatch for question ${idx} in ${filePath}`);
+                        q.optionImages = q.options.map(() => null);
+                    }
+                    if (!q.question && !q.questionImage) {
+                        console.warn(`Question at index ${idx} in ${filePath} has no text or image`);
+                        q.question = `প্রশ্ন ${idx + 1}`;
+                    }
+                });
+                console.log(`Loaded ${data.length} questions from ${filePath}`);
+                return data;
+            } catch (error) {
+                console.error(`Error loading ${filePath}:`, error);
+                Toastify({ text: `${subject} - ${chapter} প্রশ্ন লোড করতে ব্যর্থ: ${error.message}`, duration: 3000, style: { background: "#dc3545" } }).showToast();
+                return [];
+            }
         }
-
-        const data = await response.json();
-        
-        // Validate question structure
-        if (!Array.isArray(data)) {
-            throw new Error("Invalid question data format - expected array");
-        }
-
-        const validatedQuestions = data.map((q, index) => {
-            if (!q.question && !q.questionImage) {
-                console.warn(`Question ${index} has no text or image`);
-                q.question = `প্রশ্ন ${index + 1}`;
-            }
-            if (!q.options || q.options.length < 2) {
-                throw new Error(`Question ${index} has invalid options`);
-            }
-            if (typeof q.correctOption === 'undefined') {
-                throw new Error(`Question ${index} missing correctOption`);
-            }
-            return q;
-        });
-
-        console.log(`Loaded ${validatedQuestions.length} questions from ${filePath}`);
-        return validatedQuestions;
-    } catch (error) {
-        console.error(`Error loading ${subject}/${chapter}:`, error);
-        Toastify({ 
-            text: `${subject} - ${chapter} প্রশ্ন লোড করতে ব্যর্থ`, 
-            duration: 3000, 
-            style: { background: "#dc3545" } 
-        }).showToast();
-        return [];
-    }
-}
 
         async function loadExam() {
             const loadingDiv = document.getElementById("loading");
