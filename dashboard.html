@@ -1086,43 +1086,7 @@
 }
 
 
-/* Question Bank Modal Styles */
-.qb-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1rem;
-    padding: 1rem;
-}
 
-.qb-item {
-    background: var(--card-bg);
-    border-radius: 10px;
-    padding: 1rem;
-    box-shadow: var(--shadow);
-    cursor: pointer;
-    transition: transform 0.3s;
-    border-left: 4px solid var(--primary-color);
-}
-
-.qb-item:hover {
-    transform: translateY(-5px);
-}
-
-.qb-item-title {
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    color: var(--primary-color);
-}
-
-.qb-item-meta {
-    font-size: 0.9rem;
-    color: var(--secondary-text-color);
-}
-
-.qb-item-meta span {
-    display: block;
-    margin-bottom: 0.3rem;
-}
 
 
 
@@ -1185,9 +1149,9 @@
                 <i class="fas fa-tasks card-icon"></i>
                 <h3 class="card-title">স্টাডি প্ল্যানার</h3>
             </div>
-            <div class="card glowing" onclick="openQuestionBankModal()">
-                <i class="fas fa-book-open card-icon"></i>
-                <h3 class="card-title">প্রশ্ন ব্যাংক</h3>
+            <div class="card glowing" onclick="requireLogin('https://dopamine-edu.github.io/eid-salami-exam.html')">
+                <i class="fas fa-graduation-cap card-icon"></i>
+                <h3 class="card-title">ঈদ সালামী এক্সাম</h3>
             </div>
             <div class="card" onclick="requireLogin('https://dopamine-edu.github.io/courses.html')">
                 <i class="fas fa-book card-icon"></i>
@@ -1210,36 +1174,6 @@
     <h3 class="card-title">পারফরম্যান্স</h3>
 </div>
 
-
-<!-- Question Bank Modal -->
-<div id="questionBankModal" class="modal">
-    <div class="modal-content" style="max-width: 800px;">
-        <span class="close-modal" onclick="closeQuestionBankModal()">×</span>
-        <h2>প্রশ্ন ব্যাংক</h2>
-        
-        <div class="tabs mb-3">
-            <button class="tab-btn active" onclick="openQBtab('medical')">মেডিকেল প্রশ্নব্যাংক</button>
-            <button class="tab-btn" onclick="openQBtab('varsity')">বিশ্ববিদ্যালয় প্রশ্নব্যাংক</button>
-        </div>
-        
-        <div id="medical" class="tab-content active">
-            <div class="qb-list" id="medicalQBList">
-                <!-- Medical QB items will be loaded here -->
-                <div class="loading-spinner">লোড হচ্ছে...</div>
-            </div>
-        </div>
-        
-        <div id="varsity" class="tab-content">
-            <div class="qb-list" id="varsityQBList">
-                <!-- Varsity QB items will be loaded here -->
-                <div class="loading-spinner">লোড হচ্ছে...</div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-            
 <!-- Performance Modal -->
 <div id="performanceModal" class="modal">
     <div class="modal-content" style="max-width: 900px;">
@@ -2678,151 +2612,6 @@ async function populateSubjects() {
         }
     });
 
-
-        //QB Modal
-        // Question Bank Functions
-function openQuestionBankModal() {
-    if (!isAuthenticated) {
-        Toastify({ text: "প্রশ্ন ব্যাংক ব্যবহার করতে লগইন করুন!", duration: 3000, style: { background: "#dc3545" } }).showToast();
-        window.location.href = 'https://dopamine-edu.github.io/auth.html';
-        return;
-    }
-    
-    document.getElementById('questionBankModal').style.display = 'block';
-    loadQuestionBanks();
-}
-
-function closeQuestionBankModal() {
-    document.getElementById('questionBankModal').style.display = 'none';
-}
-
-function openQBtab(tabId) {
-    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    
-    document.getElementById(tabId).classList.add('active');
-    document.querySelector(`[onclick="openQBtab('${tabId}')"]`).classList.add('active');
-}
-
-async function loadQuestionBanks() {
-    try {
-        // Load medical question banks
-        const medicalResponse = await fetch('./question-bank/medical/parameters.json');
-        const medicalQB = await medicalResponse.json();
-        renderQBList('medicalQBList', medicalQB);
-        
-        // Load varsity question banks
-        const varsityResponse = await fetch('./question-bank/varsity/parameters.json');
-        const varsityQB = await varsityResponse.json();
-        renderQBList('varsityQBList', varsityQB);
-    } catch (error) {
-        console.error("Error loading question banks:", error);
-        Toastify({ 
-            text: "প্রশ্ন ব্যাংক লোড করতে ত্রুটি: " + error.message, 
-            duration: 3000, 
-            style: { background: "#dc3545" } 
-        }).showToast();
-    }
-}
-
-function renderQBList(containerId, qbData) {
-    const container = document.getElementById(containerId);
-    container.innerHTML = '';
-    
-    qbData.forEach((exam, index) => {
-        const qbItem = document.createElement('div');
-        qbItem.className = 'qb-item';
-        qbItem.onclick = () => startQBExam(exam);
-        
-        qbItem.innerHTML = `
-            <h3 class="qb-item-title">${exam.title}</h3>
-            <div class="qb-item-meta">
-                <span><i class="fas fa-question-circle"></i> ${exam.totalQuestions} প্রশ্ন</span>
-                <span><i class="fas fa-clock"></i> ${exam.duration} মিনিট</span>
-                <span><i class="fas fa-calendar-alt"></i> ${exam.year}</span>
-            </div>
-        `;
-        
-        container.appendChild(qbItem);
-    });
-}
-
-async function startQBExam(examConfig) {
-    try {
-        const loading = Toastify({ text: "পরীক্ষা তৈরি হচ্ছে...", duration: -1, style: { background: "#6b48ff" } });
-        loading.showToast();
-        
-        // Debug: Log which file we're trying to load
-        console.log("Loading question file:", `./question-bank/${examConfig.type}/${examConfig.questionFile}`);
-        
-        // Load questions from the specified JSON file
-        const response = await fetch(`./question-bank/${examConfig.type}/${examConfig.questionFile}`);
-        
-        // Debug: Log the raw response
-        console.log("Response status:", response.status, response.statusText);
-        const responseText = await response.text();
-        console.log("Raw response text:", responseText);
-        
-        // Parse the JSON
-        let questions;
-        try {
-            questions = JSON.parse(responseText);
-        } catch (parseError) {
-            console.error("JSON parse error:", parseError);
-            throw new Error("Invalid JSON format in question file");
-        }
-        
-        // Debug: Log the parsed data
-        console.log("Parsed questions data:", questions);
-        console.log("Is array?", Array.isArray(questions));
-        
-        // Validate the questions data
-        if (!Array.isArray(questions)) {
-            throw new Error(`Expected array of questions but got ${typeof questions}`);
-        }
-        
-        if (questions.length === 0) {
-            throw new Error("Question array is empty");
-        }
-        
-        // Debug: Log first question
-        console.log("First question:", questions[0]);
-        
-        // Create exam document in Firestore
-        const examDocRef = await db.collection("exams").add({
-            title: examConfig.title,
-            duration: examConfig.duration,
-            marksPerQuestion: examConfig.marksPerQuestion || 1,
-            negativeMark: examConfig.negativeMarking || 0,
-            lastDate: null,
-            questions: questions.map((q, idx) => ({
-                id: idx,
-                subject: examConfig.subject || "Question Bank",
-                chapter: examConfig.chapter || "Question Bank"
-            })),
-            subjects: [examConfig.subject || "Question Bank"],
-            chapters: [examConfig.chapter || "Question Bank"],
-            isQuestionBank: true,
-            qbSource: examConfig.type,
-            qbYear: examConfig.year,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        
-        loading.hideToast();
-        closeQuestionBankModal();
-        window.location.href = `quiz.html?examId=${examDocRef.id}`;
-    } catch (error) {
-        console.error("Error starting QB exam:", error);
-        Toastify({ 
-            text: "পরীক্ষা শুরু করতে ত্রুটি: " + error.message, 
-            duration: 5000,  // Longer duration for debugging
-            style: { background: "#dc3545" } 
-        }).showToast();
-    }
-}
-
-
-        
     // Battle modal functions
     function openBattleModal() {
         if (!isAuthenticated) {
@@ -3335,6 +3124,7 @@ async function startQBExam(examConfig) {
             Toastify({ text: "প্লেয়ার তথ্য লোডে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
         }
     }
+d 
     // Initialize subjects on page load
     populateSubjects();
 </script>
