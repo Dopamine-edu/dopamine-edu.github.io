@@ -764,32 +764,6 @@
             }
         }
 
-
-        // Add this near the start of your quiz.js
-console.log("Attempting to load questions from:", `./question-bank/${examData.qbSource}/${examData.qbYear}.json`);
-
-// Modify your question loading code to:
-async function loadQuestions() {
-    try {
-        const qbPath = `./question-bank/${examData.qbSource}/${examData.qbYear}.json`;
-        console.log("Loading from:", qbPath);
-        
-        const response = await fetch(qbPath);
-        if (!response.ok) {
-            throw new Error(`HTTP ${response.status} - ${await response.text()}`);
-        }
-        return await response.json();
-    } catch (error) {
-        console.error("Failed to load questions:", error);
-        Toastify({
-            text: "প্রশ্ন লোড করতে ব্যর্থ: " + error.message,
-            duration: 5000,
-            style: { background: "#dc3545" }
-        }).showToast();
-        return [];
-    }
-}
-
         async function loadQuestionsForReview() {
             questions = [];
             const examDoc = await db.collection("exams").doc(examId).get();
