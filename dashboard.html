@@ -1085,7 +1085,31 @@
     }
 }
 
+.exam-card, .university-card {
+    background: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-left: 4px solid var(--primary-color);
+}
 
+.exam-card:hover, .university-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.exam-card h4 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.exam-card p {
+    color: var(--secondary-text-color);
+    font-size: 0.9rem;
+}
 
 
 
@@ -1149,9 +1173,9 @@
                 <i class="fas fa-tasks card-icon"></i>
                 <h3 class="card-title">স্টাডি প্ল্যানার</h3>
             </div>
-            <div class="card glowing" onclick="requireLogin('https://dopamine-edu.github.io/eid-salami-exam.html')">
-                <i class="fas fa-graduation-cap card-icon"></i>
-                <h3 class="card-title">ঈদ সালামী এক্সাম</h3>
+            <div class="card glowing" onclick="openQuestionBankModal()">
+                <i class="fas fa-book-open card-icon"></i>
+                <h3 class="card-title">প্রশ্নব্যাংক সলভ কার্ড</h3>
             </div>
             <div class="card" onclick="requireLogin('https://dopamine-edu.github.io/courses.html')">
                 <i class="fas fa-book card-icon"></i>
@@ -1174,6 +1198,80 @@
     <h3 class="card-title">পারফরম্যান্স</h3>
 </div>
 
+<!-- Question Bank Modal -->
+<div id="questionBankModal" class="modal">
+    <div class="modal-content" style="max-width: 800px;">
+        <span class="close-modal" onclick="closeQuestionBankModal()">×</span>
+        <h2 class="text-center mb-4">প্রশ্নব্যাংক সলভ কার্ড</h2>
+        
+        <div class="tabs mb-3">
+            <button class="tab-btn active" onclick="openQuestionBankTab('medical')">মেডিকেল প্রশ্নব্যাংক</button>
+            <button class="tab-btn" onclick="openQuestionBankTab('dental')">ডেন্টাল প্রশ্নব্যাংক</button>
+            <button class="tab-btn" onclick="openQuestionBankTab('university')">বিশ্ববিদ্যালয় প্রশ্নব্যাংক</button>
+        </div>
+        
+        <div id="medical" class="tab-content active">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="exam-card" onclick="startQuestionBankExam('medical-2025')">
+                        <h4>মেডিকেল ভর্তি পরীক্ষা ২০২৪-২৫</h4>
+                        <p>২০০ প্রশ্ন | ১২০ মিনিট</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="exam-card" onclick="startQuestionBankExam('medical-2024')">
+                        <h4>মেডিকেল ভর্তি পরীক্ষা ২০২৩-২৪</h4>
+                        <p>২০০ প্রশ্ন | ১২০ মিনিট</p>
+                    </div>
+                </div>
+                <!-- Add more years as needed -->
+            </div>
+        </div>
+        
+        <div id="dental" class="tab-content">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="exam-card" onclick="startQuestionBankExam('dental-2025')">
+                        <h4>ডেন্টাল ভর্তি পরীক্ষা ২০২৪-২৫</h4>
+                        <p>২০০ প্রশ্ন | ১২০ মিনিট</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="exam-card" onclick="startQuestionBankExam('dental-2024')">
+                        <h4>ডেন্টাল ভর্তি পরীক্ষা ২০২৩-২৪</h4>
+                        <p>২০০ প্রশ্ন | ১২০ মিনিট</p>
+                    </div>
+                </div>
+                <!-- Add more years as needed -->
+            </div>
+        </div>
+        
+        <div id="university" class="tab-content">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="university-card" onclick="openUniversityExams('ju')">
+                        <h4>জাহাঙ্গীরনগর বিশ্ববিদ্যালয়</h4>
+                        <p>বিভিন্ন ইউনিটের প্রশ্নব্যাংক</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="university-card" onclick="openUniversityExams('cu')">
+                        <h4>চট্টগ্রাম বিশ্ববিদ্যালয়</h4>
+                        <p>বিভিন্ন ইউনিটের প্রশ্নব্যাংক</p>
+                    </div>
+                </div>
+                <!-- Add more universities as needed -->
+            </div>
+            
+            <div id="universityExamsContainer" style="display: none;">
+                <h4 id="universityExamTitle" class="mt-4"></h4>
+                <div id="universityExamList" class="row"></div>
+                <button class="btn-primary mt-3" onclick="backToUniversities()">বিশ্ববিদ্যালয় তালিকায় ফিরে যান</button>
+            </div>
+        </div>
+    </div>
+</div>
+            
 <!-- Performance Modal -->
 <div id="performanceModal" class="modal">
     <div class="modal-content" style="max-width: 900px;">
@@ -3124,6 +3222,117 @@ async function populateSubjects() {
             Toastify({ text: "প্লেয়ার তথ্য লোডে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
         }
     }
+
+// Question Bank Modal Functions
+function openQuestionBankModal() {
+    if (!isAuthenticated) {
+        Toastify({ text: "প্রশ্নব্যাংক ব্যবহার করতে লগইন করুন!", duration: 3000, style: { background: "#dc3545" } }).showToast();
+        window.location.href = 'https://dopamine-edu.github.io/auth.html';
+        return;
+    }
+    document.getElementById('questionBankModal').style.display = 'block';
+}
+
+function closeQuestionBankModal() {
+    document.getElementById('questionBankModal').style.display = 'none';
+}
+
+function openQuestionBankTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(tabId).classList.add('active');
+    document.querySelector(`[onclick="openQuestionBankTab('${tabId}')"]`).classList.add('active');
+    document.getElementById('universityExamsContainer').style.display = 'none';
+}
+
+function openUniversityExams(university) {
+    const container = document.getElementById('universityExamsContainer');
+    const title = document.getElementById('universityExamTitle');
+    const examList = document.getElementById('universityExamList');
+    
+    examList.innerHTML = '';
+    
+    if (university === 'ju') {
+        title.textContent = 'জাহাঙ্গীরনগর বিশ্ববিদ্যালয় প্রশ্নব্যাংক';
+        
+        // Add JU exams
+        examList.innerHTML = `
+            <div class="col-md-6">
+                <div class="exam-card" onclick="startQuestionBankExam('ju-d-unit-2024')">
+                    <h4>ডি ইউনিট ২০২৩-২৪</h4>
+                    <p>১০০ প্রশ্ন | ৬০ মিনিট</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="exam-card" onclick="startQuestionBankExam('ju-d-unit-2023')">
+                    <h4>ডি ইউনিট ২০২২-২৩</h4>
+                    <p>১০০ প্রশ্ন | ৬০ মিনিট</p>
+                </div>
+            </div>
+            <!-- Add more JU exams as needed -->
+        `;
+    } 
+    else if (university === 'cu') {
+        title.textContent = 'চট্টগ্রাম বিশ্ববিদ্যালয় প্রশ্নব্যাংক';
+        
+        // Add CU exams
+        examList.innerHTML = `
+            <div class="col-md-6">
+                <div class="exam-card" onclick="startQuestionBankExam('cu-a-unit-2024')">
+                    <h4>এ ইউনিট ২০২৩-২৪</h4>
+                    <p>১০০ প্রশ্ন | ৬০ মিনিট</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="exam-card" onclick="startQuestionBankExam('cu-b-unit-2024')">
+                    <h4>বি ইউনিট ২০২৩-২৪</h4>
+                    <p>১০০ প্রশ্ন | ৬০ মিনিট</p>
+                </div>
+            </div>
+            <!-- Add more CU exams as needed -->
+        `;
+    }
+    
+    container.style.display = 'block';
+}
+
+function backToUniversities() {
+    document.getElementById('universityExamsContainer').style.display = 'none';
+}
+
+async function startQuestionBankExam(examId) {
+    try {
+        // First check if we have this exam in Firestore (for tracking)
+        const examRef = db.collection('question_bank_exams').doc(examId);
+        const examDoc = await examRef.get();
+        
+        if (examDoc.exists) {
+            // If it exists in Firestore, redirect to quiz page with that ID
+            window.location.href = `quiz.html?examId=${examId}&type=questionBank`;
+        } else {
+            // For exams not in Firestore, we'll use local JSON files
+            // The quiz page will handle loading from JSON based on the examId
+            window.location.href = `quiz.html?examId=${examId}&type=questionBank`;
+        }
+    } catch (error) {
+        console.error("Error starting question bank exam:", error);
+        Toastify({ 
+            text: "পরীক্ষা শুরু করতে ত্রুটি: " + error.message, 
+            duration: 3000, 
+            style: { background: "#dc3545" } 
+        }).showToast();
+    }
+}
+
+
+
+
+
+
+
+
+
+        
     // Initialize subjects on page load
     populateSubjects();
 </script>
