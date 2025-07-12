@@ -704,7 +704,7 @@ async function loadExam() {
 
         if (!examId) throw new Error("Exam ID not found in URL");
 
-        // Check if this is a review of a previous attempt
+        // First check if this is a review of a previous attempt
         const attemptSnapshot = await db.collection("attempts")
             .where("userId", "==", auth.currentUser.uid)
             .where("examId", "==", examId)
@@ -721,7 +721,7 @@ async function loadExam() {
         let questions = [];
 
         if (examType === 'questionBank') {
-            // Load from question bank JSON
+            // SPECIAL HANDLING FOR QUESTION BANK EXAMS
             examData = await loadQuestionBankExam(examId);
             questions = examData.questions;
             
@@ -738,50 +738,52 @@ async function loadExam() {
             updateProgress();
             renderQuiz(questions);
             startTimer(examData.duration * 60 * 1000);
-        } else {
-            // Original exam loading logic for regular exams
-            const examDoc = await db.collection("exams").doc(examId).get();
-            if (!examDoc.exists) throw new Error("Exam not found");
-
-            examData = examDoc.data();
-            examData.id = examDoc.id;
-
-            if (isExamExpired(examData.lastDate)) {
-                expiredMessage.style.display = "block";
-                expiredMessage.textContent = "এই পরীক্ষার সময় শেষ হয়ে গেছে। আপনি অংশ নিতে পারবেন না।";
-                examForm.style.display = "none";
-                document.getElementById("stickyBar").style.display = "none";
-                loadingDiv.style.display = "none";
-                return;
-            }
-
-            // Load questions from subjects/chapters
-            for (const q of examData.questions) {
-                const chapterQuestions = await loadQuestionsFromJSON(q.subject, q.chapter);
-                if (chapterQuestions[q.id]) {
-                    questions.push({
-                        ...chapterQuestions[q.id],
-                        id: `${q.subject}-${q.chapter}-${q.id}`,
-                        subject: q.subject,
-                        chapter: q.chapter.replace(/^Chapter \d+:\s*/, '')
-                    });
-                }
-            }
-
-            if (questions.length === 0) throw new Error("No questions found for this exam");
-
-            userAnswers = JSON.parse(localStorage.getItem(answersKey)) || {};
-
-            const subjects = [...new Set(questions.map(q => q.subject))].join(", ");
-            document.getElementById("subjectDisplay").textContent = subjects || "অজানা বিষয়";
-            document.getElementById("questionsCount").textContent = `${questions.length} প্রশ্ন`;
-            document.getElementById("timer").textContent = `${examData.duration} মিনিট`;
-            document.getElementById("answeredCount").textContent = `০/${questions.length}`;
-            
-            updateProgress();
-            renderQuiz(questions);
-            startTimer(examData.duration * 60 * 1000);
+            return; // Exit after handling question bank
         }
+
+        // REGULAR EXAM HANDLING (from Firestore)
+        const examDoc = await db.collection("exams").doc(examId).get();
+        if (!examDoc.exists) throw new Error("Exam not found");
+
+        examData = examDoc.data();
+        examData.id = examDoc.id;
+
+        if (isExamExpired(examData.lastDate)) {
+            expiredMessage.style.display = "block";
+            expiredMessage.textContent = "এই পরীক্ষার সময় শেষ হয়ে গেছে। আপনি অংশ নিতে পারবেন না।";
+            examForm.style.display = "none";
+            document.getElementById("stickyBar").style.display = "none";
+            loadingDiv.style.display = "none";
+            return;
+        }
+
+        // Load questions from subjects/chapters
+        for (const q of examData.questions) {
+            const chapterQuestions = await loadQuestionsFromJSON(q.subject, q.chapter);
+            if (chapterQuestions && chapterQuestions[q.id]) {
+                questions.push({
+                    ...chapterQuestions[q.id],
+                    id: `${q.subject}-${q.chapter}-${q.id}`,
+                    subject: q.subject,
+                    chapter: q.chapter.replace(/^Chapter \d+:\s*/, '')
+                });
+            }
+        }
+
+        if (questions.length === 0) throw new Error("No questions found for this exam");
+
+        userAnswers = JSON.parse(localStorage.getItem(answersKey)) || {};
+
+        const subjects = [...new Set(questions.map(q => q.subject))].join(", ");
+        document.getElementById("subjectDisplay").textContent = subjects || "অজানা বিষয়";
+        document.getElementById("questionsCount").textContent = `${questions.length} প্রশ্ন`;
+        document.getElementById("timer").textContent = `${examData.duration} মিনিট`;
+        document.getElementById("answeredCount").textContent = `০/${questions.length}`;
+        
+        updateProgress();
+        renderQuiz(questions);
+        startTimer(examData.duration * 60 * 1000);
+
     } catch (error) {
         console.error("Error loading exam:", error);
         Toastify({
@@ -800,6 +802,55 @@ async function loadExam() {
     }
 }
 
+async function loadQuestionBankExam(examId) {
+    try {
+        // Determine the JSON file path based on examId
+        let filePath;
+        
+        if (examId.startsWith('medical-')) {
+            const year = examId.split('-')[1];
+            filePath = `./questions/question_bank/medical/${year}.json`;
+        } 
+        else if (examId.startsWith('dental-')) {
+            const year = examId.split('-')[1];
+            filePath = `./questions/question_bank/dental/${year}.json`;
+        }
+        else if (examId.startsWith('ju-')) {
+            const parts = examId.split('-');
+            const unit = parts[1];
+            const year = parts[2];
+            filePath = `./questions/question_bank/universities/ju/${unit}-${year}.json`;
+        }
+        else if (examId.startsWith('cu-')) {
+            const parts = examId.split('-');
+            const unit = parts[1];
+            const year = parts[2];
+            filePath = `./questions/question_bank/universities/cu/${unit}-${year}.json`;
+        }
+        else {
+            throw new Error("Invalid question bank exam ID");
+        }
+        
+        const response = await fetch(filePath);
+        if (!response.ok) throw new Error(`Question bank file not found at ${filePath}`);
+        
+        const examData = await response.json();
+        
+        // Validate the exam data structure
+        if (!examData.title || !examData.duration || !examData.questions) {
+            throw new Error("Invalid question bank exam format - missing required fields");
+        }
+        
+        // Add default values if not specified
+        examData.marksPerQuestion = examData.marksPerQuestion || 1;
+        examData.negativeMark = examData.negativeMark || 0;
+        
+        return examData;
+    } catch (error) {
+        console.error("Error loading question bank exam:", error);
+        throw new Error(`Failed to load question bank exam: ${error.message}`);
+    }
+}
 async function loadQuestionBankExam(examId) {
     try {
         // Determine the JSON file path based on examId
