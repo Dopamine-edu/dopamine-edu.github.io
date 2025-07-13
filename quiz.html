@@ -34,6 +34,7 @@
             --orange-btn: #F97316;
             --light-purple: #c084fc;
             --answered-border: #00c950;
+            --question-bank-color: #8B5CF6;
         }
 
         [data-theme="dark"] {
@@ -53,6 +54,7 @@
             --orange-btn: #EA580C;
             --light-purple: #A855F7;
             --answered-border: #16A34A;
+            --question-bank-color: #7C3AED;
         }
 
         * {
@@ -92,12 +94,20 @@
             margin-bottom: 0.5rem;
         }
 
+        .question-bank-title {
+            color: var(--question-bank-color);
+        }
+
         .subject-box {
             background: var(--purple-box);
             color: white;
             padding: 0.3rem 0.8rem;
             border-radius: 8px;
             font-size: 0.85rem;
+        }
+
+        .question-bank-subject {
+            background: var(--question-bank-color);
         }
 
         .questions-box {
@@ -156,6 +166,10 @@
             border-radius: 8px;
         }
 
+        .question-bank-answered {
+            background: var(--question-bank-color);
+        }
+
         .sticky-bar .timer {
             font-size: 0.9rem;
             font-weight: bold;
@@ -182,6 +196,10 @@
         .btn-next:hover {
             background-color: var(--purple-box);
             color: white;
+        }
+
+        .question-bank-btn:hover {
+            background-color: var(--question-bank-color);
         }
 
         .container {
@@ -212,6 +230,10 @@
             background-color: var(--purple-box);
             height: 100%;
             transition: width 0.3s ease-in-out;
+        }
+
+        .question-bank-progress {
+            background-color: var(--question-bank-color);
         }
 
         .progress-text {
@@ -256,8 +278,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            \n            font-size: 0.9rem;
+            font-size: 0.9rem;
             font-weight: bold;
+        }
+
+        .question-bank-number {
+            background: var(--question-bank-color);
         }
 
         .chapter-box {
@@ -266,6 +292,10 @@
             padding: 0.5rem 1rem;
             border-radius: 8px;
             font-size: 0.75rem;
+        }
+
+        .question-bank-chapter {
+            background: var(--question-bank-color);
         }
 
         .question-text {
@@ -310,6 +340,11 @@
             border-color: var(--purple-box);
         }
 
+        .question-bank-radio:checked + .option-prefix {
+            background: var(--question-bank-color);
+            border-color: var(--question-bank-color);
+        }
+
         input[type="radio"]:disabled + .option-prefix {
             cursor: not-allowed;
             opacity: 0.6;
@@ -326,6 +361,10 @@
             border-left: 4px solid var(--purple-box);
             font-size: 0.9rem;
             min-height: 50px;
+        }
+
+        .question-bank-explanation {
+            border-left-color: var(--question-bank-color);
         }
 
         .solution-explanation.image-only {
@@ -408,6 +447,11 @@
             transition: background-color 0.3s;
         }
 
+        .question-bank-leaderboard {
+            background-color: var(--question-bank-color);
+            border-color: var(--question-bank-color);
+        }
+
         .btn-leaderboard:hover {
             background-color: #7C3AED;
             border-color: #7C3AED;
@@ -418,6 +462,10 @@
             text-align: center;
             padding: 20px;
             color: var(--purple-box);
+        }
+
+        .question-bank-spinner {
+            color: var(--question-bank-color);
         }
 
         .expired-message {
@@ -452,6 +500,10 @@
         .leaderboard-table th {
             font-weight: bold;
             color: var(--purple-box);
+        }
+
+        .question-bank-leaderboard th {
+            color: var(--question-bank-color);
         }
 
         .leaderboard-table tr:hover {
@@ -503,6 +555,19 @@
         .nav-item.skipped {
             background: var(--secondary-text-color);
             color: white;
+        }
+
+        .question-bank-nav-item.answered {
+            background: var(--question-bank-color);
+        }
+
+        .question-bank-badge {
+            background-color: var(--question-bank-color);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            margin-left: 0.5rem;
         }
 
         @media (max-width: 768px) {
@@ -644,6 +709,7 @@
         let timerInterval;
         let submitted = false;
         let currentQuestionIndex = 0;
+        let isQuestionBank = false;
         const urlParams = new URLSearchParams(window.location.search);
         const examId = urlParams.get('examId');
         const answersKey = "examAnswers_" + examId;
@@ -691,6 +757,24 @@
             }
         }
 
+        async function loadQuestionBankQuestions(questionBankId) {
+            const filePath = `./questions/question-bank/${questionBankId}.json`;
+            console.log(`Attempting to load question bank: ${filePath}`);
+            try {
+                const response = await fetch(filePath);
+                if (!response.ok) {
+                    console.error(`Fetch failed for ${filePath}: ${response.status} - ${response.statusText}`);
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error(`Error loading question bank ${filePath}:`, error);
+                Toastify({ text: `প্রশ্নব্যাংক লোড করতে ব্যর্থ: ${error.message}`, duration: 3000, style: { background: "#dc3545" } }).showToast();
+                return [];
+            }
+        }
+
         async function loadExam() {
             const loadingDiv = document.getElementById("loading");
             loadingDiv.style.display = "block";
@@ -703,6 +787,12 @@
 
                 examData = examDoc.data();
                 examData.id = examDoc.id;
+                isQuestionBank = examData.isQuestionBank || false;
+
+                // Apply question bank styles if this is a question bank exam
+                if (isQuestionBank) {
+                    applyQuestionBankStyles();
+                }
 
                 const attemptSnapshot = await db.collection("attempts")
                     .where("userId", "==", auth.currentUser.uid)
@@ -726,15 +816,28 @@
                 }
 
                 questions = [];
-                for (const q of examData.questions) {
-                    const chapterQuestions = await loadQuestionsFromJSON(q.subject, q.chapter);
-                    if (chapterQuestions[q.id]) {
-                        questions.push({
-                            ...chapterQuestions[q.id],
-                            id: `${q.subject}-${q.chapter}-${q.id}`,
-                            subject: q.subject,
-                            chapter: q.chapter.replace(/^Chapter \d+:\s*/, '')
-                        });
+                
+                if (isQuestionBank) {
+                    // Load questions directly from question bank JSON
+                    const questionBankData = await loadQuestionBankQuestions(examData.questionBankId);
+                    questions = questionBankData.questions.map((q, index) => ({
+                        ...q,
+                        id: index.toString(),
+                        subject: q.subject || "Question Bank",
+                        chapter: q.chapter || "General"
+                    }));
+                } else {
+                    // Load questions from subject/chapter files as before
+                    for (const q of examData.questions) {
+                        const chapterQuestions = await loadQuestionsFromJSON(q.subject, q.chapter);
+                        if (chapterQuestions[q.id]) {
+                            questions.push({
+                                ...chapterQuestions[q.id],
+                                id: `${q.subject}-${q.chapter}-${q.id}`,
+                                subject: q.subject,
+                                chapter: q.chapter.replace(/^Chapter \d+:\s*/, '')
+                            });
+                        }
                     }
                 }
 
@@ -764,21 +867,50 @@
             }
         }
 
+        function applyQuestionBankStyles() {
+            // Update UI elements with question bank styling
+            document.getElementById("examNameDisplay").classList.add("question-bank-title");
+            document.getElementById("subjectDisplay").classList.add("question-bank-subject");
+            document.getElementById("answeredCount").classList.add("question-bank-answered");
+            document.getElementById("progressBar").classList.add("question-bank-progress");
+            document.getElementById("submitBtnSticky").classList.add("question-bank-btn");
+            document.getElementById("loading").classList.add("question-bank-spinner");
+            document.getElementById("leaderboardBtn").classList.add("question-bank-leaderboard");
+            
+            // Add question bank badge to title
+            const badge = document.createElement("span");
+            badge.className = "question-bank-badge";
+            badge.textContent = "প্রশ্নব্যাংক";
+            document.getElementById("examNameDisplay").appendChild(badge);
+        }
+
         async function loadQuestionsForReview() {
             questions = [];
             const examDoc = await db.collection("exams").doc(examId).get();
             examData = examDoc.data();
             examData.id = examDoc.id;
+            isQuestionBank = examData.isQuestionBank || false;
 
-            for (const q of examData.questions) {
-                const chapterQuestions = await loadQuestionsFromJSON(q.subject, q.chapter);
-                if (chapterQuestions[q.id]) {
-                    questions.push({
-                        ...chapterQuestions[q.id],
-                        id: `${q.subject}-${q.chapter}-${q.id}`,
-                        subject: q.subject,
-                        chapter: q.chapter.replace(/^Chapter \d+:\s*/, '')
-                    });
+            if (isQuestionBank) {
+                applyQuestionBankStyles();
+                const questionBankData = await loadQuestionBankQuestions(examData.questionBankId);
+                questions = questionBankData.questions.map((q, index) => ({
+                    ...q,
+                    id: index.toString(),
+                    subject: q.subject || "Question Bank",
+                    chapter: q.chapter || "General"
+                }));
+            } else {
+                for (const q of examData.questions) {
+                    const chapterQuestions = await loadQuestionsFromJSON(q.subject, q.chapter);
+                    if (chapterQuestions[q.id]) {
+                        questions.push({
+                            ...chapterQuestions[q.id],
+                            id: `${q.subject}-${q.chapter}-${q.id}`,
+                            subject: q.subject,
+                            chapter: q.chapter.replace(/^Chapter \d+:\s*/, '')
+                        });
+                    }
                 }
             }
         }
@@ -809,6 +941,10 @@
                 questionDiv.dataset.answer = q.correctOption;
                 questionDiv.dataset.index = idx;
 
+                if (isQuestionBank) {
+                    questionDiv.classList.add("question-bank-card");
+                }
+
                 if (userAnswers["q" + idx] && userAnswers["q" + idx + "_locked"]) {
                     questionDiv.classList.add("answered");
                 }
@@ -816,8 +952,8 @@
                 const questionHeader = `
                     <div class="question-header">
                         <div class="d-flex align-items-center gap-2">
-                            <span class="question-number">${idx + 1}</span>
-                            <span class="chapter-box">${q.chapter}</span>
+                            <span class="question-number ${isQuestionBank ? 'question-bank-number' : ''}">${idx + 1}</span>
+                            <span class="chapter-box ${isQuestionBank ? 'question-bank-chapter' : ''}">${q.chapter}</span>
                         </div>
                     </div>
                 `;
@@ -839,6 +975,10 @@
                     radioInput.name = "q" + idx;
                     radioInput.value = String(optIdx + 1);
                     radioInput.setAttribute("aria-label", `Option ${optIdx + 1} for question ${idx + 1}`);
+                    
+                    if (isQuestionBank) {
+                        radioInput.classList.add("question-bank-radio");
+                    }
 
                     if (isReview) {
                         radioInput.disabled = true;
@@ -872,7 +1012,12 @@
                                 questionCard.classList.add("answered");
                                 const index = questionCard.dataset.index;
                                 const navItem = document.querySelector(`.nav-item[data-index="${index}"]`);
-                                if (navItem) navItem.classList.add("answered");
+                                if (navItem) {
+                                    navItem.classList.add("answered");
+                                    if (isQuestionBank) {
+                                        navItem.classList.add("question-bank-nav-item");
+                                    }
+                                }
                             }
                         });
                     }
@@ -900,7 +1045,7 @@
 
                 if (isReview) {
                     const explanationDiv = document.createElement("div");
-                    explanationDiv.className = "solution-explanation";
+                    explanationDiv.className = `solution-explanation ${isQuestionBank ? 'question-bank-explanation' : ''}`;
                     const hasExplanationText = q.explanation?.trim();
                     const hasExplanationImage = q.explanationImage;
                     if (hasExplanationText) {
@@ -939,6 +1084,9 @@
                 navItem.textContent = idx + 1;
                 navItem.className = "nav-item";
                 navItem.dataset.index = idx;
+                if (isQuestionBank) {
+                    navItem.classList.add("question-bank-nav-item");
+                }
                 if (userAnswers["q" + idx] && userAnswers["q" + idx + "_locked"]) {
                     navItem.classList.add("answered");
                 }
@@ -1013,7 +1161,9 @@
             const ctx = document.getElementById('resultChart').getContext('2d');
             const total = correct + incorrect + skipped;
 
-            const gradientCorrect = createGradient(ctx, "#34C759", "#28A745");
+            const gradientCorrect = isQuestionBank 
+                ? createGradient(ctx, "#8B5CF6", "#7C3AED")
+                : createGradient(ctx, "#34C759", "#28A745");
             const gradientIncorrect = createGradient(ctx, "#FF3B30", "#D32F2F");
             const gradientSkipped = createGradient(ctx, "#FFD700", "#FFA500");
 
@@ -1116,7 +1266,7 @@
                 });
         
                 leaderboardBody.innerHTML = "";
-                let serialNumber = 1; // Start serial number from 1
+                let serialNumber = 1;
         
                 attemptsSnapshot.forEach((doc) => {
                     const data = doc.data();
@@ -1130,8 +1280,13 @@
                         <td>${data.skippedAnswers}</td>
                     `;
                     leaderboardBody.appendChild(row);
-                    serialNumber++; // Increment serial number for the next row
+                    serialNumber++;
                 });
+        
+                if (isQuestionBank) {
+                    leaderboardContainer.querySelector("h3").textContent = "প্রশ্নব্যাংক লিডারবোর্ড";
+                    leaderboardContainer.querySelector("table").classList.add("question-bank-leaderboard");
+                }
         
                 leaderboardContainer.style.display = "block";
                 leaderboardContainer.scrollIntoView({ behavior: "smooth" });
@@ -1192,7 +1347,7 @@
                 const explanation = questions[idx].explanation;
                 const explanationImage = questions[idx].explanationImage;
                 const explanationDiv = document.createElement("div");
-                explanationDiv.className = "solution-explanation";
+                explanationDiv.className = `solution-explanation ${isQuestionBank ? 'question-bank-explanation' : ''}`;
                 const hasExplanationText = explanation?.trim();
                 const hasExplanationImage = explanationImage;
                 if (hasExplanationText) {
@@ -1243,12 +1398,15 @@
                     skippedAnswers: skippedAnswers,
                     totalQuestions: questions.length,
                     answers: userAnswers,
+                    isQuestionBank: isQuestionBank,
+                    questionBankType: examData.questionBankType,
+                    questionBankId: examData.questionBankId,
                     timestamp: firebase.firestore.FieldValue.serverTimestamp()
                 });
                 Toastify({
                     text: `পরীক্ষা সম্পন্ন! আপনার স্কোর: ${score}`,
                     duration: 5000,
-                    style: { background: "#9810fa" }
+                    style: { background: isQuestionBank ? "#8B5CF6" : "#9810fa" }
                 }).showToast();
             } catch (error) {
                 console.error("Error submitting quiz:", error);
