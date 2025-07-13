@@ -692,6 +692,10 @@
         }
 
         async function loadExam() {
+            if (examData.isMedicalBank) {
+                document.getElementById("examNameDisplay").textContent = `মেডিকেল প্রশ্ন ব্যাংক - ${examData.year}`;
+                document.getElementById("subjectDisplay").textContent = "মেডিকেল ভর্তি পরীক্ষা";
+            }
             const loadingDiv = document.getElementById("loading");
             loadingDiv.style.display = "block";
 
