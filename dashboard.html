@@ -3247,7 +3247,7 @@ async function startMedicalExam(year) {
         closeMedicalQuestionBankModal();
         
         // Redirect to quiz
-        window.location.href = `quiz.html?examId=${examDocRef.id}`;
+        window.location.href = `quiz.html?examId=${examDoc.id}`;
         
     } catch (error) {
         console.error("Error starting medical exam:", error);
