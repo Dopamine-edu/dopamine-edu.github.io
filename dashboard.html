@@ -1087,40 +1087,7 @@
 
 
 
-.year-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 15px;
-    margin-top: 20px;
-}
 
-.year-card {
-    background: var(--card-bg);
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s;
-    box-shadow: var(--shadow);
-    border: 2px solid var(--primary-color);
-}
-
-.year-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(107, 72, 255, 0.3);
-}
-
-.year-number {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--primary-color);
-}
-
-.year-label {
-    font-size: 0.8rem;
-    color: var(--secondary-text-color);
-    margin-top: 5px;
-}
 
 
 
@@ -1182,9 +1149,9 @@
                 <i class="fas fa-tasks card-icon"></i>
                 <h3 class="card-title">স্টাডি প্ল্যানার</h3>
             </div>
-            <div class="card glowing" onclick="openMedicalQuestionBank()">
-    <i class="fas fa-book-medical card-icon"></i>
-    <h3 class="card-title">মেডিকেল প্রশ্ন ব্যাংক</h3>
+            <div class="card glowing" onclick="requireLogin('https://dopamine-edu.github.io/eid-salami-exam.html')">
+                <i class="fas fa-graduation-cap card-icon"></i>
+                <h3 class="card-title">ঈদ সালামী এক্সাম</h3>
             </div>
             <div class="card" onclick="requireLogin('https://dopamine-edu.github.io/courses.html')">
                 <i class="fas fa-book card-icon"></i>
@@ -1207,37 +1174,6 @@
     <h3 class="card-title">পারফরম্যান্স</h3>
 </div>
 
-
-<div id="medicalQuestionBankModal" class="modal">
-    <div class="modal-content" style="max-width: 500px;">
-        <span class="close-modal" onclick="closeMedicalQuestionBankModal()">×</span>
-        <h2 class="text-center mb-4">মেডিকেল প্রশ্ন ব্যাংক</h2>
-        
-        <div class="year-grid">
-            <div class="year-card" onclick="startMedicalExam('2023')">
-                <div class="year-number">২০২৩</div>
-                <div class="year-label">সর্বশেষ বছর</div>
-            </div>
-            <div class="year-card" onclick="startMedicalExam('2022')">
-                <div class="year-number">২০২২</div>
-            </div>
-            <div class="year-card" onclick="startMedicalExam('2021')">
-                <div class="year-number">২০২১</div>
-            </div>
-            <div class="year-card" onclick="startMedicalExam('2020')">
-                <div class="year-number">২০২০</div>
-            </div>
-            <div class="year-card" onclick="startMedicalExam('2019')">
-                <div class="year-number">২০১৯</div>
-            </div>
-            <div class="year-card" onclick="startMedicalExam('2018')">
-                <div class="year-number">২০১৮</div>
-            </div>
-        </div>
-    </div>
-</div>
-
-            
 <!-- Performance Modal -->
 <div id="performanceModal" class="modal">
     <div class="modal-content" style="max-width: 900px;">
@@ -3188,94 +3124,6 @@ async function populateSubjects() {
             Toastify({ text: "প্লেয়ার তথ্য লোডে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
         }
     }
-
-
-
-
-    // Medical Question Bank Functions
-function openMedicalQuestionBank() {
-    if (!isAuthenticated) {
-        Toastify({ text: "প্রশ্ন ব্যাংক ব্যবহার করতে লগইন করুন!", duration: 3000, style: { background: "#dc3545" } }).showToast();
-        window.location.href = 'https://dopamine-edu.github.io/auth.html';
-        return;
-    }
-    document.getElementById('medicalQuestionBankModal').style.display = 'block';
-}
-
-function closeMedicalQuestionBankModal() {
-    document.getElementById('medicalQuestionBankModal').style.display = 'none';
-}
-
-async function startMedicalExam(year) {
-    try {
-        // Show loading
-        const loading = Toastify({ 
-            text: `${year} সালের প্রশ্ন লোড হচ্ছে...`, 
-            duration: -1, 
-            style: { background: "#6b48ff" } 
-        });
-        loading.showToast();
-        
-        // Load questions for selected year
-        const questions = await loadMedicalQuestionsByYear(year);
-        
-        if (questions.length === 0) {
-            throw new Error("এই বছরের জন্য প্রশ্ন পাওয়া যায়নি");
-        }
-        
-        // Create exam in database
-        const examDocRef = await db.collection("exams").add({
-            title: `মেডিকেল প্রশ্ন ব্যাংক - ${year}`,
-            duration: 60, // 60 minutes by default
-            marksPerQuestion: 1,
-            negativeMark: 0.25, // 0.25 negative marking
-            questions: questions.map((q, index) => ({
-                id: index,
-                subject: "medical",
-                chapter: "admission",
-                year: year
-            })),
-            isMedicalBank: true,
-            year: year,
-            createdAt: firebase.firestore.FieldValue.serverTimestamp()
-        });
-        
-        // Hide loading
-        loading.hideToast();
-        
-        // Close modal
-        closeMedicalQuestionBankModal();
-        
-        // Redirect to quiz
-        window.location.href = `quiz.html?examId=${examDoc.id}`;
-        
-    } catch (error) {
-        console.error("Error starting medical exam:", error);
-        Toastify({ 
-            text: "পরীক্ষা শুরু করতে ত্রুটি: " + error.message, 
-            duration: 3000, 
-            style: { background: "#dc3545" } 
-        }).showToast();
-    }
-}
-
-async function loadMedicalQuestionsByYear(year) {
-    try {
-        // Load from your JSON files
-        const response = await fetch(`./questions/medical/${year}.json`);
-        const data = await response.json();
-        
-        // Validate questions
-        if (!Array.isArray(data)) {
-            throw new Error("Invalid question format");
-        }
-        
-        return data;
-    } catch (error) {
-        console.error(`Error loading questions for ${year}:`, error);
-        return [];
-    }
-}
     // Initialize subjects on page load
     populateSubjects();
 </script>
