@@ -2534,83 +2534,151 @@ async function populateSubjects() {
     }
 }
 
-    document.getElementById("customExamForm").addEventListener("submit", async (e) => {
-        e.preventDefault();
-        if (!isAuthenticated) {
-            Toastify({ text: "কাস্টম পরীক্ষা তৈরি করতে লগইন করুন!", duration: 3000, style: { background: "#dc3545" } }).showToast();
-            window.location.href = 'https://dopamine-edu.github.io/auth.html';
-            return;
-        }
+document.getElementById("customExamForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!isAuthenticated) {
+        Toastify({ text: "কাস্টম পরীক্ষা তৈরি করতে লগইন করুন!", duration: 3000, style: { background: "#dc3545" } }).showToast();
+        window.location.href = 'https://dopamine-edu.github.io/auth.html';
+        return;
+    }
+
+    const submitButton = e.target.querySelector('.btn-primary');
+    submitButton.disabled = true;
+    submitButton.textContent = 'তৈরি হচ্ছে...';
+    const loadingDiv = document.getElementById("loading-spinner");
+    loadingDiv.style.display = "block";
+
+    const numQuestions = parseInt(document.getElementById("numQuestions").value);
+    const timeSelect = document.getElementById("timeSelect");
+    const customTime = parseInt(document.getElementById("customTime").value);
+    const negativeMarking = parseFloat(document.getElementById("negativeMarking").value);
     
-        const submitButton = e.target.querySelector('.btn-primary');
-        submitButton.disabled = true;
-        submitButton.textContent = 'তৈরি হচ্ছে...';
-        const loadingDiv = document.getElementById("loading-spinner");
-        loadingDiv.style.display = "block";
-    
-        const numQuestions = parseInt(document.getElementById("numQuestions").value);
-        const timeSelect = document.getElementById("timeSelect");
-        const customTime = parseInt(document.getElementById("customTime").value);
-        const negativeMarking = parseFloat(document.getElementById("negativeMarking").value);
-        const selectedChapters = [];
+    // Get selected chapters with their question counts
+    const selectedChaptersWithCounts = [];
+    document.querySelectorAll('.chapter-box .form-check-input:checked').forEach(checkbox => {
+        const chapterBox = checkbox.closest('.chapter-box');
+        const questionCountElement = chapterBox.querySelector('.chapter-question-count');
+        const questionCount = parseInt(questionCountElement.textContent) || 0;
         
-        document.querySelectorAll('.chapter-box .form-check-input:checked').forEach(checkbox => {
-            const chapterBox = checkbox.closest('.chapter-box');
-            selectedChapters.push({
-                subject: chapterBox.dataset.subject,
-                chapter: chapterBox.dataset.originalChapter
-            });
+        selectedChaptersWithCounts.push({
+            subject: chapterBox.dataset.subject,
+            chapter: chapterBox.dataset.originalChapter,
+            questionCount: questionCount
         });
-    
-        if (selectedChapters.length === 0) {
-            Toastify({ text: "অন্তত একটি অধ্যায় নির্বাচন করুন!", duration: 3000, style: { background: "#dc3545" } }).showToast();
-            loadingDiv.style.display = "none";
-            submitButton.disabled = false;
-            submitButton.textContent = 'পরীক্ষা শুরু';
-            return;
-        }
-    
-        try {
-            const allQuestions = [];
-            for (const { subject, chapter } of selectedChapters) {
-                const chapterQuestions = await loadQuestionsFromJSON(subject, chapter);
-                chapterQuestions.forEach((q, index) => {
-                    allQuestions.push({ id: index, subject, chapter });
-                });
-            }
-    
-            if (allQuestions.length === 0) throw new Error("নির্বাচিত অধ্যায়গুলোর জন্য কোনো প্রশ্ন পাওয়া যায়নি।");
-    
-            const selectedQuestions = allQuestions.sort(() => 0.5 - Math.random()).slice(0, Math.min(numQuestions, allQuestions.length));
-            const subjectsList = [...new Set(selectedChapters.map(item => item.subject))];
-            const chaptersList = selectedChapters.map(item => item.chapter);
-            const time = timeSelect.value === 'custom' ? customTime : parseInt(timeSelect.value);
-    
-            const examDocRef = await db.collection("exams").add({
-                title: `কাস্টম পরীক্ষা - ${chaptersList.map(ch => ch.replace(/^Chapter \d+:\s*/, '')).join(", ")}`,
-                duration: time,
-                marksPerQuestion: 1,
-                negativeMark: negativeMarking,
-                lastDate: null,
-                questions: selectedQuestions,
-                subjects: subjectsList,
-                chapters: chaptersList,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            });
-    
-            loadingDiv.style.display = "none";
-            submitButton.disabled = false;
-            submitButton.textContent = 'পরীক্ষা শুরু';
-            Toastify({ text: "কাস্টম পরীক্ষা সফলভাবে তৈরি হয়েছে!", duration: 3000, style: { background: "#6b48ff" } }).showToast();
-            window.location.href = `quiz.html?examId=${examDocRef.id}`;
-        } catch (error) {
-            loadingDiv.style.display = "none";
-            submitButton.disabled = false;
-            submitButton.textContent = 'পরীক্ষা শুরু';
-            console.error("কাস্টম পরীক্ষা তৈরিতে ত্রুটি:", error);
-            Toastify({ text: "পরীক্ষা তৈরিতে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
-        }
     });
+
+    if (selectedChaptersWithCounts.length === 0) {
+        Toastify({ text: "অন্তত একটি অধ্যায় নির্বাচন করুন!", duration: 3000, style: { background: "#dc3545" } }).showToast();
+        loadingDiv.style.display = "none";
+        submitButton.disabled = false;
+        submitButton.textContent = 'পরীক্ষা শুরু';
+        return;
+    }
+
+    try {
+        // Load questions from all selected chapters
+        const chapterQuestions = [];
+        for (const { subject, chapter } of selectedChaptersWithCounts) {
+            const questions = await loadQuestionsFromJSON(subject, chapter);
+            chapterQuestions.push({
+                subject,
+                chapter,
+                questions: questions.map((q, idx) => ({ ...q, id: idx }))
+            });
+        }
+
+        // Calculate how many questions to take from each chapter
+        const questionsPerChapter = Math.ceil(numQuestions / selectedChaptersWithCounts.length);
+        const selectedQuestions = [];
+
+        // Take questions from each chapter proportionally
+        for (const chapterData of chapterQuestions) {
+            const availableQuestions = chapterData.questions.length;
+            const questionsToTake = Math.min(questionsPerChapter, availableQuestions);
+            
+            // Shuffle and take questions
+            const shuffled = [...chapterData.questions].sort(() => 0.5 - Math.random());
+            const takenQuestions = shuffled.slice(0, questionsToTake);
+            
+            takenQuestions.forEach(q => {
+                selectedQuestions.push({
+                    subject: chapterData.subject,
+                    chapter: chapterData.chapter,
+                    id: q.id
+                });
+            });
+        }
+
+        // If we have more questions than needed, randomly remove some
+        while (selectedQuestions.length > numQuestions) {
+            const randomIndex = Math.floor(Math.random() * selectedQuestions.length);
+            selectedQuestions.splice(randomIndex, 1);
+        }
+
+        // If we have fewer questions than needed, add more from chapters with remaining questions
+        if (selectedQuestions.length < numQuestions) {
+            const remainingNeeded = numQuestions - selectedQuestions.length;
+            let added = 0;
+            let attempts = 0;
+            
+            while (added < remainingNeeded && attempts < 100) {
+                attempts++;
+                for (const chapterData of chapterQuestions) {
+                    if (added >= remainingNeeded) break;
+                    
+                    // Find questions not already selected
+                    const existingIds = selectedQuestions
+                        .filter(q => q.subject === chapterData.subject && q.chapter === chapterData.chapter)
+                        .map(q => q.id);
+                    
+                    const availableQuestions = chapterData.questions
+                        .filter(q => !existingIds.includes(q.id));
+                    
+                    if (availableQuestions.length > 0) {
+                        const randomQuestion = availableQuestions[
+                            Math.floor(Math.random() * availableQuestions.length)
+                        ];
+                        
+                        selectedQuestions.push({
+                            subject: chapterData.subject,
+                            chapter: chapterData.chapter,
+                            id: randomQuestion.id
+                        });
+                        added++;
+                    }
+                }
+            }
+        }
+
+        const subjectsList = [...new Set(selectedChaptersWithCounts.map(item => item.subject))];
+        const chaptersList = selectedChaptersWithCounts.map(item => item.chapter);
+        const time = timeSelect.value === 'custom' ? customTime : parseInt(timeSelect.value);
+
+        const examDocRef = await db.collection("exams").add({
+            title: `কাস্টম পরীক্ষা - ${chaptersList.map(ch => ch.replace(/^Chapter \d+:\s*/, '')).join(", ")}`,
+            duration: time,
+            marksPerQuestion: 1,
+            negativeMark: negativeMarking,
+            lastDate: null,
+            questions: selectedQuestions,
+            subjects: subjectsList,
+            chapters: chaptersList,
+            createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        loadingDiv.style.display = "none";
+        submitButton.disabled = false;
+        submitButton.textContent = 'পরীক্ষা শুরু';
+        Toastify({ text: "কাস্টম পরীক্ষা সফলভাবে তৈরি হয়েছে!", duration: 3000, style: { background: "#6b48ff" } }).showToast();
+        window.location.href = `quiz.html?examId=${examDocRef.id}`;
+    } catch (error) {
+        loadingDiv.style.display = "none";
+        submitButton.disabled = false;
+        submitButton.textContent = 'পরীক্ষা শুরু';
+        console.error("কাস্টম পরীক্ষা তৈরিতে ত্রুটি:", error);
+        Toastify({ text: "পরীক্ষা তৈরিতে ত্রুটি: " + error.message, duration: 3000, style: { background: "#dc3545" } }).showToast();
+    }
+});
 
     // Battle modal functions
     function openBattleModal() {
